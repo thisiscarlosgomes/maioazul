@@ -8,7 +8,7 @@ const copy = {
     description:
       "The island of Maio has always moved at its own pace, shaped by the close relationship between people, land, and time. MaioAzul grows from this essence: giving visibility to this rhythm, supporting local initiatives, and affirming a future aligned with the island’s identity — without compromising what makes it distinct.",
     comingSoon: "Launching soon",
-    launching: "Rhythm. Identity. Future.",
+    launching: "Sustainability. Identity. Future.",
     instagram: "Instagram",
   },
 
@@ -20,7 +20,7 @@ const copy = {
     description:
       "A Ilha do Maio sempre viveu ao seu próprio ritmo, moldado pela relação próxima entre as pessoas, o território e o tempo. A MaioAzul nasce dessa essência: dar visibilidade a esse ritmo, apoiar iniciativas locais e afirmar um futuro alinhado com a identidade da ilha, sem a descaracterizar.",
     comingSoon: "Lançamento em breve",
-    launching: "Ritmo. Identidade. Futuro.",
+    launching: "Sustentabilidade. Identidade. Futuro.",
     instagram: "Instagram",
   },
 
