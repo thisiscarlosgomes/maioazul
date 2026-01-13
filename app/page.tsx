@@ -41,7 +41,7 @@ export default function Home() {
       <div className="absolute inset-0 bg-black/50 z-10" />
 
       {/* Blue mood overlay */}
-      <div className="absolute inset-0 bg-primary/80 z-20" />
+      <div className="absolute inset-0 bg-primary/85 z-20" />
 
       {/* CONTENT */}
       <div className="relative z-30 h-full flex flex-col justify-between">
