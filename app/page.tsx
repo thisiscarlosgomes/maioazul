@@ -4,21 +4,25 @@ import { useState } from "react";
 
 const copy = {
   en: {
-    title: "Maio Island, at its own pace",
+    title: "Maio, at its own pace",
     description:
-      "A new space to highlight local life, support small initiatives, and make Maio visible, without changing what makes it special.",
+      "A space to highlight island life, support small initiatives, and invest in thoughtful infrastructure and experiences, making Maio visible without changing what makes it special.",
     comingSoon: "A new Maioazul is taking shape",
-    launching: "Rooling out soon",
+    launching: "Rolling out soon",
     instagram: "Instagram",
   },
+
+
   pt: {
     title: "Maio, no seu próprio ritmo",
     description:
-      "Um novo espaço para dar visibilidade à vida local, apoiar pequenas iniciativas e tornar Maio mais visível, sem mudar aquilo que o torna especial.",
+      "Um espaço para dar visibilidade à vida local, apoiar pequenas iniciativas e investir em infraestruturas e experiências pensadas com cuidado, sem mudar aquilo que torna o Maio especial.",
     comingSoon: "Um novo Maioazul está a ganhar forma",
-    launching: "Lançamento brevemente",
+    launching: "Lançamento em breve",
     instagram: "Instagram",
   },
+
+
 };
 
 type Lang = "en" | "pt";
@@ -63,11 +67,10 @@ export default function Home() {
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className={`cursor-pointer p-0.5 uppercase transition ${
-                  lang === l
-                    ? "text-white underline underline-offset-4"
-                    : "text-white/60 hover:text-white"
-                }`}
+                className={`cursor-pointer p-0.5 uppercase transition ${lang === l
+                  ? "text-white underline underline-offset-4"
+                  : "text-white/60 hover:text-white"
+                  }`}
               >
                 {l}
               </button>
