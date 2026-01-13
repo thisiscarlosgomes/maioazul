@@ -6,19 +6,21 @@ const copy = {
   en: {
     title: "Maio, at its own pace",
     description:
-      "A space to highlight island life, support small initiatives, and invest in thoughtful infrastructure and experiences, making Maio visible without changing what makes it special.",
-    comingSoon: "A new Maioazul is taking shape",
-    launching: "Rolling out soon",
+      "The island of Maio has always moved at its own pace, shaped by the close relationship between people, land, and time. MaioAzul grows from this essence: giving visibility to this rhythm, supporting local initiatives, and affirming a future aligned with the island’s identity — without compromising what makes it distinct.",
+    comingSoon: "Launching soon",
+    launching: "Rhythm. Identity. Future.",
     instagram: "Instagram",
   },
+
+
 
 
   pt: {
     title: "Maio, no seu próprio ritmo",
     description:
-      "Um espaço para dar visibilidade à vida local, apoiar pequenas iniciativas e investir em infraestruturas e experiências pensadas com cuidado, sem mudar aquilo que torna o Maio especial.",
-    comingSoon: "Um novo Maioazul está a ganhar forma",
-    launching: "Lançamento em breve",
+      "A Ilha do Maio sempre viveu ao seu próprio ritmo, moldado pela relação próxima entre as pessoas, o território e o tempo. A MaioAzul nasce dessa essência: dar visibilidade a esse ritmo, apoiar iniciativas locais e afirmar um futuro alinhado com a identidade da ilha, sem a descaracterizar.",
+    comingSoon: "Lançamento em breve",
+    launching: "Ritmo. Identidade. Futuro.",
     instagram: "Instagram",
   },
 
@@ -28,7 +30,8 @@ const copy = {
 type Lang = "en" | "pt";
 
 export default function Home() {
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useState<Lang>("pt");
+
   const t = copy[lang];
 
   return (
@@ -63,7 +66,7 @@ export default function Home() {
 
           {/* Language switch */}
           <div className="flex gap-4 text-sm">
-            {(["en", "pt"] as Lang[]).map((l) => (
+            {(["pt", "en"] as Lang[]).map((l) => (
               <button
                 key={l}
                 onClick={() => setLang(l)}
@@ -75,6 +78,7 @@ export default function Home() {
                 {l}
               </button>
             ))}
+
           </div>
         </header>
 
