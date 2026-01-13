@@ -18,7 +18,7 @@ const copy = {
   pt: {
     title: "Maio, no seu próprio ritmo",
     description:
-      "A Ilha do Maio sempre viveu ao seu próprio ritmo, moldado pela relação próxima entre as pessoas, o território e o tempo. A MaioAzul nasce dessa essência: dar visibilidade a esse ritmo, apoiar iniciativas locais e afirmar um futuro alinhado com a identidade da ilha, sem a descaracterizar.",
+      "A Ilha do Maio sempre viveu no seu próprio ritmo, moldado pela relação próxima entre as pessoas, o território e o tempo. A MaioAzul nasce dessa essência: dar visibilidade a esse ritmo, apoiar iniciativas locais e afirmar um futuro alinhado com a identidade da ilha, sem a descaracterizar.",
     comingSoon: "Lançamento em breve",
     launching: "Sustentabilidade. Identidade. Futuro.",
     instagram: "Instagram",
