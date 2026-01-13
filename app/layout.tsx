@@ -21,12 +21,12 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       url: "https://www.maioazul.com",
-      title: "MaioAzul · Maio, at its own pace",
+      title: "Maio, at its own pace",
       description:
         "A slower way to discover Maio. Rooted in local life, shared with care, and built to last.",
       images: [
         {
-          url: "https://www.maioazul.com/og.jpg",
+          url: "https://www.maioazul.com/ogImage.jpg",
           width: 1200,
           height: 630,
           alt: "MaioAzul — Maio, at its own pace",
@@ -38,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "MaioAzul",
       description:
         "A quiet, local-first guide to the island of Maio, Cabo Verde.",
-      images: ["https://www.maioazul.com/og.jpg"],
+      images: ["https://www.maioazul.com/ogImage.jpg"],
     },
     icons: {
       icon: "/favicon.ico",
