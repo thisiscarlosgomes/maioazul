@@ -24,6 +24,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+import { TourismAccommodationTable } from "@/components/TourismAccommodationTable";
+
+
 
 
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -339,6 +342,8 @@ export default function TourismPage() {
               t={t}
               onData={(data) => setTourismOverviewData(data)}
             />
+
+            <TourismAccommodationTable ilha={ilha} />
 
             <TourismPressure
               ilha={ilha}
