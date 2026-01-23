@@ -58,7 +58,7 @@ const formatCVE = (value: number) =>
   }).format(value) + " CVE";
 
 // const ISLANDS = ["Todas", "Maio"];
-const ISLANDS = ["Todas", "Maio", "Santo Antão", "Sal", "Boa Vista"];
+const ISLANDS = ["Todas", "Maio"];
 
 function IslandPopulationSnapshot({
   ilha,
