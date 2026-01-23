@@ -10,33 +10,28 @@ const copy = {
     comingSoon: "Launching soon",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
+    dashboard: "Maio in Numbers",
   },
-
-
-
 
   pt: {
     title: "Maio, no seu próprio ritmo",
     description:
       "A Ilha do Maio sempre viveu no seu próprio ritmo, moldado pela autenticidade humana, o território e o tempo. A Maioazul nasce dessa essência: dar visibilidade a esse ritmo, apoiar iniciativas locais e afirmar um futuro alinhado com a identidade da ilha, sem a descaracterizar.",
     comingSoon: "Lançamento em breve",
-    launching: "Aventura. Sustentabilidade. Impacto. ",
+    launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
+    dashboard: "Maio em Numeros",
   },
-
-
 };
 
 type Lang = "en" | "pt";
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("pt");
-
   const t = copy[lang];
 
   return (
     <main className="relative h-screen w-screen overflow-hidden px-10">
-
       {/* Background image */}
       <img
         src="/image.png"
@@ -48,11 +43,10 @@ export default function Home() {
       <div className="absolute inset-0 bg-black/50 z-10" />
 
       {/* Blue mood overlay */}
-      <div className="absolute inset-0 bg-primary/85 z-20" />
+      <div className="absolute inset-0 bg-maio-blue/80 z-20" />
 
       {/* CONTENT */}
       <div className="relative z-30 h-full flex flex-col justify-between">
-
         {/* Header */}
         <header className="flex justify-between items-center pt-10 pb-6 text-white">
           <div className="w-24" />
@@ -70,15 +64,15 @@ export default function Home() {
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className={`cursor-pointer p-0.5 uppercase transition ${lang === l
-                  ? "text-white underline underline-offset-4"
-                  : "text-white/60 hover:text-white"
-                  }`}
+                className={`cursor-pointer p-0.5 uppercase transition ${
+                  lang === l
+                    ? "text-white underline underline-offset-4"
+                    : "text-white/60 hover:text-white"
+                }`}
               >
                 {l}
               </button>
             ))}
-
           </div>
         </header>
 
@@ -97,24 +91,30 @@ export default function Home() {
               {t.comingSoon}
             </span>
           </div>
-{/* 
-          <p className="text-md text-white/40 max-w-xl">
-            {t.launching}
-          </p> */}
         </section>
 
         {/* Footer */}
         <footer className="text-center text-sm pb-8">
-          <a
-            href="https://instagram.com/maio__azul"
-            target="_blank"
-            rel="noreferrer"
-            className="text-white/60 hover:text-white transition"
-          >
-            {t.instagram}
-          </a>
-        </footer>
+          <div className="flex items-center justify-center gap-6 text-white/60">
+            <a
+              href="/dashboard"
+              className="hover:text-white transition"
+            >
+              {t.dashboard}
+            </a>
 
+            <span className="opacity-40">·</span>
+
+            <a
+              href="https://instagram.com/maio__azul"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white transition"
+            >
+              {t.instagram}
+            </a>
+          </div>
+        </footer>
       </div>
     </main>
   );

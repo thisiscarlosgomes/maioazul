@@ -1,6 +1,8 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
+import { ThemeProvider } from "./theme-provider";
+
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -74,8 +76,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-background text-foreground">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
+
     </html>
   );
 }
