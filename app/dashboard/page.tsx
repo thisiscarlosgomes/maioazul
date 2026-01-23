@@ -55,7 +55,40 @@ const formatCVE = (value: number) =>
   }).format(value) + " CVE";
 
 // const ISLANDS = ["Todas", "Maio"];
-const ISLANDS = ["Todas", "Maio", "Sal", "Boa Vista", "Santiago"];
+const ISLANDS = ["Todas", "Maio", "Sal", "Boa Vista"];
+
+function IslandPopulationSnapshot({
+  ilha,
+  onData,
+}: {
+  ilha: string;
+  onData?: (data: {
+    population?: number;
+    populationShareNational?: number;
+  }) => void;
+}) {
+  useEffect(() => {
+    if (ilha === "Todas") return;
+
+    fetch(`/api/transparencia/turismo/population?year=2025`)
+      .then((r) => r.json())
+      .then((res) => {
+        const row = res.data?.find(
+          (r: any) => r.ilha.toLowerCase() === ilha.toLowerCase()
+        );
+
+        if (!row) return;
+
+        onData?.({
+          population: row.population,
+          populationShareNational: row.population_share_national,
+        });
+      });
+  }, [ilha, onData]);
+
+  return null;
+}
+
 
 /* =========================
    Color helpers (NEW)
@@ -259,9 +292,6 @@ export default function TourismPage() {
 
 
         <>
-
-
-          {/* Population snapshot · only Maio */}
           {ilha === "Maio" && (
             <MaioPopulationSnapshot
               t={t}
@@ -273,6 +303,16 @@ export default function TourismPage() {
               }
             />
           )}
+
+
+          {/* Population snapshot · only Maio */}
+          {ilha !== "Todas" && (
+            <IslandPopulationSnapshot
+              ilha={ilha}
+              onData={(data) => setPopulationData(data)}
+            />
+          )}
+
 
 
           {/* Governo local · apenas Maio */}

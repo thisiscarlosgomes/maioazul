@@ -86,11 +86,11 @@ export default function Home() {
             {t.description}
           </p>
 
-          <div className="pt-4">
+          {/* <div className="pt-4">
             <span className="border border-white/40 px-8 py-4 rounded-full text-white/70 cursor-default text-center inline-block">
               {t.comingSoon}
             </span>
-          </div>
+          </div> */}
         </section>
 
         {/* Footer */}
