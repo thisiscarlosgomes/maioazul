@@ -54,8 +54,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  width: "device-width",
   initialScale: 1,
+  maximumScale: 1,
+  width: "device-width",
 };
 
 export default function RootLayout({
@@ -64,15 +65,39 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark bg-background">
+
       <head>
         {/* Preload local font */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=block"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Orbitron&family=DM+Sans&family=Rubik+Mono+One&family=Bebas+Neue&family=Space+Mono&family=Raleway&display=swap"
+          rel="stylesheet"
+        />
+
         <link
           rel="preload"
           href="/fonts/mabry-regular.woff2"
           as="font"
           type="font/woff2"
           crossOrigin="anonymous"
+        />
+
+        <meta
+          name="theme-color"
+          content="#000000"
+          media="(prefers-color-scheme: dark)"
+        />
+
+
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
       </head>
       <body className="antialiased bg-background text-foreground">
