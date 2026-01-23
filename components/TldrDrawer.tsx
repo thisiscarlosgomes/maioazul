@@ -85,7 +85,7 @@ export function TldrDrawer({
         <Drawer.Overlay className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm" />
 
         <Drawer.Content
-          className="fixed right-2 top-2 bottom-2 z-50 w-[370px] outline-none flex"
+          className="fixed right-2 top-2 bottom-2 z-50 w-[350px] outline-none flex"
           style={
             {
               "--initial-transform": "calc(100% + 8px)",

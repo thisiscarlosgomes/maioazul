@@ -382,25 +382,6 @@ export default function TourismPage() {
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* =========================
-   Maio · Population Snapshot (TOP KPIs)
-========================= */
-
 /* =========================
    Maio · Population Snapshot (TOP KPIs)
 ========================= */
@@ -855,6 +836,74 @@ function getSeasonalityBand(value: number) {
 }
 
 
+
+
+function getSeasonDominance(value: number) {
+  if (value < 0.85)
+    return {
+      label: "Inverno dominante",
+      className: "bg-blue-500/10 text-blue-700 dark:text-blue-400",
+    };
+
+  if (value <= 1.15)
+    return {
+      label: "Neutro",
+      className: "bg-muted text-foreground",
+    };
+
+  return {
+    label: "Verão dominante",
+    className: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
+  };
+}
+
+function getSeasonalityBalance(value: number) {
+  if (value < 1.3)
+    return {
+      label: "Equilibrada",
+      className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+    };
+
+  if (value < 3)
+    return {
+      label: "Moderadamente concentrada",
+      className: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
+    };
+
+  return {
+    label: "Desequilibrada",
+    className: "bg-red-500/10 text-red-700 dark:text-red-400",
+  };
+}
+
+
+function SeasonalityPills({ value }: { value: number }) {
+  const dominance = getSeasonDominance(value);
+  const balance = getSeasonalityBalance(value);
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span
+        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${dominance.className}`}
+        title="Qual estação concentra mais dormidas"
+      >
+        {dominance.label}
+      </span>
+
+      <span
+        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${balance.className}`}
+        title="Grau de concentração sazonal"
+      >
+        {balance.label}
+      </span>
+    </div>
+  );
+}
+
+
+
+
+
 function SeasonalityPill({ value }: { value: number }) {
   const band = getSeasonalityBand(value);
 
@@ -941,9 +990,10 @@ function SeasonalityIndex({
             índice_sazonalidade: (
               <div className="flex items-center gap-2">
                 <span>{formatRatio(value)}</span>
-                <SeasonalityPill value={value} />
+                <SeasonalityPills value={value} />
               </div>
             ),
+
           };
         })}
       />
