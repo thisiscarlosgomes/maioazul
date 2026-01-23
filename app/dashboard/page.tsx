@@ -37,6 +37,9 @@ import { TourismScaleChart } from "@/components/dashboard/TourismScaleChart";
 
 import { Sparkles } from "lucide-react";
 
+import { HospedesDormidasStackedChart } from "@/components/dashboard/HospedesDormidasStackedChart";
+
+
 /* =========================
    Utils
 ========================= */
@@ -55,7 +58,7 @@ const formatCVE = (value: number) =>
   }).format(value) + " CVE";
 
 // const ISLANDS = ["Todas", "Maio"];
-const ISLANDS = ["Todas", "Maio", "Sal", "Boa Vista"];
+const ISLANDS = ["Todas", "Maio", "Santo Antão", "Sal", "Boa Vista"];
 
 function IslandPopulationSnapshot({
   ilha,
@@ -260,6 +263,9 @@ export default function TourismPage() {
       {/* ALL ISLANDS VIEW */}
       {ilha === "Todas" && (
         <>
+          <HospedesDormidasStackedChart year={year} />
+
+
           <TourismPressure
             ilha={ilha}
             t={t}
@@ -281,7 +287,6 @@ export default function TourismPage() {
               }))
             }
           />
-
         </>
       )}
 
@@ -383,6 +388,66 @@ export default function TourismPage() {
 /* =========================
    Maio · Population Snapshot (TOP KPIs)
 ========================= */
+
+
+function HospedesRankingChart({ year }: { year: string }) {
+  const [rows, setRows] = useState<
+    { ilha: string; hospedes: number }[]
+  >([]);
+
+  useEffect(() => {
+    fetch(`/api/transparencia/turismo/overview?year=${year}`)
+      .then((r) => r.json())
+      .then((res) => {
+        const data =
+          res.islands
+            ?.filter((r: any) => r.ilha !== "Todas as ilhas")
+            ?.map((r: any) => ({
+              ilha: r.ilha,
+              hospedes: r.hospedes,
+            }))
+            ?.sort((a: any, b: any) => b.hospedes - a.hospedes) || [];
+
+        setRows(data);
+      });
+  }, [year]);
+
+  if (!rows.length) return null;
+
+  const max = Math.max(...rows.map((r) => r.hospedes));
+
+  return (
+    <ChartSection
+      title="Ranking nacional por número de hóspedes"
+      description="Total anual de hóspedes por ilha"
+    >
+      <div className="space-y-3">
+        {rows.map((r) => {
+          const width = (r.hospedes / max) * 100;
+
+          return (
+            <div key={r.ilha} className="space-y-1">
+              <div className="flex justify-between text-sm">
+                <span>{r.ilha}</span>
+                <span className="text-muted-foreground">
+                  {formatNumber(r.hospedes)}
+                </span>
+              </div>
+
+              <div className="h-2 rounded-full bg-muted overflow-hidden">
+                <div
+                  className="h-full bg-amber-500"
+                  style={{ width: `${width}%` }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </ChartSection>
+  );
+}
+
 
 function MaioPopulationSnapshot({
   t,
@@ -763,7 +828,7 @@ function getSeasonalityBand(value: number) {
 
   if (value < 20)
     return {
-      label: "muito elevada",
+      label: "verão dominante",
       className: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
     };
 
