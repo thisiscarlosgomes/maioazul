@@ -135,6 +135,82 @@ function describeSeasonality(v: number) {
 const YEARS = ["2025"];
 
 
+function TourismHotelsTable({
+  highlightIsland,
+}: {
+  highlightIsland?: string;
+}) {
+  const [rows, setRows] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/transparencia/turismo/hoteis")
+      .then((r) => r.json())
+      .then((res) => {
+        const data =
+          res.islands?.map((i: any) => ({
+            ilha: i.ilha,
+            estabelecimentos: formatNumber(i.totals.establishments),
+            trabalhadores: formatNumber(i.totals.staff),
+            trabalhadores_por_estabelecimento: i.totals.staff_per_establishment
+              ? i.totals.staff_per_establishment.toFixed(2)
+              : "—",
+            _highlight: i.ilha === highlightIsland,
+          })) || [];
+
+        setRows(data);
+      });
+  }, [highlightIsland]);
+
+  if (!rows.length) return null;
+
+  return (
+    <section className="space-y-3">
+      <div>
+        <h2 className="font-semibold">
+          Estrutura hoteleira por ilha
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Número de estabelecimentos e emprego direto no turismo
+        </p>
+      </div>
+
+      <div className="rounded-lg border border-border overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Ilha</TableHead>
+              <TableHead>Estabelecimentos</TableHead>
+              <TableHead>Trabalhadores</TableHead>
+              <TableHead>Trab. / Estab.</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {rows.map((r, i) => (
+              <TableRow
+                key={i}
+                className={
+                  r._highlight
+                    ? "bg-amber-500/10"
+                    : undefined
+                }
+              >
+                <TableCell className="font-medium">
+                  {r.ilha}
+                </TableCell>
+                <TableCell>{r.estabelecimentos}</TableCell>
+                <TableCell>{r.trabalhadores}</TableCell>
+                <TableCell>{r.trabalhadores_por_estabelecimento}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </section>
+  );
+}
+
+
 
 
 /* =========================
@@ -275,35 +351,35 @@ export default function TourismPage() {
 
 
         {/* ALL ISLANDS VIEW */}
-        {ilha === "Todas" && (
-          <>
-            <HospedesDormidasStackedChart year={year} />
+       {ilha === "Todas" && (
+  <>
+    <HospedesDormidasStackedChart year={year} />
 
+    <TourismHotelsTable />
 
-            <TourismPressure
-              ilha={ilha}
-              t={t}
-              onValue={(value) =>
-                setDerivedMetrics((m) => ({
-                  ...m,
-                  tourismPressure: value,
-                }))
-              }
-            />
+    <TourismPressure
+      ilha={ilha}
+      t={t}
+      onValue={(value) =>
+        setDerivedMetrics((m) => ({
+          ...m,
+          tourismPressure: value,
+        }))
+      }
+    />
 
-            <SeasonalityIndex
-              ilha={ilha}
-              t={t}
-              onValue={(value) =>
-                setDerivedMetrics((m) => ({
-                  ...m,
-                  seasonality: value,
-                }))
-              }
-            />
-          </>
-        )}
-
+    <SeasonalityIndex
+      ilha={ilha}
+      t={t}
+      onValue={(value) =>
+        setDerivedMetrics((m) => ({
+          ...m,
+          seasonality: value,
+        }))
+      }
+    />
+  </>
+)}
 
 
         {/* SINGLE ISLAND VIEW */}
@@ -336,6 +412,8 @@ export default function TourismPage() {
 
             {/* Governo local · apenas Maio */}
             {ilha === "Maio" && <LocalGovernmentOverview t={t} />}
+
+
 
             <TourismOverview
               ilha={ilha}
