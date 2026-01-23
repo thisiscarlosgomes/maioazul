@@ -6,7 +6,7 @@ export const dictionary = {
     pt: {
         title: "Maio em Números",
         subtitle:
-            "Indicadores do desenvolvimento e turismo da ilha do Maio",
+            "Indicadores do desenvolvimento e turismo da ilha do Maio · maioazul.com",
 
         localGovernment: "Governo Local",
         localPopulation: "população",

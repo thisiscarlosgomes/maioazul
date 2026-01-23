@@ -195,8 +195,17 @@ export default function TourismPage() {
 
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-8">
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      <div
+        className="absolute inset-0 z-0 bg-center bg-no-repeat opacity-[0.04] dark:opacity-[0.035]"
+        style={{
+          backgroundImage: "url('/maioazul.png')",
+          backgroundSize: "300px",
+        }}
+      />
+
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-8">
+
 
         {/* Header */}
         {/* STICKY HEADER */}
