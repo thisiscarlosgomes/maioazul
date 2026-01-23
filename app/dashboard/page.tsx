@@ -752,6 +752,15 @@ function TourismPressure({
     }
   }, [ilha, rows]);
 
+  const ordered =
+    ilha === "Todas"
+      ? [
+        ...rows.filter((r) => r.ilha === "Maio"),
+        ...rows.filter((r) => r.ilha !== "Maio"),
+      ]
+      : filtered;
+
+
   return (
     <section className="space-y-4">
       <div>
@@ -779,7 +788,7 @@ function TourismPressure({
       </div>
 
       <DataTable
-        rows={filtered.map((r) => {
+        rows={ordered.map((r) => {
           const value = r.pressure_index;
 
           return {
@@ -792,9 +801,11 @@ function TourismPressure({
                 <PressurePill value={value} />
               </div>
             ),
+
           };
         })}
       />
+
 
     </section>
   );
@@ -937,8 +948,13 @@ function SeasonalityIndex({
       .then((res) => setRows(res.data || []));
   }, []);
 
-  const filtered =
-    ilha === "Todas" ? rows : rows.filter((r) => r.ilha === ilha);
+  const ordered =
+    ilha === "Todas"
+      ? [
+        ...rows.filter((r) => r.ilha === "Maio"),
+        ...rows.filter((r) => r.ilha !== "Maio"),
+      ]
+      : rows.filter((r) => r.ilha === ilha);
 
   useEffect(() => {
     if (ilha === "Todas") return;
@@ -980,7 +996,7 @@ function SeasonalityIndex({
 
       </div>
       <DataTable
-        rows={filtered.map((r) => {
+        rows={ordered.map((r) => {
           const value = r.seasonality_index;
 
           return {
@@ -993,10 +1009,10 @@ function SeasonalityIndex({
                 <SeasonalityPills value={value} />
               </div>
             ),
-
           };
         })}
       />
+
 
     </section>
   );
