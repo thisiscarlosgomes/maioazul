@@ -195,190 +195,206 @@ export default function TourismPage() {
 
 
   return (
-    <div className="max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-8 bg-background text-foreground">
-      {/* Header */}
-      {/* STICKY HEADER */}
-      <div className="sticky top-0 z-40 bg-background border-b border-border">
-        <div className=" pt-6 pb-6 space-y-4">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-8">
 
-          {/* Header */}
-          <div className="flex items-start justify-between gap-6">
-            <div className="space-y-2">
-              <h1 className="text-xl font-semibold">{t.title}</h1>
-              <p className="text-sm text-muted-foreground">{t.subtitle}</p>
+        {/* Header */}
+        {/* STICKY HEADER */}
+        <div className=" top-0 z-40 bg-background border-b border-border">
+          <div className=" pt-6 pb-6 space-y-4">
+
+            {/* Header */}
+            <div className="flex items-start justify-between gap-6">
+              <div className="space-y-2">
+                <h1 className="text-xl font-semibold">{t.title}</h1>
+                <p className="text-sm text-muted-foreground">{t.subtitle}</p>
+              </div>
+
+              <div className="flex items-center gap-3">
+
+                {ilha !== "Todas" && (
+                  <button
+                    onClick={() => setOpen(true)}
+                    aria-label="Leitura rápida"
+                    title="Leitura rápida"
+                    className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground transition"
+
+                  >
+                    <Sparkles className="h-4 w-4 text-amber-500 hover:text-amber-600" />
+                  </button>
+                )}
+                <ThemeToggle />
+              </div>
             </div>
 
+
+            {/* Filters */}
             <div className="flex items-center gap-3">
+              <Select value={ilha} onValueChange={setIlha}>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ISLANDS.map((i) => (
+                    <SelectItem key={i} value={i}>
+                      {i}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-              {ilha !== "Todas" && (
-                <button
-                  onClick={() => setOpen(true)}
-                  aria-label="Leitura rápida"
-                  title="Leitura rápida"
-                  className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground transition"
-
-                >
-                  <Sparkles className="h-4 w-4 text-amber-500 hover:text-amber-600" />
-                </button>
-              )}
-              <ThemeToggle />
+              <Select value={year} onValueChange={setYear}>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {YEARS.map((y) => (
+                    <SelectItem key={y} value={y}>
+                      {y}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+
           </div>
-
-
-          {/* Filters */}
-          <div className="flex items-center gap-3">
-            <Select value={ilha} onValueChange={setIlha}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {ISLANDS.map((i) => (
-                  <SelectItem key={i} value={i}>
-                    {i}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Select value={year} onValueChange={setYear}>
-              <SelectTrigger className="w-[120px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {YEARS.map((y) => (
-                  <SelectItem key={y} value={y}>
-                    {y}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
         </div>
-      </div>
 
 
 
-      {/* ALL ISLANDS VIEW */}
-      {ilha === "Todas" && (
-        <>
-          <HospedesDormidasStackedChart year={year} />
+        {/* ALL ISLANDS VIEW */}
+        {ilha === "Todas" && (
+          <>
+            <HospedesDormidasStackedChart year={year} />
 
 
-          <TourismPressure
-            ilha={ilha}
-            t={t}
-            onValue={(value) =>
-              setDerivedMetrics((m) => ({
-                ...m,
-                tourismPressure: value,
-              }))
-            }
-          />
-
-          <SeasonalityIndex
-            ilha={ilha}
-            t={t}
-            onValue={(value) =>
-              setDerivedMetrics((m) => ({
-                ...m,
-                seasonality: value,
-              }))
-            }
-          />
-        </>
-      )}
-
-
-
-      {/* SINGLE ISLAND VIEW */}
-      {ilha !== "Todas" && (
-
-
-        <>
-          {ilha === "Maio" && (
-            <MaioPopulationSnapshot
+            <TourismPressure
+              ilha={ilha}
               t={t}
-              onData={(data) =>
-                setPopulationData({
-                  population: data.total_population,
-                  populationShareNational: data.population_share_national,
-                })
+              onValue={(value) =>
+                setDerivedMetrics((m) => ({
+                  ...m,
+                  tourismPressure: value,
+                }))
               }
             />
-          )}
 
-
-          {/* Population snapshot · only Maio */}
-          {ilha !== "Todas" && (
-            <IslandPopulationSnapshot
+            <SeasonalityIndex
               ilha={ilha}
-              onData={(data) => setPopulationData(data)}
+              t={t}
+              onValue={(value) =>
+                setDerivedMetrics((m) => ({
+                  ...m,
+                  seasonality: value,
+                }))
+              }
             />
-          )}
+          </>
+        )}
 
 
 
-          {/* Governo local · apenas Maio */}
-          {ilha === "Maio" && <LocalGovernmentOverview t={t} />}
+        {/* SINGLE ISLAND VIEW */}
+        {ilha !== "Todas" && (
 
-          <TourismOverview
-            ilha={ilha}
-            t={t}
-            onData={(data) => setTourismOverviewData(data)}
-          />
 
-          <TourismPressure
-            ilha={ilha}
-            t={t}
-            onValue={(value) =>
-              setDerivedMetrics((m) => ({
-                ...m,
-                tourismPressure: value,
-              }))
-            }
-          />
+          <>
+            {ilha === "Maio" && (
+              <MaioPopulationSnapshot
+                t={t}
+                onData={(data) =>
+                  setPopulationData({
+                    population: data.total_population,
+                    populationShareNational: data.population_share_national,
+                  })
+                }
+              />
+            )}
 
-          <SeasonalityIndex
-            ilha={ilha}
-            t={t}
-            onValue={(value) =>
-              setDerivedMetrics((m) => ({
-                ...m,
-                seasonality: value,
-              }))
-            }
-          />
 
-          <CountryDependency ilha={ilha} t={t} />
-          {ilha !== "Todas" && (
-            <TldrDrawer
-              open={open}
-              onOpenChange={setOpen}
-              title="Estado atual da ilha"
-              sections={sections}
-              globalVerdict={globalVerdict}
+            {/* Population snapshot · only Maio */}
+            {ilha !== "Todas" && (
+              <IslandPopulationSnapshot
+                ilha={ilha}
+                onData={(data) => setPopulationData(data)}
+              />
+            )}
+
+
+
+            {/* Governo local · apenas Maio */}
+            {ilha === "Maio" && <LocalGovernmentOverview t={t} />}
+
+            <TourismOverview
+              ilha={ilha}
+              t={t}
+              onData={(data) => setTourismOverviewData(data)}
             />
-          )}
+
+            <TourismPressure
+              ilha={ilha}
+              t={t}
+              onValue={(value) =>
+                setDerivedMetrics((m) => ({
+                  ...m,
+                  tourismPressure: value,
+                }))
+              }
+            />
+
+            <SeasonalityIndex
+              ilha={ilha}
+              t={t}
+              onValue={(value) =>
+                setDerivedMetrics((m) => ({
+                  ...m,
+                  seasonality: value,
+                }))
+              }
+            />
+
+            <CountryDependency ilha={ilha} t={t} />
+            {ilha !== "Todas" && (
+              <TldrDrawer
+                open={open}
+                onOpenChange={setOpen}
+                title="Estado atual da ilha"
+                sections={sections}
+                globalVerdict={globalVerdict}
+              />
+            )}
 
 
 
 
 
-          {/* Estrutura social · apenas Maio */}
-          {/* {ilha === "Maio" && <MaioCoreMetrics t={t} />} */}
-        </>
-      )}
-      <div className="text-xs text-muted-foreground">
+            {/* Estrutura social · apenas Maio */}
+            {/* {ilha === "Maio" && <MaioCoreMetrics t={t} />} */}
+          </>
+        )}
+        <div className="text-xs text-muted-foreground">
 
-        Dados: portaltransparencia.gov.cv · INE Cabo Verde<br />
-        Versão 1.0  · maioazul.com
-      </div>
+          Dados: portaltransparencia.gov.cv · INE Cabo Verde<br />
+          Versão 1.0  · maioazul.com
+        </div>
 
-    </div>
+      </div> </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* =========================
