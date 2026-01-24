@@ -30,17 +30,34 @@ const chartConfig = {
   },
 }
 
+type Row = {
+  ilha: string
+  hospedes: number
+  dormidas: number
+}
+
 export function HospedesDormidasStackedChart({ year }: { year: string }) {
-  const [data, setData] = useState<
-    { ilha: string; hospedes: number; dormidas: number }[]
-  >([])
+  const [data, setData] = useState<Row[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/transparencia/turismo/overview")
+    setLoading(true)
+
+    const endpoint =
+      year === "2024"
+        ? "/api/transparencia/turismo/2024/baseline"
+        : `/api/transparencia/turismo/overview?year=${year}`
+
+    fetch(endpoint)
       .then((r) => r.json())
       .then((res) => {
-        const rows =
-          res.islands
+        const islands =
+          year === "2024"
+            ? res.islands // baseline shape
+            : res.islands // overview shape (same keys)
+
+        const rows: Row[] =
+          islands
             ?.filter((i: any) => i.ilha !== "Todas as ilhas")
             ?.map((i: any) => ({
               ilha: i.ilha,
@@ -48,43 +65,33 @@ export function HospedesDormidasStackedChart({ year }: { year: string }) {
               dormidas: i.dormidas,
             }))
             ?.sort(
-              (a: any, b: any) =>
+              (a: Row, b: Row) =>
                 b.hospedes + b.dormidas - (a.hospedes + a.dormidas)
-            ) || []
+            ) ?? []
 
         setData(rows)
+        setLoading(false)
       })
+      .catch(() => setLoading(false))
   }, [year])
 
-  if (!data.length) return null
+  if (loading || !data.length) return null
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Turismo por ilha</CardTitle>
         <CardDescription>
-          Hóspedes e dormidas (valores anuais)
+          Hóspedes e dormidas — valores anuais ({year})
         </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="h-[320px] w-full"
-        >
-          <BarChart
-            data={data}
-            layout="vertical"
-            accessibilityLayer
-          >
+        <ChartContainer config={chartConfig} className="h-[320px] w-full">
+          <BarChart data={data} layout="vertical" accessibilityLayer>
             <CartesianGrid horizontal={false} />
 
-            <XAxis
-              type="number"
-              tickLine={false}
-              axisLine={false}
-            />
-
+            <XAxis type="number" tickLine={false} axisLine={false} />
             <YAxis
               dataKey="ilha"
               type="category"
@@ -93,10 +100,7 @@ export function HospedesDormidasStackedChart({ year }: { year: string }) {
               width={90}
             />
 
-            <ChartTooltip
-              content={<ChartTooltipContent indicator="dot" />}
-            />
-
+            <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />
             <ChartLegend content={<ChartLegendContent />} />
 
             <Bar

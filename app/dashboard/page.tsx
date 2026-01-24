@@ -16,7 +16,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-
 import {
   Tooltip,
   TooltipContent,
@@ -24,518 +23,41 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { TourismAccommodationTable } from "@/components/TourismAccommodationTable";
-
-
-
-
 import { ThemeToggle } from "@/components/theme-toggle";
 import { dictionary, type Locale } from "@/lib/i18n";
-
 import { buildIslandTldr } from "@/lib/tldr";
 import { TldrDrawer } from "@/components/TldrDrawer";
 
-import { ChartSection } from "@/components/dashboard/ChartSection";
-import { TourismScaleChart } from "@/components/dashboard/TourismScaleChart";
-
 import { Sparkles } from "lucide-react";
 
+import { TourismAccommodationTable } from "@/components/TourismAccommodationTable";
+import { TourismStructuralBaseline } from "@/components/TourismStructuralBaseline";
+import { TourismIslandBaseline } from "@/components/TourismIslandBaseline";
+
 import { HospedesDormidasStackedChart } from "@/components/dashboard/HospedesDormidasStackedChart";
+import { ChartSection } from "@/components/dashboard/ChartSection";
+
+import { useTourismBaseline2024 } from "@/lib/hooks/useTourismBaseline2024";
 
 
 /* =========================
-   Utils
+   Constants & Utils
 ========================= */
+
+const ISLANDS = ["Todas", "Maio"];
+const YEARS = ["2025", "2024"];
 
 const formatNumber = (v: number) =>
   new Intl.NumberFormat("pt-PT").format(v);
 
-const formatRatio = (v: unknown) => {
-  if (typeof v !== "number" || Number.isNaN(v)) return "—";
-  return v.toFixed(2);
-};
+const formatRatio = (v: unknown) =>
+  typeof v === "number" && !Number.isNaN(v) ? v.toFixed(2) : "—";
 
 const formatCVE = (value: number) =>
-  new Intl.NumberFormat("pt-PT", {
-    maximumFractionDigits: 0,
-  }).format(value) + " CVE";
+  new Intl.NumberFormat("pt-PT", { maximumFractionDigits: 0 }).format(value) +
+  " CVE";
 
-// const ISLANDS = ["Todas", "Maio"];
-const ISLANDS = ["Todas", "Maio"];
 
-function IslandPopulationSnapshot({
-  ilha,
-  onData,
-}: {
-  ilha: string;
-  onData?: (data: {
-    population?: number;
-    populationShareNational?: number;
-  }) => void;
-}) {
-  useEffect(() => {
-    if (ilha === "Todas") return;
-
-    fetch(`/api/transparencia/turismo/population?year=2025`)
-      .then((r) => r.json())
-      .then((res) => {
-        const row = res.data?.find(
-          (r: any) => r.ilha.toLowerCase() === ilha.toLowerCase()
-        );
-
-        if (!row) return;
-
-        onData?.({
-          population: row.population,
-          populationShareNational: row.population_share_national,
-        });
-      });
-  }, [ilha, onData]);
-
-  return null;
-}
-
-
-/* =========================
-   Color helpers (NEW)
-========================= */
-
-const pressureClass = (v: number) =>
-  v < 1 ? "text-emerald-600"
-    : v < 3 ? "text-amber-600"
-      : "text-rose-600";
-
-const seasonalityClass = (v: number) =>
-  v < 1.5 ? "text-emerald-600"
-    : v < 3 ? "text-amber-600"
-      : "text-rose-600";
-
-const dependencyClass = (pct: number) =>
-  pct < 20 ? "text-emerald-600"
-    : pct < 40 ? "text-amber-600"
-      : "text-rose-600";
-
-
-function describeTourismPressure(v: number) {
-  if (v < 1) return "Turismo marginal face à população";
-  if (v < 5) return "Turismo presente mas integrado";
-  if (v < 15) return "Turismo domina o ritmo local";
-  return "Forte pressão turística";
-}
-
-
-function describeSeasonality(v: number) {
-  if (v < 1) return "Inverno mais ativo que o verão";
-  if (v < 3) return "Atividade distribuída ao longo do ano";
-  if (v < 8) return "Verão domina a atividade turística";
-  if (v < 20) return "Economia turística concentrada no verão";
-  return "Dependência extrema do verão";
-}
-
-const YEARS = ["2025"];
-
-
-function TourismHotelsTable({
-  highlightIsland,
-}: {
-  highlightIsland?: string;
-}) {
-  const [rows, setRows] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetch("/api/transparencia/turismo/hoteis")
-      .then((r) => r.json())
-      .then((res) => {
-        const data =
-          res.islands?.map((i: any) => ({
-            ilha: i.ilha,
-            estabelecimentos: formatNumber(i.totals.establishments),
-            trabalhadores: formatNumber(i.totals.staff),
-            trabalhadores_por_estabelecimento: i.totals.staff_per_establishment
-              ? i.totals.staff_per_establishment.toFixed(2)
-              : "—",
-            _highlight: i.ilha === highlightIsland,
-          })) || [];
-
-        setRows(data);
-      });
-  }, [highlightIsland]);
-
-  if (!rows.length) return null;
-
-  return (
-    <section className="space-y-3">
-      <div>
-        <h2 className="font-semibold">
-          Estrutura hoteleira por ilha
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Número de estabelecimentos e emprego direto no turismo
-        </p>
-      </div>
-
-      <div className="rounded-lg border border-border overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Ilha</TableHead>
-              <TableHead>Estabelecimentos</TableHead>
-              <TableHead>Trabalhadores</TableHead>
-              <TableHead>Trab. / Estab.</TableHead>
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {rows.map((r, i) => (
-              <TableRow
-                key={i}
-                className={
-                  r._highlight
-                    ? "bg-amber-500/10"
-                    : undefined
-                }
-              >
-                <TableCell className="font-medium">
-                  {r.ilha}
-                </TableCell>
-                <TableCell>{r.estabelecimentos}</TableCell>
-                <TableCell>{r.trabalhadores}</TableCell>
-                <TableCell>{r.trabalhadores_por_estabelecimento}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    </section>
-  );
-}
-
-
-
-
-/* =========================
-   Page
-========================= */
-
-export default function TourismPage() {
-
-  const [locale, setLocale] = useState<Locale>("pt");
-  const t = dictionary[locale];
-
-  const [ilha, setIlha] = useState("Maio");
-  const [year, setYear] = useState("2025");
-
-  const [open, setOpen] = useState(false);
-
-  const [populationData, setPopulationData] = useState<{
-    population?: number;
-    populationShareNational?: number;
-  }>({});
-
-
-  const [derivedMetrics, setDerivedMetrics] = useState<{
-    tourismPressure?: number;
-    seasonality?: number;
-  }>({});
-
-  const [tourismOverviewData, setTourismOverviewData] = useState<{
-    dormidas?: number;
-    hospedes?: number;
-    avgStay?: number;
-    dormidasShareNational?: number;
-    hospedesShareNational?: number;
-    domesticShare?: number;
-  }>({});
-
-
-
-  const tldr = useMemo(() => {
-    return buildIslandTldr({
-      population: populationData.population,
-      populationShareNational: populationData.populationShareNational,
-
-      tourismPressure: derivedMetrics.tourismPressure,
-      seasonality: derivedMetrics.seasonality,
-
-      dormidasShareNational: tourismOverviewData.dormidasShareNational,
-      hospedesShareNational: tourismOverviewData.hospedesShareNational,
-      avgStay: tourismOverviewData.avgStay,
-      domesticShare: tourismOverviewData.domesticShare,
-    });
-  }, [
-    populationData,
-    derivedMetrics,
-    tourismOverviewData,
-  ]);
-
-
-
-  const { sections, globalVerdict } = tldr;
-
-
-  return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      <div
-        className="absolute inset-0 z-0 bg-center bg-no-repeat opacity-[0.04] dark:opacity-[0.035]"
-        style={{
-          backgroundImage: "url('/maioazul.png')",
-          backgroundSize: "300px",
-        }}
-      />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-8">
-
-
-        {/* Header */}
-        {/* STICKY HEADER */}
-        <div className=" top-0 z-40 bg-background border-b border-border">
-          <div className=" pt-6 pb-6 space-y-4">
-
-            {/* Header */}
-            <div className="flex items-start justify-between gap-6">
-              <div className="space-y-2">
-                <h1 className="text-xl font-semibold">{t.title}</h1>
-                <p className="text-sm text-muted-foreground">{t.subtitle}</p>
-              </div>
-
-              <div className="flex items-center gap-3">
-
-                {ilha !== "Todas" && (
-                  <button
-                    onClick={() => setOpen(true)}
-                    aria-label="Leitura rápida"
-                    title="Leitura rápida"
-                    className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground transition"
-
-                  >
-                    <Sparkles className="h-4 w-4 text-amber-500 hover:text-amber-600" />
-                  </button>
-                )}
-                <ThemeToggle />
-              </div>
-            </div>
-
-
-            {/* Filters */}
-            <div className="flex items-center gap-3">
-              <Select value={ilha} onValueChange={setIlha}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ISLANDS.map((i) => (
-                    <SelectItem key={i} value={i}>
-                      {i}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={year} onValueChange={setYear}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {YEARS.map((y) => (
-                    <SelectItem key={y} value={y}>
-                      {y}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-          </div>
-        </div>
-
-
-
-        {/* ALL ISLANDS VIEW */}
-       {ilha === "Todas" && (
-  <>
-    <HospedesDormidasStackedChart year={year} />
-
-    <TourismHotelsTable />
-
-    <TourismPressure
-      ilha={ilha}
-      t={t}
-      onValue={(value) =>
-        setDerivedMetrics((m) => ({
-          ...m,
-          tourismPressure: value,
-        }))
-      }
-    />
-
-    <SeasonalityIndex
-      ilha={ilha}
-      t={t}
-      onValue={(value) =>
-        setDerivedMetrics((m) => ({
-          ...m,
-          seasonality: value,
-        }))
-      }
-    />
-  </>
-)}
-
-
-        {/* SINGLE ISLAND VIEW */}
-        {ilha !== "Todas" && (
-
-
-          <>
-            {ilha === "Maio" && (
-              <MaioPopulationSnapshot
-                t={t}
-                onData={(data) =>
-                  setPopulationData({
-                    population: data.total_population,
-                    populationShareNational: data.population_share_national,
-                  })
-                }
-              />
-            )}
-
-
-            {/* Population snapshot · only Maio */}
-            {ilha !== "Todas" && (
-              <IslandPopulationSnapshot
-                ilha={ilha}
-                onData={(data) => setPopulationData(data)}
-              />
-            )}
-
-
-
-            {/* Governo local · apenas Maio */}
-            {ilha === "Maio" && <LocalGovernmentOverview t={t} />}
-
-
-
-            <TourismOverview
-              ilha={ilha}
-              t={t}
-              onData={(data) => setTourismOverviewData(data)}
-            />
-
-            <TourismAccommodationTable ilha={ilha} />
-
-            <TourismPressure
-              ilha={ilha}
-              t={t}
-              onValue={(value) =>
-                setDerivedMetrics((m) => ({
-                  ...m,
-                  tourismPressure: value,
-                }))
-              }
-            />
-
-            <SeasonalityIndex
-              ilha={ilha}
-              t={t}
-              onValue={(value) =>
-                setDerivedMetrics((m) => ({
-                  ...m,
-                  seasonality: value,
-                }))
-              }
-            />
-
-            <CountryDependency ilha={ilha} t={t} />
-            {ilha !== "Todas" && (
-              <TldrDrawer
-                open={open}
-                onOpenChange={setOpen}
-                title="Estado atual da ilha"
-                sections={sections}
-                globalVerdict={globalVerdict}
-              />
-            )}
-
-
-
-
-
-            {/* Estrutura social · apenas Maio */}
-            {/* {ilha === "Maio" && <MaioCoreMetrics t={t} />} */}
-          </>
-        )}
-        <div className="text-xs text-muted-foreground">
-
-          Dados: portaltransparencia.gov.cv · INE Cabo Verde<br />
-          Versão 1.0  · maioazul.com
-        </div>
-
-      </div> </div>
-  );
-}
-
-/* =========================
-   Maio · Population Snapshot (TOP KPIs)
-========================= */
-
-
-function HospedesRankingChart({ year }: { year: string }) {
-  const [rows, setRows] = useState<
-    { ilha: string; hospedes: number }[]
-  >([]);
-
-  useEffect(() => {
-    fetch(`/api/transparencia/turismo/overview?year=${year}`)
-      .then((r) => r.json())
-      .then((res) => {
-        const data =
-          res.islands
-            ?.filter((r: any) => r.ilha !== "Todas as ilhas")
-            ?.map((r: any) => ({
-              ilha: r.ilha,
-              hospedes: r.hospedes,
-            }))
-            ?.sort((a: any, b: any) => b.hospedes - a.hospedes) || [];
-
-        setRows(data);
-      });
-  }, [year]);
-
-  if (!rows.length) return null;
-
-  const max = Math.max(...rows.map((r) => r.hospedes));
-
-  return (
-    <ChartSection
-      title="Ranking nacional por número de hóspedes"
-      description="Total anual de hóspedes por ilha"
-    >
-      <div className="space-y-3">
-        {rows.map((r) => {
-          const width = (r.hospedes / max) * 100;
-
-          return (
-            <div key={r.ilha} className="space-y-1">
-              <div className="flex justify-between text-sm">
-                <span>{r.ilha}</span>
-                <span className="text-muted-foreground">
-                  {formatNumber(r.hospedes)}
-                </span>
-              </div>
-
-              <div className="h-2 rounded-full bg-muted overflow-hidden">
-                <div
-                  className="h-full bg-amber-500"
-                  style={{ width: `${width}%` }}
-                />
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </ChartSection>
-  );
-}
 
 
 function MaioPopulationSnapshot({
@@ -619,9 +141,7 @@ function MaioPopulationSnapshot({
   );
 }
 
-/* =========================
-   Governo Local
-========================= */
+
 
 function LocalGovernmentOverview({ t }: { t: any }) {
   const [data, setData] = useState<any[]>([]);
@@ -678,9 +198,178 @@ function LocalGovernmentOverview({ t }: { t: any }) {
   );
 }
 
-/* =========================
-   Turismo · Visão Geral
-========================= */
+
+
+
+
+
+function CountryDependency({
+  ilha,
+  year,
+  t,
+}: {
+  ilha: string;
+  year: string;
+  t: any;
+}) {
+
+  const [rows, setRows] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (ilha === "Todas") return;
+
+    fetch(
+      `/api/transparencia/turismo/dependency?ilha=${ilha}&year=${year}`
+    )
+      .then((r) => r.json())
+      .then((res) => {
+        const d = res.data?.[0]?.countries || [];
+        setRows(
+          d
+            .sort((a: any, b: any) => b.share - a.share)
+            .map((c: any) => ({
+              país: c.pais,
+              hóspedes: formatNumber(c.hospedes),
+              percentagem: `${(c.share * 100).toFixed(1)}%`,
+            }))
+        );
+      });
+  }, [ilha, year]);
+
+  return (
+    <section className="space-y-4">
+      <div>
+        <h2 className="font-semibold">{t.dependency}</h2>
+      </div>
+
+      {ilha === "Todas" ? (
+        <p className="text-sm text-muted-foreground">
+          Selecione uma ilha para ver o detalhe por país.
+        </p>
+      ) : (
+        <DataTable rows={rows} />
+      )}
+    </section>
+  );
+}
+
+
+function TourismHotelsTable({
+  highlightIsland,
+}: {
+  highlightIsland?: string;
+}) {
+  const [rows, setRows] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/transparencia/turismo/hoteis")
+      .then((r) => r.json())
+      .then((res) => {
+        const data =
+          res.islands?.map((i: any) => ({
+            ilha: i.ilha,
+            estabelecimentos: formatNumber(i.totals.establishments),
+            trabalhadores: formatNumber(i.totals.staff),
+            trabalhadores_por_estabelecimento: i.totals.staff_per_establishment
+              ? i.totals.staff_per_establishment.toFixed(2)
+              : "—",
+            _highlight: i.ilha === highlightIsland,
+          })) || [];
+
+        setRows(data);
+      });
+  }, [highlightIsland]);
+
+  if (!rows.length) return null;
+
+  return (
+    <section className="space-y-3">
+      <div>
+        <h2 className="font-semibold">
+          Estrutura hoteleira por ilha
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          Número de estabelecimentos e emprego direto no turismo
+        </p>
+      </div>
+
+      <div className="rounded-lg border border-border overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Ilha</TableHead>
+              <TableHead>Estabelecimentos</TableHead>
+              <TableHead>Trabalhadores</TableHead>
+              <TableHead>Trab. / Estab.</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {rows.map((r, i) => (
+              <TableRow
+                key={i}
+                className={
+                  r._highlight
+                    ? "bg-amber-500/10"
+                    : undefined
+                }
+              >
+                <TableCell className="font-medium">
+                  {r.ilha}
+                </TableCell>
+                <TableCell>{r.estabelecimentos}</TableCell>
+                <TableCell>{r.trabalhadores}</TableCell>
+                <TableCell>{r.trabalhadores_por_estabelecimento}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </section>
+  );
+}
+
+
+function Kpi({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border border-border bg-card p-4">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div className="mt-1 text-xl font-semibold">{value}</div>
+    </div>
+  );
+}
+
+function IslandPopulationSnapshot({
+  ilha,
+  onData,
+}: {
+  ilha: string;
+  onData?: (data: {
+    population?: number;
+    populationShareNational?: number;
+  }) => void;
+}) {
+  useEffect(() => {
+    if (ilha === "Todas") return;
+
+    fetch(`/api/transparencia/turismo/population?year=2025`)
+      .then((r) => r.json())
+      .then((res) => {
+        const row = res.data?.find(
+          (r: any) => r.ilha.toLowerCase() === ilha.toLowerCase()
+        );
+
+        if (!row) return;
+
+        onData?.({
+          population: row.population,
+          populationShareNational: row.population_share_national,
+        });
+      });
+  }, [ilha, onData]);
+
+  return null;
+}
 
 function TourismOverview({
   ilha,
@@ -752,22 +441,7 @@ function TourismOverview({
   );
 }
 
-/* =========================
-   KPI
-========================= */
 
-function Kpi({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="rounded-lg border border-border bg-card p-4">
-      <div className="text-xs text-muted-foreground">{label}</div>
-      <div className="mt-1 text-xl font-semibold">{value}</div>
-    </div>
-  );
-}
-
-/* =========================
-   Pressão Turística
-========================= */
 
 function getPressureBand(value: number) {
   if (value < 1)
@@ -802,7 +476,6 @@ function PressurePill({ value }: { value: number }) {
     </span>
   );
 }
-
 
 function TourismPressure({
   ilha,
@@ -903,43 +576,6 @@ function TourismPressure({
   );
 }
 
-/* =========================
-   Sazonalidade
-========================= */
-
-function getSeasonalityBand(value: number) {
-  if (value < 1)
-    return {
-      label: "Inverno dominante",
-      className: "bg-blue-500/10 text-blue-700 dark:text-blue-400",
-    };
-
-  if (value < 3)
-    return {
-      label: "Baixa",
-      className: "bg-muted text-foreground",
-    };
-
-  if (value < 8)
-    return {
-      label: "elevada",
-      className: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
-    };
-
-  if (value < 20)
-    return {
-      label: "verão dominante",
-      className: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
-    };
-
-  return {
-    label: "extrema",
-    className: "bg-red-500/10 text-red-700 dark:text-red-400",
-  };
-}
-
-
-
 
 function getSeasonDominance(value: number) {
   if (value < 0.85)
@@ -978,8 +614,6 @@ function getSeasonalityBalance(value: number) {
     className: "bg-red-500/10 text-red-700 dark:text-red-400",
   };
 }
-
-
 function SeasonalityPills({ value }: { value: number }) {
   const dominance = getSeasonDominance(value);
   const balance = getSeasonalityBalance(value);
@@ -1003,22 +637,6 @@ function SeasonalityPills({ value }: { value: number }) {
   );
 }
 
-
-
-
-
-function SeasonalityPill({ value }: { value: number }) {
-  const band = getSeasonalityBand(value);
-
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${band.className}`}
-      title="Dormidas Q3 ÷ Dormidas Q1"
-    >
-      {band.label}
-    </span>
-  );
-}
 
 
 function SeasonalityIndex({
@@ -1110,117 +728,337 @@ function SeasonalityIndex({
   );
 }
 
+
+
+
+
+
+
+
+
+
+
+
 /* =========================
-   Dependência por País
+   Page
 ========================= */
 
-function CountryDependency({ ilha, t }: { ilha: string; t: any }) {
-  const [rows, setRows] = useState<any[]>([]);
+export default function TourismPage() {
+  const [locale] = useState<Locale>("pt");
+  const t = dictionary[locale];
 
-  useEffect(() => {
-    if (ilha === "Todas") return;
+  const [ilha, setIlha] = useState("Maio");
+  const [year, setYear] = useState("2025");
+  const [open, setOpen] = useState(false);
 
-    fetch(`/api/transparencia/turismo/dependency?ilha=${ilha}`)
-      .then((r) => r.json())
-      .then((res) => {
-        const d = res.data?.[0]?.countries || [];
-        setRows(
-          d
-            .sort((a: any, b: any) => b.share - a.share)
-            .map((c: any) => ({
-              país: c.pais,
-              hóspedes: formatNumber(c.hospedes),
-              percentagem: `${(c.share * 100).toFixed(1)}%`,
-            }))
-        );
-      });
-  }, [ilha]);
+  const [populationData, setPopulationData] = useState<any>({});
+  const [derivedMetrics, setDerivedMetrics] = useState<any>({});
+  const [tourismOverviewData, setTourismOverviewData] = useState<any>({});
+
+  const tldr = useMemo(
+    () =>
+      buildIslandTldr({
+        population: populationData.population,
+        populationShareNational: populationData.populationShareNational,
+        tourismPressure: derivedMetrics.tourismPressure,
+        seasonality: derivedMetrics.seasonality,
+        dormidasShareNational: tourismOverviewData.dormidasShareNational,
+        hospedesShareNational: tourismOverviewData.hospedesShareNational,
+        avgStay: tourismOverviewData.avgStay,
+        domesticShare: tourismOverviewData.domesticShare,
+      }),
+    [populationData, derivedMetrics, tourismOverviewData]
+  );
+
+  const { sections, globalVerdict } = tldr;
+
+  const { data: baseline2024, loading: baselineLoading } =
+    useTourismBaseline2024();
+
+
+  const islandsByHospedes =
+    baseline2024?.islands
+      ?.slice()
+      .sort((a: any, b: any) => b.hospedes - a.hospedes) ?? []
+
+  const topIsland = islandsByHospedes[0]
+  const bottomIsland = islandsByHospedes[islandsByHospedes.length - 1]
+
+
 
   return (
-    <section className="space-y-4">
-      <div>
-        <h2 className="font-semibold">{t.dependency}</h2>
-      </div>
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Watermark */}
+      <div
+        className="absolute inset-0 z-0 bg-center bg-no-repeat opacity-[0.04] dark:opacity-[0.035]"
+        style={{
+          backgroundImage: "url('/maioazul.png')",
+          backgroundSize: "300px",
+        }}
+      />
 
-      {ilha === "Todas" ? (
-        <p className="text-sm text-muted-foreground">
-          Selecione uma ilha para ver o detalhe por país.
-        </p>
-      ) : (
-        <DataTable rows={rows} />
-      )}
-    </section>
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-8">
+        {/* Header */}
+        <div className="border-b border-border">
+          <div className="pt-6 pb-6 space-y-4">
+            <div className="flex items-start justify-between gap-6">
+              <div>
+                <h1 className="text-xl font-semibold">{t.title}</h1>
+                <p className="text-sm text-muted-foreground">{t.subtitle}</p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {ilha !== "Todas" && year === "2025" && (
+                  <button
+                    onClick={() => setOpen(true)}
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border"
+                  >
+                    <Sparkles className="h-4 w-4 text-amber-500" />
+                  </button>
+                )}
+                <ThemeToggle />
+              </div>
+            </div>
+
+            {/* Filters */}
+            <div className="flex items-center gap-3">
+              <Select value={ilha} onValueChange={setIlha}>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ISLANDS.map((i) => (
+                    <SelectItem key={i} value={i}>
+                      {i}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select value={year} onValueChange={setYear}>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {YEARS.map((y) => (
+                    <SelectItem key={y} value={y}>
+                      {y}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+
+        {/* =========================
+            YEAR = 2024 · BASELINE
+        ========================= */}
+
+        {ilha === "Maio" && (
+          <MaioPopulationSnapshot
+            t={t}
+            onData={(data) =>
+              setPopulationData({
+                population: data.total_population,
+                populationShareNational: data.population_share_national,
+              })
+            }
+          />
+        )}
+
+
+
+        {year === "2024" && (
+          <>
+            {ilha === "Todas" && (
+              <HospedesDormidasStackedChart year={year} />
+            )}
+
+            {ilha !== "Todas" && (
+              <TourismIslandBaseline ilha={ilha} />
+            )}
+
+
+
+
+
+
+          </>
+        )}
+
+
+        {year === "2024" && ilha === "Todas" && baseline2024 && (
+          <>
+
+
+            {/* ISLAND COMPARISON */}
+            <section className="space-y-4">
+              <h2 className="font-semibold">Distribuição por ilha (2024)</h2>
+              <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Kpi
+                  label="Hóspedes (2024)"
+                  value={formatNumber(baseline2024.national.hospedes)}
+                />
+                <Kpi
+                  label="Dormidas (2024)"
+                  value={formatNumber(baseline2024.national.dormidas)}
+                />
+
+                {topIsland && (
+                  <Kpi
+                    label="Ilha líder em hóspedes"
+                    value={`${topIsland.ilha} · ${formatNumber(topIsland.hospedes)}`}
+                  />
+                )}
+
+                {bottomIsland && (
+                  <Kpi
+                    label="Menor volume de hóspedes"
+                    value={`${bottomIsland.ilha} · ${formatNumber(bottomIsland.hospedes)}`}
+                  />
+                )}
+              </section>
+
+              <DataTable
+                rows={baseline2024.islands
+                  .sort((a: any, b: any) => b.dormidas - a.dormidas)
+                  .map((i: any) => ({
+                    ilha: i.ilha,
+                    hóspedes: formatNumber(i.hospedes),
+                    dormidas: formatNumber(i.dormidas),
+                    estadia_média: i.avg_stay.toFixed(2),
+                  }))}
+              />
+            </section>
+
+            <TourismStructuralBaseline />
+
+
+          </>
+        )}
+
+
+
+
+
+        {/* =========================
+            YEAR = 2025 · LIVE
+        ========================= */}
+        {year === "2025" && (
+          <>
+
+            {/* Governo local · apenas Maio */}
+            {ilha === "Maio" && <LocalGovernmentOverview t={t} />}
+            {ilha === "Todas" && (
+              <>
+                <HospedesDormidasStackedChart year={year} />
+                <TourismHotelsTable />
+
+                <TourismPressure
+                  ilha={ilha}
+                  t={t}
+                  onValue={(value) =>
+                    setDerivedMetrics((m: any) => ({
+                      ...m,
+                      tourismPressure: value,
+                    }))
+                  }
+                />
+
+
+                        <SeasonalityIndex
+                            ilha={ilha}
+                            t={t}
+                            onValue={(value) =>
+                                setDerivedMetrics((m:any) => ({
+                                    ...m,
+                                    seasonality: value,
+                                }))
+                            }
+                        />
+
+
+              </>
+            )}
+
+            {ilha !== "Todas" && (
+              <>
+                <IslandPopulationSnapshot
+                  ilha={ilha}
+                  onData={setPopulationData}
+                />
+
+                <TourismOverview
+                  ilha={ilha}
+                  t={t}
+                  onData={setTourismOverviewData}
+                />
+
+                <TourismAccommodationTable ilha={ilha} />
+                {/* <TourismStructuralBaseline /> */}
+
+                <TourismPressure
+                  ilha={ilha}
+                  t={t}
+                  onValue={(v) =>
+                    setDerivedMetrics((m: any) => ({
+                      ...m,
+                      tourismPressure: v,
+                    }))
+                  }
+                />
+
+                <SeasonalityIndex
+                  ilha={ilha}
+                  t={t}
+                  onValue={(v) =>
+                    setDerivedMetrics((m: any) => ({
+                      ...m,
+                      seasonality: v,
+                    }))
+                  }
+                />
+
+                <CountryDependency ilha={ilha} year={year} t={t} />
+
+                <TldrDrawer
+                  open={open}
+                  onOpenChange={setOpen}
+                  title="Estado atual da ilha"
+                  sections={sections}
+                  globalVerdict={globalVerdict}
+                />
+              </>
+            )}
+          </>
+        )}
+
+        {/* Footer */}
+        <div className="text-xs text-muted-foreground">
+          Dados: portaltransparencia.gov.cv · INE Cabo Verde
+          <br />
+          Versão 1.0 · maioazul.com
+        </div>
+      </div>
+    </div>
   );
 }
 
 /* =========================
-   Maio · Indicadores Estruturais
+   Baseline Context Note
 ========================= */
 
-function MaioCoreMetrics({ t }: { t: any }) {
-  const [rows, setRows] = useState<any[]>([]);
-
-  const METRICS = t.maioCoreMetrics.metrics as Record<
-    string,
-    {
-      label: string;
-      description: string;
-      format: "number" | "percent";
-      order: number;
-    }
-  >;
-
-  useEffect(() => {
-    fetch("/api/transparencia/municipal/maio/core-metrics?year=2025")
-      .then((r) => r.json())
-      .then((res) => {
-        const out: any[] = [];
-
-        (res.data || []).forEach((r: any) => {
-          if (METRICS[r.metric] && r.breakdown === null) {
-            out.push({ key: r.metric, value: r.value });
-          }
-        });
-
-        setRows(
-          out
-            .map(({ key, value }) => {
-              const meta = METRICS[key];
-              return {
-                indicador: meta.label,
-                valor:
-                  meta.format === "percent"
-                    ? `${value}%`
-                    : formatNumber(value),
-                descrição: meta.description,
-                _order: meta.order,
-              };
-            })
-            .sort((a, b) => a._order - b._order)
-            .map(({ _order, ...r }) => r)
-        );
-      });
-  }, [METRICS]);
-
-  if (!rows.length) return null;
-
+function BaselineNote() {
   return (
-    <section className="space-y-4">
-      <div>
-        <h2 className="font-semibold">
-          {t.maioCoreMetrics.title}
-        </h2>
-
-      </div>
-
-      <DataTable rows={rows} />
-    </section>
+    <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm">
+      <strong>Nota metodológica:</strong> Os dados de 2024 representam uma
+      fotografia estrutural anual. Indicadores de pressão turística,
+      sazonalidade e impacto populacional requerem séries temporais completas e
+      estão disponíveis a partir de 2025.
+    </div>
   );
 }
-
-/* =========================
-   Shared Table
-========================= */
 
 function DataTable({ rows }: { rows: any[] }) {
   if (!rows.length) {
