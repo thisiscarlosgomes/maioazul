@@ -21,7 +21,7 @@ export function TourismStructuralBaseline() {
     <section className="space-y-4">
       <div>
         <h2 className="font-semibold">
-          Estrutura turística · 2024
+          Estrutura turística (2024)
         </h2>
         <p className="text-sm text-muted-foreground">
           Composição das dormidas por tipo de alojamento (INE)

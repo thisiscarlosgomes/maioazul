@@ -10,7 +10,7 @@ const copy = {
     comingSoon: "Launching soon",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
-    dashboard: "Maio in Numbers",
+    dashboard: "Maio Data Dashboard",
   },
 
   pt: {
@@ -20,7 +20,7 @@ const copy = {
     comingSoon: "Lançamento em breve",
     launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
-    dashboard: "Maio em Numeros",
+    dashboard: "Maio Data Dashboard",
   },
 };
 

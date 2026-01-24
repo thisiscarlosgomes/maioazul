@@ -44,7 +44,7 @@ import { useTourismBaseline2024 } from "@/lib/hooks/useTourismBaseline2024";
    Constants & Utils
 ========================= */
 
-const ISLANDS = ["Todas", "Maio"];
+const ISLANDS = ["Todas", "Maio", "Sal","Boa Vista", "Santiago"];
 const YEARS = ["2025", "2024"];
 
 const formatNumber = (v: number) =>
@@ -558,6 +558,7 @@ function TourismPressure({
 
           return {
             ilha: r.ilha,
+            hospedes: formatNumber(r.hospedes),
             dormidas: formatNumber(r.dormidas),
             população: formatNumber(r.population),
             índice_pressão: (
@@ -784,6 +785,17 @@ export default function TourismPage() {
   const topIsland = islandsByHospedes[0]
   const bottomIsland = islandsByHospedes[islandsByHospedes.length - 1]
 
+  const totalHospedes = baseline2024?.national?.hospedes ?? 0;
+
+  const topIslandShare =
+    topIsland && totalHospedes > 0
+      ? (topIsland.hospedes / totalHospedes) * 100
+      : null;
+
+  const bottomIslandShare =
+    bottomIsland && totalHospedes > 0
+      ? (bottomIsland.hospedes / totalHospedes) * 100
+      : null;
 
 
   return (
@@ -897,27 +909,28 @@ export default function TourismPage() {
               <h2 className="font-semibold">Distribuição por ilha (2024)</h2>
               <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <Kpi
-                  label="Hóspedes (2024)"
+                  label="Hóspedes"
                   value={formatNumber(baseline2024.national.hospedes)}
                 />
                 <Kpi
-                  label="Dormidas (2024)"
+                  label="Dormidas"
                   value={formatNumber(baseline2024.national.dormidas)}
                 />
 
-                {topIsland && (
+                {topIsland && topIslandShare != null && (
                   <Kpi
                     label="Ilha líder em hóspedes"
-                    value={`${topIsland.ilha} · ${formatNumber(topIsland.hospedes)}`}
+                    value={`${topIsland.ilha} · ${topIslandShare.toFixed(1)}%`}
                   />
                 )}
 
-                {bottomIsland && (
+                {bottomIsland && bottomIslandShare != null && (
                   <Kpi
                     label="Menor volume de hóspedes"
-                    value={`${bottomIsland.ilha} · ${formatNumber(bottomIsland.hospedes)}`}
+                    value={`${bottomIsland.ilha} · ${bottomIslandShare.toFixed(2)}%`}
                   />
                 )}
+
               </section>
 
               <DataTable
@@ -952,9 +965,9 @@ export default function TourismPage() {
             {ilha === "Maio" && <LocalGovernmentOverview t={t} />}
             {ilha === "Todas" && (
               <>
-                <HospedesDormidasStackedChart year={year} />
-                <TourismHotelsTable />
 
+
+                <HospedesDormidasStackedChart year={year} />
                 <TourismPressure
                   ilha={ilha}
                   t={t}
@@ -965,18 +978,21 @@ export default function TourismPage() {
                     }))
                   }
                 />
+                <TourismHotelsTable />
 
 
-                        <SeasonalityIndex
-                            ilha={ilha}
-                            t={t}
-                            onValue={(value) =>
-                                setDerivedMetrics((m:any) => ({
-                                    ...m,
-                                    seasonality: value,
-                                }))
-                            }
-                        />
+
+
+                <SeasonalityIndex
+                  ilha={ilha}
+                  t={t}
+                  onValue={(value) =>
+                    setDerivedMetrics((m: any) => ({
+                      ...m,
+                      seasonality: value,
+                    }))
+                  }
+                />
 
 
               </>
@@ -1038,7 +1054,7 @@ export default function TourismPage() {
         <div className="text-xs text-muted-foreground">
           Dados: portaltransparencia.gov.cv · INE Cabo Verde
           <br />
-          Versão 1.0 · maioazul.com
+          Versão 1.0 · desenvolvimento maioazul.com
         </div>
       </div>
     </div>
@@ -1064,7 +1080,7 @@ function DataTable({ rows }: { rows: any[] }) {
   if (!rows.length) {
     return (
       <div className="text-sm text-muted-foreground">
-        Sem dados
+        loading...
       </div>
     );
   }
