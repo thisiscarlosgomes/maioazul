@@ -52,7 +52,7 @@ function InsightCard({
 
       <div
         className={[
-          "space-y-1 text-sm leading-relaxed",
+          "space-y-1 text-sm leading-normal",
           strong ? "font-medium" : "",
         ].join(" ")}
       >
@@ -115,18 +115,20 @@ export function TldrDrawer({
                   {/* Main narrative */}
                   <InsightCard label={section.title} grade={section.grade}>
                     {section.bullets.map((text, i) => (
-                      <p key={i}>{text}</p>
+                      <p className="mb-0 pb-0"key={i}>{text}</p>
                     ))}
+                    <br/>
+                    <i>✨ {section.verdict}</i>
                   </InsightCard>
 
                   {/* Verdict */}
-                  <InsightCard
-                    label="Em resumo"
+                  {/* <InsightCard
+                    label=""
                     strong
                     grade={section.grade}
                   >
                     <p>{section.verdict}</p>
-                  </InsightCard>
+                  </InsightCard> */}
                 </div>
               ))}
 

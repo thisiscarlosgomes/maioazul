@@ -10,7 +10,7 @@ const copy = {
     comingSoon: "Launching soon",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
-    dashboard: "Maio Data Dashboard",
+    dashboard: "Portal de Dados do Maio",
   },
 
   pt: {
