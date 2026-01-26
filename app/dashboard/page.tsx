@@ -44,7 +44,7 @@ import { useTourismBaseline2024 } from "@/lib/hooks/useTourismBaseline2024";
    Constants & Utils
 ========================= */
 
-const ISLANDS = ["Todas", "Maio", "Sal","Boa Vista", "Santiago"];
+const ISLANDS = ["Todas", "Maio"];
 const YEARS = ["2025", "2024"];
 
 const formatNumber = (v: number) =>

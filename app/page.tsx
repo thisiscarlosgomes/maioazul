@@ -16,7 +16,7 @@ const copy = {
   pt: {
     title: "Maio, no seu próprio ritmo",
     description:
-      "A Ilha do Maio sempre viveu no seu próprio ritmo, moldado pela autenticidade humana, o território e o tempo. A Maioazul nasce dessa essência: dar visibilidade a esse ritmo, apoiar iniciativas locais e afirmar um futuro alinhado com a identidade da ilha, sem a descaracterizar.",
+      "A Ilha do Maio sempre viveu no seu próprio ritmo, moldado pela autenticidade humana, o território e a sua história. A Maioazul nasce dessa essência: dar visibilidade a esse ritmo, apoiar iniciativas locais e afirmar um futuro alinhado com a identidade da ilha, sem a descaracterizar.",
     comingSoon: "Lançamento em breve",
     launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
@@ -64,11 +64,10 @@ export default function Home() {
               <button
                 key={l}
                 onClick={() => setLang(l)}
-                className={`cursor-pointer p-0.5 uppercase transition ${
-                  lang === l
+                className={`cursor-pointer p-0.5 uppercase transition ${lang === l
                     ? "text-white underline underline-offset-4"
                     : "text-white/60 hover:text-white"
-                }`}
+                  }`}
               >
                 {l}
               </button>
@@ -86,11 +85,11 @@ export default function Home() {
             {t.description}
           </p>
 
-          {/* <div className="pt-4">
+          <div className="pt-4">
             <span className="border border-white/40 px-8 py-4 rounded-full text-white/70 cursor-default text-center inline-block">
               {t.comingSoon}
             </span>
-          </div> */}
+          </div>
         </section>
 
         {/* Footer */}
