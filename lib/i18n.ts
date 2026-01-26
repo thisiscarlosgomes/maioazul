@@ -13,7 +13,7 @@ export const dictionary = {
         localGovernmentDesc:
             "Transferências do Estado para o município do Maio.",
 
-        tourismOverview: "Turismo · Visão Geral",
+        tourismOverview: "Turismo · Visão Geral (Q3)",
 
         tourismPressure: "Índice de Pressão Turística",
         tourismPressureDesc:
