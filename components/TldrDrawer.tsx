@@ -103,7 +103,7 @@ export function TldrDrawer({
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto px-5 pt-5 pb-6 space-y-6">
+            <div className="flex-1 overflow-y-auto scrollbar-hide px-5 pt-5 pb-6 space-y-6">
               {sections.length === 0 && (
                 <p className="text-sm text-muted-foreground">
                   Dados insuficientes para gerar leitura rápida.
