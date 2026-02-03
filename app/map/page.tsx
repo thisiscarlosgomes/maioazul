@@ -88,7 +88,7 @@ export default function MapPage() {
     const copy = useMemo(
         () => ({
             pt: {
-                title: "Mapa Territorial do Maio",
+                title: "Maio Guia",
                 explore: "Explore o Maio",
                 prev: "Anterior",
                 next: "Próximo",
@@ -119,7 +119,7 @@ export default function MapPage() {
                 clearSearch: "Limpar pesquisa",
             },
             en: {
-                title: "Maio Territorial Map",
+                title: "Maio Guia",
                 explore: "Explore Maio",
                 prev: "Previous",
                 next: "Next",
@@ -143,7 +143,7 @@ export default function MapPage() {
                 weather: "Weather",
                 waves: "Waves",
                 sea: "Sea",
-                airQuality: "Air quality",
+                airQuality: "Air",
                 climate: "Weather",
                 beach: "Beach",
                 protectedArea: "Protected area",
@@ -1331,7 +1331,7 @@ export default function MapPage() {
                     </div>
 
                     <div
-                        className={`order-1 h-[38vh] sm:h-[44vh] lg:h-[48vh] ${isFullscreen ? "fixed inset-0 z-[80] h-auto bg-background" : ""
+                        className={`order-1 h-[48vh] sm:h-[54vh] lg:h-[58vh] ${isFullscreen ? "fixed inset-0 z-[80] h-auto bg-background" : ""
                             }`}
                     >
                         <div
@@ -1520,7 +1520,7 @@ export default function MapPage() {
                                 </Drawer.Portal>
                             </Drawer.Root>
 
-                            <div className="absolute top-3 right-3 z-30 flex flex-col gap-2">
+                            <div className="absolute top-3 right-3 z-30 flex flex-col gap-1">
                                 <button
                                     type="button"
                                     aria-label={
@@ -1551,7 +1551,7 @@ export default function MapPage() {
                                 >
                                     <Minus className="h-4 w-4" />
                                 </button>
-                                <button
+                                {/* <button
                                     type="button"
                                     aria-label={copy[lang].resetView}
                                     onClick={() =>
@@ -1566,7 +1566,7 @@ export default function MapPage() {
                                     className="h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center"
                                 >
                                     <RotateCcw className="h-4 w-4" />
-                                </button>
+                                </button> */}
                                 <button
                                     type="button"
                                     aria-label={copy[lang].weather}
@@ -1579,14 +1579,14 @@ export default function MapPage() {
                                         <Cloud className="h-4 w-4" />
                                     )}
                                 </button>
-                                <button
+                                {/* <button
                                     type="button"
                                     aria-label={lang === "pt" ? "A minha localização" : "My location"}
                                     onClick={requestUserLocation}
                                     className="h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center"
                                 >
                                     <LocateFixed className="h-4 w-4" />
-                                </button>
+                                </button> */}
                             </div>
 
                             {/* NEW: Settlement info panel */}
@@ -1646,7 +1646,7 @@ export default function MapPage() {
                                     {weather && wind?.wind && layers.wind && (
                                         <InfoPill
                                             icon={weatherEmoji(weather.weather_code)}
-                                            label={copy[lang].climate}
+                                            label=""
                                             value={`${weather.temperature.toFixed(1)}°C · 💨 ${wind.wind.speed.toFixed(0)} km/h`}
                                         />
                                     )}

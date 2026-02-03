@@ -130,7 +130,7 @@ export default function MapPage() {
         {/* Header */}
         <div className="flex items-start justify-between gap-6 border-b border-border pb-4">
           <div>
-            <h1 className="text-xl font-semibold">Mapa Territorial do Maio</h1>
+            <h1 className="text-xl font-semibold">Maio Guide</h1>
             <p className="text-sm text-muted-foreground">
               Mapa interativo do território do Maio.
             </p>
