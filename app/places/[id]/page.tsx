@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import maplibregl from "maplibre-gl";
-import { Heart, Maximize2, Minimize2 } from "lucide-react";
+import { Heart, Maximize2, Minimize2, X } from "lucide-react";
 import { useFavorites } from "@/lib/favorites";
 
 type Place = {
@@ -22,6 +22,7 @@ export default function PlacePage() {
   const { id } = useParams();
   const [place, setPlace] = useState<Place | null>(null);
   const [allPlaces, setAllPlaces] = useState<Place[]>([]);
+  const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"overview">("overview");
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [mapFullscreen, setMapFullscreen] = useState(false);
@@ -80,12 +81,14 @@ export default function PlacePage() {
   }, [baseMap]);
 
   useEffect(() => {
-    fetch("/data/maio_places_with_coords.json")
+    fetch("/api/places")
       .then((r) => r.json())
       .then((data: Place[]) => {
         setAllPlaces(data);
         setPlace(data.find((p) => p.id === id) || null);
-      });
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [id]);
 
   useEffect(() => {
@@ -162,6 +165,18 @@ export default function PlacePage() {
       .setPopup(popup)
       .addTo(map);
 
+    const setInteractivity = (enabled: boolean) => {
+      const action = enabled ? "enable" : "disable";
+      map.scrollZoom[action]();
+      map.boxZoom[action]();
+      map.dragRotate[action]();
+      map.dragPan[action]();
+      map.keyboard[action]();
+      map.doubleClickZoom[action]();
+      map.touchZoomRotate[action]();
+    };
+
+    setInteractivity(mapFullscreen);
     mapRef.current = map;
 
     return () => {
@@ -173,6 +188,18 @@ export default function PlacePage() {
   useEffect(() => {
     if (!mapRef.current) return;
     mapRef.current.resize();
+  }, [mapFullscreen]);
+
+  useEffect(() => {
+    if (!mapRef.current) return;
+    const action = mapFullscreen ? "enable" : "disable";
+    mapRef.current.scrollZoom[action]();
+    mapRef.current.boxZoom[action]();
+    mapRef.current.dragRotate[action]();
+    mapRef.current.dragPan[action]();
+    mapRef.current.keyboard[action]();
+    mapRef.current.doubleClickZoom[action]();
+    mapRef.current.touchZoomRotate[action]();
   }, [mapFullscreen]);
 
   useEffect(() => {
@@ -206,6 +233,36 @@ export default function PlacePage() {
     }
   }, [baseMap]);
 
+  if (loading) {
+    return (
+      <div className="max-w-3xl mx-auto pb-32">
+        <div className="relative aspect-[16/9] rounded-2xl bg-muted animate-pulse" />
+        <div className="px-4 pt-6 space-y-3">
+          <div className="h-6 w-2/3 rounded-full bg-muted animate-pulse" />
+          <div className="h-4 w-1/2 rounded-full bg-muted animate-pulse" />
+          <div className="mt-6 h-4 w-full rounded-full bg-muted animate-pulse" />
+          <div className="h-4 w-5/6 rounded-full bg-muted animate-pulse" />
+          <div className="h-4 w-4/6 rounded-full bg-muted animate-pulse" />
+          <div className="mt-6 h-5 w-32 rounded-full bg-muted animate-pulse" />
+          <div className="h-56 w-full rounded-lg bg-muted animate-pulse" />
+          <div className="mt-6 h-5 w-28 rounded-full bg-muted animate-pulse" />
+          <div className="flex gap-4 overflow-hidden">
+            {Array.from({ length: 2 }).map((_, i) => (
+              <div
+                key={`nearby-skel-${i}`}
+                className="min-w-[70%] rounded-2xl border bg-background p-3"
+              >
+                <div className="h-36 w-full rounded-2xl bg-muted animate-pulse" />
+                <div className="mt-3 h-4 w-3/5 rounded-full bg-muted animate-pulse" />
+                <div className="mt-2 h-3 w-full rounded-full bg-muted animate-pulse" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!place) return null;
 
   const nearby = getNearbyPlaces(place, allPlaces);
@@ -213,7 +270,7 @@ export default function PlacePage() {
     value?.[lang] || value?.en || value?.pt || "";
 
   return (
-    <div className="max-w-3xl mx-auto pb-32">
+    <div className="max-w-3xl mx-auto pb-36">
       {/* HERO */}
       <div className="relative aspect-[16/9]">
         <img
@@ -228,7 +285,7 @@ export default function PlacePage() {
             aria-label="Close"
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur hover:bg-black/55 active:scale-[0.95]"
           >
-            ✕
+            <X className="h-4 w-4" />
           </a>
           <button
             type="button"
@@ -242,13 +299,13 @@ export default function PlacePage() {
                   : "Save favorite"
             }
             onClick={() => toggle(place.id)}
-            className={`inline-flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur transition active:scale-[0.95] ${
-              isFavorite(place.id)
-                ? "border-rose-400 bg-rose-500 text-white"
-                : "border-white/30 bg-black/40 text-white hover:bg-black/55"
-            }`}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/90 text-foreground backdrop-blur transition active:scale-[0.95]"
           >
-            <Heart className={`h-4 w-4 ${isFavorite(place.id) ? "fill-current" : ""}`} />
+            <Heart
+              className={`h-4 w-4 ${
+                isFavorite(place.id) ? "fill-rose-500 text-rose-500" : "text-foreground"
+              }`}
+            />
           </button>
         </div>
         <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
@@ -261,19 +318,19 @@ export default function PlacePage() {
         </div>
       </div>
 
-      <div className="px-4 pt-4" />
+      <div className="px-4 pt-6" />
 
       {/* TABS */}
-      <div className="mt-6 border-b px-4 flex gap-6 text-sm">
+      <div className="mt-5 border-b px-4 flex gap-6 text-sm">
         <TabButton active={tab === "overview"} onClick={() => setTab("overview")}>
           {copy[lang].overview}
         </TabButton>
       </div>
 
       {/* CONTENT */}
-      <div className="px-4 py-6 space-y-4 text-sm leading-relaxed">
+      <div className="px-4 py-6 space-y-6 text-sm leading-relaxed">
         {tab === "overview" && (
-          <div className="space-y-2">
+          <div className="space-y-3">
             <p className={descriptionExpanded ? "" : "line-clamp-4"}>
               {pick(place.description)}
             </p>
@@ -290,9 +347,9 @@ export default function PlacePage() {
         )}
 
         {place.coordinates && (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {!mapFullscreen && (
-              <div className="text-sm font-medium">{copy[lang].location}</div>
+              <div className="text-base font-semibold">{copy[lang].location}</div>
             )}
             <div
               className={
@@ -301,7 +358,12 @@ export default function PlacePage() {
                   : "relative h-56 rounded-lg border border-border overflow-hidden bg-muted"
               }
             >
-              <div ref={mapContainerRef} className="absolute inset-0 h-full w-full" />
+              <div
+                ref={mapContainerRef}
+                className={`absolute inset-0 h-full w-full ${
+                  mapFullscreen ? "" : "pointer-events-none"
+                }`}
+              />
               <div className="absolute top-3 right-3 z-10">
                 <button
                   type="button"
@@ -351,8 +413,8 @@ export default function PlacePage() {
 
         {nearby.length > 0 && (
           <div className="space-y-2">
-            <div className="text-sm font-medium">{copy[lang].nearby}</div>
-            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide scroll-smooth overscroll-x-contain touch-pan-x">
+            <div className="text-base font-semibold">{copy[lang].nearby}</div>
+            <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide scroll-smooth overscroll-x-contain">
               {nearby.map((p) => (
                 <a
                   key={p.id}

@@ -76,6 +76,7 @@ export default function MapPage() {
     const [weatherOpen, setWeatherOpen] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [storyPlaces, setStoryPlaces] = useState<any[]>([]);
+    const [storyLoading, setStoryLoading] = useState(true);
     const [activeChapterId, setActiveChapterId] = useState<string | null>(null);
     const chapterRefs = useRef<(HTMLButtonElement | null)[]>([]);
     const chapterListRef = useRef<HTMLDivElement | null>(null);
@@ -330,10 +331,11 @@ export default function MapPage() {
     }, []);
 
     useEffect(() => {
-        fetch("/data/maio_places_with_coords.json")
+        fetch("/api/places")
             .then((r) => r.json())
             .then(setStoryPlaces)
-            .catch(() => { });
+            .catch(() => { })
+            .finally(() => setStoryLoading(false));
     }, []);
 
     function weatherIcon(code: number) {
@@ -1068,129 +1070,43 @@ export default function MapPage() {
             return cleaned.length > max ? `${cleaned.slice(0, max)}…` : cleaned;
         };
 
-        const chapterDefs = [
-            {
-                id: "cidade-porto-ingles",
-                kicker: { en: "Heritage", pt: "Herança" },
-                title: { en: "Vila de Porto Inglês", pt: "Cidade do Porto Inglês" },
-                description: {
-                    en: "Start in the island’s historic heart, where coastal life and colonial memory meet the slow scale of Maio.",
-                    pt: "Comece pelo coração histórico da ilha, onde a vida costeira e a memória colonial se encontram com a escala tranquila do Maio.",
-                },
-            },
-            {
-                id: "santana-beach",
-                kicker: { en: "North Coast", pt: "Costa Norte" },
-                title: { en: "Santana Beach", pt: "Praia de Santana" },
-                description: {
-                    en: "A long wild bay with strong surf and open dunes — one of the island’s most striking shores.",
-                    pt: "Uma longa baía selvagem com ondas fortes e dunas abertas ao vento — um dos pontos mais marcantes do litoral norte.",
-                },
-            },
-            {
-                id: "praia-ponta-preta",
-                kicker: { en: "Atlantic", pt: "Atlântico" },
-                title: { en: "Ponta Preta Beach", pt: "Praia de Ponta Preta" },
-                description: {
-                    en: "Wide and windy, with open ocean and clear skies. A perfect place to feel the island’s scale.",
-                    pt: "Uma faixa larga e ventosa, com mar aberto e céu limpo. Ideal para sentir a escala da ilha.",
-                },
-            },
-            {
-                id: "lagoa-cimidor",
-                kicker: { en: "Wildlife", pt: "Vida Selvagem" },
-                title: { en: "Cimidor Lagoon", pt: "Lagoa Cimidor" },
-                description: {
-                    en: "A seasonal lagoon with shorebirds and dunes that separate it from the sea — a quiet refuge for biodiversity.",
-                    pt: "Uma lagoa temporária com aves limícolas e dunas que isolam o mar. Um refúgio para biodiversidade.",
-                },
-            },
-            {
-                id: "dunas-do-morrinho",
-                kicker: { en: "Sand", pt: "Areia" },
-                title: { en: "Morrinho Dunes", pt: "Dunas do Morrinho" },
-                description: {
-                    en: "Shifting dunes and a dry landscape shaped by wind and light — one of Maio’s most photogenic scenes.",
-                    pt: "Dunas móveis e paisagem árida, moldadas pelo vento e pela luz. Um dos cenários mais fotogénicos do Maio.",
-                },
-            },
-            {
-                id: "parque-natural-norte-maio",
-                kicker: { en: "Protection", pt: "Proteção" },
-                title: { en: "Northern Natural Park", pt: "Parque Natural do Norte" },
-                description: {
-                    en: "A protected area of sensitive habitats and preserved shoreline, vital for turtles and seabirds.",
-                    pt: "Área protegida que guarda habitats sensíveis e linhas de costa preservadas, essenciais para tartarugas e aves.",
-                },
-            },
-            {
-                id: "praias-boca-lagoa-seada",
-                kicker: { en: "Ribeiras", pt: "Ribeiras" },
-                title: { en: "Boca Lagoa & Seada", pt: "Boca Lagoa e Seada" },
-                description: {
-                    en: "Beaches shaped by seasonal streams, where fresh water meets the Atlantic and the landscape shifts with the rains.",
-                    pt: "Praias em diálogo com as ribeiras, onde a água doce encontra o mar e a paisagem muda com as estações.",
-                },
-            },
-            {
-                id: "galeao-beach-dunes",
-                kicker: { en: "Dunes", pt: "Dunas" },
-                title: { en: "Galeão Dunes", pt: "Dunas de Galeão" },
-                description: {
-                    en: "A quiet sweep of pale sand and wind-formed ridges that open to the sea.",
-                    pt: "Uma faixa tranquila de areia clara e dunas moldadas pelo vento, abertas para o mar.",
-                },
-            },
-            {
-                id: "praias-guarda-santa-clara",
-                kicker: { en: "South Coast", pt: "Costa Sul" },
-                title: { en: "Guarda & Santa Clara", pt: "Guarda e Santa Clara" },
-                description: {
-                    en: "Long beaches with soft light and space to walk, framed by low vegetation and open horizon.",
-                    pt: "Praias longas com luz suave e espaço para caminhar, molduradas por vegetação baixa e horizonte aberto.",
-                },
-            },
-            {
-                id: "porto-cais-beach-port",
-                kicker: { en: "Harbor", pt: "Porto" },
-                title: { en: "Porto Cais", pt: "Porto Cais" },
-                description: {
-                    en: "A working shoreline where fishing boats and daily life give the coast its rhythm.",
-                    pt: "Uma costa em atividade, onde os barcos de pesca e o quotidiano dão ritmo ao mar.",
-                },
-            },
-            {
-                id: "praia-real",
-                kicker: { en: "West Coast", pt: "Costa Oeste" },
-                title: { en: "Praia Real", pt: "Praia Real" },
-                description: {
-                    en: "A broad, calm stretch with gentle waves and a wide sky — ideal for slow afternoons.",
-                    pt: "Uma extensão ampla e calma, com ondas suaves e céu aberto — ideal para tardes lentas.",
-                },
-            },
-        ];
+        const labelForCategory = (category?: string) => {
+            if (!category) return language === "pt" ? "Lugar" : "Place";
+            const normalized = category.toLowerCase();
+            const mapped: Record<string, { pt: string; en: string }> = {
+                beach: { pt: "Praia", en: "Beach" },
+                beaches: { pt: "Praias", en: "Beaches" },
+                settlement: { pt: "Povoação", en: "Settlement" },
+                settlements: { pt: "Povoações", en: "Settlements" },
+                protected: { pt: "Área protegida", en: "Protected area" },
+                "protected area": { pt: "Área protegida", en: "Protected area" },
+                ribeira: { pt: "Ribeira", en: "Ribeira" },
+            };
+            if (mapped[normalized]) return mapped[normalized][language];
+            return normalized
+                .replace(/[-_]/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase());
+        };
 
-        return chapterDefs
-            .map((chapter) => {
-                const place = places.find((p) => p.id === chapter.id);
-                if (!place?.coordinates) return null;
-                return {
-                    ...chapter,
-                    image: place.image_url || "/image.png",
-                    kicker: chapter.kicker[language],
-                    title: chapter.title[language],
-                    description:
-                        chapter.description[language] ||
-                        short(place.description?.[language]),
-                };
+        return places
+            .filter((place) => place?.coordinates && place?.name && place?.description)
+            .slice()
+            .sort((a, b) => {
+                const aName = a.name?.[language] || a.name?.en || a.name?.pt || "";
+                const bName = b.name?.[language] || b.name?.en || b.name?.pt || "";
+                return aName.localeCompare(bName);
             })
-            .filter(Boolean) as {
-                id: string;
-                kicker: string;
-                title: string;
-                description: string;
-                image: string;
-            }[];
+            .slice(0, 10)
+            .map((place) => ({
+                id: place.id,
+                image: place.image_url || "/image.png",
+                kicker: labelForCategory(place.category),
+                title: place.name?.[language] || place.name?.en || place.name?.pt || "",
+                description:
+                    short(place.description?.[language]) ||
+                    short(place.description?.en) ||
+                    short(place.description?.pt),
+            }));
     };
 
     const chapters = useMemo(
@@ -1313,7 +1229,7 @@ export default function MapPage() {
                                 <a
                                     href="/places"
                                     aria-label={lang === "pt" ? "Todos os lugares" : "All places"}
-                                    className="h-10 w-10 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center active:scale-[0.95]"
+                                    className="h-8 w-8 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center active:scale-[0.95]"
                                 >
                                     <ChevronRight className="h-4 w-4" />
                                 </a>
@@ -1325,60 +1241,74 @@ export default function MapPage() {
                                 ref={chapterListRef}
                                 className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide scroll-smooth overscroll-x-contain touch-pan-x"
                             >
-                                {chapters.map((chapter, index) => (
-                                    <div
-                                        key={chapter.id}
-                                        className="relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%]"
-                                    >
-                                        <button
-                                            type="button"
-                                            data-id={chapter.id}
-                                            ref={(el) => {
-                                                chapterRefs.current[index] = el;
-                                            }}
-                                            onClick={() => {
-                                                setActiveChapterId(chapter.id);
-                                                chapterRefs.current[index]?.scrollIntoView({
-                                                    behavior: "smooth",
-                                                    inline: "center",
-                                                    block: "nearest",
-                                                });
-                                            }}
-                                            className={`w-full text-left rounded-2xl border p-3 transition bg-background shadow-sm hover:shadow-md soft-rise active:scale-[0.99] active:translate-y-[1px] ${activeChapterId === chapter.id
+                                {storyLoading &&
+                                    Array.from({ length: 4 }).map((_, index) => (
+                                        <div
+                                            key={`story-skeleton-${index}`}
+                                            className="relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%] rounded-2xl border bg-background p-3 shadow-sm"
+                                        >
+                                            <div className="h-40 w-full rounded-2xl bg-muted animate-pulse" />
+                                            <div className="mt-3 h-4 w-3/5 rounded-full bg-muted animate-pulse" />
+                                            <div className="mt-2 h-3 w-full rounded-full bg-muted animate-pulse" />
+                                            <div className="mt-2 h-3 w-4/5 rounded-full bg-muted animate-pulse" />
+                                            <div className="mt-3 h-7 w-28 rounded-full bg-muted animate-pulse" />
+                                        </div>
+                                    ))}
+                                {!storyLoading &&
+                                    chapters.map((chapter, index) => (
+                                        <div
+                                            key={chapter.id}
+                                            className={`relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition ${
+                                                activeChapterId === chapter.id
                                                     ? "border-foreground"
                                                     : "border-border"
-                                                }`}
+                                            }`}
                                         >
-                                            <div className="relative overflow-hidden rounded-2xl">
-                                                <img
-                                                    src={chapter.image}
-                                                    alt={chapter.title}
-                                                    className="h-40 w-full object-cover"
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                />
-                                                <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-medium shadow-sm">
-                                                    {chapter.kicker}
-                                                </span>
-                                            </div>
-                                            <div className="mt-3 text-base font-semibold">
-                                                {chapter.title}
-                                            </div>
-                                            <div className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                                                {chapter.description}
-                                            </div>
-                                            <div className="mt-4" />
-                                        </button>
-                                        <a
-                                            href={`/places/${chapter.id}`}
-                                            className="absolute bottom-4 left-4 inline-flex text-xs font-medium text-foreground hover:underline"
-                                        >
-                                            {copy[lang].viewPlace}
-                                        </a>
-                                    </div>
-                                ))}
+                                            <button
+                                                type="button"
+                                                data-id={chapter.id}
+                                                ref={(el) => {
+                                                    chapterRefs.current[index] = el;
+                                                }}
+                                                onClick={() => {
+                                                    setActiveChapterId(chapter.id);
+                                                    chapterRefs.current[index]?.scrollIntoView({
+                                                        behavior: "smooth",
+                                                        inline: "center",
+                                                        block: "nearest",
+                                                    });
+                                                }}
+                                                className="w-full text-left soft-rise active:scale-[0.99] active:translate-y-[1px]"
+                                            >
+                                                <div className="relative overflow-hidden rounded-2xl">
+                                                    <img
+                                                        src={chapter.image}
+                                                        alt={chapter.title}
+                                                        className="h-40 w-full object-cover"
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                    />
+                                                    <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-medium shadow-sm">
+                                                        {chapter.kicker}
+                                                    </span>
+                                                </div>
+                                                <div className="mt-3 text-base font-semibold line-clamp-1">
+                                                    {chapter.title}
+                                                </div>
+                                                <div className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                                                    {chapter.description}
+                                                </div>
+                                            </button>
+                                            <a
+                                                href={`/places/${chapter.id}`}
+                                                className="mt-3 inline-flex items-center justify-center rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground shadow-sm transition hover:bg-accent active:scale-[0.98]"
+                                            >
+                                                {copy[lang].viewPlace}
+                                            </a>
+                                        </div>
+                                    ))}
                             </div>
-                            <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-background via-background/80 to-transparent" />
+                            <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-background via-background/50 to-transparent" />
                         </div>
 
                     </div>
@@ -1486,10 +1416,12 @@ export default function MapPage() {
                                 <Drawer.Portal>
                                     <Drawer.Overlay className="fixed inset-0 z-40 bg-black/35 backdrop-blur-sm" />
                                     <Drawer.Content
-                                        className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border border-border bg-background p-4 shadow-xl"
+                                        className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border border-border bg-background p-5 pb-10 shadow-xl"
                                         style={
                                             {
                                                 "--initial-transform": "calc(100% + 12px)",
+                                                paddingBottom:
+                                                    "calc(3.25rem + env(safe-area-inset-bottom))",
                                             } as React.CSSProperties
                                         }
                                     >
@@ -1497,7 +1429,7 @@ export default function MapPage() {
                                             {lang === "pt" ? "Filtros do mapa" : "Map filters"}
                                         </Drawer.Title>
                                         <div className="mx-auto h-1 w-10 rounded-full bg-muted-foreground/30" />
-                                        <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                                        <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
                                             <button
                                                 onClick={() =>
                                                     setLayers((l) => ({
@@ -1505,7 +1437,7 @@ export default function MapPage() {
                                                         protectedAreas: !l.protectedAreas,
                                                     }))
                                                 }
-                                                className={`px-2 py-2 rounded-lg border ${layers.protectedAreas ? "border-green-400" : "opacity-50"
+                                                className={`px-3 py-2.5 rounded-xl border ${layers.protectedAreas ? "border-green-400" : "opacity-50"
                                                     }`}
                                             >
                                                 {copy[lang].protectedAreas}
@@ -1515,7 +1447,7 @@ export default function MapPage() {
                                                 onClick={() =>
                                                     setLayers((l) => ({ ...l, beaches: !l.beaches }))
                                                 }
-                                                className={`px-2 py-2 rounded-lg border ${layers.beaches ? " border-yellow-400" : "opacity-50"
+                                                className={`px-3 py-2.5 rounded-xl border ${layers.beaches ? " border-yellow-400" : "opacity-50"
                                                     }`}
                                             >
                                                 {copy[lang].beaches}
@@ -1525,7 +1457,7 @@ export default function MapPage() {
                                                 onClick={() =>
                                                     setLayers((l) => ({ ...l, settlements: !l.settlements }))
                                                 }
-                                                className={`px-2 py-2 rounded-lg border ${layers.settlements ? "border-purple-400" : "opacity-50"
+                                                className={`px-3 py-2.5 rounded-xl border ${layers.settlements ? "border-purple-400" : "opacity-50"
                                                     }`}
                                             >
                                                 {copy[lang].settlements}
@@ -1535,14 +1467,14 @@ export default function MapPage() {
                                                 onClick={() =>
                                                     setLayers((l) => ({ ...l, trilhas: !l.trilhas }))
                                                 }
-                                                className={`px-2 py-2 rounded-lg border ${layers.trilhas ? "border-orange-500" : "opacity-50"
+                                                className={`px-3 py-2.5 rounded-xl border ${layers.trilhas ? "border-orange-500" : "opacity-50"
                                                     }`}
                                             >
                                                 {copy[lang].trails}
                                             </button>
                                         </div>
 
-                                        <div className="mt-4 text-xs text-muted-foreground">
+                                        <div className="mt-5 text-sm font-medium text-muted-foreground">
                                             {lang === "pt" ? "Mapa base" : "Basemap"}
                                         </div>
                                         <div className="mt-2 grid w-full grid-cols-2 gap-2">
@@ -1552,7 +1484,7 @@ export default function MapPage() {
                                                     setBaseMap("normal");
                                                     setFiltersOpen(false);
                                                 }}
-                                                className={`w-full px-3 py-2 rounded-lg border text-xs font-medium transition ${baseMap === "normal"
+                                                className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "normal"
                                                         ? "bg-foreground text-background border-foreground"
                                                         : "text-muted-foreground hover:text-foreground"
                                                     }`}
@@ -1565,7 +1497,7 @@ export default function MapPage() {
                                                     setBaseMap("satellite");
                                                     setFiltersOpen(false);
                                                 }}
-                                                className={`w-full px-3 py-2 rounded-lg border text-xs font-medium transition ${baseMap === "satellite"
+                                                className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "satellite"
                                                         ? "bg-foreground text-background border-foreground"
                                                         : "text-muted-foreground hover:text-foreground"
                                                     }`}

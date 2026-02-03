@@ -8,6 +8,7 @@ import LayoutShell from "@/components/LayoutShell";
 export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL("https://www.maioazul.com"),
+    manifest: "/manifest.webmanifest",
     title: {
       default: "MaioAzul",
       template: "%s · MaioAzul",
@@ -46,6 +47,11 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: "/favicon.ico",
       apple: "/apple-touch-icon.png",
+    },
+    appleWebApp: {
+      capable: true,
+      title: "MaioAzul",
+      statusBarStyle: "black-translucent",
     },
     robots: {
       index: true,
@@ -94,6 +100,13 @@ export default function RootLayout({
           content="#000000"
           media="(prefers-color-scheme: dark)"
         />
+        <meta
+          name="theme-color"
+          content="#f8f7f2"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 
         <meta
