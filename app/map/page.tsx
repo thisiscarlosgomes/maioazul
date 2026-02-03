@@ -1219,7 +1219,7 @@ export default function MapPage() {
             />
 
             <div className="relative z-10 max-w-6xl mx-auto px-6 pt-4 pb-4 h-full flex flex-col gap-4">
-                <div className="flex items-start justify-between border-b border-border pb-4 bg-background/90 backdrop-blur">
+                <div className="flex items-start justify-between pb-2 bg-background/90 backdrop-blur">
                     <div>
                         <h1 className="text-xl font-semibold">
                             {copy[lang].title}
@@ -1227,12 +1227,12 @@ export default function MapPage() {
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <div className="inline-flex rounded-full border border-border bg-background/95 backdrop-blur shadow-sm overflow-hidden">
+                        <div className="inline-flex rounded-md border border-border bg-background/95 backdrop-blur overflow-hidden">
                             <button
                                 type="button"
                                 onClick={() => setLang("pt")}
                                 aria-pressed={lang === "pt"}
-                                className={`px-3 py-1 text-xs font-medium transition ${lang === "pt"
+                                className={`px-3 py-2 text-xs font-medium transition ${lang === "pt"
                                         ? "bg-foreground text-background"
                                         : "text-muted-foreground hover:text-foreground"
                                     }`}
@@ -1243,7 +1243,7 @@ export default function MapPage() {
                                 type="button"
                                 onClick={() => setLang("en")}
                                 aria-pressed={lang === "en"}
-                                className={`px-3 py-1 text-xs font-medium transition ${lang === "en"
+                                className={`px-3 py-2 text-xs font-medium transition ${lang === "en"
                                         ? "bg-foreground text-background"
                                         : "text-muted-foreground hover:text-foreground"
                                     }`}
@@ -1308,7 +1308,7 @@ export default function MapPage() {
                                             alt={chapter.title}
                                             className="h-40 w-full object-cover"
                                         />
-                                        <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-medium shadow-sm">
+                                        <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-medium shadow-sm">
                                             {chapter.kicker}
                                         </span>
                                     </div>

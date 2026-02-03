@@ -62,32 +62,7 @@ export default function PlacesIndexPage() {
             {copy[lang].subtitle}
           </p>
         </div>
-        <div className="inline-flex rounded-full border border-border bg-background/95 shadow-sm overflow-hidden">
-          <button
-            type="button"
-            onClick={() => setLang("pt")}
-            aria-pressed={lang === "pt"}
-            className={`px-3 py-1.5 text-xs font-medium transition ${
-              lang === "pt"
-                ? "bg-foreground text-background"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            PT
-          </button>
-          <button
-            type="button"
-            onClick={() => setLang("en")}
-            aria-pressed={lang === "en"}
-            className={`px-3 py-1.5 text-xs font-medium transition ${
-              lang === "en"
-                ? "bg-foreground text-background"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            EN
-          </button>
-        </div>
+       
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
