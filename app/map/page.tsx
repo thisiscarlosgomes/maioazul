@@ -1072,7 +1072,7 @@ export default function MapPage() {
             {
                 id: "cidade-porto-ingles",
                 kicker: { en: "Heritage", pt: "Herança" },
-                title: { en: "Porto Inglês", pt: "Cidade do Porto Inglês" },
+                title: { en: "Vila de Porto Inglês", pt: "Cidade do Porto Inglês" },
                 description: {
                     en: "Start in the island’s historic heart, where coastal life and colonial memory meet the slow scale of Maio.",
                     pt: "Comece pelo coração histórico da ilha, onde a vida costeira e a memória colonial se encontram com a escala tranquila do Maio.",
@@ -1132,6 +1132,42 @@ export default function MapPage() {
                     pt: "Praias em diálogo com as ribeiras, onde a água doce encontra o mar e a paisagem muda com as estações.",
                 },
             },
+            {
+                id: "galeao-beach-dunes",
+                kicker: { en: "Dunes", pt: "Dunas" },
+                title: { en: "Galeão Dunes", pt: "Dunas de Galeão" },
+                description: {
+                    en: "A quiet sweep of pale sand and wind-formed ridges that open to the sea.",
+                    pt: "Uma faixa tranquila de areia clara e dunas moldadas pelo vento, abertas para o mar.",
+                },
+            },
+            {
+                id: "praias-guarda-santa-clara",
+                kicker: { en: "South Coast", pt: "Costa Sul" },
+                title: { en: "Guarda & Santa Clara", pt: "Guarda e Santa Clara" },
+                description: {
+                    en: "Long beaches with soft light and space to walk, framed by low vegetation and open horizon.",
+                    pt: "Praias longas com luz suave e espaço para caminhar, molduradas por vegetação baixa e horizonte aberto.",
+                },
+            },
+            {
+                id: "porto-cais-beach-port",
+                kicker: { en: "Harbor", pt: "Porto" },
+                title: { en: "Porto Cais", pt: "Porto Cais" },
+                description: {
+                    en: "A working shoreline where fishing boats and daily life give the coast its rhythm.",
+                    pt: "Uma costa em atividade, onde os barcos de pesca e o quotidiano dão ritmo ao mar.",
+                },
+            },
+            {
+                id: "praia-real",
+                kicker: { en: "West Coast", pt: "Costa Oeste" },
+                title: { en: "Praia Real", pt: "Praia Real" },
+                description: {
+                    en: "A broad, calm stretch with gentle waves and a wide sky — ideal for slow afternoons.",
+                    pt: "Uma extensão ampla e calma, com ondas suaves e céu aberto — ideal para tardes lentas.",
+                },
+            },
         ];
 
         return chapterDefs
@@ -1182,10 +1218,13 @@ export default function MapPage() {
         if (isFullscreen) {
             const previous = document.body.style.overflow;
             document.body.style.overflow = "hidden";
+            document.body.classList.add("map-fullscreen");
             return () => {
                 document.body.style.overflow = previous;
+                document.body.classList.remove("map-fullscreen");
             };
         }
+        document.body.classList.remove("map-fullscreen");
         return undefined;
     }, [isFullscreen]);
 
@@ -1209,7 +1248,7 @@ export default function MapPage() {
        UI
     ========================= */
     return (
-        <div className="h-screen bg-background relative overflow-hidden">
+        <div className="bg-background relative">
             <div
                 className="hidden absolute inset-0 z-0 bg-center bg-no-repeat opacity-[0.04]"
                 style={{
@@ -1218,8 +1257,9 @@ export default function MapPage() {
                 }}
             />
 
-            <div className="relative z-10 max-w-6xl mx-auto px-6 pt-4 pb-4 h-full flex flex-col gap-4">
-                <div className="flex items-start justify-between pb-2 bg-background/90 backdrop-blur">
+            {!isFullscreen && (
+            <div className="fixed inset-x-0 top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+                <div className="max-w-6xl mx-auto px-6 py-4 flex items-start justify-between">
                     <div>
                         <h1 className="text-xl font-semibold">
                             {copy[lang].title}
@@ -1255,7 +1295,10 @@ export default function MapPage() {
                     </div>
 
                 </div>
+            </div>
+            )}
 
+            <div className="relative z-10 max-w-6xl mx-auto px-6 pt-24 pb-6 flex flex-col gap-4">
 
 
                 <div className="flex flex-col gap-4 overflow-hidden">
@@ -1270,75 +1313,88 @@ export default function MapPage() {
                                 <a
                                     href="/places"
                                     aria-label={lang === "pt" ? "Todos os lugares" : "All places"}
-                                    className="h-10 w-10 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center"
+                                    className="h-10 w-10 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center active:scale-[0.95]"
                                 >
                                     <ChevronRight className="h-4 w-4" />
                                 </a>
                             </div>
                         </div>
 
-                        <div
-                            ref={chapterListRef}
-                            className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide scroll-smooth overscroll-x-contain touch-pan-x"
-                        >
-                            {chapters.map((chapter, index) => (
-                                <button
-                                    key={chapter.id}
-                                    type="button"
-                                    data-id={chapter.id}
-                                    ref={(el) => {
-                                        chapterRefs.current[index] = el;
-                                    }}
-                                    onClick={() => {
-                                        setActiveChapterId(chapter.id);
-                                        chapterRefs.current[index]?.scrollIntoView({
-                                            behavior: "smooth",
-                                            inline: "center",
-                                            block: "nearest",
-                                        });
-                                    }}
-                                    className={`text-left rounded-2xl border p-3 transition snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%] bg-background shadow-sm hover:shadow-md ${activeChapterId === chapter.id
-                                            ? "border-foreground"
-                                            : "border-border"
-                                        }`}
-                                >
-                                    <div className="relative overflow-hidden rounded-2xl">
-                                        <img
-                                            src={chapter.image}
-                                            alt={chapter.title}
-                                            className="h-40 w-full object-cover"
-                                        />
-                                        <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-medium shadow-sm">
-                                            {chapter.kicker}
-                                        </span>
-                                    </div>
-                                    <div className="mt-3 text-base font-semibold">
-                                        {chapter.title}
-                                    </div>
-                                    <div className="mt-1 text-sm text-muted-foreground line-clamp-2">
-                                        {chapter.description}
-                                    </div>
-                                    <a
-                                        href={`/places/${chapter.id}`}
-                                        className="mt-3 inline-flex text-xs font-medium text-foreground hover:underline"
+                        <div className="relative">
+                            <div
+                                ref={chapterListRef}
+                                className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide scroll-smooth overscroll-x-contain touch-pan-x"
+                            >
+                                {chapters.map((chapter, index) => (
+                                    <div
+                                        key={chapter.id}
+                                        className="relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%]"
                                     >
-                                        {copy[lang].viewPlace}
-                                    </a>
-                                </button>
-                            ))}
+                                        <button
+                                            type="button"
+                                            data-id={chapter.id}
+                                            ref={(el) => {
+                                                chapterRefs.current[index] = el;
+                                            }}
+                                            onClick={() => {
+                                                setActiveChapterId(chapter.id);
+                                                chapterRefs.current[index]?.scrollIntoView({
+                                                    behavior: "smooth",
+                                                    inline: "center",
+                                                    block: "nearest",
+                                                });
+                                            }}
+                                            className={`w-full text-left rounded-2xl border p-3 transition bg-background shadow-sm hover:shadow-md soft-rise active:scale-[0.99] active:translate-y-[1px] ${activeChapterId === chapter.id
+                                                    ? "border-foreground"
+                                                    : "border-border"
+                                                }`}
+                                        >
+                                            <div className="relative overflow-hidden rounded-2xl">
+                                                <img
+                                                    src={chapter.image}
+                                                    alt={chapter.title}
+                                                    className="h-40 w-full object-cover"
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                />
+                                                <span className="absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-medium shadow-sm">
+                                                    {chapter.kicker}
+                                                </span>
+                                            </div>
+                                            <div className="mt-3 text-base font-semibold">
+                                                {chapter.title}
+                                            </div>
+                                            <div className="mt-1 text-sm text-muted-foreground line-clamp-2">
+                                                {chapter.description}
+                                            </div>
+                                            <div className="mt-4" />
+                                        </button>
+                                        <a
+                                            href={`/places/${chapter.id}`}
+                                            className="absolute bottom-4 left-4 inline-flex text-xs font-medium text-foreground hover:underline"
+                                        >
+                                            {copy[lang].viewPlace}
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="pointer-events-none absolute right-0 top-0 h-full w-10 bg-gradient-to-l from-background via-background/80 to-transparent" />
                         </div>
 
                     </div>
 
                     <div
-                        className={`order-1 h-[48vh] sm:h-[54vh] lg:h-[58vh] ${isFullscreen ? "fixed inset-0 z-[80] h-auto bg-background" : ""
+                        className={`order-1 h-[42vh] sm:h-[48vh] lg:h-[52vh] ${isFullscreen ? "fixed inset-0 z-[80] h-auto bg-background" : ""
                             }`}
                     >
                         <div
                             className={`relative h-full rounded-lg border border-border overflow-hidden bg-background ${isFullscreen ? "rounded-none border-0" : ""
                                 }`}
                         >
-                            <div ref={containerRef} className="absolute inset-0 h-full w-full" />
+                            <div
+                                ref={containerRef}
+                                className="absolute inset-0 h-full w-full"
+                            />
 
                             <div className="absolute top-3 left-3 right-3 pr-12 z-30 flex items-center gap-2">
                                 <button
@@ -1424,6 +1480,7 @@ export default function MapPage() {
                                 </div>
 
                             </div>
+
 
                             <Drawer.Root open={filtersOpen} onOpenChange={setFiltersOpen}>
                                 <Drawer.Portal>
@@ -1520,14 +1577,14 @@ export default function MapPage() {
                                 </Drawer.Portal>
                             </Drawer.Root>
 
-                            <div className="absolute top-3 right-3 z-30 flex flex-col gap-1">
+                            <div className="absolute top-3 right-3 z-30 flex flex-col gap-2">
                                 <button
                                     type="button"
                                     aria-label={
                                         isFullscreen ? copy[lang].exitFullscreen : copy[lang].fullscreen
                                     }
                                     onClick={() => setIsFullscreen((v) => !v)}
-                                    className="h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent lg:hidden flex items-center justify-center"
+                                    className="h-10 w-10 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent lg:hidden flex items-center justify-center"
                                 >
                                     {isFullscreen ? (
                                         <Minimize2 className="h-4 w-4" />
@@ -1535,22 +1592,26 @@ export default function MapPage() {
                                         <Maximize2 className="h-4 w-4" />
                                     )}
                                 </button>
-                                <button
-                                    type="button"
-                                    aria-label={copy[lang].zoomIn}
-                                    onClick={() => mapRef.current?.zoomIn()}
-                                    className="h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center"
-                                >
-                                    <Plus className="h-4 w-4" />
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label={copy[lang].zoomOut}
-                                    onClick={() => mapRef.current?.zoomOut()}
-                                    className="h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center"
-                                >
-                                    <Minus className="h-4 w-4" />
-                                </button>
+
+                                <div className="rounded-full border border-border bg-background/95 backdrop-blur shadow-sm overflow-hidden">
+                                    <button
+                                        type="button"
+                                        aria-label={copy[lang].zoomIn}
+                                        onClick={() => mapRef.current?.zoomIn()}
+                                        className="h-10 w-10 flex items-center justify-center hover:bg-accent"
+                                    >
+                                        <Plus className="h-4 w-4" />
+                                    </button>
+                                    <div className="h-px bg-border" />
+                                    <button
+                                        type="button"
+                                        aria-label={copy[lang].zoomOut}
+                                        onClick={() => mapRef.current?.zoomOut()}
+                                        className="h-10 w-10 flex items-center justify-center hover:bg-accent"
+                                    >
+                                        <Minus className="h-4 w-4" />
+                                    </button>
+                                </div>
                                 {/* <button
                                     type="button"
                                     aria-label={copy[lang].resetView}

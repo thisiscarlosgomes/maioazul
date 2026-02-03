@@ -197,6 +197,58 @@ p {
 }
 body {
   @apply bg-background text-foreground;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+body.map-fullscreen .bottom-nav {
+  display: none;
+}
+
+/* Hide scrollbars for a more native app feel */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+@keyframes soft-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes soft-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.soft-rise {
+  animation: soft-rise 0.5s ease both;
+}
+
+.soft-fade {
+  animation: soft-fade 0.4s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .soft-rise,
+  .soft-fade {
+    animation: none;
+  }
 }
 
 .maplibregl-map {

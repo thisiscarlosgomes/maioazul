@@ -1051,13 +1051,6 @@ export default function TourismPage() {
         )}
 
         <BaselineNote />
-        {/* Footer */}
-        <div className="text-xs text-muted-foreground">
-          Dados: portaltransparencia.gov.cv · INE Cabo Verde
-          <br />
-          Versão 1.0 · desenvolvimento maioazul.com
-        </div>
-
       </div>
     </div>
   );

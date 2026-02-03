@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "./theme-provider";
+import LayoutShell from "@/components/LayoutShell";
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -101,7 +102,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <LayoutShell>{children}</LayoutShell>
+        </ThemeProvider>
       </body>
 
     </html>

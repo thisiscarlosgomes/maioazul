@@ -1,9 +1,31 @@
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const title = params.slug.replace(/-/g, " ");
+  const label = title.charAt(0).toUpperCase() + title.slice(1);
+
+  return {
+    title: label,
+    description: `Experience details for ${label} in Maio.`,
+    alternates: { canonical: `/x/${params.slug}` },
+    openGraph: {
+      title: `${label} · MaioAzul`,
+      description: `Experience details for ${label} in Maio.`,
+      url: `/x/${params.slug}`,
+    },
+  };
+}
+
 export default function Experience({
   params,
 }: {
   params: { slug: string };
 }) {
-  const title = params.slug.replace("-", " ");
+  const title = params.slug.replace(/-/g, " ");
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-20 space-y-12">

@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import maplibregl from "maplibre-gl";
-import { Map as MapIcon } from "lucide-react";
+import { Heart, Maximize2, Minimize2 } from "lucide-react";
+import { useFavorites } from "@/lib/favorites";
 
 type Place = {
   id: string;
@@ -28,6 +29,7 @@ export default function PlacePage() {
   const [baseMap, setBaseMap] = useState<"normal" | "satellite">("normal");
   const mapRef = useRef<maplibregl.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const { isFavorite, toggle } = useFavorites();
 
   const copy = useMemo(
     () => ({
@@ -37,6 +39,7 @@ export default function PlacePage() {
         readMore: "Ler mais",
         close: "Fechar",
         map: "Mapa",
+        location: "Localização",
       },
       en: {
         overview: "Overview",
@@ -44,6 +47,7 @@ export default function PlacePage() {
         readMore: "Read more",
         close: "Close",
         map: "Map",
+        location: "Location",
       },
     }),
     []
@@ -85,7 +89,7 @@ export default function PlacePage() {
   }, [id]);
 
   useEffect(() => {
-    if (!mapFullscreen || !place?.coordinates || !mapContainerRef.current) return;
+    if (!place?.coordinates || !mapContainerRef.current) return;
 
     if (mapRef.current) {
       mapRef.current.remove();
@@ -164,7 +168,7 @@ export default function PlacePage() {
       map.remove();
       mapRef.current = null;
     };
-  }, [place, lang, mapFullscreen]);
+  }, [place, lang]);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -172,21 +176,17 @@ export default function PlacePage() {
   }, [mapFullscreen]);
 
   useEffect(() => {
-    if (mapFullscreen) return;
-    if (!mapRef.current) return;
-    mapRef.current.remove();
-    mapRef.current = null;
-  }, [mapFullscreen]);
-
-  useEffect(() => {
     if (typeof document === "undefined") return;
     if (mapFullscreen) {
       const previous = document.body.style.overflow;
       document.body.style.overflow = "hidden";
+      document.body.classList.add("map-fullscreen");
       return () => {
         document.body.style.overflow = previous;
+        document.body.classList.remove("map-fullscreen");
       };
     }
+    document.body.classList.remove("map-fullscreen");
     return undefined;
   }, [mapFullscreen]);
 
@@ -213,22 +213,43 @@ export default function PlacePage() {
     value?.[lang] || value?.en || value?.pt || "";
 
   return (
-    <div className="max-w-3xl mx-auto pb-24">
+    <div className="max-w-3xl mx-auto pb-32">
       {/* HERO */}
       <div className="relative aspect-[16/9]">
         <img
           src={place.image_url}
           alt={pick(place.name)}
           className="absolute inset-0 h-full w-full object-cover"
+          decoding="async"
         />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3">
           <a
             href="/map"
             aria-label="Close"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur hover:bg-black/55"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur hover:bg-black/55 active:scale-[0.95]"
           >
             ✕
           </a>
+          <button
+            type="button"
+            aria-label={
+              isFavorite(place.id)
+                ? lang === "pt"
+                  ? "Remover favorito"
+                  : "Remove favorite"
+                : lang === "pt"
+                  ? "Guardar favorito"
+                  : "Save favorite"
+            }
+            onClick={() => toggle(place.id)}
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur transition active:scale-[0.95] ${
+              isFavorite(place.id)
+                ? "border-rose-400 bg-rose-500 text-white"
+                : "border-white/30 bg-black/40 text-white hover:bg-black/55"
+            }`}
+          >
+            <Heart className={`h-4 w-4 ${isFavorite(place.id) ? "fill-current" : ""}`} />
+          </button>
         </div>
         <div className="absolute inset-x-0 bottom-0 px-4 pb-4 pt-16 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
           <h1 className="text-2xl sm:text-3xl font-semibold leading-tight text-white drop-shadow">
@@ -251,7 +272,6 @@ export default function PlacePage() {
 
       {/* CONTENT */}
       <div className="px-4 py-6 space-y-4 text-sm leading-relaxed">
-
         {tab === "overview" && (
           <div className="space-y-2">
             <p className={descriptionExpanded ? "" : "line-clamp-4"}>
@@ -269,6 +289,65 @@ export default function PlacePage() {
           </div>
         )}
 
+        {place.coordinates && (
+          <div className="space-y-2">
+            {!mapFullscreen && (
+              <div className="text-sm font-medium">{copy[lang].location}</div>
+            )}
+            <div
+              className={
+                mapFullscreen
+                  ? "fixed inset-0 z-50 bg-background"
+                  : "relative h-56 rounded-lg border border-border overflow-hidden bg-muted"
+              }
+            >
+              <div ref={mapContainerRef} className="absolute inset-0 h-full w-full" />
+              <div className="absolute top-3 right-3 z-10">
+                <button
+                  type="button"
+                  onClick={() => setMapFullscreen((v) => !v)}
+                  className="h-10 w-10 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center active:scale-[0.95]"
+                  aria-label={mapFullscreen ? copy[lang].close : copy[lang].map}
+                >
+                  {mapFullscreen ? (
+                    <Minimize2 className="h-4 w-4" />
+                  ) : (
+                    <Maximize2 className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {mapFullscreen && (
+                <div className="absolute top-3 left-3 z-10">
+                  <div className="grid w-full grid-cols-2 gap-1 rounded-lg border border-border bg-background/95 p-1 shadow-sm">
+                    <button
+                      type="button"
+                      onClick={() => setBaseMap("normal")}
+                      className={`px-3 py-1.5 rounded-md text-xs font-medium transition ${
+                        baseMap === "normal"
+                          ? "bg-foreground text-background"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {lang === "pt" ? "Normal" : "Normal"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBaseMap("satellite")}
+                      className={`px-3 py-1.5 rounded-md text-xs font-medium transition ${
+                        baseMap === "satellite"
+                          ? "bg-foreground text-background"
+                          : "text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {lang === "pt" ? "Satélite" : "Satellite"}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
 
         {nearby.length > 0 && (
           <div className="space-y-2">
@@ -278,13 +357,15 @@ export default function PlacePage() {
                 <a
                   key={p.id}
                   href={`/places/${p.id}`}
-                  className="snap-start min-w-[70%] sm:min-w-[44%] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition"
+                  className="snap-start min-w-[70%] sm:min-w-[44%] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition active:scale-[0.99] active:translate-y-[1px]"
                 >
                   <div className="relative overflow-hidden rounded-2xl">
                       <img
                         src={p.image_url || "/image.png"}
                         alt={pick(p.name)}
                         className="h-36 w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
                       />
                     </div>
                     <div className="mt-3 text-sm font-semibold">
@@ -300,57 +381,6 @@ export default function PlacePage() {
         )}
       </div>
 
-      {place.coordinates && !mapFullscreen && (
-        <div className="fixed bottom-8 left-1/2 z-40 -translate-x-1/2">
-          <button
-            type="button"
-            onClick={() => setMapFullscreen(true)}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-5 py-3 text-sm font-medium shadow-lg hover:bg-accent"
-          >
-            <MapIcon className="h-4 w-4" />
-            {copy[lang].map}
-          </button>
-        </div>
-      )}
-
-      {place.coordinates && mapFullscreen && (
-        <div className="fixed inset-0 z-50 bg-background">
-          <div ref={mapContainerRef} className="absolute inset-0 h-full w-full" />
-          <div className="absolute top-4 left-4 z-10">
-            <div className="grid w-full grid-cols-2 gap-2 rounded-lg border border-border bg-background/95 p-1 shadow-sm">
-              <button
-                type="button"
-                onClick={() => setBaseMap("normal")}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition ${
-                  baseMap === "normal"
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {lang === "pt" ? "Normal" : "Normal"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setBaseMap("satellite")}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition ${
-                  baseMap === "satellite"
-                    ? "bg-foreground text-background"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {lang === "pt" ? "Satélite" : "Satellite"}
-              </button>
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => setMapFullscreen(false)}
-            className="absolute top-4 right-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur hover:bg-black/55"
-          >
-            ✕
-          </button>
-        </div>
-      )}
     </div>
   );
 }

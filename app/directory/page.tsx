@@ -1,4 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Directory",
+  description:
+    "A growing directory of Maio-based food, activities, and local initiatives.",
+  alternates: { canonical: "/directory" },
+  openGraph: {
+    title: "Directory · MaioAzul",
+    description:
+      "A growing directory of Maio-based food, activities, and local initiatives.",
+    url: "/directory",
+  },
+};
 
 const items = [
   {
