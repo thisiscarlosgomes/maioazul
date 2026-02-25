@@ -94,7 +94,7 @@ export function TldrDrawer({
         >
           {/* Floating container */}
           <div className="flex h-full w-full flex-col rounded-[16px] bg-background border border-border shadow-lg overflow-hidden">
-            
+
             {/* Header */}
             <div className="px-5 pt-5 pb-4 border-b border-border">
               <Drawer.Title className="text-base font-semibold leading-tight">
@@ -110,29 +110,7 @@ export function TldrDrawer({
                 </p>
               )}
 
-              {sections.map((section, index) => (
-                <div key={index} className="space-y-2">
-                  {/* Main narrative */}
-                  <InsightCard label={section.title} grade={section.grade}>
-                    {section.bullets.map((text, i) => (
-                      <p className="mb-0 pb-0"key={i}>{text}</p>
-                    ))}
-                    <br/>
-                    <i>✨ {section.verdict}</i>
-                  </InsightCard>
-
-                  {/* Verdict */}
-                  {/* <InsightCard
-                    label=""
-                    strong
-                    grade={section.grade}
-                  >
-                    <p>{section.verdict}</p>
-                  </InsightCard> */}
-                </div>
-              ))}
-
-              {/* Global verdict */}
+                 {/* Global verdict */}
               {globalVerdict && (
                 <InsightCard
                   label="Leitura integrada"
@@ -142,6 +120,23 @@ export function TldrDrawer({
                   <p>{globalVerdict}</p>
                 </InsightCard>
               )}
+
+              {sections.map((section, index) => (
+                <div key={index} className="space-y-2">
+                  {/* Main narrative */}
+                  <InsightCard label={section.title} grade={section.grade}>
+                    {section.bullets.map((text, i) => (
+                      <p className="mb-0 pb-0" key={i}>{text}</p>
+                    ))}
+                    <br />
+                    <i>✨ {section.verdict}</i>
+                  </InsightCard>
+
+
+                </div>
+              ))}
+
+           
             </div>
           </div>
         </Drawer.Content>

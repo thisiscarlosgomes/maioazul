@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchJsonOfflineFirst } from "@/lib/offline";
 import {
   Table,
   TableHeader,
@@ -21,8 +22,16 @@ export function TourismAccommodationTable({
   const [rows, setRows] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("/api/transparencia/turismo/hoteis")
-      .then((r) => r.json())
+    fetchJsonOfflineFirst<{
+      islands?: Array<{
+        ilha?: string;
+        totals?: {
+          establishments?: number;
+          staff?: number;
+          staff_per_establishment?: number;
+        };
+      }>;
+    }>("/api/transparencia/turismo/hoteis")
       .then((res) => {
         const islands = res.islands || [];
 
@@ -51,7 +60,7 @@ export function TourismAccommodationTable({
   if (!rows.length) return null;
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-2">
       <div>
         <h2 className="font-semibold">
           Estrutura de Alojamento Turístico

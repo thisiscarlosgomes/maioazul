@@ -2,11 +2,23 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:receitas-cv": "node scripts/upsert-receitas-cv.mjs",
+    "seed:transferencias-2024-cmmaio": "node scripts/upsert-transferencias-cmmaio-2024.mjs",
+    "seed:transferencias-2025-cmmaio": "node scripts/upsert-transferencias-cmmaio-2025.mjs",
+    "seed:transferencias-2026-cmmaio": "node scripts/upsert-transferencias-cmmaio-2026.mjs",
+    "dev:guide": "npm --workspace apps/guide run dev",
+    "build:guide": "npm --workspace apps/guide run build",
+    "start:guide": "npm --workspace apps/guide run start",
+    "lint:guide": "npm --workspace apps/guide run lint",
+    "offline:snapshot": "node scripts/build-offline-snapshot.mjs"
   },
   "dependencies": {
     "@radix-ui/react-select": "^2.2.6",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchJsonOfflineFirst } from "@/lib/offline";
 
 function pct(v: number) {
   return `${(v * 100).toFixed(1)}%`;
@@ -10,15 +11,23 @@ export function TourismStructuralBaseline() {
   const [data, setData] = useState<any>(null);
 
   useEffect(() => {
-    fetch("/api/transparencia/turismo/2024/structure/summary")
-      .then((r) => r.json())
+    fetchJsonOfflineFirst<{
+      foreign?: {
+        hotel_share?: number;
+        non_hotel_share?: number;
+      };
+      domestic?: {
+        hotel_share?: number;
+        non_hotel_share?: number;
+      };
+    }>("/api/transparencia/turismo/2024/structure/summary")
       .then(setData);
   }, []);
 
   if (!data) return null;
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-2">
       <div>
         <h2 className="font-semibold">
           Estrutura turística (2024)

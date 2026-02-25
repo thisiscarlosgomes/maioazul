@@ -2,9 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 import maplibregl from "maplibre-gl";
-import { Heart, Maximize2, Minimize2, X } from "lucide-react";
+import { Drawer } from "vaul";
+import { Heart, Maximize2, Minimize2, Pause, Play, Volume2, X } from "lucide-react";
 import { useFavorites } from "@/lib/favorites";
+import { hasVoiceForId, pauseVoice, playVoice, resumeVoice, stopVoice, useVoiceManifest, useVoiceProgress, useVoiceState } from "@/lib/voice";
+import { fetchJsonOfflineFirst } from "@/lib/offline";
+import { useLang } from "@/lib/lang";
 
 type Place = {
   id: string;
@@ -23,11 +28,16 @@ export default function PlacePage() {
   const [place, setPlace] = useState<Place | null>(null);
   const [allPlaces, setAllPlaces] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<"overview">("overview");
-  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [mapFullscreen, setMapFullscreen] = useState(false);
-  const [lang, setLang] = useState<"pt" | "en">("en");
+  const [pinOpen, setPinOpen] = useState(false);
+  const [lang] = useLang();
   const [baseMap, setBaseMap] = useState<"normal" | "satellite">("normal");
+  const voiceState = useVoiceState();
+  const voiceManifest = useVoiceManifest();
+  const voiceActive = voiceState.status === "playing";
+  const voicePaused = voiceState.status === "paused";
+  const voiceLoading = voiceState.status === "loading";
+  const voiceProgress = useVoiceProgress();
   const mapRef = useRef<maplibregl.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const { isFavorite, toggle } = useFavorites();
@@ -37,30 +47,34 @@ export default function PlacePage() {
       pt: {
         overview: "Visão geral",
         nearby: "Perto de si",
-        readMore: "Ler mais",
         close: "Fechar",
         map: "Mapa",
         location: "Localização",
+        voiceTitle: "Guia de voz",
+        voiceDescription: "Ouça um resumo deste lugar em áudio.",
+        voicePlay: "Iniciar",
+        voicePause: "Pausar",
+        voiceResume: "Continuar",
+        voiceCancel: "Cancelar",
+        voiceLoading: "A preparar áudio...",
       },
       en: {
         overview: "Overview",
         nearby: "Nearby",
-        readMore: "Read more",
         close: "Close",
         map: "Map",
         location: "Location",
+        voiceTitle: "Voice tour",
+        voiceDescription: "Listen to a short audio summary for this place.",
+        voicePlay: "Play",
+        voicePause: "Pause",
+        voiceResume: "Resume",
+        voiceCancel: "Cancel",
+        voiceLoading: "Preparing audio...",
       },
     }),
     []
   );
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const stored = window.localStorage.getItem("maio-lang");
-    if (stored === "pt" || stored === "en") {
-      setLang(stored);
-    }
-  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -72,24 +86,19 @@ export default function PlacePage() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    window.localStorage.setItem("maio-lang", lang);
-  }, [lang]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
     window.localStorage.setItem("maio-basemap", baseMap);
   }, [baseMap]);
 
   useEffect(() => {
-    fetch("/api/places")
-      .then((r) => r.json())
-      .then((data: Place[]) => {
+    fetchJsonOfflineFirst<Place[]>("/api/places")
+      .then((data) => {
         setAllPlaces(data);
         setPlace(data.find((p) => p.id === id) || null);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [id]);
+
 
   useEffect(() => {
     if (!place?.coordinates || !mapContainerRef.current) return;
@@ -155,15 +164,13 @@ export default function PlacePage() {
       },
     });
 
-    const popup = new maplibregl.Popup({
-      offset: 18,
-      className: "place-popup",
-    }).setText(place.name[lang]);
-
-    new maplibregl.Marker({ color: "#2563eb" })
+    const marker = new maplibregl.Marker({ color: "#2563eb" })
       .setLngLat(place.coordinates)
-      .setPopup(popup)
       .addTo(map);
+
+    const markerEl = marker.getElement();
+    const handleMarkerClick = () => setPinOpen(true);
+    markerEl.addEventListener("click", handleMarkerClick);
 
     const setInteractivity = (enabled: boolean) => {
       const action = enabled ? "enable" : "disable";
@@ -180,6 +187,7 @@ export default function PlacePage() {
     mapRef.current = map;
 
     return () => {
+      markerEl.removeEventListener("click", handleMarkerClick);
       map.remove();
       mapRef.current = null;
     };
@@ -268,6 +276,40 @@ export default function PlacePage() {
   const nearby = getNearbyPlaces(place, allPlaces);
   const pick = (value?: { pt?: string; en?: string }) =>
     value?.[lang] || value?.en || value?.pt || "";
+  const descriptionText = (place.description?.en || "").replace(/\s+/g, " ").trim();
+  const canPlayVoice = Boolean(descriptionText) && hasVoiceForId(place.id, voiceManifest);
+  const isVoiceForPlace = voiceState.placeId === place.id;
+  const tagLabel = (value: string) =>
+    value
+      .replace(/[-_]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const handleVoicePlay = async () => {
+    if (!canPlayVoice) return;
+    const text = `${place.name?.en || pick(place.name)}. ${descriptionText}`;
+    await playVoice({ text, title: pick(place.name), lang: "en", placeId: place.id });
+  };
+
+  const handleVoicePauseToggle = () => {
+    if (voicePaused) {
+      resumeVoice();
+    } else {
+      if (voiceActive) pauseVoice();
+    }
+  };
+
+  const handleVoiceCancel = () => {
+    stopVoice();
+  };
+
+  const formatTime = (value: number) => {
+    const safe = Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0;
+    const minutes = Math.floor(safe / 60);
+    const seconds = safe % 60;
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+  };
 
   return (
     <div className="max-w-3xl mx-auto pb-36">
@@ -280,13 +322,13 @@ export default function PlacePage() {
           decoding="async"
         />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3">
-          <a
+          <Link
             href="/map"
             aria-label="Close"
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur hover:bg-black/55 active:scale-[0.95]"
           >
             <X className="h-4 w-4" />
-          </a>
+          </Link>
           <button
             type="button"
             aria-label={
@@ -299,11 +341,11 @@ export default function PlacePage() {
                   : "Save favorite"
             }
             onClick={() => toggle(place.id)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/90 text-foreground backdrop-blur transition active:scale-[0.95]"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur transition active:scale-[0.95]"
           >
             <Heart
               className={`h-4 w-4 ${
-                isFavorite(place.id) ? "fill-rose-500 text-rose-500" : "text-foreground"
+                isFavorite(place.id) ? "fill-rose-400 text-rose-400" : "text-white"
               }`}
             />
           </button>
@@ -320,31 +362,105 @@ export default function PlacePage() {
 
       <div className="px-4 pt-6" />
 
-      {/* TABS */}
-      <div className="mt-5 border-b px-4 flex gap-6 text-sm">
-        <TabButton active={tab === "overview"} onClick={() => setTab("overview")}>
-          {copy[lang].overview}
-        </TabButton>
-      </div>
-
       {/* CONTENT */}
-      <div className="px-4 py-6 space-y-6 text-sm leading-relaxed">
-        {tab === "overview" && (
-          <div className="space-y-3">
-            <p className={descriptionExpanded ? "" : "line-clamp-4"}>
-              {pick(place.description)}
-            </p>
-            {!descriptionExpanded && (
-              <button
-                type="button"
-                onClick={() => setDescriptionExpanded(true)}
-                className="text-xs font-medium text-foreground hover:underline"
-              >
-                {copy[lang].readMore}
-              </button>
-            )}
+      <div className="px-4 pt-1 pb-8 space-y-6 text-sm leading-relaxed">
+        {canPlayVoice && (
+          <div className="rounded-2xl border border-border bg-background p-4 shadow-sm">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  {copy[lang].voiceTitle}
+                </div>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {copy[lang].voiceDescription}
+                </p>
+              </div>
+              {/* <div className="h-9 w-9 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm flex items-center justify-center text-muted-foreground">
+                <Volume2 className="h-4 w-4" />
+              </div> */}
+            </div>
+            <div className="mt-3 flex flex-col gap-2">
+              {(voiceActive || voicePaused) && isVoiceForPlace && voiceProgress.duration > 0 && (
+                <div className="w-full">
+                  <div className="h-1.5 w-full rounded-full bg-muted/70">
+                    <div
+                      className="h-1.5 rounded-full bg-foreground transition-[width]"
+                      style={{
+                        width: `${Math.min(
+                          100,
+                          (voiceProgress.currentTime / voiceProgress.duration) * 100
+                        )}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center gap-2">
+                {voiceLoading && isVoiceForPlace ? (
+                  <div className="text-xs text-muted-foreground">
+                    {copy[lang].voiceLoading}
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!descriptionText) return;
+                      if (isVoiceForPlace && (voiceActive || voicePaused)) {
+                        handleVoicePauseToggle();
+                      } else {
+                        handleVoicePlay();
+                      }
+                    }}
+                    aria-label={
+                      isVoiceForPlace && (voiceActive || voicePaused)
+                        ? voicePaused
+                          ? copy[lang].voiceResume
+                          : copy[lang].voicePause
+                        : copy[lang].voicePlay
+                    }
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-sm hover:bg-accent"
+                  >
+                    {isVoiceForPlace && (voiceActive || voicePaused) ? (
+                      voicePaused ? (
+                        <Play className="h-3.5 w-3.5" />
+                      ) : (
+                        <Pause className="h-3.5 w-3.5" />
+                      )
+                    ) : (
+                      <Play className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                )}
+                {(voiceActive || voicePaused) && isVoiceForPlace && (
+                  <button
+                    type="button"
+                    onClick={handleVoiceCancel}
+                    aria-label={copy[lang].voiceCancel}
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/95 text-foreground shadow-sm hover:bg-accent"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         )}
+
+        <div className="space-y-3">
+          <p>{pick(place.description)}</p>
+          {place.tags?.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-2">
+              {place.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="uppercase inline-flex items-center rounded-xl border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-foreground/80"
+                >
+                  {tagLabel(tag)}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
 
         {place.coordinates && (
           <div className="space-y-3">
@@ -368,14 +484,9 @@ export default function PlacePage() {
                 <button
                   type="button"
                   onClick={() => setMapFullscreen((v) => !v)}
-                  className="h-10 w-10 rounded-full border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center active:scale-[0.95]"
-                  aria-label={mapFullscreen ? copy[lang].close : copy[lang].map}
+                  className="rounded-full border border-border bg-background/95 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide hover:bg-accent active:scale-[0.95]"
                 >
-                  {mapFullscreen ? (
-                    <Minimize2 className="h-4 w-4" />
-                  ) : (
-                    <Maximize2 className="h-4 w-4" />
-                  )}
+                  {mapFullscreen ? copy[lang].close : copy[lang].map}
                 </button>
               </div>
               {mapFullscreen && (
@@ -406,6 +517,17 @@ export default function PlacePage() {
                   </div>
                 </div>
               )}
+              {mapFullscreen && (
+                <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2">
+                  <button
+                    type="button"
+                    onClick={() => setMapFullscreen(false)}
+                    className="inline-flex h-11 items-center justify-center rounded-full border border-border bg-background/95 px-6 text-sm font-medium shadow-lg hover:bg-accent active:scale-[0.98]"
+                  >
+                    {copy[lang].close}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -416,7 +538,7 @@ export default function PlacePage() {
             <div className="text-base font-semibold">{copy[lang].nearby}</div>
             <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide scroll-smooth overscroll-x-contain">
               {nearby.map((p) => (
-                <a
+                <Link
                   key={p.id}
                   href={`/places/${p.id}`}
                   className="snap-start min-w-[70%] sm:min-w-[44%] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition active:scale-[0.99] active:translate-y-[1px]"
@@ -436,12 +558,94 @@ export default function PlacePage() {
                     <div className="mt-1 text-xs text-muted-foreground line-clamp-2">
                     {pick(p.description)}
                     </div>
-                </a>
+                </Link>
               ))}
             </div>
           </div>
         )}
       </div>
+
+      {place && (
+        <Drawer.Root open={pinOpen} onOpenChange={setPinOpen}>
+          <Drawer.Portal>
+            <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm" />
+            <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] outline-none">
+              <div className="mx-auto w-full max-w-2xl overflow-hidden rounded-t-3xl bg-neutral-950 text-white shadow-2xl">
+                <div className="relative h-56 sm:h-64">
+                  <img
+                    src={place.image_url || "/image.png"}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                  <div className="absolute right-4 top-4">
+                    <button
+                      type="button"
+                      onClick={() => setPinOpen(false)}
+                      className="inline-flex items-center justify-center rounded-full border border-white/20 bg-black/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-white backdrop-blur hover:bg-black/60"
+                    >
+                      {copy[lang].close}
+                    </button>
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="flex flex-wrap items-center gap-2 text-xs text-white/80">
+                      <span className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 uppercase tracking-wide">
+                        {place.category || "Place"}
+                      </span>
+                      <span className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1">
+                        {pick(place.location)}
+                      </span>
+                    </div>
+                    <div className="mt-3 text-2xl font-semibold leading-tight">
+                      {pick(place.name)}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4 px-5 pb-8 pt-5">
+                  <p className="text-sm text-white/75">
+                    {pick(place.description)}
+                  </p>
+
+                  <div className="grid grid-cols-3 gap-3 text-center text-xs uppercase tracking-wide text-white/70">
+                    <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
+                      <div className="text-lg font-semibold text-white">
+                        {place.tags?.length || 0}
+                      </div>
+                      <div className="mt-1">Tags</div>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
+                      <div className="text-lg font-semibold text-white">
+                        {place.category || "Place"}
+                      </div>
+                      <div className="mt-1">Type</div>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
+                      <div className="text-lg font-semibold text-white">
+                        {lang === "pt" ? "Maio" : "Maio"}
+                      </div>
+                      <div className="mt-1">Island</div>
+                    </div>
+                  </div>
+
+                  {place.tags?.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {place.tags.slice(0, 6).map((tag) => (
+                        <span
+                          key={tag}
+                          className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs uppercase tracking-wide text-white/80"
+                        >
+                          {tagLabel(tag)}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Drawer.Content>
+          </Drawer.Portal>
+        </Drawer.Root>
+      )}
 
     </div>
   );
@@ -450,29 +654,6 @@ export default function PlacePage() {
 /* =======================
    UI bits
 ======================= */
-
-function TabButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`pb-3 ${
-        active
-          ? "border-b-2 border-foreground font-medium"
-          : "text-muted-foreground"
-      }`}
-    >
-      {children}
-    </button>
-  );
-}
 
 function getNearbyPlaces(place: Place, allPlaces: Place[]) {
   if (!place.coordinates) return [];
