@@ -22,6 +22,7 @@ function shouldShowNav(pathname: string | null) {
 
 export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const allowIntroDrawer = pathname !== "/";
   const showNav = shouldShowNav(pathname);
   const [hideNav, setHideNav] = useState(false);
   const voiceState = useVoiceState();
@@ -126,6 +127,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!allowIntroDrawer) return;
     if (window.matchMedia("(min-width: 1024px)").matches) return;
     const already = window.localStorage.getItem(INTRO_KEY);
     const hidden = window.localStorage.getItem(GUIDE_LAUNCHER_KEY) === "1";
@@ -133,7 +135,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     if (!already && !hidden) {
       setIntroOpen(true);
     }
-  }, []);
+  }, [allowIntroDrawer]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -341,7 +343,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   return (
     <>
       <Drawer.Root
-        open={introOpen}
+        open={allowIntroDrawer && introOpen}
         onOpenChange={(next) => {
           if (!next && introStep < 2) return;
           setIntroOpen(next);
