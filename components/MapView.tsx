@@ -126,7 +126,7 @@ export default function MapPage() {
         }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-6 pb-12 space-y-4">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 pt-6 pb-12 space-y-2">
         {/* Header */}
         <div className="flex items-start justify-between gap-6 border-b border-border pb-4">
           <div>

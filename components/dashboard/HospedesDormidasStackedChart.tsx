@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { fetchJsonOfflineFirst } from "@/lib/offline"
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
 import {
@@ -48,8 +49,13 @@ export function HospedesDormidasStackedChart({ year }: { year: string }) {
         ? "/api/transparencia/turismo/2024/baseline"
         : `/api/transparencia/turismo/overview?year=${year}`
 
-    fetch(endpoint)
-      .then((r) => r.json())
+    fetchJsonOfflineFirst<{
+      islands?: Array<{
+        ilha?: string
+        hospedes?: number
+        dormidas?: number
+      }>
+    }>(endpoint)
       .then((res) => {
         const islands =
           year === "2024"

@@ -29,9 +29,10 @@ function getPlace(id: string): Place | null {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const place = getPlace(params.id);
+  const { id } = await params;
+  const place = getPlace(id);
   const name = place?.name?.en || place?.name?.pt || "Place";
   const description =
     place?.description?.en ||
@@ -41,11 +42,11 @@ export async function generateMetadata({
   return {
     title: name,
     description,
-    alternates: { canonical: `/places/${params.id}` },
+    alternates: { canonical: `/places/${id}` },
     openGraph: {
       title: `${name} · MaioAzul`,
       description,
-      url: `/places/${params.id}`,
+      url: `/places/${id}`,
       images: place?.image_url
         ? [{ url: place.image_url, alt: name }]
         : undefined,

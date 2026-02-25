@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchJsonOfflineFirst } from "@/lib/offline";
 
 /* =========================
    Utils
@@ -42,12 +43,12 @@ export function TourismIslandBaseline({
 
     setLoading(true);
 
-    fetch(
-      `/api/transparencia/turismo/${year}/island?ilha=${encodeURIComponent(
-        ilha
-      )}`
-    )
-      .then((r) => r.json())
+    fetchJsonOfflineFirst<{
+      hospedes?: number;
+      dormidas?: number;
+      avg_stay?: number | null;
+      dormidasShareNational?: number | null;
+    }>(`/api/transparencia/turismo/${year}/island?ilha=${encodeURIComponent(ilha)}`)
       .then((res) => {
         setData(res || null);
         setLoading(false);
@@ -60,7 +61,7 @@ export function TourismIslandBaseline({
 
   if (loading) {
     return (
-      <section className="space-y-4">
+      <section className="space-y-2">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div
@@ -76,7 +77,7 @@ export function TourismIslandBaseline({
   if (!data) return null;
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-2">
       <div>
         <h2 className="font-semibold">
           Turismo · Escala anual ({year})

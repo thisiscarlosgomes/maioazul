@@ -1,0 +1,56 @@
+[
+  {
+    "id": "food",
+    "title": "Food",
+    "subtitle": {
+      "en": "Taste the island’s freshest catch.",
+      "pt": "Saboreie o peixe mais fresco da ilha."
+    },
+    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633850/tuna_oyjqjz.png"
+  },
+  {
+    "id": "trekking",
+    "title": "Trekking",
+    "subtitle": {
+      "en": "Slow walks through dunes and trails.",
+      "pt": "Caminhadas lentas entre dunas e trilhos."
+    },
+    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634013/penoso_2_zrdjrz.jpg"
+  },
+  {
+    "id": "fishing",
+    "title": "Fishing",
+    "subtitle": {
+      "en": "Cast a line where locals do.",
+      "pt": "Pesque onde os locais pescam."
+    },
+    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/fish_rih7bp.png"
+  },
+  {
+    "id": "beach",
+    "title": "Beach",
+    "subtitle": {
+      "en": "Quiet shores made for unhurried days.",
+      "pt": "Praias calmas para dias sem pressa."
+    },
+    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634116/morro1_olke19.jpg"
+  },
+  {
+    "id": "blue-sports",
+    "title": "Blue Sports",
+    "subtitle": {
+      "en": "Surf, Jet ski, SUP, or dive in clear waters.",
+      "pt": "Surf, Jet ski, SUP ou mergulho em águas claras."
+    },
+    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/surf_qfgyc1.png"
+  },
+  {
+    "id": "routes-4x4",
+    "title": "4x4 Routes",
+    "subtitle": {
+      "en": "Wander the island at your own pace.",
+      "pt": "Passeie pela ilha ao seu ritmo."
+    },
+    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/4_lpqfzn.png"
+  }
+]

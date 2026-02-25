@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "./theme-provider";
 import LayoutShell from "@/components/LayoutShell";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -118,6 +119,7 @@ export default function RootLayout({
         <ThemeProvider>
           <LayoutShell>{children}</LayoutShell>
         </ThemeProvider>
+        <ServiceWorkerRegister />
       </body>
 
     </html>

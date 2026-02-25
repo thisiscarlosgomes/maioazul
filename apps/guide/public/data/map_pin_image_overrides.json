@@ -1,0 +1,48 @@
+{
+  "praia da bitxe rotcha": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281555/places/vila2.jpg",
+  "praia de porto cais": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287192/places/portocais.png",
+  "praia do morro": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281529/places/morrob.jpg",
+  "alcatraz": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281522/places/alcapc.png",
+  "banda riba": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281491/places/bandariba.png",
+  "pedro vaz": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281516/places/pv.png",
+  "pilao cao": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281522/places/alcapc.png",
+  "parque natural do norte": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281549/places/parquenorte.jpg",
+  "parque natural de barreiro e figueira": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281480/places/protectedb.jpg",
+  "morro": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281525/places/conjuntomorro.png",
+  "morrinho": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281544/places/morinho.png"
+  },
+  "lem tavares": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281535/places/ribonacalheta.png"
+  },
+  "lagoa": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281460/places/lagoa.png"
+  },
+  "praiona": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281512/places/praiona.png"
+  },
+  "ribeira dom joao": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281472/places/rj.png"
+  },
+  "ribinha": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287245/places/baxona.png"
+  },
+  "santo antonio": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281512/places/pg.png"
+  },
+  "praia goncalo": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281512/places/pg.png"
+  },
+  "praia e refugio pesqueiro de praiona": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281512/places/praiona.png"
+  },
+  "praia de seada": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281464/places/bocalagoa.png"
+  },
+  "praia de santana": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281497/places/praiasantana.png"
+  },
+  "praia de cadjetinha": {
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1771156402/cadj_u4nbda.jpg"
+  }
+}

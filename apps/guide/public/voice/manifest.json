@@ -1,0 +1,429 @@
+{
+  "items": [
+    {
+      "id": "ribeira-de-lagoa",
+      "name": "Ribeira of Lagoa",
+      "hash": "7504615bbfa727c976d987c5"
+    },
+    {
+      "id": "lagoa",
+      "name": "Lagoa",
+      "hash": "45364d810b7ce3550999e0e5"
+    },
+    {
+      "id": "zona-humida-ribeira-lagoa",
+      "name": "Wetlands of Ribeira Lagoa",
+      "hash": "dd05905b91a2c4850185414c"
+    },
+    {
+      "id": "praias-boca-lagoa-seada",
+      "name": "Beaches of Boca Lagoa and Seada",
+      "hash": "1940389006a4c2e7ef6c2cd4"
+    },
+    {
+      "id": "praias-guarda-santa-clara",
+      "name": "Guarda and Santa Clara Beaches",
+      "hash": "a06eb7e4e4f78cc0846b7101"
+    },
+    {
+      "id": "praias-monte-branco-ribeira-baia",
+      "name": "Monte Branco to Ribeira Baía Beaches",
+      "hash": "4bf2c3b0363fd266e932a30a"
+    },
+    {
+      "id": "reserva-natural-lagoa-cimidor",
+      "name": "Natural Reserve of Lagoa Cimidor",
+      "hash": "80f6930a68ef2fe25c3dbb10"
+    },
+    {
+      "id": "lagoa-cimidor",
+      "name": "Cimidor Lagoon",
+      "hash": "9dd981d07bb536c26d460ce0"
+    },
+    {
+      "id": "praia-ponta-dos-flamingos",
+      "name": "Beach and Headland of Flamingos",
+      "hash": "3f28a91d161d71efd84fe3a6"
+    },
+    {
+      "id": "conjunto-urbano-ribeira-d-joao",
+      "name": "Village of Ribeira D. João",
+      "hash": "df2aedc8bb15a03e9dc098b6"
+    },
+    {
+      "id": "capela-sao-joao-ribeira-d-joao",
+      "name": "Chapel of São João",
+      "hash": "c8fea54e6e5ff94fe4605bf8"
+    },
+    {
+      "id": "queijaria-ribeira-d-joao",
+      "name": "Cheese Factory of Ribeira D. João",
+      "hash": "9ca2713ca589631e3791a111"
+    },
+    {
+      "id": "ribeira-de-d-joao",
+      "name": "Ribeira of D. João",
+      "hash": "1a29ff7bdfac002c282a2be5"
+    },
+    {
+      "id": "praias-porto-ribeira-funda",
+      "name": "Beaches of Porto and Ribeira Funda",
+      "hash": "1594631b378dca0546c332c6"
+    },
+    {
+      "id": "praia-joao-martinho",
+      "name": "João Martinho Beach",
+      "hash": "4f4a50e991641566a0d67382"
+    },
+    {
+      "id": "ppbf-barreiro-figueira",
+      "name": "Protected Landscape of Barreiro and Figueira",
+      "hash": "8df34fe2265a2c02347deadb"
+    },
+    {
+      "id": "bacia-ribeira-lagoa",
+      "name": "Basin of the Ribeira de Lagoa",
+      "hash": "fc0626749b819a9daee5ab6c"
+    },
+    {
+      "id": "trapiches-grogue",
+      "name": "Trapiches of Grogue",
+      "hash": "207341d3c5e71718debe9ca6"
+    },
+    {
+      "id": "figueira-horta-village",
+      "name": "Village of Figueira Horta",
+      "hash": "7eb7779316be10d070ab696e"
+    },
+    {
+      "id": "capela-cristo-rei",
+      "name": "Chapel of Cristo Rei",
+      "hash": "0f38aa110e465ae8b2c273e2"
+    },
+    {
+      "id": "figueira-seca-village",
+      "name": "Village of Figueira Seca",
+      "hash": "25430fd539e6d81432ca8ff1"
+    },
+    {
+      "id": "banda-riba-village",
+      "name": "Village of Banda Riba",
+      "hash": "f9efb367d3c921e72ee8d2ad"
+    },
+    {
+      "id": "capela-sagrada-familia",
+      "name": "Chapel of Sagrada Família",
+      "hash": "65e64cdce67a22f8bdc5a846"
+    },
+    {
+      "id": "lem-varela-village",
+      "name": "Village of Lém Varela",
+      "hash": "f26252a178b016abbd6faf82"
+    },
+    {
+      "id": "cadjetinha-morrinho-beach",
+      "name": "Cadjetinha Beach of Morrinho",
+      "hash": "fb2383f87ba7bb5dfb8f4652"
+    },
+    {
+      "id": "santana-beach",
+      "name": "Beach of Santana",
+      "hash": "b13603286599a12cffb7a741"
+    },
+    {
+      "id": "porto-cais-beach-port",
+      "name": "Beach and Port of Porto Cais",
+      "hash": "2462111e4884e16089debfb5"
+    },
+    {
+      "id": "terras-salgadas",
+      "name": "Terras Salgadas",
+      "hash": "a27ca480a46d6df6113e24fc"
+    },
+    {
+      "id": "galeao-beach-dunes",
+      "name": "Beach and Dunes of Galeão",
+      "hash": "e7a3040770f11e1323c82957"
+    },
+    {
+      "id": "praia-real",
+      "name": "Praia Real",
+      "hash": "2c929744171e6519b208149a"
+    },
+    {
+      "id": "ilheu-laje-branca",
+      "name": "Islet of Laje Branca",
+      "hash": "6c2d1c75624b856a5bb06b91"
+    },
+    {
+      "id": "praia-santo-antonio",
+      "name": "Beach and Dunes of Santo António",
+      "hash": "cc002b6541494cd173827876"
+    },
+    {
+      "id": "montes-santo-antonio-chapeu-2",
+      "name": "Mounts Santo António to Chapéu",
+      "hash": "19a0ad37fc7809f718a70a2c"
+    },
+    {
+      "id": "praia-refugio-praiona",
+      "name": "Beach and Port of Praiona",
+      "hash": "e145eea798fab86b7db805c4"
+    },
+    {
+      "id": "praia-goncalo-santo-antonio",
+      "name": "Villages of Praia Gonçalo and Santo António",
+      "hash": "11c453a02d80a405214f1821"
+    },
+    {
+      "id": "capela-santo-antonio",
+      "name": "Chapel of Santo António",
+      "hash": "2ac4999ba69254313243db5e"
+    },
+    {
+      "id": "prainha-boca-ribeira",
+      "name": "Prainha and Boca Ribeira Beaches",
+      "hash": "f50e10fa615f90794b870466"
+    },
+    {
+      "id": "pedro-vaz",
+      "name": "Village of Pedro Vaz",
+      "hash": "acbc4e524928f404064193a2"
+    },
+    {
+      "id": "paisagem-protegida-monte-penoso-monte-branco",
+      "name": "Protected Landscape of Monte Penoso and Monte Branco",
+      "hash": "06338bfd03085101b0ea808f"
+    },
+    {
+      "id": "monte-penoso",
+      "name": "Mount Penoso",
+      "hash": "b56b995868ce467043e6aaf7"
+    },
+    {
+      "id": "monte-branco",
+      "name": "Mount Branco",
+      "hash": "50472be22bad94e0505d8b03"
+    },
+    {
+      "id": "capela-nossa-senhora-rosario-penoso",
+      "name": "Chapel of Nossa Senhora do Rosário",
+      "hash": "024fb22a528eae81b293e7a3"
+    },
+    {
+      "id": "alcatraz-pilao-cao",
+      "name": "Villages of Alcatraz and Pilão Cão",
+      "hash": "ac29c0d1386f1910c453fc98"
+    },
+    {
+      "id": "capela-alcatraz-pilao-cao",
+      "name": "Chapel of Alcatraz and Pilão Cão",
+      "hash": "ff663304c6539bb65c4bcc8f"
+    },
+    {
+      "id": "morro-village",
+      "name": "Village of Morro",
+      "hash": "da7a5f17a0b800b84d21a484"
+    },
+    {
+      "id": "capela-nossa-senhora-fatima-morro",
+      "name": "Chapel of Nossa Senhora de Fátima",
+      "hash": "a1ec310523b2d8be98d34dd0"
+    },
+    {
+      "id": "centro-ceramica-morro",
+      "name": "Pottery Centre of Morro",
+      "hash": "dc9b81d655041a9768c2e2f8"
+    },
+    {
+      "id": "rnpm-praia-do-morro",
+      "name": "Natural Reserve of Praia do Morro",
+      "hash": "c465a849ca7d4bdc41f27437"
+    },
+    {
+      "id": "praia-do-morro",
+      "name": "Morro Beach",
+      "hash": "f39ff827226856f761abc4b5"
+    },
+    {
+      "id": "ribeira-do-morro",
+      "name": "Ribeira of Morro",
+      "hash": "5d0794f45365e220c6a2f226"
+    },
+    {
+      "id": "monte-batalha",
+      "name": "Mount Batalha",
+      "hash": "0ea5d067374fc63ce1a53430"
+    },
+    {
+      "id": "perimetro-florestal-calheta",
+      "name": "Forest of Calheta",
+      "hash": "0583e16fbe588b0c16ba38c8"
+    },
+    {
+      "id": "centro-zootecnico-calheta",
+      "name": "Zootechnical Centre",
+      "hash": "b51f410ee8d727209b514d76"
+    },
+    {
+      "id": "ribona-lem-tavares",
+      "name": "Ribona and Lém Tavares (Upper Calheta)",
+      "hash": "614dc50a94e4d8b21bb93e4f"
+    },
+    {
+      "id": "capela-sao-jose-ribona",
+      "name": "Chapel of São José",
+      "hash": "c14c2517037697ab022d8404"
+    },
+    {
+      "id": "centro-artesanato-calheta",
+      "name": "Artisan Centre of Calheta",
+      "hash": "d0d6144dc23e5573c5997638"
+    },
+    {
+      "id": "baxona-ribinha",
+      "name": "Baxona and Ribinha (Lower Calheta)",
+      "hash": "9322fe8b25c47c3a0081f292"
+    },
+    {
+      "id": "praia-baxona",
+      "name": "Baxona Beach",
+      "hash": "886fa7cf53e3c05c00964697"
+    },
+    {
+      "id": "praias-soca-pau-seco",
+      "name": "Beaches of Soca to Pau Seco",
+      "hash": "7da985c449d1fe1fe00fa22c"
+    },
+    {
+      "id": "morrinho",
+      "name": "Village of Morrinho",
+      "hash": "073470396dbe3a65296b1c7c"
+    },
+    {
+      "id": "capela-santa-ana-sao-joaquim",
+      "name": "Chapel of Santa Ana and São Joaquim",
+      "hash": "cb8e941512b6f268ea8234c7"
+    },
+    {
+      "id": "cruz-santana",
+      "name": "Santana Cross",
+      "hash": "7eccfa714e1cca223daf22b3"
+    },
+    {
+      "id": "fornos-carvao-cascabulho",
+      "name": "Charcoal production",
+      "hash": "678297730111b7c88444d3ed"
+    },
+    {
+      "id": "cascabulho",
+      "name": "Village of Cascabulho",
+      "hash": "d6b5e7bb90f3c059b338f214"
+    },
+    {
+      "id": "capela-nossa-senhora-socorro",
+      "name": "Chapel of Nossa Senhora de Socorro",
+      "hash": "eab7329854c60218f2b76455"
+    },
+    {
+      "id": "parque-natural-norte-maio",
+      "name": "Norte da Ilha do Maio Natural Park",
+      "hash": "98d04e459be33a4049b68b57"
+    },
+    {
+      "id": "dunas-do-morrinho",
+      "name": "Dunes of Morrinho",
+      "hash": "259dfb8bfcfd83ff3eb6f3ac"
+    },
+    {
+      "id": "zona-humida-casas-velhas",
+      "name": "Wetlands of Casas Velhas",
+      "hash": "513df2c3a4d341df5f2fa97b"
+    },
+    {
+      "id": "casas-velhas",
+      "name": "Casas Velhas",
+      "hash": "2ea9122c420e0b8484745abc"
+    },
+    {
+      "id": "praia-djampadja",
+      "name": "Djampadja Beach",
+      "hash": "b2bc692469063a8ed48e6349"
+    },
+    {
+      "id": "praia-ponta-preta",
+      "name": "Ponta Preta Beach",
+      "hash": "1df67201040d47dba3810616"
+    },
+    {
+      "id": "cidade-porto-ingles",
+      "name": "City of Porto Inglês",
+      "hash": "3c3c3d3673625ddf3179f5bb"
+    },
+    {
+      "id": "farol-forte-sao-jose",
+      "name": "Fort of São José",
+      "hash": "0e10dba94627f9fd2cc77ec9"
+    },
+    {
+      "id": "igreja-nossa-senhora-da-luz",
+      "name": "Church of Nossa Senhora da Luz",
+      "hash": "a3e185a3da9b5f9beca1bb55"
+    },
+    {
+      "id": "sobrado-paicv",
+      "name": "Townhouse (PAICV headquarters)",
+      "hash": "12fd483e83cbb2bb1275e54e"
+    },
+    {
+      "id": "montinho-de-lume",
+      "name": "Mount de Lume",
+      "hash": "db06665c3a93a4ab67a9c04d"
+    },
+    {
+      "id": "praia-bitche-rotcha",
+      "name": "Bitche Rotcha Beach",
+      "hash": "33145722c4846eedddf8a32f"
+    },
+    {
+      "id": "rotcha",
+      "name": "Rotcha",
+      "hash": "371c5b55c874e547ef7a9c1f"
+    },
+    {
+      "id": "cooperativa-producao-sal",
+      "name": "Salt Production Cooperative",
+      "hash": "e2954d3796d4f4a7d5532230"
+    },
+    {
+      "id": "ppspi-salinas-porto-ingles",
+      "name": "Protected Landscape of Salinas do Porto Inglês",
+      "hash": "93597b3c398368fda536c3e6"
+    },
+    {
+      "id": "center-salinas-porto-ingles",
+      "name": "Salinas Interpretive Center",
+      "hash": "a8bde63257772e9057302eca"
+    },
+    {
+      "id": "praias-salina-bancona",
+      "name": "Salina and Bancona Beaches",
+      "hash": "9beed93c0b56e1379df7490c"
+    },
+    {
+      "id": "maio-unesco-biosphere",
+      "name": "UNESCO Biosphere Reserve — Maio",
+      "hash": "78e3df9f5a8069c837b8d667"
+    },
+    {
+      "id": "Parque Natural de Barreiro e Figueira",
+      "name": "Parque Natural de Barreiro e Figueira",
+      "hash": "e5d982b3bd61138c69d14067"
+    },
+    {
+      "id": "Parque Natural do Norte",
+      "name": "Parque Natural do Norte",
+      "hash": "70ff0bd9c44c756600f74bad"
+    }
+  ]
+}

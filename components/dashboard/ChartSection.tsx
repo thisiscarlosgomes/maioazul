@@ -12,7 +12,7 @@ export function ChartSection({
   insight?: string;
 }) {
   return (
-    <section className="space-y-4">
+    <section className="space-y-2">
       <div className="space-y-1">
         <h2 className="font-semibold">{title}</h2>
         {description && (

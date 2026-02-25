@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 3600; // 1h cache
 
 export async function GET() {
@@ -11,7 +12,7 @@ export async function GET() {
     `?latitude=${lat}` +
     `&longitude=${lon}` +
     `&current=temperature_2m,relative_humidity_2m,precipitation,weathercode` +
-    `&daily=temperature_2m_max,temperature_2m_min` +
+    `&daily=temperature_2m_max,temperature_2m_min,weathercode` +
     `&timezone=auto`;
 
   const res = await fetch(url, { next: { revalidate } });
@@ -38,5 +39,12 @@ export async function GET() {
     // daily range (today)
     temperature_min: data.daily.temperature_2m_min[0],
     temperature_max: data.daily.temperature_2m_max[0],
+
+    daily: data.daily.time.map((date: string, index: number) => ({
+      date,
+      temperature_min: data.daily.temperature_2m_min[index],
+      temperature_max: data.daily.temperature_2m_max[index],
+      weather_code: data.daily.weathercode?.[index] ?? null,
+    })),
   });
 }

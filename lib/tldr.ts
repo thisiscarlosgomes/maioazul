@@ -12,6 +12,8 @@ export type TldrSection = {
 };
 
 export type IslandData = {
+  islandName?: string;
+
   population?: number;
   populationShareNational?: number;
 
@@ -22,6 +24,12 @@ export type IslandData = {
   hospedesShareNational?: number;   // % dos hóspedes nacionais
   avgStay?: number;                 // noites
   domesticShare?: number;           // %
+
+  receitasYear?: number;
+  receitasIsland?: number;
+  receitasIslandLabel?: string;
+  receitasNationalTotal?: number;
+  receitasShareNational?: number;   // %
 };
 
 
@@ -30,6 +38,14 @@ export type TldrResult = {
   globalVerdict: string;
 };
 
+function formatCVE(value: number) {
+  return `${new Intl.NumberFormat("pt-PT", {
+    notation: "compact",
+    compactDisplay: "short",
+    maximumFractionDigits: 2,
+  }).format(value)} CVE`;
+}
+
 
 
 /* =========================
@@ -37,52 +53,114 @@ export type TldrResult = {
 ========================= */
 
 function buildGlobalVerdict(data: IslandData): string {
-  const { population, tourismPressure, seasonality } = data;
+  const {
+    islandName,
+    population,
+    tourismPressure,
+    seasonality,
+    dormidasShareNational,
+    hospedesShareNational,
+    receitasShareNational,
+    domesticShare,
+  } = data;
+  const islandLabel = islandName || "a ilha";
 
-  if (
-    typeof population !== "number" ||
-    typeof tourismPressure !== "number" ||
-    typeof seasonality !== "number"
-  ) {
-    return "Dados insuficientes para uma leitura integrada da situação da ilha.";
+  const hasCoreTourism =
+    typeof tourismPressure === "number" && typeof seasonality === "number";
+  const hasNationalPosition =
+    typeof dormidasShareNational === "number" &&
+    typeof hospedesShareNational === "number";
+  const hasFiscalSignal = typeof receitasShareNational === "number";
+
+  if (!hasCoreTourism || (!hasNationalPosition && !hasFiscalSignal)) {
+    return `Dados insuficientes para uma leitura integrada robusta. São necessários indicadores combinados de pressão turística, posição nacional e receitas para avaliar a situação atual de ${islandLabel} com maior realismo.`;
   }
 
-  const smallPopulation = population < 10_000;
+  const dShare = dormidasShareNational ?? 0;
+  const hShare = hospedesShareNational ?? 0;
+  const tourismScaleShare = Math.max(dShare, hShare);
+  const fiscalShare = receitasShareNational ?? 0;
+  const smallPopulation = typeof population === "number" ? population < 10_000 : true;
+  const domesticPct = typeof domesticShare === "number" ? domesticShare * 100 : null;
 
-  const tourismLow = tourismPressure < 1;
-  const tourismModerate = tourismPressure >= 1 && tourismPressure < 3;
-  const tourismHigh = tourismPressure >= 3;
+  const pressureText =
+    tourismPressure! < 1
+      ? "A pressão turística está baixa no território."
+      : tourismPressure! < 3
+      ? "A pressão turística está em nível moderado e ainda controlável."
+      : tourismPressure! < 8
+      ? "A pressão turística já é elevada e exige gestão ativa."
+      : "A pressão turística está em nível crítico para a escala da ilha.";
 
-  const lowSeasonality = seasonality < 3;
-  const highSeasonality = seasonality >= 8;
+  const seasonalityText =
+    seasonality! < 3
+      ? "A sazonalidade está relativamente equilibrada."
+      : seasonality! < 8
+      ? "A sazonalidade é elevada, com quebra fora da época alta."
+      : "A sazonalidade é muito forte, concentrando atividade em poucos meses.";
 
-  /* =====================
-     Integrated assessment
-  ===================== */
-
-  if (tourismLow) {
-    return smallPopulation
-      ? "Economia com baixa exposição ao turismo e reduzida pressão externa. O principal desafio estrutural não é gerir excesso, mas criar atividade económica consistente que aumente o rendimento por residente."
-      : "Turismo residual num território de maior escala, indicando uma economia pouco dependente de fluxos externos.";
+  let nationalText = "";
+  if (tourismScaleShare < 2) {
+    nationalText =
+      `No plano nacional, ${islandLabel} mantém peso turístico reduzido face aos principais polos.`;
+  } else if (tourismScaleShare < 8) {
+    nationalText =
+      `No plano nacional, ${islandLabel} tem presença turística intermédia, sem liderança de fluxos.`;
+  } else {
+    nationalText =
+      `No plano nacional, ${islandLabel} já apresenta relevância turística elevada.`;
   }
 
-  if (tourismModerate && lowSeasonality) {
-    return smallPopulation
-      ? "Turismo presente mas equilibrado numa ilha de pequena escala. Existe margem real para escolhas estratégicas antes de surgirem pressões estruturais sobre território, serviços ou habitação."
-      : "Turismo integrado e relativamente estável ao longo do ano, com impacto controlado na economia local.";
+  let fiscalText = "";
+  if (fiscalShare < 0.2) {
+    fiscalText =
+      `O peso das receitas de ${islandLabel} no total nacional continua muito baixo, sinal de fraca tração económica relativa.`;
+  } else if (fiscalShare < 1) {
+    fiscalText =
+      `O peso das receitas de ${islandLabel} no total nacional é baixo, com margem clara para consolidar base económica local.`;
+  } else {
+    fiscalText =
+      `O peso das receitas de ${islandLabel} no total nacional já é material, indicando maior capacidade de geração de valor.`;
   }
 
-  if (tourismModerate && highSeasonality) {
-    return "Turismo relevante mas fortemente concentrado no verão. A economia beneficia da atividade turística, mas enfrenta rendimentos irregulares e dependência sazonal, tornando a diversificação económica fora da época alta crítica.";
+  let resilienceText = "";
+  if (domesticPct == null) {
+    resilienceText =
+      "Sem série completa de procura interna, a leitura de resiliência da procura permanece parcial.";
+  } else if (domesticPct < 10) {
+    resilienceText =
+      "A procura interna é limitada, o que aumenta dependência de mercados externos.";
+  } else if (domesticPct < 25) {
+    resilienceText =
+      "A procura interna existe mas ainda não estabiliza totalmente a atividade ao longo do ano.";
+  } else {
+    resilienceText =
+      "A procura interna já contribui para maior estabilidade económica entre épocas.";
   }
 
-  if (tourismHigh && highSeasonality) {
-    return smallPopulation
-      ? "Economia fortemente exposta ao turismo, com elevada sazonalidade e baixa base populacional. Pequenas variações de procura têm impacto desproporcional sobre rendimento, serviços públicos e equilíbrio territorial."
-      : "Turismo dominante e concentrado em poucos meses, exigindo gestão ativa para evitar desequilíbrios económicos e sociais.";
-  }
+  const priorityText =
+    tourismPressure! < 3 && fiscalShare < 1
+      ? "Prioridade estratégica: transformar atividade turística em maior retenção de valor local (emprego, cadeia local e base fiscal)."
+      : tourismPressure! >= 3
+      ? "Prioridade estratégica: gerir crescimento com disciplina territorial, reduzindo concentração sazonal e preservando capacidade local."
+      : "Prioridade estratégica: reforçar produtividade e continuidade anual sem perder equilíbrio territorial.";
 
-  return "Economia em transição, com sinais mistos entre integração turística e dependência estrutural.";
+  const populationQualifier =
+    smallPopulation
+      ? "Numa ilha de pequena escala populacional, variações de procura têm impacto desproporcional na economia local."
+      : "";
+
+  return [
+    pressureText,
+    seasonalityText,
+    nationalText,
+    fiscalText,
+    resilienceText,
+    populationQualifier,
+    priorityText,
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 /* =========================
@@ -121,7 +199,7 @@ export function buildIslandTldr(data: IslandData): TldrResult {
     const d = data.dormidasShareNational ?? 0;
     const h = data.hospedesShareNational ?? 0;
 
-    let bullets: string[] = [];
+    const bullets: string[] = [];
     let verdict = "";
     let grade: InsightGrade;
 
@@ -155,11 +233,60 @@ export function buildIslandTldr(data: IslandData): TldrResult {
     });
   }
 
+  if (
+    typeof data.receitasIsland === "number" &&
+    typeof data.receitasNationalTotal === "number" &&
+    typeof data.receitasShareNational === "number"
+  ) {
+    const share = data.receitasShareNational;
+    const receitasLabel = data.receitasIslandLabel || data.islandName || "a ilha";
+    const ano =
+      typeof data.receitasYear === "number"
+        ? ` em ${data.receitasYear}`
+        : "";
+
+    const bullets = [
+      `As receitas arrecadadas em ${receitasLabel}${ano} foram de cerca de ${formatCVE(
+        data.receitasIsland
+      )}.`,
+      `No mesmo período, o total nacional foi de aproximadamente ${formatCVE(
+        data.receitasNationalTotal
+      )}.`,
+      `Isto representa um peso relativo de ${share.toFixed(
+        2
+      )}% de ${receitasLabel} no total nacional.`,
+    ];
+
+    let verdict = "";
+    let grade: InsightGrade;
+
+    if (share < 0.2) {
+      verdict =
+        "Peso fiscal muito reduzido no contexto nacional, reforçando a necessidade de aumentar capacidade de retenção de valor na economia local.";
+      grade = "warning";
+    } else if (share < 1) {
+      verdict =
+        "Peso fiscal baixo face ao total nacional, com margem para consolidação da base económica da ilha.";
+      grade = "neutral";
+    } else {
+      verdict =
+        "Participação fiscal relevante no contexto nacional, sinal de maior tração económica territorial.";
+      grade = "good";
+    }
+
+    sections.push({
+      title: "Receitas",
+      bullets,
+      verdict,
+      grade,
+    });
+  }
+
 
   if (typeof data.avgStay === "number") {
     const v = data.avgStay;
 
-    let bullets = [
+    const bullets = [
       `A estadia média é de cerca de ${v.toFixed(1)} noites.`,
     ];
 
@@ -192,7 +319,7 @@ export function buildIslandTldr(data: IslandData): TldrResult {
   if (typeof data.domesticShare === "number") {
     const v = data.domesticShare;
 
-    let bullets = [
+    const bullets = [
       `Cerca de ${(v * 100).toFixed(1)}% dos hóspedes são residentes em Cabo Verde.`,
     ];
 

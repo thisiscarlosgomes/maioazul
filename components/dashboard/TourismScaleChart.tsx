@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fetchJsonOfflineFirst } from "@/lib/offline";
 import {
     BarChart,
     Bar,
@@ -17,8 +18,12 @@ export function TourismScaleChart() {
     const [data, setData] = useState<any[]>([]);
 
     useEffect(() => {
-        fetch("/api/transparencia/turismo/overview")
-            .then((r) => r.json())
+        fetchJsonOfflineFirst<{
+            islands?: Array<{
+                ilha?: string;
+                dormidas?: number;
+            }>;
+        }>("/api/transparencia/turismo/overview")
             .then((res) => {
                 const rows =
                     res?.islands
