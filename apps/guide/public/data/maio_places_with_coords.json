@@ -1,0 +1,3258 @@
+[
+  {
+    "id": "ribeira-de-lagoa",
+    "name": {
+      "pt": "Ribeira de Lagoa",
+      "en": "Ribeira of Lagoa"
+    },
+    "location": {
+      "pt": "Barreiro",
+      "en": "Barreiro"
+    },
+    "category": "ribeira",
+    "tags": [
+      "ribeira",
+      "bacia aluvial",
+      "agricultura",
+      "economia tradicional",
+      "fertilidade",
+      "história",
+      "barreiro"
+    ],
+    "description": {
+      "pt": "A Ribeira de Lagoa situa-se na parte meridional da ilha. Tendo em conta a sua grande extensão, é considerada a bacia aluvial mais importante da ilha, estendendo-se desde os montes Carqueijo, Forte e Branco até ao mar. Historicamente, é considerado um dos pontos mais férteis de Cabo Verde, pois produzia-se batata doce, mandioca, cana sacarina, da qual se fazia aguardente e mel, coco, banana, papaia, etc., além da criação de aves como pavão, ganso, perus e patos. As propriedades privadas de regadio eram exploradas directamente pelos respectivos donos ou através de arrendamento e parcerias, sendo um dos maiores proprietários António Évora, conhecido como o \"Rei do Maio\".",
+      "en": "The Ribeira (temporal stream) of Lagoa is located in the southern part of the island. Given its length and width, it is considered the most important alluvial basin on the island, extending from the mounts Carqueijo, Forte and Branco, until the ocean. Historically, it is considered as one of Cape Verde’s most fertile spots, as sweet potato, manioc, sugar cane, used to make honey and rum, coconut, banana, papaya, etc. were produced here. Peacocks, geese, turkeys and ducks were also raised there. The irrigated fields were private property, developed by the owners or through leasing and partnerships, one of the largest owners being António Évora, known as the \"King of Maio\"."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281458/places/ribeiralagoa.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.14562203990161,
+      15.144812417661598
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "stream",
+      "alluvial basin",
+      "agriculture",
+      "traditional economy",
+      "fertilidade",
+      "history",
+      "barreiro"
+    ]
+  },
+  {
+    "id": "lagoa",
+    "name": {
+      "pt": "Lagoa",
+      "en": "Lagoa"
+    },
+    "location": {
+      "pt": "Barreiro",
+      "en": "Barreiro"
+    },
+    "category": "historical_heritage",
+    "tags": [
+      "património arquitetonico",
+      "ruinas",
+      "arquitetura colonial",
+      "história",
+      "paisagem",
+      "barreiro"
+    ],
+    "description": {
+      "pt": "Estas duas edificações são um dos principais elementos do património arquitectónico da ilha. Localizam-se sobre uma pequena colina, a aproximadamente 1 km a sul de Lém Varela, no caminho que dá acesso à praia de Boca Lagoa. Possuem uma excelente vista panorâmica para a ribeira e para o mar. Estas casas, agora apenas ruínas, foram no passado residência estival dos proprietários, pertencentes à família do senhor António Évora. Construídas em pedra, preservam as características da arquitectura colonial portuguesa em relação à composição das fachadas e à cobertura, compostas de telha a quatro águas assentes sobre estrutura de madeira, sobrepondo a estrutura dos muros.",
+      "en": "These two buildings are one of the main elements of the architectural heritage of the island. They are located on a small hill, approximately 1 km south of Lém Varela, on the track that accesses the beach of Boca Lagoa. Here you can see a great panoramic view of the ocean and the ribeira. These houses, now ruins, were previously the summer residence of the owners, the António Évora family. The houses are made of stone, preserving the characteristics of the colonial Portuguese architecture, this being the composition of the facade and the roof, which are composed of tiles on a wooden structure, superimposing the structure of the walls."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281460/places/lagoa.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1520342,
+      15.1293489
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "architectural heritage",
+      "ruins",
+      "colonial architecture",
+      "history",
+      "landscape",
+      "barreiro"
+    ]
+  },
+  {
+    "id": "zona-humida-ribeira-lagoa",
+    "name": {
+      "pt": "Zona Húmida da Ribeira Lagoa (Lagoa Taínha)",
+      "en": "Wetlands of Ribeira Lagoa"
+    },
+    "location": {
+      "pt": "Barreiro",
+      "en": "Barreiro"
+    },
+    "category": "wetland",
+    "tags": [
+      "zona humida",
+      "lagoa salobra",
+      "biodiversidade",
+      "aves migratórias",
+      "ecossistema costeiro",
+      "barreiro"
+    ],
+    "description": {
+      "pt": "A sul do Barreiro, atrás da praia de Boca Lagoa, localiza-se esta zona húmida. Caracteriza-se por ser uma lagoa salobra, com tamanho variável durante o ano em função do nível de maré e da precipitação. Nesta encontra-se uma certa diversidade faunística, entre estes, uma comunidade variada de aves limícolas, maioritariamente migratórias, como o pernilongo. Adicionalmente podem encontrar-se caranguejos na areia, dentro da água, camarões entre outros. Entre a flora existente destaca-se a presença de vários tarafes à volta da lagoa, mas a sua presença diminuiu nos últimos anos.",
+      "en": "This wetland can be located to the south of Barreiro, behind the Boca Lagoa beach. It is characterised as a brackish lagoon with a variable size throughout the year, depending on the level of rain and sea water filling it. You can find diverse fauna in these habitats; among others, a diverse community of wader birds, mostly migratory, such as the stilt. Additionally, you can find sand crabs, and in the water, shrimps, among other species. Among the existing flora, the presence of several tarfash around the lagoon should be highlighted, but their presence has decreased in recent years."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281463/places/rlagoa.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.14562203990161,
+      15.144812417661598
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "wetland",
+      "brackish lagoon",
+      "biodiversity",
+      "migratory birds",
+      "coastal ecosystem",
+      "barreiro"
+    ]
+  },
+  {
+    "id": "praias-boca-lagoa-seada",
+    "name": {
+      "pt": "Praias de Boca Lagoa e Seada",
+      "en": "Beaches of Boca Lagoa and Seada"
+    },
+    "location": {
+      "pt": "Barreiro",
+      "en": "Barreiro"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "pesca artesanal",
+      "uso comunitario",
+      "tartarugas marinha",
+      "caretta caretta",
+      "barreiro"
+    ],
+    "description": {
+      "pt": "A Praia de Boca Lagoa localiza-se junto da desembocadura da Ribeira de Lagoa, que deu origem ao seu nome. Situada a cerca de 2 km sudeste da povoação do Barreiro, é uma praia tranquila de areia intercalada branca e cinzenta, com cerca de 500 metros de comprimento. Praia de grande importância para a comunidade, utilizada pelos pescadores do Barreiro como porto de arraste de botes de pesca artesanal e pela população geral para passeios, pesca amadora e convívio entre amigos. A escassos metros dessa praia existe a Praia de Seada, que é uma pequena praia de areia branca, inclinada e com pedras no fundo. Em 2013 receberam 63 ninhos de tartaruga cabeçuda, quase 5% do total na ilha.",
+      "en": "Boca Lagoa is located near the mouth of Ribeira de Lagoa, which gave rise to the name (boca-mouth, Lagoa-lagoon). About 2 km south-east of Barreiro is where you can find this calm grey sandy beach of 500 metres. This beach is of great importance for the community because it is used by the fishermen of Barreiro as a port onto which they drag their artisanal fishing boats. It is also used by the general community to fish recreationally, take leisurely walks, and socialise with their friends. Some metres further down exists another beach called Seada. It is a small beach with a mixture of white sand and rocks. In 2013 they received 63 nests of loggerhead sea turtles, nearly 5% of the total activity on the island."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281464/places/bocalagoa.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.14279379222222,
+      15.127017916666667
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "artisanal fishing",
+      "community use",
+      "sea turtles",
+      "loggerhead turtle",
+      "barreiro"
+    ]
+  },
+  {
+    "id": "praias-guarda-santa-clara",
+    "name": {
+      "pt": "Praias de Guarda e Santa Clara",
+      "en": "Guarda and Santa Clara Beaches"
+    },
+    "location": {
+      "pt": "Alcatraz",
+      "en": "Alcatraz"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "areia negra",
+      "pesca artesanal",
+      "processamento buzio",
+      "tartarugas marinha",
+      "caretta caretta",
+      "alcatraz"
+    ],
+    "description": {
+      "pt": "Praias principalmente de areia negra, inclinadas e inundáveis, localizadas a este da ilha, perto da localidade de Alcatraz. Santa Clara é uma praia pequena, de aproximadamente 150 metros de comprimento. Destaca-se por ser utilizada como refúgio para pescadores e para o processamento de búzio. Por não apresentar riscos, é utilizada pela população para passeios. Este sector de praias constituiu em 2013 a terceira zona mais importante para a desova das tartarugas marinhas da espécie cabeçuda, tendo recebido 170 ninhos, o que corresponde a cerca de 13% da actividade total da ilha.",
+      "en": "These beaches have mainly black sand, are pretty steep and usually flooded, and are located on the east of the island, close to the village of Alcatraz. Santa Clara is a small beach, approximately 150 metres in length, that stands out for its use as a haven for fishermen and for processing búzio (conch). Due to its proximity and safety, it is also used by locals for leisure activities. In 2013, this group of beaches constituted the third most important area for nesting loggerhead sea turtles, receiving 170 nests, corresponding to approximately 13% of the total activity on the island."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281466/places/praiaguarda.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.095402545454547,
+      15.226313672727274
+    ],
+    "osm_id": "way/548940724",
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "areia negra",
+      "artisanal fishing",
+      "whelk processing",
+      "sea turtles",
+      "loggerhead turtle",
+      "alcatraz"
+    ]
+  },
+  {
+    "id": "praias-monte-branco-ribeira-baia",
+    "name": {
+      "pt": "Praias de Monte Branco a Ribeira Baía",
+      "en": "Monte Branco to Ribeira Baía Beaches"
+    },
+    "location": {
+      "pt": "Pilão Cão",
+      "en": "Pilão Cão"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "biodiversidade",
+      "tartarugas marinha",
+      "caretta caretta",
+      "pesca amadora",
+      "pilao cao"
+    ],
+    "description": {
+      "pt": "Conjunto de pequenas praias de areia branca e preta, localizadas a este e sudeste da localidade de Pilão Cão. Utilizadas para passeios e pesca amadora, esta zona concentrou a maior actividade de desova de tartarugas da espécie cabeçuda do Maio em 2013, recebendo 253 ninhos, o que corresponde a cerca de 20% da actividade total da ilha.",
+      "en": "This group of small beaches with white and black sand are located east and south-east of the village of Pilão Cão. Used for leisure and by amateur fishermen, this area concentrated the highest activity of loggerhead sea turtle nesting on Maio in 2013, receiving 253 nests, accounting for around 20% of the total nesting activity on the island."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281467/places/praiamb.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.114485335169487,
+      15.193996154237283
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "biodiversity",
+      "sea turtles",
+      "loggerhead turtle",
+      "recreational fishing",
+      "pilao cao"
+    ]
+  },
+  {
+    "id": "reserva-natural-lagoa-cimidor",
+    "name": {
+      "pt": "Reserva Natural da Lagoa Cimidor",
+      "en": "Natural Reserve of Lagoa Cimidor"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "protected_area",
+    "tags": [
+      "área protegida",
+      "zona humida",
+      "lagoa costeira",
+      "tartarugas marinha",
+      "aves",
+      "biodiversidade",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "A RNLC localiza-se no canto sudeste da ilha, é composta por uma superfície de 389 ha, que abrange uma lagoa salobra costeira (Lagoa Cimidor), uma praia de areia amarela (Praia dos Flamingos), uma zona rochosa costeira (Ponta dos Flamingos) e uma área marinha que se estende por uma milha marinha. A razão fundamental para a protecção deste lugar devem-se às tartarugas marinhas da espécie cabeçuda (Caretta caretta) que desovam na Praia dos Flamingos e às populações de aves que frequentam a Lagoa Cimidor, uma das maiores da ilha com água permanente.",
+      "en": "The RNLC is located in the southeast corner of the island and consists of an area of 389 hectares that covers a brackish coastal lagoon (Lagoa Cimidor), a yellow sand beach (Flamingos Beach), a coastal rocky area (Flamingos Headland) and a marine area extending one nautical mile offshore. The main reason for protecting this area is the presence of loggerhead sea turtles (Caretta caretta) nesting on Flamingos Beach and the bird populations that inhabit Lagoa Cimidor, one of the largest permanent wetlands on the island."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281468/places/lagoacimidor.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.0966607,
+      15.165924
+    ],
+    "osm_id": "way/317500094",
+    "geo_source": "OSM",
+    "tags_en": [
+      "protected area",
+      "wetland",
+      "coastal lagoon",
+      "sea turtles",
+      "birds",
+      "biodiversity",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "lagoa-cimidor",
+    "name": {
+      "pt": "Lagoa Cimidor",
+      "en": "Cimidor Lagoon"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "wetland",
+    "tags": [
+      "lagoa",
+      "zona humida",
+      "aves limícolas",
+      "ecossistema temporário",
+      "mitologia local",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "Localizada no litoral sudeste da ilha, esta lagoa é separada do mar pela Praia dos Flamingos. Diz-se que à volta dessa lagoa existe um mistério, pois segundo relatos terá desaparecido um homem a cavalo depois de ter entrado na lagoa, levando à especulação de que ninguém tenha ousado chegar perto da lagoa para se banhar ou pescar. Com cerca de 50 hectares, é uma pequena superfície lacustre de carácter temporário, separada da praia por uma cintura de dunas, alimentada pelo transporte de águas da chuva através das ribeiras e pela infiltração de água do mar. É uma zona utilizada pela comunidade de aves limícolas como pernilongos, maçaricos, rolas-do-mar, pilritos e borrelhos.",
+      "en": "Located on the south-eastern coast of the island, this lagoon is separated from the sea by Flamingos Beach. A mystery surrounds this lagoon, as according to local stories a man on horseback once entered the lagoon and never came out, leading to speculation and fear around swimming or fishing there. With about 50 hectares, it is a small temporary lagoon separated from the beach by a belt of dunes, fed by rainwater transported through streams and by seawater infiltration. This area is used by wading birds such as stilts, sandpipers, turnstones, sanderlings and plovers."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281468/places/lagoacimidor.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.0966607,
+      15.165924
+    ],
+    "osm_id": "way/317500094",
+    "geo_source": "OSM",
+    "tags_en": [
+      "lagoon",
+      "wetland",
+      "shorebirds",
+      "temporary ecosystem",
+      "local mythology",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "praia-ponta-dos-flamingos",
+    "name": {
+      "pt": "Praia e Ponta dos Flamingos",
+      "en": "Beach and Headland of Flamingos"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "zona remota",
+      "tartarugas marinha",
+      "caretta caretta",
+      "pesca artesanal",
+      "aves marinha",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "Localizada no sudeste da ilha, a cerca de 3,5 km a este de Ribeira D. João, é um dos lugares mais remotos do Maio. Além do ilhéu de Laje Branca, a ponta é o único local onde se especula que haja reprodução de aves marinhas, uma vez que se ouvem pássaros a cantar durante a noite. Na época da desova constituída das praias mais procuradas pela tartaruga marinha da espécie cabeçuda, recebendo 96 ninhos segundo os dados de 2013, correspondendo a cerca de 7% da actividade total da ilha. Esta zona é muito frequentada pelos pescadores, principalmente junto das rochas, onde se encontram espécies de peixes como garoupa, sargo e bodjo.",
+      "en": "Located in the southeast of the island, approximately 3.5 km east of Ribeira D. João, this is one of the most remote places in Maio. Besides the islet of Laje Branca, this headland is the only area where seabird breeding is suspected, as birds can be heard singing at night. During the nesting season for loggerhead sea turtles, Flamingos becomes one of the most frequented beaches, receiving 96 nests according to 2013 data, representing about 7% of the island’s total activity. This area is heavily used by fishermen, especially around the rocks, where fish species such as grouper, seabream and bream can be found."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281470/places/flamengo.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.12134,
+      15.1441919
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "remote area",
+      "sea turtles",
+      "loggerhead turtle",
+      "artisanal fishing",
+      "seabirds",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "conjunto-urbano-ribeira-d-joao",
+    "name": {
+      "pt": "Ribeira D. João",
+      "en": "Village of Ribeira D. João"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "settlement",
+    "tags": [
+      "aldeia",
+      "assentamento humano",
+      "história local",
+      "vida comunitaria",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "Ribeira D. João localiza-se no sudeste da ilha, com uma população de 203 habitantes segundo o censo de 2010. O nome tem origem numa história de naufrágio de um barco onde o bispo D. João, que ia desembarcar, partiu a perna, dando origem à junção da ribeira e de Dom João. A localidade é composta maioritariamente por moradias novas ou tradicionais com transformações, organizadas em banda de vivenda unifamiliar. Dispõe de infraestruturas de ensino (escola EBJ, jardim), religião (capela) e lazer (clube comunitário, praça desportiva).",
+      "en": "Ribeira D. João is located in the southeast of the island, with a population of 203 inhabitants according to the 2010 census. The name supposedly originated from a shipwreck story in which Bishop D. João broke his leg while disembarking, giving rise to the combination of the stream (ribeira) and Dom João. The village consists mainly of new or traditional houses with transformations, arranged in linear bands of single-family dwellings. Infrastructure includes education (primary school, kindergarten), religion (chapel) and leisure facilities (community club and sports areas)."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281472/places/rj.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.12134,
+      15.1441919
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "village",
+      "human settlement",
+      "local history",
+      "community life",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "capela-sao-joao-ribeira-d-joao",
+    "name": {
+      "pt": "Capela de São João",
+      "en": "Chapel of São João"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "património religioso",
+      "capela",
+      "vida comunitaria",
+      "história",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "Localiza-se na entrada da localidade de Ribeira D. João, à esquerda da estrada. A capela foi construída em 1991 com a ajuda da paróquia e da comunidade. A primeira fase foi realizada com o Padre António e a segunda com o Padre José Carreira, uma vez que a construção inicial apresentava problemas estruturais, tendo o teto caído num sábado de aleluia. Para além da missa, realizam-se atividades como catequese, festas de Natal, festas do Dia das Mães, reuniões de legionários, terços e ensaios de jovens.",
+      "en": "The São João Chapel is located at the entrance of Ribeira D. João, on the left side of the road. It was built in 1991 with the support of the parish and the local community. The first construction phase was carried out with Father António and the second with Father José Carreira, as the initial structure was poorly built and the roof collapsed on Easter Saturday. In addition to Mass, the chapel hosts activities such as Sunday school, Christmas celebrations, Mother’s Day festivities, legionary meetings, rosary prayers and youth rehearsals."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281473/places/capelarj.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.12134,
+      15.1441919
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "religious heritage",
+      "chapel",
+      "community life",
+      "history",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "queijaria-ribeira-d-joao",
+    "name": {
+      "pt": "Queijaria de Ribeira D. João",
+      "en": "Cheese Factory of Ribeira D. João"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "economic_activity",
+    "tags": [
+      "atividade economica",
+      "agroalimentar",
+      "queijo de cabra",
+      "economia local",
+      "tradição",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "Localizada na rua principal da localidade, a queijaria foi construída em 2013 através de um projeto de cooperação da União Europeia com a Câmara Municipal. O queijo de cabra é um produto típico da ilha do Maio, cujo processo de produção tradicional consiste na mistura do leite cru de cabra com o coalho, permanecendo em repouso durante cerca de 48 horas à temperatura ambiente. Após a coagulação, o soro é escorrido e o queijo é colocado num pequeno acessório denominado \"sintxe\". Depois de escorrido, o queijo pode ser consumido fresco ou seco, após permanecer ao ar livre durante 72 horas ou mais.",
+      "en": "Located on the main street of the village, the cheese factory was built in 2013 through a cooperation project between the European Union and the Municipal Council. Goat cheese is a typical product of Maio Island. The traditional production process involves mixing raw goat milk with rennet and leaving it to curdle for about 48 hours at room temperature. The whey is then drained, and the cheese is placed in a small accessory called a \"sintxe\". After draining, the cheese can be eaten fresh or dried after remaining in open air for 72 hours or more."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281474/places/queijorj.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.12134,
+      15.1441919
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "economic activity",
+      "agri-food",
+      "goat cheese",
+      "local economy",
+      "tradition",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "ribeira-de-d-joao",
+    "name": {
+      "pt": "Ribeira de D. João",
+      "en": "Ribeira of D. João"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "ribeira",
+    "tags": [
+      "ribeira",
+      "agricultura",
+      "paisagem rural",
+      "miradouro",
+      "história agrícola",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "No fim da rua principal da localidade existe um miradouro composto por um muro em pedra com excelente vista sobre a Ribeira de D. João. Em tempos passados, esta ribeira apresentava o maior número de palmeiras e coqueiros do Maio, mas atualmente esse número diminuiu bastante. Pratica-se agricultura e criação de gado, embora não com a mesma intensidade de antigamente. Alguns dos produtos que se cultivavam, e ainda se cultivam, são a batata-doce, mandioca, cana-de-açúcar, papaia, cebola, ananás, goiaba, limão e manga.",
+      "en": "At the end of the main street there is a viewpoint consisting of a stone wall that offers an excellent view over the Ribeira (seasonal stream) of D. João. In the past, this stream had the highest number of palm and coconut trees on Maio, but their numbers have greatly decreased. Agriculture and livestock are still practised, though not as intensively as before. Crops that were, and still are, cultivated include sweet potato, cassava, sugar cane, papaya, onion, pineapple, guava, lemon and mango."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281472/places/rj.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.12134,
+      15.1441919
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "stream",
+      "agriculture",
+      "rural landscape",
+      "viewpoint",
+      "agricultural history",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "praias-porto-ribeira-funda",
+    "name": {
+      "pt": "Praias de Porto e Ribeira Funda",
+      "en": "Beaches of Porto and Ribeira Funda"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "história marítima",
+      "porto antigo",
+      "uso comunitario",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "As praias de Cadjetinha e Porto localizam-se no fim da ribeira, inseridas na ZDTI de Ribeira D. João. A Praia de Porto é uma praia de areia branca e preta, de água transparente, muito inclinada e com zonas inundáveis, com cerca de 500 metros de comprimento. A Praia de Ribeira Funda situa-se a menos de 1 km a sudeste de Ribeira D. João e tem cerca de 360 metros, com areia branca e cinzenta. Antigamente estas praias serviam para a descarga de barcos portugueses quando o Porto Inglês foi tomado pelos ingleses, sendo ainda hoje frequentemente procuradas pela população local.",
+      "en": "The beaches of Porto and Cadjetinha are located at the end of the Ribeira of D. João, within the ZDTI of Ribeira D. João. Porto Beach has white and black sand, clear water, steep slopes and floodable areas, measuring approximately 500 metres in length. Ribeira Funda Beach is located less than 1 km southeast of Ribeira D. João and is about 360 metres long, with white and grey sand. Historically, these beaches were used to unload Portuguese ships when Porto Inglês was taken over by the English, and they are still frequently visited by locals and tourists."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287173/places/portopraia.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.166673174074074,
+      15.212226847222222
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "maritime history",
+      "old port",
+      "community use",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "praia-joao-martinho",
+    "name": {
+      "pt": "Praia de João Martinho",
+      "en": "João Martinho Beach"
+    },
+    "location": {
+      "pt": "Ribeira D. João",
+      "en": "Ribeira D. João"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "paisagem natural",
+      "dunas",
+      "vegetação costeira",
+      "ribeira d joao"
+    ],
+    "description": {
+      "pt": "Praia localizada na zona costeira adjacente à Ribeira D. João, caracterizada por um areal extenso e paisagem natural pouco alterada, integrando sistemas dunares e vegetação costeira.",
+      "en": "This beach is located along the coastal area adjacent to Ribeira D. João, characterised by an extensive sandy area and a largely unaltered natural landscape, including dune systems and coastal vegetation."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287173/places/portopraia.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.12134,
+      15.1441919
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "natural landscape",
+      "dunes",
+      "coastal vegetation",
+      "ribeira d joao"
+    ]
+  },
+  {
+    "id": "ppbf-barreiro-figueira",
+    "name": {
+      "pt": "Paisagem Protegida de Barreiro e Figueira",
+      "en": "Protected Landscape of Barreiro and Figueira"
+    },
+    "location": {
+      "pt": "Barreiro e Figueira",
+      "en": "Barreiro and Figueira"
+    },
+    "category": "protected_area",
+    "tags": [
+      "paisagem protegida",
+      "zona húmida",
+      "lagoa salobra",
+      "bacia aluvial",
+      "recursos hídricos",
+      "biodiversidade",
+      "valores paisagísticos",
+      "parque natural"
+    ],
+    "description": {
+      "pt": "Situada na parte meridional da ilha do Maio, a PPBF abrange uma superfície de 1.078 hectares, ocupando o fundo das ribeiras que representam a bacia aluvial mais importante da ilha, sendo estas a Ribeira de Chico Vaz, a Ribeira Capada e a Ribeira Lagoa. Na desembocadura da Ribeira Lagoa formou-se uma lagoa de água salobra, alimentada sobretudo por água marinha. Destaca-se como fundamentos de conservação deste sítio a flora e fauna associadas à lagoa salobra e à praia, os recursos hídricos e os valores paisagísticos.",
+      "en": "Located in the southern part of Maio island, the PPBF covers an area of 1,078 hectares. It occupies the bottom of the streams that form the most important alluvial basin of the island, namely the streams of Chico Vaz, Ribeira Capada and Ribeira Lagoa. At the mouth of Ribeira Lagoa, a brackish lagoon has formed, mainly fed by seawater. The main conservation values of this site are the flora and fauna associated with the brackish lagoon and beach, the water resources and its scenic values."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281480/places/protectedb.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.14720900943396,
+      15.139868616981133
+    ],
+    "osm_id": "way/549393314",
+    "geo_source": "OSM",
+    "tags_en": [
+      "protected landscape",
+      "wetland",
+      "brackish lagoon",
+      "alluvial basin",
+      "water resources",
+      "biodiversity",
+      "landscape values",
+      "natural park"
+    ]
+  },
+  {
+    "id": "bacia-ribeira-lagoa",
+    "name": {
+      "pt": "Bacia da Ribeira de Lagoa",
+      "en": "Basin of the Ribeira de Lagoa"
+    },
+    "location": {
+      "pt": "Barreiro e Figueira",
+      "en": "Barreiro and Figueira"
+    },
+    "category": "ribeira",
+    "tags": [
+      "ribeira",
+      "bacia hidrográfica",
+      "agricultura",
+      "rega",
+      "solos férteis",
+      "aves",
+      "fauna"
+    ],
+    "description": {
+      "pt": "Localiza-se no norte da bacia hidrográfica de Lagoa e inclui as ribeiras de Chico Vaz e Figueira Capada, entre outras. Estende-se desde a confluência da Ribeira de Lagoa no sentido noroeste até ao limite da PPBF. Ao longo das ribeiras existem diferentes parcelas agrícolas, concentrando a maior parte da área de regadio da ilha, devido à presença de depósitos aluviais, solos férteis e possibilidade de extração de água. Produzem-se hortícolas e frutas, destacando-se também a presença de figueiras, fauna diversa e aves facilmente observáveis.",
+      "en": "Located north of the hydrographical basin of Lagoa, it includes the streams of Chico Vaz and Figueira Capada, among others. It extends from the beginning of the Ribeira of Lagoa towards the northwest, up to the boundary of the PPBF. Along the streams there are different agricultural plots, representing most of the irrigated land on the island due to alluvial deposits, fertile soils and water availability. Fruits and vegetables are produced here, with notable presence of fig trees, fauna and easily observable birdlife."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281481/places/lagoabacia.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.14562203990161,
+      15.144812417661598
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "stream",
+      "watershed",
+      "agriculture",
+      "rega",
+      "solos férteis",
+      "birds",
+      "fauna"
+    ]
+  },
+  {
+    "id": "trapiches-grogue",
+    "name": {
+      "pt": "Trapiches de Grogue",
+      "en": "Trapiches of Grogue"
+    },
+    "location": {
+      "pt": "Figueira e Ribeira de Chico Vaz",
+      "en": "Figueira and Ribeira of Chico Vaz"
+    },
+    "category": "economic_activity",
+    "tags": [
+      "grogue",
+      "cana-de-açúcar",
+      "património cultural",
+      "produção tradicional",
+      "agricultura",
+      "economia local"
+    ],
+    "description": {
+      "pt": "O grogue é uma bebida alcoólica tradicional de Cabo Verde, produzida a partir da cana-de-açúcar em unidades chamadas trapiches. No Maio existem três trapiches: um na Ribeira de Chico Vaz, na zona de Figueira, e dois na Ribeira Tambarina. O processo de produção envolve a trituração da cana, a extração do caldo, a sua fermentação durante vários dias, passando de doce a amargo, e posteriormente a colocação em água para arrefecer.",
+      "en": "Grogue is an alcoholic beverage made from sugar cane and is traditional to Cape Verde. It is produced in facilities known as ‘trapiches’. On Maio island there are three trapiches: one located in the Ribeira of Chico Vaz near Figueira, and two in the Ribeira Tambarina. The production process includes shredding the sugar cane, extracting the juice, fermenting it for several days until it changes from sweet to bitter, and finally placing it in water to cool."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281483/places/grogue.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1515582,
+      15.1597077
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "grogue",
+      "sugarcane",
+      "cultural heritage",
+      "traditional production",
+      "agriculture",
+      "local economy"
+    ]
+  },
+  {
+    "id": "figueira-horta-village",
+    "name": {
+      "pt": "Figueira Horta",
+      "en": "Village of Figueira Horta"
+    },
+    "location": {
+      "pt": "Figueira Horta",
+      "en": "Figueira Horta"
+    },
+    "category": "settlement",
+    "tags": [
+      "aldeia",
+      "agricultura",
+      "zona rural",
+      "arquitetura tradicional",
+      "hortas",
+      "comunidade local"
+    ],
+    "description": {
+      "pt": "Figueira Horta localiza-se no centro-sul da ilha, tendo 446 habitantes em 2010. As primeiras habitações foram construídas junto das hortas, outrora ricas em figueiras, que deram origem ao nome da localidade. Destaca-se no Maio como a principal zona agrícola da ilha, sendo a agricultura a principal atividade da população. Apresenta uma morfologia urbana caracterizada por bandas contínuas, sem articulação transversal significativa, dominada por moradias de um piso de tipologia tradicional. Possui infraestruturas como ensino (escola básica e jardim infantil), religião (capela de Cristo Rei), lazer (centro comunitário, praça, polivalente) e saúde (unidade sanitária de base).",
+      "en": "Figueira Horta is located in the south-central part of the island and had 446 inhabitants in 2010. The first dwellings were built along agricultural fields that once had many fig trees, which gave rise to the village name. It stands out in Maio as the island’s main agricultural zone, with farming as the primary activity. Its urban form is characterized by continuous bands of traditional one-storey houses, with basic infrastructures including education, religion, leisure facilities and a basic health unit."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281485/places/horta.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1515582,
+      15.1597077
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "village",
+      "agriculture",
+      "rural zone",
+      "traditional architecture",
+      "gardens",
+      "local community"
+    ]
+  },
+  {
+    "id": "capela-cristo-rei",
+    "name": {
+      "pt": "Capela do Cristo Rei",
+      "en": "Chapel of Cristo Rei"
+    },
+    "location": {
+      "pt": "Figueira Horta",
+      "en": "Figueira Horta"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela",
+      "religião",
+      "património cultural",
+      "vida comunitária"
+    ],
+    "description": {
+      "pt": "Localiza-se na entrada da Figueira Horta, em frente à estrada principal. A capela foi construída em 1985 pela população local. Desenvolvem-se aqui atividades como a celebração de missa semanal, encontros de jovens e a missa da Festa de Cristo Rei.",
+      "en": "This chapel is located at the entrance of Figueira Horta, facing the main road. It was built by the local population in 1985. Activities held here include weekly Mass, youth meetings and the celebration of the Cristo Rei Feast."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281487/places/capelafigueira.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1515582,
+      15.1597077
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "chapel",
+      "religion",
+      "cultural heritage",
+      "community life"
+    ]
+  },
+  {
+    "id": "figueira-seca-village",
+    "name": {
+      "pt": "Figueira Seca",
+      "en": "Village of Figueira Seca"
+    },
+    "location": {
+      "pt": "Figueira Seca",
+      "en": "Figueira Seca"
+    },
+    "category": "settlement",
+    "tags": [
+      "aldeia",
+      "arquitetura tradicional",
+      "zona rural",
+      "pequena comunidade"
+    ],
+    "description": {
+      "pt": "Figueira Seca é um pequeno conjunto urbano localizado a cerca de 700 metros a este de Figueira Horta, habitado por 83 pessoas em 2010. Segundo relatos, o seu primeiro nome foi Figueira Sabão, passando mais tarde a chamar-se Figueira Seca. As habitações existentes apresentam características da arquitetura tradicional da ilha, na sua maioria de um piso.",
+      "en": "Figueira Seca is a small village located about 700 metres east of Figueira Horta, with a population of 83 in 2010. It was originally known as Figueira Sabão before adopting its current name. The houses display traditional architectural features of the island and are generally single-storey."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281490/places/seca.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1448847,
+      15.1558583
+    ],
+    "osm_id": "node/7085257242",
+    "geo_source": "OSM",
+    "tags_en": [
+      "village",
+      "traditional architecture",
+      "rural zone",
+      "pequena comunidade"
+    ]
+  },
+  {
+    "id": "banda-riba-village",
+    "name": {
+      "pt": " Barreiro Banda Riba",
+      "en": "Village of Banda Riba"
+    },
+    "location": {
+      "pt": "Ribeira do Barreiro",
+      "en": "Ribeira do Barreiro"
+    },
+    "category": "settlement",
+    "tags": [
+      "aldeia",
+      "zona rural",
+      "arquitetura tradicional",
+      "habitação linear",
+      "vista panorâmica"
+    ],
+    "description": {
+      "pt": "Banda Riba situa-se a norte da Ribeira do Barreiro, com uma população de 140 habitantes em 2010. Devido à sua posição geográfica, proporciona uma vista panorâmica para a ribeira e para Lém Varela. O conjunto urbano está estruturado em bandas de vivendas unifamiliares de um piso, destacando-se arquitetonicamente um conjunto de sete moradias no meio da rua de acesso, com fachadas tradicionais e cobertura de telha.",
+      "en": "Banda Riba is located north of Ribeira do Barreiro, with a population of 140 in 2010. Due to its geographical position, it offers panoramic views of the ribeira (temporal stream) and Lém Varela. The village is structured in bands of single-storey family houses, with the most notable architectural feature being a group of seven houses in the middle of the access road, with traditional façades and tiled roofs."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281491/places/bandariba.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1601029,
+      15.138182
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "village",
+      "rural zone",
+      "traditional architecture",
+      "linear housing",
+      "vista panorâmica"
+    ]
+  },
+  {
+    "id": "capela-sagrada-familia",
+    "name": {
+      "pt": "Capela da Sagrada Família",
+      "en": "Chapel of Sagrada Família"
+    },
+    "location": {
+      "pt": "Barreiro Lém Varela",
+      "en": "Barreiro Lém Varela"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela",
+      "religião",
+      "património cultural",
+      "vida comunitária"
+    ],
+    "description": {
+      "pt": "A Capela da Sagrada Família localiza-se no centro de Lém Varela, junto à praça central. Foi construída por iniciativa do senhor Firmino Spencer, com o apoio da população local. Nesta capela realizam-se atividades como a celebração de missa, ensaios de cânticos e encontros comunitários.",
+      "en": "The Chapel of Sagrada Família is located in the centre of Lém Varela, next to the central square. It was built on the initiative of Mr. Firmino Spencer with the support of the local community. Activities held here include Mass, choir rehearsals and community meetings."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281493/places/capelasagrada.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1607208,
+      15.1350598
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "chapel",
+      "religion",
+      "cultural heritage",
+      "community life"
+    ]
+  },
+  {
+    "id": "lem-varela-village",
+    "name": {
+      "pt": "Barreiro Lém Varela",
+      "en": "Village of Lém Varela"
+    },
+    "location": {
+      "pt": "Barreiro Lém Varela",
+      "en": "BarreiroLém Varela"
+    },
+    "category": "settlement",
+    "tags": [
+      "aldeia",
+      "zona rural",
+      "habitação linear",
+      "infraestruturas básicas",
+      "comunidade local"
+    ],
+    "description": {
+      "pt": "Lém Varela situa-se na parte sul da Ribeira do Barreiro e tinha 395 habitantes em 2010. O conjunto urbano apresenta uma estrutura linear em bandas contínuas, formada por agregados de moradias unifamiliares de um piso, na sua maioria com características modernas. Dispõe de infraestruturas como ensino, religião, lazer e saúde.",
+      "en": "Lém Varela is located in the southern part of Ribeira do Barreiro and had 395 inhabitants in 2010. The village has a linear urban structure composed of continuous bands of one-storey single-family houses, most of which have modern features. It includes basic infrastructures such as education, religion, leisure facilities and healthcare."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281494/places/lemvarela.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1607208,
+      15.1350598
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "village",
+      "rural zone",
+      "linear housing",
+      "basic infrastructure",
+      "local community"
+    ]
+  },
+  {
+    "id": "cadjetinha-morrinho-beach",
+    "name": {
+      "pt": "Praia da Cadjetinha de Morrinho",
+      "en": "Cadjetinha Beach of Morrinho"
+    },
+    "location": {
+      "pt": "Morrinho",
+      "en": "Morrinho"
+    },
+    "category": "beach",
+    "tags": [
+      "praia isolada",
+      "sistema dunar",
+      "desova de tartarugas",
+      "pesca artesanal",
+      "biodiversidade"
+    ],
+    "description": {
+      "pt": "Localiza-se aproximadamente a 2 km a noroeste da localidade de Morrinho, isolada atrás do sistema dunar. É uma bonita praia de areia branca, semicircular e de águas tranquilas. É utilizada como arrastadouro pelos pescadores de Morrinho. Geologicamente caracteriza-se por areia organógena proveniente da desagregação dos rodólitos, apresentando pouca vegetação, exceto na faixa superior. Regista diversidade biológica com aves limícolas e desova de tartarugas marinhas da espécie cabeçuda, tendo acolhido 45 ninhos em 2013.",
+      "en": "Located approximately 2 km northwest of Morrinho, behind the dune system, Cadjetinha is a white sandy beach with calm waters and a semicircular shape. It is used as a hauling beach by local fishermen. Geologically, it is characterised by organogenic sand formed from rhodolith breakdown, with little vegetation except on the upper fringe. The beach hosts shorebirds and loggerhead sea turtle nesting, with 45 nests recorded in 2013."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281496/places/praiacadjetinha.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.22683617857143,
+      15.26808277857143
+    ],
+    "osm_id": "way/547660982",
+    "geo_source": "OSM",
+    "tags_en": [
+      "remote beach",
+      "dune system",
+      "turtle nesting",
+      "artisanal fishing",
+      "biodiversity"
+    ]
+  },
+  {
+    "id": "santana-beach",
+    "name": {
+      "pt": "Praia de Santana",
+      "en": "Beach of Santana"
+    },
+    "location": {
+      "pt": "Baía de Santana",
+      "en": "Santana Bay"
+    },
+    "category": "beach",
+    "tags": [
+      "praia selvagem",
+      "ondas fortes",
+      "biodiversidade marinha",
+      "desova de tartarugas",
+      "aves limícolas"
+    ],
+    "description": {
+      "pt": "Localizada a noroeste da ilha, na baía de Santana, entre Funda Morena e Ponta Rica, esta extensa praia de areia branca com cerca de 4 km é uma das mais selvagens e escondidas do Maio. Apresenta fortes correntes e ondas, mas elevada riqueza biológica, incluindo corais, aves limícolas, tartarugas juvenis e desova de tartarugas marinhas da espécie cabeçuda, com 83 ninhos registados em 2013.",
+      "en": "Santana Beach is located in the northwest of the island, in Santana Bay, between Funda Morena and Ponta Rica. This extensive white sandy beach stretches for about 4 km and is one of the wildest and most secluded beaches on Maio. Strong currents and waves are common, but the bay is rich in biodiversity, including corals, shorebirds, juvenile turtles and loggerhead sea turtle nesting, with 83 nests recorded in 2013."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281497/places/praiasantana.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2071681,
+      15.2880811
+    ],
+    "osm_id": "way/547660993",
+    "geo_source": "OSM",
+    "tags_en": [
+      "wild beach",
+      "strong waves",
+      "marine biodiversity",
+      "turtle nesting",
+      "shorebirds"
+    ]
+  },
+  {
+    "id": "porto-cais-beach-port",
+    "name": {
+      "pt": "Praia e refúgio pesqueiro de Porto Cais",
+      "en": "Beach and Port of Porto Cais"
+    },
+    "location": {
+      "pt": "Porto Cais",
+      "en": "Porto Cais"
+    },
+    "category": "beach",
+    "tags": [
+      "porto de pesca",
+      "refúgio pesqueiro",
+      "baía abrigada",
+      "pesca artesanal",
+      "comunidade piscatória"
+    ],
+    "description": {
+      "pt": "Situada a noroeste das Terras Salgadas, a cerca de 5 km a norte de Cascabulho, Porto Cais localiza-se numa baía semicircular de águas rasas e calmas, com presença de corais. É um importante refúgio para pescadores, principalmente oriundos da ilha de Santiago, que se deslocam periodicamente para o norte do Maio, onde o mar oferece melhor proveito.",
+      "en": "Porto Cais is a fishing haven located northwest of Terras Salgadas, about 5 km north of Cascabulho. The beach forms a semicircular bay with shallow, calm waters and coral presence. It is an important refuge for fishermen, mainly from Santiago Island, who travel regularly to the north of Maio where fishing conditions are more favourable."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287192/places/portocais.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.224435646666667,
+      15.273675793333334
+    ],
+    "osm_id": "way/547660986",
+    "geo_source": "OSM",
+    "tags_en": [
+      "fishing port",
+      "fishing refuge",
+      "sheltered bay",
+      "artisanal fishing",
+      "fishing community"
+    ]
+  },
+  {
+    "id": "terras-salgadas",
+    "name": {
+      "pt": "Terras Salgadas",
+      "en": "Terras Salgadas"
+    },
+    "location": {
+      "pt": "Entre Morrinho e Galeão",
+      "en": "Between Morrinho and Galeão"
+    },
+    "category": "wetland",
+    "tags": [
+      "salinas",
+      "zonas húmidas",
+      "aves migratórias",
+      "ecossistema costeiro",
+      "biodiversidade",
+      "paisagem protegida"
+    ],
+    "description": {
+      "pt": "As Terras Salgadas localizam-se no noroeste da ilha do Maio, entre os sistemas dunares de Morrinho e Galeão. Representam o maior ecossistema de salinas de Cabo Verde, caracterizado por extensos depósitos sedimentares de origem aluvial transportados pela rede hidrográfica do interior da ilha. A paisagem é composta por zonas de terras salgadas, dunas e zonas húmidas temporárias, que albergam uma rica comunidade vegetal e uma avifauna limícola relevante, sobretudo aves migratórias.",
+      "en": "Terras Salgadas (Salty Lands) are located in the northwest of the island, between the dune systems of Morrinho and Galeão. This area represents the largest salt marsh ecosystem in Cape Verde, characterised by extensive alluvial sediment deposits carried from the interior of the island through surface runoff. It includes salt flats, dunes and temporary wetlands that support diverse plant communities and an important population of wader birds, especially migratory species."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281500/places/terrassalgadas.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1845323,
+      15.296436
+    ],
+    "osm_id": "way/320256632",
+    "geo_source": "OSM",
+    "tags_en": [
+      "salt pans",
+      "wetlands",
+      "migratory birds",
+      "coastal ecosystem",
+      "biodiversity",
+      "protected landscape"
+    ]
+  },
+  {
+    "id": "galeao-beach-dunes",
+    "name": {
+      "pt": "Praia e Dunas de Galeão",
+      "en": "Beach and Dunes of Galeão"
+    },
+    "location": {
+      "pt": "Galeão",
+      "en": "Galeão"
+    },
+    "category": "beach",
+    "tags": [
+      "praia de areia branca",
+      "sistema dunar",
+      "biodiversidade marinha",
+      "corais",
+      "história marítima",
+      "tartarugas marinhas"
+    ],
+    "description": {
+      "pt": "A zona de Galeão situa-se no norte da ilha, entre a Praia Real e Laje Branca. Possui uma extensa praia de areia branca com rochas e prados marinhos, associada ao maior sistema dunar do Maio. Historicamente, vários naufrágios ocorreram nesta área, incluindo um navio inglês com destino à Índia e a corveta americana York Tossen em 1850. A biodiversidade é elevada, com presença de tartarugas marinhas, comunidades coralinas, espécies endémicas de nudibrânquios, moluscos, peixes demersais e pelágicos, lagostas e búzio-cabra.",
+      "en": "Galeão is located at the northern end of the island, between Praia Real and Laje Branca. This wide white sandy beach, with rocky areas and seagrass meadows, is associated with the largest dune system on Maio. Historically, several shipwrecks occurred here, including an English vessel bound for India and the American corvette York Tossen in 1850. The area hosts high marine biodiversity, including sea turtles, coral communities, endemic nudibranchs, molluscs, demersal and pelagic fish species, lobsters and conch."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281501/places/praiagaleao.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1369123,
+      15.3124062
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "white sand beach",
+      "dune system",
+      "marine biodiversity",
+      "corals",
+      "maritime history",
+      "sea turtles"
+    ]
+  },
+  {
+    "id": "praia-real",
+    "name": {
+      "pt": "Praia Real",
+      "en": "Praia Real"
+    },
+    "location": {
+      "pt": "Entre Porto Cais e Galeão, a norte de Cascabulho",
+      "en": "Between Porto Cais and Galeão, north of Cascabulho"
+    },
+    "category": "beach",
+    "tags": [
+      "praia de areia branca",
+      "águas rasas",
+      "biodiversidade marinha",
+      "aves limícolas",
+      "tartarugas marinhas",
+      "reprodução de tubarões"
+    ],
+    "description": {
+      "pt": "A Praia Real localiza-se cerca de 5 km a norte de Cascabulho, entre as praias de Porto Cais e Galeão. É uma praia de areia branca, rasa e calma durante todo o ano. O nome deriva, segundo relatos, de um barco que naufragou transportando membros de uma família real. A baía apresenta elevada biodiversidade, com presença de corais, invertebrados, peixes demersais e lagosta, além de aves marinhas e limícolas. Destaca-se pela sua importância como zona de reprodução de tubarões-gata.",
+      "en": "Praia Real is located about 5 km north of Cascabulho, between Porto Cais and Galeão. This white sandy beach remains shallow and calm throughout the year. Its name is believed to derive from a shipwreck carrying members of a royal family. The bay is rich in biodiversity, with corals, invertebrates, demersal fish, lobsters, waders and shorebirds. Praia Real is an extremely important site for the reproduction of nurse sharks."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281502/places/praiareal.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1725926,
+      15.269957
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "white sand beach",
+      "shallow waters",
+      "marine biodiversity",
+      "shorebirds",
+      "sea turtles",
+      "shark breeding"
+    ]
+  },
+  {
+    "id": "ilheu-laje-branca",
+    "name": {
+      "pt": "Ilhéu de Laje Branca",
+      "en": "Islet of Laje Branca"
+    },
+    "location": {
+      "pt": "Ao largo da costa norte do Maio, em frente à Laje Branca",
+      "en": "Off the northern coast of Maio, in front of Laje Branca"
+    },
+    "category": "islet",
+    "tags": [
+      "ilhéu",
+      "aves marinhas",
+      "nidificação",
+      "espécies protegidas",
+      "tartarugas marinhas",
+      "conservação"
+    ],
+    "description": {
+      "pt": "O Ilhéu de Laje Branca situa-se no norte da ilha, a cerca de 350 metros da costa. Tem forma aproximadamente circular e cerca de 60 metros de largura. É o único ilhéu do Maio e um dos menores de Cabo Verde. É uma área de grande interesse para a conservação devido à nidificação do pedreiro-azul, espécie considerada rara. Para além das aves, é possível observar tartarugas marinhas na área envolvente.",
+      "en": "The islet of Laje Branca is located on the northern coast of the island, about 350 metres offshore. It is relatively circular in shape and approximately 60 metres wide. It is the only islet on Maio and one of the smallest in Cape Verde. The islet is of great conservation interest due to the nesting of white-faced storm petrels, a species listed as rare. Sea turtles can also be observed around the islet."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770354285/places/ilheu.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1369123,
+      15.3124062
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "islet",
+      "seabirds",
+      "nesting",
+      "protected species",
+      "sea turtles",
+      "conservação"
+    ]
+  },
+  {
+    "id": "praia-santo-antonio",
+    "name": {
+      "pt": "Praia e Dunas de Santo António",
+      "en": "Beach and Dunes of Santo António"
+    },
+    "location": {
+      "pt": "2 km a nordeste da localidade de Santo António",
+      "en": "2 km northeast of the village of Santo António"
+    },
+    "category": "beach",
+    "tags": [
+      "praia de areia branca",
+      "dunas",
+      "correntes fortes",
+      "pesca artesanal",
+      "nidificação de tartarugas",
+      "zona protegida"
+    ],
+    "description": {
+      "pt": "A Praia de Santo António localiza-se a cerca de 2 km a nordeste da localidade de Santo António. Separada em três partes por rochas, é uma extensa praia de areia branca com aproximadamente 1 500 metros de comprimento e largura variável, composta por extensos sistemas dunares. É utilizada essencialmente para a pesca, não sendo aconselhada para banhos devido às fortes correntes. Segundo relatos populares, o nome está associado à passagem de um grupo de padres pela costa da ilha. Em 2013 foi a segunda praia com maior atividade de desova da tartaruga-cabeçuda no Maio, com cerca de 200 ninhos, representando aproximadamente 15% da atividade total da ilha.",
+      "en": "Santo António beach is located about 2 km northeast of the village of Santo António. Separated into three sections by rocks, it is an extensive white sandy beach about 1,500 metres long with variable width and large dune systems. It is mainly used by fishermen, as it is not suitable for swimming due to strong currents. According to popular stories, the origin of the name is associated with priests who passed along the coast of the island. In 2013, it was the second beach with the highest nesting activity of loggerhead sea turtles in Maio, with around 200 nests, accounting for nearly 15% of the island’s total activity."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281510/places/dunasst.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.105905779999997,
+      15.289949144
+    ],
+    "osm_id": "way/544199041",
+    "geo_source": "OSM",
+    "tags_en": [
+      "white sand beach",
+      "dunes",
+      "strong currents",
+      "artisanal fishing",
+      "turtle nesting",
+      "protected zone"
+    ]
+  },
+  {
+    "id": "montes-santo-antonio-chapeu-2",
+    "name": {
+      "pt": "Montes Santo António à Chapéu",
+      "en": "Mounts Santo António to Chapéu"
+    },
+    "location": {
+      "pt": "Entre as povoações de Santo António e Cascabulho",
+      "en": "Between the villages of Santo António and Cascabulho"
+    },
+    "category": "mountain",
+    "tags": [
+      "montes vulcânicos",
+      "paisagem árida",
+      "geologia",
+      "campos de lava",
+      "biodiversidade endémica",
+      "recarga de aquíferos"
+    ],
+    "description": {
+      "pt": "Os montes localizam-se na parte nordeste da ilha, entre as povoações de Santo António e Cascabulho. Apresentam uma paisagem árida, caracterizada por baixa pluviosidade. Com cerca de 225 metros de altura, o Monte de Santo António formou-se na última fase lávica da ilha, ocorrida durante o Plioceno. As erupções foram predominantemente basálticas, originando extensos campos de lava como os observados na zona de Pedernau. Em termos de biodiversidade, destaca-se a presença de vegetação endémica da ilha, invertebrados e répteis. Devido ao seu papel na recarga de águas subterrâneas, as encostas são utilizadas para exploração agrícola pelas populações do nordeste do Maio.",
+      "en": "These mounts are located in the north-eastern part of the island, between Santo António and Cascabulho. The area presents an arid landscape characterised by low rainfall. Measuring about 225 metres in height, Monte Santo António was formed during the last volcanic phase of the island, which occurred in the Pliocene. The eruptions were mainly basaltic, resulting in large lava fields such as those observed in the Pedernau area. In terms of biodiversity, the main features include endemic vegetation unique to the island, as well as invertebrates and reptiles. Due to their role in groundwater recharge, the slopes are used for farming by the north-eastern population of Maio."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281511/places/stchapeu.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1478007,
+      15.2725398
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "volcanic hills",
+      "arid landscape",
+      "geology",
+      "campos de lava",
+      "endemic biodiversity",
+      "aquifer recharge"
+    ]
+  },
+  {
+    "id": "praia-refugio-praiona",
+    "name": {
+      "pt": "Praia e Refúgio Pesqueiro de Praiona",
+      "en": "Beach and Port of Praiona"
+    },
+    "location": {
+      "pt": "Cerca de 1 km a leste da localidade de Praiona",
+      "en": "About 1 km east of the village of Praiona"
+    },
+    "category": "beach",
+    "tags": [
+      "praia de areia branca",
+      "refúgio pesqueiro",
+      "pesca artesanal",
+      "búzio",
+      "nidificação de tartarugas",
+      "comunidade local"
+    ],
+    "description": {
+      "pt": "A Praia de Praiona, também conhecida como Praia Gonçalo, localiza-se no nordeste do Maio, a cerca de 1 km a leste da localidade do mesmo nome. É uma praia de areia branca com aproximadamente 600 metros de comprimento, utilizada como refúgio pesqueiro para a pesca artesanal, com vários botes em funcionamento. Destaca-se pelo uso na pesca do búzio, evidenciado pelos montes de conchas presentes no local. Em 2013 recebeu mais de 50 ninhos de tartaruga-cabeçuda, representando cerca de 4% da atividade total da ilha.",
+      "en": "The beach of Praiona, also known as Praia Gonçalo, is located in the northeast of Maio, about 1 km east of the village. It is a white sandy beach approximately 600 metres long and used as a fishing haven for artisanal fishermen, with several boats currently active. The area is known for conch fishing, as shown by the piles of shells present. In 2013, it hosted 52 loggerhead sea turtle nests, accounting for nearly 4% of the island’s total activity."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281512/places/praiona.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.10450210000001,
+      15.271879942857144
+    ],
+    "osm_id": "way/543320616",
+    "geo_source": "OSM",
+    "tags_en": [
+      "white sand beach",
+      "fishing refuge",
+      "artisanal fishing",
+      "whelk",
+      "turtle nesting",
+      "local community"
+    ]
+  },
+  {
+    "id": "praia-goncalo-santo-antonio",
+    "name": {
+      "pt": "Praia Gonçalo e Santo António",
+      "en": "Villages of Praia Gonçalo and Santo António"
+    },
+    "location": {
+      "pt": "Nordeste da ilha do Maio",
+      "en": "Northeast of the island of Maio"
+    },
+    "category": "settlement",
+    "tags": [
+      "povoação",
+      "assentamento rural",
+      "história local",
+      "descobrimentos",
+      "habitação tradicional",
+      "vila"
+    ],
+    "description": {
+      "pt": "Praia Gonçalo e Santo António são as duas menores localidades da ilha do Maio, localizadas no nordeste. Segundo o censo de 2010, contavam com 67 e 22 habitantes, respetivamente. Especula-se que o nome Praia Gonçalo esteja relacionado com Gonçalo Ferreira, cavaleiro da casa do Infante D. Henrique, o primeiro a desembarcar no local aquando da chegada dos descobridores portugueses. As povoações são constituídas por moradias individuais de um piso, organizadas ao longo da estrada principal.",
+      "en": "Praia Gonçalo and Santo António are the two smallest villages on the island, located in the northeast. According to the 2010 census, they had 67 and 22 inhabitants respectively. It is speculated that the name Praia Gonçalo is related to Gonçalo Ferreira, a knight of Infante D. Henrique’s household and the first to land in the area upon the arrival of Portuguese explorers. The villages consist of individual one-storey houses clustered along the main road."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281512/places/pg.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1185598,
+      15.2712344
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "settlement",
+      "rural settlement",
+      "local history",
+      "discoveries",
+      "traditional housing",
+      "village"
+    ]
+  },
+  {
+    "id": "capela-santo-antonio",
+    "name": {
+      "pt": "Capela de Santo António",
+      "en": "Chapel of Santo António"
+    },
+    "location": {
+      "pt": "Ribeira de Santo António",
+      "en": "Ribeira of Santo António"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela",
+      "arquitetura tradicional",
+      "património religioso",
+      "história oral",
+      "agricultura histórica"
+    ],
+    "description": {
+      "pt": "A capela localiza-se na ribeira de Santo António e apresenta características da arquitetura tradicional, sendo edificada em pedra e coberta de telha, com um edifício principal e um anexo. Segundo a lenda popular, existia no local uma capela anterior que foi demolida por ordem da Rainha D. Maria, tendo o santo sido transferido para Porto Inglês. No dia seguinte, o santo reapareceu no local onde se situa a atual capela. Considerando que o povoamento do Maio começou pelo norte da ilha, tudo indica que a Ribeira de Santo António terá sido o primeiro local de exploração agrícola da ilha.",
+      "en": "The chapel is located along the Ribeira of Santo António and features traditional architecture, built of stone and covered with tiles, with a main building and an annex. According to popular legend, an earlier chapel existed here but was demolished under Queen Maria’s orders and the saint transferred to Porto Inglês. The following day, the saint reappeared at the current location of the chapel. Since settlement on the island began in the north, this suggests that the Ribeira of Santo António was the first agricultural exploitation area in Maio."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281514/places/capelast.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1230088,
+      15.2751226
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "chapel",
+      "traditional architecture",
+      "religious heritage",
+      "oral history",
+      "historic agriculture"
+    ]
+  },
+  {
+    "id": "prainha-boca-ribeira",
+    "name": {
+      "pt": "Praias de Prainha e Boca Ribeira",
+      "en": "Prainha and Boca Ribeira Beaches"
+    },
+    "location": {
+      "pt": "A cerca de 2 km a leste da localidade de Pedro Vaz",
+      "en": "About 2 km east of the village of Pedro Vaz"
+    },
+    "category": "beach",
+    "tags": [
+      "praia de areia branca",
+      "dunas",
+      "porto histórico",
+      "pesca artesanal",
+      "lazer local",
+      "nidificação de tartarugas"
+    ],
+    "description": {
+      "pt": "Localizadas a este da localidade de Pedro Vaz, as praias da Prainha e da Boca Ribeira são praias de areia branca com dunas. Especula-se que a praia da Boca Ribeira tenha sido o primeiro porto do Maio, associado à primeira povoação da ilha, localizada no Penedo. Acredita-se que servia para o escoamento de produtos locais como peles de animais, queijo e cal através de caravelas. Atualmente são utilizadas pela população local para passeios, pesca e lazer. Estas praias são também procuradas para a desova da tartaruga-cabeçuda, tendo recebido cerca de 155 ninhos em 2013, representando aproximadamente 12% da atividade total da ilha.",
+      "en": "Located east of the village of Pedro Vaz, Prainha and Boca Ribeira are white sandy beaches with dune systems. It is speculated that Boca Ribeira was Maio’s first port, linked to the island’s earliest settlement at Penedo. According to this theory, it was used to ship local products such as dried meat, animal skins, cheese and chalk via caravels. Today, these beaches are used by local residents for fishing and leisure. They are also important nesting sites for loggerhead sea turtles, with around 155 nests recorded in 2013, representing nearly 12% of the island’s total nesting activity."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281515/places/bocaribeira.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.099940734224603,
+      15.249291589572191
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "white sand beach",
+      "dunes",
+      "historic port",
+      "artisanal fishing",
+      "local leisure",
+      "turtle nesting"
+    ]
+  },
+  {
+    "id": "pedro-vaz",
+    "name": {
+      "pt": " Pedro Vaz",
+      "en": "Village of Pedro Vaz"
+    },
+    "location": {
+      "pt": "Nordeste da ilha do Maio",
+      "en": "Northeast of the island of Maio"
+    },
+    "category": "settlement",
+    "tags": [
+      "povoação",
+      "assentamento histórico",
+      "arquitetura tradicional",
+      "infraestruturas locais",
+      "história colonial",
+      "vila"
+    ],
+    "description": {
+      "pt": "Localizada a nordeste da ilha, Pedro Vaz contava com 166 habitantes em 2010. Até à chegada dos ingleses ao Porto Inglês no século XVII, esta povoação é apontada como o principal assentamento populacional do Maio. Atualmente é composta por dois núcleos urbanos ligados ao anel de circulação da ilha, com predomínio de moradias unifamiliares de um piso. Destaca-se arquitetonicamente a rua principal do núcleo norte. A localidade dispõe de infraestruturas como escola do ensino básico, jardim infantil, a Capela de São Pedro, um centro de saúde e uma placa desportiva.",
+      "en": "Located in the northeast of the island, Pedro Vaz had a population of 166 people in 2010. Until the arrival of the English to Porto Inglês in the seventeenth century, it is considered to have been the main settlement in Maio. Today it consists of two settlements connected to the island’s ring road, mainly composed of one-storey single-family houses. The most notable architectural feature is the main street in the northern nucleus. The village benefits from infrastructure such as a primary school, kindergarten, the Chapel of São Pedro, a health centre and a sports area."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281516/places/pv.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1158373,
+      15.2473839
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "settlement",
+      "historic settlement",
+      "traditional architecture",
+      "local infrastructure",
+      "colonial history",
+      "village"
+    ]
+  },
+  {
+    "id": "paisagem-protegida-monte-penoso-monte-branco",
+    "name": {
+      "pt": "Paisagem Protegida de Monte Penoso e Monte Branco",
+      "en": "Protected Landscape of Monte Penoso and Monte Branco"
+    },
+    "location": {
+      "pt": "Parte oriental do maciço do interior da ilha do Maio",
+      "en": "Eastern part of the interior massif of the island of Maio"
+    },
+    "category": "protected_area",
+    "tags": [
+      "paisagem protegida",
+      "maciço montanhoso",
+      "recarga de aquíferos",
+      "geologia",
+      "habitat de aves",
+      "bacia agrícola"
+    ],
+    "description": {
+      "pt": "A Paisagem Protegida de Monte Penoso e Monte Branco abrange cerca de 1.117 hectares de relevos montanhosos localizados na parte oriental do maciço do interior da ilha do Maio. Situada numa zona climatologicamente árida, desempenha um papel fundamental na recarga dos aquíferos que abastecem as aldeias de Pilão Cão, Alcatraz e Pedro Vaz, bem como a importante bacia agrícola da Ribeira Lagoa. A proteção desta área baseia-se sobretudo nas suas características geológicas, em particular no complexo argilo-calcário-eruptivo, cujos depósitos mesozóicos são essenciais para a interpretação da história geológica do arquipélago. Outros valores incluem a valorização da paisagem e os habitats que acolhem espécies autóctones, especialmente aves.",
+      "en": "The Protected Landscape of Monte Penoso and Monte Branco covers around 1,117 hectares of mountainous terrain located in the eastern part of the island’s interior massif. Situated in a dry climate zone, it plays a key role in replenishing aquifers that supply the villages of Pilão Cão, Alcatraz and Pedro Vaz, as well as the important agricultural basin of Ribeira Lagoa. The main reasons for protection are its geological features, particularly the clay-limestone-eruptive complex, whose Mesozoic deposits are fundamental for interpreting the geological history of the archipelago. Additional values include landscape conservation and habitats that support native species, especially birds."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281517/places/montepenoso.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.12597675,
+      15.2147852
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "protected landscape",
+      "mountain massif",
+      "aquifer recharge",
+      "geology",
+      "bird habitat",
+      "agricultural basin"
+    ]
+  },
+  {
+    "id": "monte-penoso",
+    "name": {
+      "pt": "Monte Penoso",
+      "en": "Mount Penoso"
+    },
+    "location": {
+      "pt": "Parte oriental do maciço do interior da ilha do Maio",
+      "en": "Eastern part of the interior massif of the island of Maio"
+    },
+    "category": "mountain",
+    "tags": [
+      "ponto mais alto da ilha",
+      "miradouro natural",
+      "geologia basáltica",
+      "valor simbólico",
+      "avifauna",
+      "montanha"
+    ],
+    "description": {
+      "pt": "Localizado na parte oriental do maciço do interior da ilha, o Monte Penoso é o ponto mais alto do Maio, com 437 metros de altitude. Historicamente associado a um carácter misterioso e sagrado, apresenta uma paisagem exuberante e funciona como um miradouro natural, permitindo observar praticamente toda a ilha em todas as direções. Formado por materiais eruptivos essencialmente basálticos, especula-se que a principal erupção vulcânica da ilha tenha ocorrido nesta área. A fauna inclui espécies de aves como o abutre-do-egipto, francelho, corvo e coruja.",
+      "en": "Located in the eastern part of the island’s interior massif, Monte Penoso is the highest point in Maio, reaching 437 metres in height. Historically regarded as a mysterious and sacred place, it features a lush landscape and serves as a natural viewpoint, offering panoramic views across the entire island. Formed mainly of basaltic eruptive materials, it is believed that the main volcanic eruption of Maio occurred in this area. Notable fauna includes bird species such as the Egyptian vulture, kestrel, raven and owl."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281517/places/montepenoso.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1300798,
+      15.2278226
+    ],
+    "osm_id": "node/2453282673",
+    "geo_source": "OSM",
+    "tags_en": [
+      "island highest point",
+      "natural viewpoint",
+      "basaltic geology",
+      "symbolic value",
+      "birdlife",
+      "mountain"
+    ]
+  },
+  {
+    "id": "monte-branco",
+    "name": {
+      "pt": "Monte Branco",
+      "en": "Mount Branco"
+    },
+    "location": {
+      "pt": "A oeste de Pilão Cão, no interior da ilha do Maio",
+      "en": "West of Pilão Cão, in the interior of the island of Maio"
+    },
+    "category": "mountain",
+    "tags": [
+      "geologia antiga",
+      "sedimentos mais antigos",
+      "pastagem",
+      "avifauna",
+      "extração de inertes"
+    ],
+    "description": {
+      "pt": "O Monte Branco situa-se a oeste de Pilão Cão e atinge 253 metros de altitude. Do ponto de vista geológico, é considerado extremamente importante, pois no seu lado ocidental encontram-se alguns dos sedimentos mais antigos de Cabo Verde, resultantes do afloramento de argilas compactas intercaladas com formações calcárias. As encostas e áreas circundantes albergam espécies de aves como a cotovia, a calhandra-das-dunas e a galinha-do-mato. A área é utilizada para a pastagem de gado, especialmente cabras, e foi também explorada para extração de inertes destinados à pavimentação de estradas.",
+      "en": "Monte Branco is located west of Pilão Cão and reaches an elevation of 253 metres. Geologically, it is of great importance, as its western side contains some of the oldest sediments in Cape Verde, formed by compact clay outcrops mixed with limestone formations. The surrounding area supports bird species such as the greater hoopoe lark, the bar-tailed lark and the helmeted guinea fowl. The mountain is used for livestock grazing, particularly goats, and has also been used for stone extraction for road paving."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281520/places/montebranco.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1218737,
+      15.2017478
+    ],
+    "osm_id": "node/3231044986",
+    "geo_source": "OSM",
+    "tags_en": [
+      "ancient geology",
+      "oldest sediments",
+      "pasture",
+      "birdlife",
+      "aggregate extraction"
+    ]
+  },
+  {
+    "id": "capela-nossa-senhora-rosario-penoso",
+    "name": {
+      "pt": "Capela de Nossa Senhora do Rosário",
+      "en": "Chapel of Nossa Senhora do Rosário"
+    },
+    "location": {
+      "pt": "Junto ao Monte Penoso, interior oriental da ilha do Maio",
+      "en": "Next to Monte Penoso, eastern interior of the island of Maio"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela histórica",
+      "primeiro assentamento humano",
+      "arquitetura tradicional",
+      "património religioso",
+      "mitologia local"
+    ],
+    "description": {
+      "pt": "Localizada junto ao Monte Penoso, a Capela de Nossa Senhora do Rosário é considerada a mais antiga da ilha e está intimamente ligada à história do primeiro assentamento humano do Maio. Construída em pedra e coberta de telha sobre uma estrutura de madeira, terá sido edificada pela antiga comunidade de Alcatraz, associada à família Mendes. Segundo a tradição popular, houve três tentativas para transferir o santo para a igreja do Porto Inglês, mas este reaparecia sempre na capela do Penoso, levando à decisão de o manter no local original.",
+      "en": "Located next to Monte Penoso, the Chapel of Nossa Senhora do Rosário is considered the oldest chapel on the island and is closely linked to the history of the first human settlement in Maio. Built of stone and covered with tiles over a wooden structure, it is said to have been constructed by the ancient community of Alcatraz, associated with the Mendes family. According to popular myth, there were three attempts to move the saint to the church in Porto Inglês, but the saint reappeared the following day at the Chapel of Penoso, leading to the decision to keep it in its original location."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281521/places/capelaalcatraz.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1300798,
+      15.2278226
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "historic chapel",
+      "first human settlement",
+      "traditional architecture",
+      "religious heritage",
+      "local mythology"
+    ]
+  },
+  {
+    "id": "alcatraz-pilao-cao",
+    "name": {
+      "pt": "Alcatraz e Pilão Cão",
+      "en": "Villages of Alcatraz and Pilão Cão"
+    },
+    "location": {
+      "pt": "Interior oriental da ilha do Maio, entre Monte Penoso e Ribeira Lagoa",
+      "en": "Eastern interior of the island of Maio, between Monte Penoso and Ribeira Lagoa"
+    },
+    "category": "settlement",
+    "tags": [
+      "povoações rurais",
+      "estrutura linear",
+      "habitação tradicional",
+      "infraestruturas comunitárias",
+      "vila"
+    ],
+    "description": {
+      "pt": "Alcatraz era originalmente um campo aberto com poucas casas ao longo da rua principal, tendo sido habitado por 232 pessoas em 2010. Desenvolveu-se no sentido este-oeste, sem a formação de um núcleo central definido. Pilão Cão é uma pequena localidade próxima, com 102 habitantes em 2010. Urbanisticamente, ambas apresentam uma estrutura linear ao longo da via principal, com habitações unifamiliares tradicionais de um piso. Dispõem de infraestruturas básicas como posto de saúde, escolas, capela, centro comunitário e placa desportiva.",
+      "en": "Alcatraz was originally an open field with a few houses along the main road and had 232 inhabitants in 2010. It developed in an east–west direction without forming a clear central area. Pilão Cão is a nearby small village with 102 inhabitants in 2010. In terms of urban layout, both villages have a linear structure along the main road, with traditional one-storey family houses. They are equipped with basic infrastructure such as a health centre, schools, chapel, community centre and sports area."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281522/places/alcapc.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1042028,
+      15.213302
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "rural settlements",
+      "linear structure",
+      "traditional housing",
+      "community infrastructure",
+      "village"
+    ]
+  },
+  {
+    "id": "capela-alcatraz-pilao-cao",
+    "name": {
+      "pt": "Capela de Alcatraz e Pilão Cão",
+      "en": "Chapel of Alcatraz and Pilão Cão"
+    },
+    "location": {
+      "pt": "Entre as localidades de Alcatraz e Pilão Cão, interior oriental do Maio",
+      "en": "Between the villages of Alcatraz and Pilão Cão, eastern interior of Maio"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela comunitária",
+      "arquitetura tradicional",
+      "coesão social",
+      "atividades religiosas",
+      "eventos comunitários"
+    ],
+    "description": {
+      "pt": "A Capela de Alcatraz e Pilão Cão, também conhecida como Capela Horta Marcelino, situa-se entre as duas localidades. O seu nome deriva da proximidade a uma zona agrícola com o mesmo nome. Foi edificada por iniciativa da população local, com o apoio de emigrantes, com o objetivo de servir sobretudo os idosos que não conseguiam deslocar-se à Capela do Penoso. Nesta capela realizam-se missas, encontros de jovens, reuniões comunitárias e atividades comemorativas como o Dia da Criança e o Natal.",
+      "en": "The Chapel of Alcatraz and Pilão Cão, also known as the Chapel of Horta Marcelino, is located between the two villages. Its name comes from its proximity to an agricultural area with the same name. It was built by local initiative with support from emigrants, mainly to serve elderly residents who could not travel to the Chapel of Penoso. Activities held here include Mass, youth meetings, community gatherings, Children’s Day celebrations and Christmas events."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281524/places/capelaalc.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1042028,
+      15.213302
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "community chapel",
+      "traditional architecture",
+      "social cohesion",
+      "religious activities",
+      "community events"
+    ]
+  },
+  {
+    "id": "morro-village",
+    "name": {
+      "pt": " Morro",
+      "en": "Village of Morro"
+    },
+    "location": {
+      "pt": "Sudoeste da ilha do Maio, a 5 km a norte do Porto Inglês",
+      "en": "Southwest of the island of Maio, 5 km north of Porto Inglês"
+    },
+    "category": "settlement",
+    "tags": [
+      "povoação urbana",
+      "estrutura linear",
+      "habitação tradicional",
+      "infraestruturas locais",
+      "eixo rodoviário",
+      "vila"
+    ],
+    "description": {
+      "pt": "O Morro localiza-se no sudoeste da ilha, a 5 km a norte do Porto Inglês, com uma população de 310 habitantes em 2010. O núcleo urbano encontra-se anexo à estrada norte-sul que liga a Cidade do Porto Inglês à Calheta. Apresenta uma estrutura urbana dominante no sentido este-oeste, com bandas contínuas e tipologia de habitação tradicional unifamiliar, maioritariamente de um piso. Dispõe de infraestruturas como minimercado, hotel, residências, jardim infantil, escola do EBI, capela, clube comunitário, praça e placa desportiva.",
+      "en": "Morro is located in the southwest of the island, 5 km north of Porto Inglês, with a population of 310 inhabitants in 2010. The settlement is attached to the north–south road connecting Cidade do Porto Inglês and Calheta. It presents an urban structure dominated by the east–west axis, with continuous bands of traditional one-storey single-family houses. Morro contains infrastructures such as a supermarket, hotel, residences, kindergarten, primary school, chapel, community centre, square and sports area."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281525/places/conjuntomorro.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2217424,
+      15.1796575
+    ],
+    "osm_id": null,
+    "geo_source": "missing",
+    "tags_en": [
+      "urban settlement",
+      "linear structure",
+      "traditional housing",
+      "local infrastructure",
+      "road axis",
+      "village"
+    ]
+  },
+  {
+    "id": "capela-nossa-senhora-fatima-morro",
+    "name": {
+      "pt": "Capela de Nossa Senhora de Fátima",
+      "en": "Chapel of Nossa Senhora de Fátima"
+    },
+    "location": {
+      "pt": "Centro da localidade do Morro, em frente à praça principal",
+      "en": "Centre of the village of Morro, opposite the main square"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela comunitária",
+      "arquitetura religiosa",
+      "vida comunitária",
+      "educação religiosa",
+      "património local"
+    ],
+    "description": {
+      "pt": "A Capela de Nossa Senhora de Fátima localiza-se no centro do Morro, no lado oposto da estrada em relação à praça principal. A sua localização manteve-se sempre a mesma, embora inicialmente fosse uma pequena construção edificada em 1950, com 5 a 6 metros de comprimento, conhecida como Capela de Santa Filomena. Em 2003, foi remodelada e ampliada com o apoio da população, passando a chamar-se Capela de Nossa Senhora de Fátima. As principais atividades incluem missas, catequese e escola dominical para crianças e jovens da localidade.",
+      "en": "The chapel is located in the centre of Morro, on the opposite side of the road from the main square. The location has always been the same, although it was originally a small building constructed in 1950, measuring 5 to 6 metres in length, known as the Chapel of Santa Filomena. In 2003, it was remodelled and enlarged with the support of the local population and renamed the Chapel of Our Lady of Fátima. The main activities include Mass, catechism and Sunday school for children and young people from the village."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281526/places/capelamorro.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2217424,
+      15.1796575
+    ],
+    "osm_id": null,
+    "geo_source": "missing",
+    "tags_en": [
+      "community chapel",
+      "religious architecture",
+      "community life",
+      "religious education",
+      "local heritage"
+    ]
+  },
+  {
+    "id": "centro-ceramica-morro",
+    "name": {
+      "pt": "Centro de Cerâmica do Morro",
+      "en": "Pottery Centre of Morro"
+    },
+    "location": {
+      "pt": "Morro",
+      "en": "Morro"
+    },
+    "category": "economic_activity",
+    "tags": [
+      "artesanato",
+      "cerâmica tradicional",
+      "economia local",
+      "matéria-prima local",
+      "património produtivo"
+    ],
+    "description": {
+      "pt": "O Centro de Cerâmica do Morro situa-se no extremo noroeste da localidade. Até meados dos anos 80, um grupo de alemães produzia sabão de purgueira nesta zona. A partir dos anos 80, através de um projeto da União Europeia, iniciou-se a produção de cerâmica. Atualmente, produzem-se vasos, estátuas, objetos decorativos, souvenires e cinzeiros para venda local e turística, bem como panelas e utensílios de cozinha, utilizando argila local proveniente do Pedregal, na Ribeira do Morro.",
+      "en": "The Pottery Centre of Morro is located in the extreme northwest of the village. Until the mid-1980s, a group of Germans produced soap from purgueira in this area. From the 1980s onwards, pottery production began through a European Union project. Today, the centre produces vases, statues, small decorative objects, souvenirs and ashtrays for local and tourist sale, as well as pots and kitchen utensils made from local clay sourced from Pedregal, in the Ribeira of Morro."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281527/places/ceramicamorro.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2217424,
+      15.1796575
+    ],
+    "osm_id": null,
+    "geo_source": "missing",
+    "tags_en": [
+      "handicrafts",
+      "traditional pottery",
+      "local economy",
+      "local raw material",
+      "património produtivo"
+    ]
+  },
+  {
+    "id": "rnpm-praia-do-morro",
+    "name": {
+      "pt": "Reserva Natural da Praia do Morro",
+      "en": "Natural Reserve of Praia do Morro"
+    },
+    "location": {
+      "pt": "Morro",
+      "en": "Morro"
+    },
+    "category": "protected_area",
+    "tags": [
+      "reserva natural",
+      "costa arenosa",
+      "praia de desova",
+      "tartaruga cabeçuda",
+      "sedimentos orgânicos",
+      "correntes costeiras"
+    ],
+    "description": {
+      "pt": "A RNPM localiza-se na costa oeste da ilha do Maio, entre Morro e Calheta, abrangendo cerca de 666 hectares. Engloba uma grande praia de origem organogénica, resultante do transporte de areias provenientes do norte da ilha, especialmente das Terras Salgadas, distribuídas ao longo da costa pelas correntes locais. O principal valor biológico da área é a sua importância como uma das praias mais relevantes da ilha para a desova da tartaruga marinha cabeçuda.",
+      "en": "The RNPM is located on the west coast of the island, between Morro and Calheta, covering approximately 666 hectares. It includes a large beach of organogenic origin, formed by sands transported from the north of the island, particularly from Terras Salgadas, and redistributed by local coastal currents. The main biological importance of this site is its role as one of the most important nesting beaches for loggerhead sea turtles on the island."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281528/places/praiadomorro.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2320507,
+      15.180635
+    ],
+    "osm_id": null,
+    "geo_source": "missing",
+    "tags_en": [
+      "natural reserve",
+      "sandy coast",
+      "turtle nesting beach",
+      "loggerhead turtle",
+      "organic sediments",
+      "coastal currents"
+    ]
+  },
+  {
+    "id": "praia-do-morro",
+    "name": {
+      "pt": "Praia do Morro",
+      "en": "Morro Beach"
+    },
+    "location": {
+      "pt": "Morro",
+      "en": "Morro"
+    },
+    "category": "beach",
+    "tags": [
+      "praia arenosa",
+      "pesca artesanal",
+      "desova de tartarugas",
+      "aves limícolas",
+      "observação de baleias"
+    ],
+    "description": {
+      "pt": "A Praia do Morro situa-se na costa ocidental da ilha, a cerca de 1 km a oeste da localidade do Morro. É uma praia extensa, composta por areia branca e rochas, cuja agitação marítima desaconselha o banho. É utilizada sobretudo para pesca amadora. Em termos de biodiversidade, destaca-se como área de desova da tartaruga cabeçuda, com 53 ninhos registados em 2013, representando cerca de 4% da atividade total da ilha. É também frequente a observação de baleias-jubarte, sobretudo nos meses de abril e maio, bem como aves limícolas junto à Boca da Ribeira do Morro.",
+      "en": "Morro Beach is located on the west coast of the island, approximately 1 km west of Morro village. It is an extensive beach composed of white sand and rocks, where sea agitation makes swimming unsafe. It is mainly used for amateur fishing. In terms of biodiversity, it is a nesting site for loggerhead sea turtles, with 53 nests recorded in 2013, representing about 4% of the island’s total nesting activity. Humpback whales are frequently observed, especially in April and May, as well as wader birds near the mouth of the Ribeira of Morro."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281529/places/morrob.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2320507,
+      15.180635
+    ],
+    "osm_id": null,
+    "geo_source": "missing",
+    "tags_en": [
+      "sandy beach",
+      "artisanal fishing",
+      "turtle nesting",
+      "shorebirds",
+      "whale watching"
+    ]
+  },
+  {
+    "id": "ribeira-do-morro",
+    "name": {
+      "pt": "Ribeira do Morro",
+      "en": "Ribeira of Morro"
+    },
+    "location": {
+      "pt": "Desde a zona do Monte Batalha até à Praia do Morro",
+      "en": "From the area of Mount Batalha to Morro Beach"
+    },
+    "category": "ribeira",
+    "tags": [
+      "ribeira temporária",
+      "agricultura sazonal",
+      "extração de inertes",
+      "argila local",
+      "zona húmida temporária"
+    ],
+    "description": {
+      "pt": "A Ribeira do Morro tem origem na zona do Monte Batalha e estende-se até ao mar, desaguando na Praia do Morro, a norte da localidade. Ao longo do seu percurso realizam-se atividades como agricultura sazonal durante a época das chuvas, extração de pedra e cascalho junto ao Monte Batalha e extração de argila na zona do Pedregal, utilizada para cerâmica. Na zona da lagoa inundável da Boca do Morro destacam-se coqueiros, aves limícolas e vegetação halófila.",
+      "en": "The Ribeira of Morro is a temporary stream that begins in the area of Mount Batalha and flows to the sea at Morro Beach, north of the village. Activities along the stream include seasonal agriculture during the rainy period, stone and gravel extraction near Mount Batalha, and clay extraction in the Pedregal area for pottery. In the flooded lagoon area near the mouth of the ribeira, coconut trees, wader birds and halophilic vegetation can be found."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281531/places/ribeiramorro.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2217424,
+      15.1796575
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "seasonal stream",
+      "seasonal agriculture",
+      "aggregate extraction",
+      "local clay",
+      "seasonal wetland"
+    ]
+  },
+  {
+    "id": "monte-batalha",
+    "name": {
+      "pt": "Monte Batalha",
+      "en": "Mount Batalha"
+    },
+    "location": {
+      "pt": "Oeste da ilha do Maio",
+      "en": "West of the island of Maio"
+    },
+    "category": "mountain",
+    "tags": [
+      "montanha",
+      "miradouro natural",
+      "agricultura de sequeiro",
+      "pastagens",
+      "paisagem interior",
+      "uso agro-pastoril"
+    ],
+    "description": {
+      "pt": "O Monte Batalha localiza-se a oeste da ilha e é o segundo monte mais alto do Maio, com 294 metros de altitude. Geologicamente é constituído por várias camadas e oferece uma vista ampla sobre a costa oeste e o centro da ilha, sendo visível a partir da maioria das localidades. O nome poderá estar associado a antigas lutas pela sobrevivência ou à ocorrência de batalhas. Nas suas encostas pratica-se agricultura de sequeiro durante o tempo das chuvas e serve também como área de pastagem, sobretudo para criadores do Morro, Figueira e Calheta.",
+      "en": "Monte Batalha is located to the west of the island and is the second highest mountain in Maio, reaching 294 metres in height. Geologically, it consists of several layers and offers wide views over the western coast and the centre of the island, being visible from most settlements. The name is thought to derive from historical struggles for survival or battles. Agriculture is practised on its slopes during the rainy season and it also serves as grazing land, mainly for farmers from Morro, Figueira and Calheta."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281532/places/montebatalha.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1858886,
+      15.2019116
+    ],
+    "osm_id": "node/2520003375",
+    "geo_source": "OSM",
+    "tags_en": [
+      "mountain",
+      "natural viewpoint",
+      "rainfed agriculture",
+      "pastures",
+      "inland landscape",
+      "agro-pastoral use"
+    ]
+  },
+  {
+    "id": "perimetro-florestal-calheta",
+    "name": {
+      "pt": "Perímetro Florestal de Calheta",
+      "en": "Forest of Calheta"
+    },
+    "location": {
+      "pt": "Entre o Monte Batalha e as aldeias de Morrinho e Cascabulho",
+      "en": "Between Mount Batalha and the villages of Morrinho and Cascabulho"
+    },
+    "category": "forest_area",
+    "tags": [
+      "perímetro florestal",
+      "reflorestação",
+      "acácias",
+      "produção de lenha",
+      "carvão vegetal",
+      "gestão ecológica"
+    ],
+    "description": {
+      "pt": "O Perímetro Florestal de Calheta é uma mancha verde com cerca de 500 hectares, estendendo-se desde as proximidades do Monte Batalha até às aldeias de Morrinho e Cascabulho. É o maior perímetro florestal de Cabo Verde e é composto maioritariamente por espécies introduzidas, com predominância de acácias americanas (cerca de 85%). Foi criado com o objetivo de equilibrar a ecologia da ilha, promover a produção agro-silvo-pastoril, valorizar a paisagem e fornecer produtos energéticos como lenha e carvão. O seu desenvolvimento ocorreu entre 1964 e 1975, período em que foram plantadas cerca de 7.500 acácias.",
+      "en": "The Forest of Calheta covers around 500 hectares and extends from the vicinity of Mount Batalha to the villages of Morrinho and Cascabulho. It is the largest forest perimeter in Cape Verde and is mainly composed of introduced species, especially American acacias (around 85%). It was created to restore ecological balance on the island, promote agro-silvo-pastoral production, enhance the landscape and provide energy resources such as firewood and charcoal. Its development took place between 1964 and 1975, when approximately 7,500 acacias were planted."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281533/places/florestacalheta.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1858886,
+      15.2019116
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "forest perimeter",
+      "reforestation",
+      "acácias",
+      "firewood production",
+      "charcoal",
+      "gestão ecológica"
+    ]
+  },
+  {
+    "id": "centro-zootecnico-calheta",
+    "name": {
+      "pt": "Centro Zootécnico",
+      "en": "Zootechnical Centre"
+    },
+    "location": {
+      "pt": "No interior do Perímetro Florestal de Calheta",
+      "en": "Within the Forest of Calheta"
+    },
+    "category": "economic_activity",
+    "tags": [
+      "centro zootécnico",
+      "pecuária",
+      "caprinos",
+      "ovinos",
+      "viveiro",
+      "agricultura experimental"
+    ],
+    "description": {
+      "pt": "O Centro Zootécnico localiza-se no interior do Perímetro Florestal de Calheta e foi construído por iniciativa governamental em 1978. Até ao início da década de 1990 funcionou como espaço de apoio à criação de gado, especialmente cabras e ovelhas. Atualmente encontra-se em desuso para fins pecuários, sendo utilizado como viveiro de plantas ornamentais e frutícolas.",
+      "en": "The Zootechnical Centre is located within the Forest of Calheta and was built by government initiative in 1978. Until the early 1990s it was used to support livestock breeding, particularly goats and sheep. These activities are no longer carried out, and the site now functions as a nursery for ornamental and fruit plants."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281534/places/centrozootecnico.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1858886,
+      15.2019116
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "zootechnical center",
+      "livestock",
+      "goats",
+      "sheep",
+      "nursery",
+      "experimental agriculture"
+    ]
+  },
+  {
+    "id": "ribona-lem-tavares",
+    "name": {
+      "pt": "Ribona e Lém Tavares (Calheta de Cima)",
+      "en": "Ribona and Lém Tavares (Upper Calheta)"
+    },
+    "location": {
+      "pt": "Via principal da Calheta, zona central da ilha do Maio",
+      "en": "Main road of Calheta, central area of the island of Maio"
+    },
+    "category": "settlement",
+    "tags": [
+      "zona urbana",
+      "eixo rodoviário",
+      "ribeira",
+      "habitação tradicional",
+      "serviços públicos",
+      "centro administrativo",
+      "vila"
+    ],
+    "description": {
+      "pt": "Ribona e Lém Tavares localizam-se na via principal que liga todas as localidades da ilha, constituindo a zona mais populosa da Calheta, com 917 habitantes em 2010 (822 em Ribona). Possuem infraestruturas de lazer, religião, saúde, ensino e serviços públicos. As edificações apresentam características tradicionais, com moradias de um piso. Em Ribona, as casas situam-se em ambos os lados da ribeira da Calheta, sobre plataformas elevadas para evitar inundações. Lém Tavares é composta por cerca de 20 casas, tendo o nome origem nos apelidos dos moradores mais antigos.",
+      "en": "Ribona and Lém Tavares are located along the main road connecting all villages on the island and form the most populated area of Calheta, with 917 inhabitants in 2010 (822 in Ribona). The area has leisure, religious, health, educational and public service infrastructures. Buildings are mainly traditional single-storey houses. In Ribona, houses are built on platforms along both sides of the Calheta stream to prevent flooding. Lém Tavares consists of around 20 houses and takes its name from the surnames of its oldest residents."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281535/places/ribonacalheta.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.21115135,
+      15.2289425
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "urban zone",
+      "road axis",
+      "stream",
+      "traditional housing",
+      "public services",
+      "administrative center",
+      "village"
+    ]
+  },
+  {
+    "id": "capela-sao-jose-ribona",
+    "name": {
+      "pt": "Capela de São José",
+      "en": "Chapel of São José"
+    },
+    "location": {
+      "pt": "Zona central de Ribona, junto à praça e à Ribeira da Calheta",
+      "en": "Central area of Ribona, near the square and Ribeira da Calheta"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela",
+      "património religioso",
+      "arquitetura tradicional",
+      "ribeira",
+      "zona de cheias"
+    ],
+    "description": {
+      "pt": "A Capela de São José localiza-se num eixo central de Ribona, em frente à praça principal e próxima da Ribeira da Calheta, uma linha de água de grande dimensão durante as chuvas. Foi construída em 1947 por iniciativa da comunidade, com apoio da paróquia. A capela é edificada em pedra e coberta por chapas onduladas de fibrocimento, assente sobre uma estrutura de madeira.",
+      "en": "The Chapel of São José is located in a central area of Ribona, in front of the main square and next to the Ribeira da Calheta, a large watercourse during the rainy season. It was built in 1947 by the local community with support from the parish. The chapel is built of stone and covered with corrugated fibre cement sheets over a wooden structure."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281536/places/capelacalheta.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2112438,
+      15.2296327
+    ],
+    "osm_id": "node/7369680658",
+    "geo_source": "OSM",
+    "tags_en": [
+      "chapel",
+      "religious heritage",
+      "traditional architecture",
+      "stream",
+      "flood zone"
+    ]
+  },
+  {
+    "id": "centro-artesanato-calheta",
+    "name": {
+      "pt": "Centro de Artesanato da Calheta",
+      "en": "Artisan Centre of Calheta"
+    },
+    "location": {
+      "pt": "Zona de Lém Tavares, Calheta",
+      "en": "Lém Tavares area, Calheta"
+    },
+    "category": "economic_activity",
+    "tags": [
+      "artesanato",
+      "tecelagem",
+      "produção local",
+      "economia criativa",
+      "património cultural"
+    ],
+    "description": {
+      "pt": "O Centro de Artesanato da Calheta foi criado em 1979 por um grupo de alemães e localiza-se na zona de Lém Tavares. Inicialmente funcionava como unidade de fiação de lã de caracul, dando origem posteriormente à prática da tecelagem. Atualmente o grupo é composto por cerca de 12 artesãos, com destaque para atividades como pintura, escultura e tecelagem. Na área têxtil produzem-se bolsas, toalhas bordadas, tapeçarias, carteiras, utensílios de cozinha e panos de terra.",
+      "en": "The Artisan Centre of Calheta was created in 1979 by a group of Germans and is located in the Lém Tavares area. Initially, it operated as a spinning unit using caracul wool, later evolving into weaving. Today, the group consists of around 12 artisans working in areas such as painting, sculpture and weaving. Textile products include handbags, embroidered towels, tapestries, wallets, kitchen utensils and cloths."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281537/places/centroart.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2112107,
+      15.2292429
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "handicrafts",
+      "weaving",
+      "local production",
+      "creative economy",
+      "cultural heritage"
+    ]
+  },
+  {
+    "id": "baxona-ribinha",
+    "name": {
+      "pt": "Baxona e Ribinha (Calheta de Baixo)",
+      "en": "Baxona and Ribinha (Lower Calheta)"
+    },
+    "location": {
+      "pt": "Extremo sudoeste da Calheta, em frente à Praia de Baxona",
+      "en": "South-western end of Calheta, in front of Baxona Beach"
+    },
+    "category": "settlement",
+    "tags": [
+      "conjunto urbano",
+      "zona costeira",
+      "pesca artesanal",
+      "habitação tradicional",
+      "turismo local",
+      "vila"
+    ],
+    "description": {
+      "pt": "Baxona e Ribinha situam-se no extremo sudoeste da Calheta. Em 2010 registavam 339 habitantes. A maioria das moradias apresenta características tradicionais, com predominância de casas unifamiliares de um piso. A zona da Ribinha é composta por apenas uma rua, com casas de pedra cobertas por telha de duas ou quatro águas. A pesca constitui a principal atividade económica das comunidades, sendo complementada por serviços turísticos associados à praia, como bares, esplanadas e residências.",
+      "en": "Baxona and Ribinha are located at the south-western tip of Calheta, in front of Baxona Beach. In 2010, the area had 339 inhabitants. Most houses are traditional single-storey family homes. Ribinha consists of a single street with stone houses covered with tiled roofs. Fishing is the main economic activity, complemented by tourism-related services linked to the nearby beach, such as bars, terraces and residences."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287245/places/baxona.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2160701,
+      15.22642185
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "conjunto urbano",
+      "coastal zone",
+      "artisanal fishing",
+      "traditional housing",
+      "local tourism",
+      "village"
+    ]
+  },
+  {
+    "id": "praia-baxona",
+    "name": {
+      "pt": "Praia de Baxona",
+      "en": "Baxona Beach"
+    },
+    "location": {
+      "pt": "Zona da Baxona, extremo sudoeste da Calheta",
+      "en": "Baxona area, south-western end of Calheta"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "baía abrigada",
+      "porto de pesca",
+      "atividades recreativas",
+      "batismos"
+    ],
+    "description": {
+      "pt": "Pequena praia com cerca de 500 metros, situada numa baía abrigada no extremo sudoeste da Calheta. Apresenta forma semicircular e é composta por areia branca e preta intercaladas. A água é muito calma durante todo o ano, com bastantes pedras no fundo. No passado funcionava como ponto de ligação marítima entre o Maio e a Cidade de Pedra Badejo (Santiago). Atualmente é utilizada como porto de saída de cerca de 10 botes de pesca artesanal e é frequentada pela população local e visitantes para lazer, desporto e atividades religiosas.",
+      "en": "This small beach, about 500 metres long, is located in a sheltered bay at the south-western end of Calheta. It has a semicircular shape and is composed of mixed white and black sand. The water is very calm year-round, with rocky seabed areas. Historically, it served as a maritime connection point between Maio and Pedra Badejo (Santiago Island). Today it functions as a small fishing port for around 10 artisanal boats and is also used for leisure, sports and religious activities."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287245/places/baxona.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.216503,
+      15.224127
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "sheltered bay",
+      "fishing port",
+      "recreational activities",
+      "batismos"
+    ],
+    "tips": [
+      {
+        "pt": "Melhor ao fim da tarde, por volta das 16–17h para o pôr do sol.",
+        "en": "Best late afternoon, around 4–5pm for sunset."
+      }
+    ]
+  },
+  {
+    "id": "praias-soca-pau-seco",
+    "name": {
+      "pt": "Praias de Soca a Pau Seco",
+      "en": "Beaches of Soca to Pau Seco"
+    },
+    "location": {
+      "pt": "A norte da Calheta",
+      "en": "North of Calheta"
+    },
+    "category": "beach",
+    "tags": [
+      "conjunto de praias",
+      "banho",
+      "uso comunitário",
+      "desova de tartarugas",
+      "zona natural"
+    ],
+    "description": {
+      "pt": "Conjunto de praias situadas a norte da Calheta, compostas por areia mista (branca e preta). São, em geral, boas para o banho e bastante frequentadas pela população local para lazer e atividades desportivas. Estas praias são também utilizadas pelas tartarugas marinhas da espécie cabeçuda como área de desova.",
+      "en": "This group of beaches is located north of Calheta and consists of mixed white and black sand. They are generally suitable for swimming and frequently used by the local population for leisure and sports. These beaches are also important nesting areas for loggerhead sea turtles."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281543/places/pauseco.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2301176,
+      15.2582025
+    ],
+    "osm_id": "node/3236330854",
+    "geo_source": "OSM",
+    "tags_en": [
+      "group of beaches",
+      "banho",
+      "community use",
+      "turtle nesting",
+      "natural zone"
+    ]
+  },
+  {
+    "id": "morrinho",
+    "name": {
+      "pt": " Morrinho",
+      "en": "Village of Morrinho"
+    },
+    "location": {
+      "pt": "Noroeste da ilha do Maio",
+      "en": "North-west of Maio Island"
+    },
+    "category": "settlement",
+    "tags": [
+      "conjunto urbano",
+      "habitação tradicional",
+      "setor primário",
+      "produção de carvão",
+      "vida comunitária",
+      "vila"
+    ],
+    "description": {
+      "pt": "Morrinho situa-se a noroeste da ilha do Maio e tinha uma população de 444 habitantes em 2010. O núcleo urbano desenvolve-se a partir de dois eixos imperfeitamente perpendiculares que orientam a disposição das edificações. A maioria das habitações segue o estilo tradicional, sendo casas individuais de um piso. A comunidade dedica-se maioritariamente a atividades do setor primário, destacando-se a produção de carvão. Dispõe de infraestruturas de ensino (escola do EBI e jardim infantil), religião (capela), lazer (centro comunitário, praça e campo polivalente) e saúde (unidade sanitária de base).",
+      "en": "Morrinho is located in the north-west of Maio Island and had a population of 444 inhabitants in 2010. Its urban structure is organised around two imperfect perpendicular axes that guide the arrangement of buildings. Most houses follow the traditional style, consisting of single-storey dwellings. The community is mainly dedicated to primary sector activities, with charcoal production being prominent. Infrastructure includes education (primary school and kindergarten), religion (chapel), leisure (community centre, square and sports ground) and health services (basic health unit)."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281544/places/morinho.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2043873,
+      15.2655865
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "conjunto urbano",
+      "traditional housing",
+      "primary sector",
+      "charcoal production",
+      "community life",
+      "village"
+    ]
+  },
+  {
+    "id": "capela-santa-ana-sao-joaquim",
+    "name": {
+      "pt": "Capela de Santa Ana e São Joaquim",
+      "en": "Chapel of Santa Ana and São Joaquim"
+    },
+    "location": {
+      "pt": "Centro da localidade de Morrinho, junto à praça",
+      "en": "Centre of Morrinho village, next to the square"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela",
+      "património religioso",
+      "arquitetura tradicional",
+      "espaço comunitário"
+    ],
+    "description": {
+      "pt": "A Capela de Santa Ana e São Joaquim localiza-se no centro da localidade de Morrinho, junto à praça. Foi construída entre 1970 e 1971 e é composta por um único volume, formado por muros de pedra e coberto de telhas. Destaca-se o paredão liso com corte diagonal na fachada.",
+      "en": "The Chapel of Santa Ana and São Joaquim is located in the centre of Morrinho, next to the main square. It was built between 1970 and 1971 and consists of a single volume made of stone walls and covered with tiles. A distinctive feature is the smooth wall with a diagonal cut on the façade."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281545/places/capelamorrinho.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2043873,
+      15.2655865
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "chapel",
+      "religious heritage",
+      "traditional architecture",
+      "community space"
+    ]
+  },
+  {
+    "id": "cruz-santana",
+    "name": {
+      "pt": "Cruz de Santana",
+      "en": "Santana Cross"
+    },
+    "location": {
+      "pt": "Zona norte de Morrinho, no antigo caminho para a Praia de Santana",
+      "en": "Northern Morrinho, along the old path to Santana Beach"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "património cultural",
+      "religiosidade popular",
+      "tradição comunitária",
+      "marco simbólico"
+    ],
+    "description": {
+      "pt": "A Cruz de Santana, recentemente reconstruída, situa-se no norte de Morrinho e foi fixada desde a antiguidade no caminho para a Praia de Santana. Constitui um local de grande valor cultural para a comunidade, onde as pessoas se reuniam para rezar aos santos, pedir chuva e, por vezes, pagar promessas.",
+      "en": "The Cross of Santana, recently rebuilt, is located in northern Morrinho and has been placed since ancient times along the path to Santana Beach. It is a site of great cultural value to the community, where people traditionally gathered to pray to the saints, ask for rain and sometimes fulfil promises."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281546/places/cruzsantana.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2071681,
+      15.2880811
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "cultural heritage",
+      "popular religiosity",
+      "community tradition",
+      "symbolic landmark"
+    ]
+  },
+  {
+    "id": "fornos-carvao-cascabulho",
+    "name": {
+      "pt": "Fornos de carvão",
+      "en": "Charcoal production"
+    },
+    "location": {
+      "pt": "Zona rural entre Morrinho e Cascabulho",
+      "en": "Rural area between Morrinho and Cascabulho"
+    },
+    "category": "economic_activity",
+    "tags": [
+      "produção de carvão",
+      "atividade tradicional",
+      "setor primário",
+      "economia rural"
+    ],
+    "description": {
+      "pt": "A produção de carvão vegetal constitui uma atividade tradicional relevante na zona de Cascabulho e localidades vizinhas, associada ao setor primário e à subsistência de várias famílias. Os fornos de carvão fazem parte da paisagem rural e da economia local.",
+      "en": "Charcoal production is a relevant traditional activity in the Cascabulho area and neighbouring villages, linked to the primary sector and the subsistence of several families. Charcoal kilns form part of the rural landscape and local economy."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281547/places/carvao.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1725926,
+      15.269957
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "charcoal production",
+      "traditional activity",
+      "primary sector",
+      "rural economy"
+    ]
+  },
+  {
+    "id": "cascabulho",
+    "name": {
+      "pt": " Cascabulho",
+      "en": "Village of Cascabulho"
+    },
+    "location": {
+      "pt": "Centro-norte da ilha do Maio, entre Morrinho e Santo António",
+      "en": "North-central Maio Island, between Morrinho and Santo António"
+    },
+    "category": "settlement",
+    "tags": [
+      "conjunto urbano",
+      "habitação tradicional",
+      "origem toponímica",
+      "vida comunitária",
+      "vila"
+    ],
+    "description": {
+      "pt": "Cascabulho localiza-se no centro-norte da ilha do Maio, entre Morrinho e Santo António, e tinha uma população de 204 habitantes em 2010. Segundo fontes populares, o nome está associado a um monte de cascas de feijões e milho encontrado na zona. O núcleo urbano apresenta uma estrutura linear composta por habitações individuais, dominando a tipologia de moradia tradicional unifamiliar de um piso. Dispõe de infraestruturas como escola de ensino básico, jardim infantil, capela católica, placa desportiva e centro comunitário.",
+      "en": "Cascabulho is located in the north-central part of Maio Island, between Morrinho and Santo António, and had a population of 204 inhabitants in 2010. According to popular sources, its name comes from mounds of corn and bean husks found in the area. The village has a linear structure composed of single-family one-storey houses. Infrastructure includes a primary school, kindergarten, Catholic chapel, sports area and community centre."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281548/places/cascabulho.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1725926,
+      15.269957
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "conjunto urbano",
+      "traditional housing",
+      "toponymic origin",
+      "community life",
+      "village"
+    ]
+  },
+  {
+    "id": "capela-nossa-senhora-socorro",
+    "name": {
+      "pt": "Capela de Nossa Senhora de Socorro",
+      "en": "Chapel of Nossa Senhora de Socorro"
+    },
+    "location": {
+      "pt": "Entrada da localidade de Cascabulho",
+      "en": "Entrance of the village of Cascabulho"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "capela",
+      "património religioso",
+      "arquitetura simples",
+      "iniciativa comunitária"
+    ],
+    "description": {
+      "pt": "A Capela de Nossa Senhora de Socorro situa-se junto à entrada de acesso à localidade de Cascabulho. Trata-se de uma capela de pequenas dimensões, com cobertura a duas águas, cuja entrada é feita por uma plataforma elevada definida por uma escadaria semicircular. Pela sua posição em frente à esplanada principal, constitui um elemento marcante da paisagem urbana. Foi edificada por iniciativa da comunidade local, com apoio da paróquia, e inaugurada a 6 de julho de 1996.",
+      "en": "The Chapel of Nossa Senhora de Socorro is located next to the entrance of Cascabulho. It is a small chapel with a dual-pitched roof, accessed via an elevated platform defined by a semicircular staircase. Due to its position facing the main square, it is an important element of the village’s urban landscape. It was built by the local community with the help of the parish and inaugurated on July 6th, 1996."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281548/places/capelac.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1725926,
+      15.269957
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "chapel",
+      "religious heritage",
+      "simple architecture",
+      "iniciativa comunitária"
+    ]
+  },
+  {
+    "id": "parque-natural-norte-maio",
+    "name": {
+      "pt": "Parque Natural do Norte da Ilha do Maio",
+      "en": "Norte da Ilha do Maio Natural Park"
+    },
+    "location": {
+      "pt": "Extremo norte da ilha do Maio",
+      "en": "Northernmost part of Maio Island"
+    },
+    "category": "protected_area",
+    "tags": [
+      "parque natural",
+      "área protegida",
+      "biodiversidade marinha",
+      "zonas húmidas",
+      "salinas",
+      "tartarugas marinhas",
+      "aves migratórias"
+    ],
+    "description": {
+      "pt": "O Parque Natural do Norte da Ilha do Maio ocupa a parte mais setentrional da ilha e é a maior área protegida do Maio, com 25.601 hectares, incluindo componentes terrestre e marinha. Abrange a área húmida temporária mais importante da ilha e constitui um dos principais hotspots de biodiversidade marinha. O parque inclui extensas salinas (Terras Salgadas), dunas de areia consolidadas e móveis, praias de desova de tartarugas marinhas (Caretta caretta) e importantes habitats para aves residentes e migratórias. Destaca-se ainda o ilhéu de Laje Branca, com uma colónia única de aves marinhas, e a contiguidade geológica entre Terras Salgadas, Pedrenau e o maciço de Monte Santo António.",
+      "en": "The Norte da Ilha do Maio Natural Park covers the northernmost part of the island and is the largest protected area in Maio, with a total of 25,601 hectares, including land and marine components. It encompasses the most important temporary wetland on the island and is one of the main marine biodiversity hotspots. The park includes extensive salt marshes (Terras Salgadas), consolidated and mobile sand dunes, nesting beaches for sea turtles (Caretta caretta), and key habitats for resident and migratory birds. It also includes the Laje Branca islet, which hosts a unique seabird colony, and an important geological continuity between Terras Salgadas, Pedrenau and the Monte Santo António massif."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281549/places/parquenorte.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.175128582926828,
+      15.299599234146346
+    ],
+    "osm_id": "way/778935787",
+    "geo_source": "OSM",
+    "tags_en": [
+      "natural park",
+      "protected area",
+      "marine biodiversity",
+      "wetlands",
+      "salt pans",
+      "sea turtles",
+      "migratory birds"
+    ]
+  },
+  {
+    "id": "dunas-do-morrinho",
+    "name": {
+      "pt": "Dunas do Morrinho",
+      "en": "Dunes of Morrinho"
+    },
+    "location": {
+      "pt": "Cerca de 1 km a noroeste de Morrinho",
+      "en": "Approximately 1 km northwest of Morrinho"
+    },
+    "category": "dunes",
+    "tags": [
+      "dunas",
+      "barreira natural",
+      "proteção costeira",
+      "biodiversidade",
+      "habitat dunar"
+    ],
+    "description": {
+      "pt": "As Dunas do Morrinho localizam-se cerca de 1 km a noroeste da localidade do Morrinho. Formadas por grandes quantidades de areia transportadas pelos ventos dominantes, funcionam durante alguns meses como uma barreira natural que impede a invasão da água do mar e da areia para o interior, protegendo também o lençol freático contra a entrada de água salgada. O sistema dunar estende-se por aproximadamente 3 km de comprimento e 500 metros de largura, atingindo cerca de 15 metros de altura, e alberga uma biodiversidade característica de habitats dunares.",
+      "en": "The dunes of Morrinho are located about 1 km northwest of the village of Morrinho. Formed by large amounts of sand transported by dominant winds, they act as a natural barrier during part of the year, preventing seawater and sand intrusion inland and protecting local freshwater sources from saltwater infiltration. The dune system extends for approximately 3 km in length and 500 metres in width, reaching heights of around 15 metres, and hosts biodiversity typical of dune habitats."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287256/places/dunasmorrinho.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.215604,
+      15.276444
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "dunes",
+      "natural barrier",
+      "coastal protection",
+      "biodiversity",
+      "dune habitat"
+    ]
+  },
+  {
+    "id": "zona-humida-casas-velhas",
+    "name": {
+      "pt": "Zona Húmida das Casas Velhas",
+      "en": "Wetlands of Casas Velhas"
+    },
+    "location": {
+      "pt": "Entre a Cidade do Porto Inglês e o sul do Barreiro",
+      "en": "Between Cidade do Porto Inglês and the southern part of Barreiro"
+    },
+    "category": "wetland",
+    "tags": [
+      "zona húmida",
+      "lagoas temporárias",
+      "aves migratórias",
+      "halófitas",
+      "conservação"
+    ],
+    "description": {
+      "pt": "A Zona Húmida das Casas Velhas estende-se desde a parte leste da Cidade do Porto Inglês até ao sul do Barreiro. É composta por duas lagoas litorais temporárias de água salgada ou salobra, localizadas atrás da praia e separadas do mar por cordões dunares. Trata-se de uma das zonas húmidas costeiras mais importantes da ilha em termos de conservação, com um vasto conjunto de plantas halófitas e habitat para aves limícolas migratórias e residentes, incluindo pernilongos, maçaricos, pilritos, borrelhos, garças-reais e garças-brancas.",
+      "en": "The Wetlands of Casas Velhas extend from the eastern part of Cidade do Porto Inglês to the southern area of Barreiro. They consist of two temporary coastal lagoons with salty or brackish water, located behind the beach and separated from the ocean by small dune systems. This is considered one of the most important coastal wetlands on the island for conservation, featuring extensive halophilic vegetation and serving as a habitat for migratory and resident shorebirds such as whimbrels, sandpipers, plovers, herons and egrets."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281480/places/protectedb.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2112673,
+      15.1375142
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "wetland",
+      "seasonal lagoons",
+      "migratory birds",
+      "halófitas",
+      "conservação"
+    ]
+  },
+  {
+    "id": "casas-velhas",
+    "name": {
+      "pt": "Casas Velhas",
+      "en": "Casas Velhas"
+    },
+    "location": {
+      "pt": "A norte da Ribeira das Casas Velhas, a cerca de 3 km da Cidade do Porto Inglês",
+      "en": "North of Ribeira das Casas Velhas, about 3 km from Cidade do Porto Inglês"
+    },
+    "category": "historical_heritage",
+    "tags": [
+      "povoação histórica",
+      "património",
+      "história colonial",
+      "assentamento abandonado"
+    ],
+    "description": {
+      "pt": "A antiga povoação das Casas Velhas situava-se a norte da Ribeira das Casas Velhas, a cerca de 3 km a este da Cidade do Porto Inglês. Terá sido formada como núcleo habitacional antes de 1718, com cerca de 60 habitantes, maioritariamente oriundos do Porto Guindaste (atual Porto Inglês), que fugiam de ataques sucessivos de piratas e abusos dos ingleses. Atualmente subsistem apenas restos de uma antiga habitação, sem ligação direta confirmada ao núcleo original, mas a partir deste local é possível observar a ribeira e a zona húmida das Casas Velhas.",
+      "en": "Casas Velhas (Old Houses) was an ancient settlement supposedly located north of Ribeira das Casas Velhas, about 3 km east of Cidade do Porto Inglês. It became a settlement before 1718, with around 60 inhabitants, mainly people from Porto Guindaste (now Porto Inglês) fleeing repeated pirate attacks and abuses by the English present on the island at the time. Today, only the remains of an old house exist, likely unrelated to the original settlement, but from this point one can view the stream and the wetlands of Casas Velhas."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281553/places/casasvelhas.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2112673,
+      15.1375142
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "historic settlement",
+      "heritage",
+      "colonial history",
+      "abandoned settlement"
+    ]
+  },
+  {
+    "id": "praia-djampadja",
+    "name": {
+      "pt": "Praia de Djampadja",
+      "en": "Djampadja Beach"
+    },
+    "location": {
+      "pt": "Sul da ilha, entre Ponta Preta e Boca Lagoa",
+      "en": "Southern part of the island, between Ponta Preta and Boca Lagoa"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "desova de tartarugas",
+      "pesca amadora",
+      "passeios",
+      "biodiversidade"
+    ],
+    "description": {
+      "pt": "A Praia de Djampadja localiza-se no sul da ilha, entre as praias de Ponta Preta e Boca Lagoa. É uma praia de areia branca e cinzenta, ligeiramente inclinada e parcialmente inundável, dividida em vários troços separados por rochas. É utilizada para passeios e pesca amadora. Constitui uma das praias mais importantes da ilha para a nidificação da tartaruga cabeçuda, tendo registado 87 ninhos em 2013, o que representa cerca de 6,5% da atividade total. O nível de atividade das fêmeas foi o mais elevado da ilha, com quase 13% dos rastos.",
+      "en": "Djampadja Beach is located in the southern part of the island, between Ponta Preta and Boca Lagoa. This gently sloped sandy beach, composed of white and grey sand, is partially flooded at times and divided into several sections by rocks. It is mainly used for leisure walks and angling. It is one of the most important nesting beaches for loggerhead sea turtles on the island, with 87 nests recorded in 2013, representing 6.5% of total nesting activity. Female activity levels were the highest on the island, with nearly 13% of the tracks."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281553/places/djampadja.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.1607208,
+      15.1350598
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "turtle nesting",
+      "recreational fishing",
+      "walks",
+      "biodiversity"
+    ]
+  },
+  {
+    "id": "praia-ponta-preta",
+    "name": {
+      "pt": "Praia de Ponta Preta",
+      "en": "Ponta Preta Beach"
+    },
+    "location": {
+      "pt": "Extremo sul do Porto Inglês, após a Ponta Preta",
+      "en": "Southern end of Porto Inglês, just after the Ponta Preta headland"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "recifes rochosos",
+      "biodiversidade marinha",
+      "banho sazonal",
+      "pesca"
+    ],
+    "description": {
+      "pt": "A Praia de Ponta Preta localiza-se no extremo sul do Porto Inglês, logo após a ponta com o mesmo nome. É uma praia extensa de areia branca, com morfologia variável ao longo do ano devido aos movimentos da areia. Entre Maio e Setembro forma-se uma gruta com cerca de 20 metros de profundidade, criando um local propício para banho, que desaparece com o recuo do mar a partir de Outubro. Apresenta grande biodiversidade marinha, com fundos de areia e recifes rochosos que albergam esponjas, algas, corais e diversas espécies de peixes de interesse ecológico e pesqueiro.",
+      "en": "Ponta Preta Beach is located at the southern end of Porto Inglês, just after the Ponta Preta headland. It is a wide white sandy beach with variable morphology throughout the year, depending on sand movement. Between May and September, a cave of around 20 metres in depth is usually formed, creating a bathing spot, which disappears with the retreat of the sea from October onwards. The beach hosts high marine biodiversity, with sandy bottoms and rocky reefs containing sponges, algae, corals and a wide range of fish species of ecological and commercial interest."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287262/places/pontapreta.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.20317193,
+      15.126350873333335
+    ],
+    "osm_id": "way/237296712",
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "rocky reefs",
+      "marine biodiversity",
+      "banho sazonal",
+      "fishing"
+    ],
+    "tips": [
+      {
+        "pt": "Domingos costumam ter encontros da comunidade na praia.",
+        "en": "Sundays often bring community gatherings on the beach."
+      }
+    ]
+  },
+  {
+    "id": "cidade-porto-ingles",
+    "name": {
+      "pt": "Cidade do Porto Inglês",
+      "en": "City of Porto Inglês"
+    },
+    "location": {
+      "pt": "Sudoeste da ilha do Maio",
+      "en": "Southwest of Maio Island"
+    },
+    "category": "settlement",
+    "tags": [
+      "capital",
+      "centro urbano",
+      "história colonial",
+      "serviços",
+      "porto",
+      "vila"
+    ],
+    "description": {
+      "pt": "A Cidade do Porto Inglês é a sede do concelho e capital da ilha do Maio, localizada no sudoeste da ilha, com 2.971 habitantes em 2010. No século XVII, antes da chegada dos ingleses atraídos pelo comércio do sal, era designada Porto Guindaste. Com o domínio inglês, o nome foi alterado para Porto dos Ingleses e, posteriormente, Porto Inglês. Em 2010, a então Vila de Porto Inglês foi oficialmente elevada a cidade. Urbanisticamente, apresenta uma estrutura organizada em torno de dois eixos principais nos sentidos norte-sul e este-oeste. As habitações individuais de um ou dois pisos continuam a ser o tipo de construção dominante. A cidade concentra grande parte dos serviços da ilha, incluindo transportes, logística, comércio, turismo e serviços públicos.",
+      "en": "Cidade do Porto Inglês is the county seat and capital of Maio Island, located in the southwest of the island, with a population of 2,971 inhabitants in 2010. In the seventeenth century, before the arrival of the English attracted by the salt trade, it was known as Porto Guindaste. Under English dominance, the name was changed to Porto dos Ingleses and later Porto Inglês. In 2010, the town was officially renamed Cidade do Porto Inglês. In urban terms, the city is structured around two main axes running north–south and east–west. One- or two-storey individual houses remain the dominant building type. The city hosts much of the island’s services, including transport, logistics, trade, tourism and public services."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281555/places/vila2.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2112673,
+      15.1375142
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "capital",
+      "urban center",
+      "colonial history",
+      "services",
+      "port",
+      "village"
+    ]
+  },
+  {
+    "id": "farol-forte-sao-jose",
+    "name": {
+      "pt": "Farol (Forte de São José)",
+      "en": "Fort of São José"
+    },
+    "location": {
+      "pt": "Extremo sul da Avenida Amílcar Cabral, Cidade do Porto Inglês",
+      "en": "Southern end of Avenida Amílcar Cabral, City of Porto Inglês"
+    },
+    "category": "historical_heritage",
+    "tags": [
+      "forte",
+      "farol",
+      "história militar",
+      "porto inglês",
+      "património"
+    ],
+    "description": {
+      "pt": "O Farol ou Forte de São José situa-se no extremo sul da Avenida Amílcar Cabral, num ponto elevado e privilegiado com vista sobre a costa de acesso à Vila. Especula-se a existência, no século XVIII, de um forte com o mesmo nome no lado norte do Porto Inglês, construído após 1717 por ordem do Rei D. João V para travar as pretensões inglesas sobre a ilha. Outra hipótese sugere que o forte do lado sul teria ruído, tendo sido posteriormente reconstruído como réplica e assumindo a função de farol. A construção é em pedra, com presença de canhões e ameias nos muros, tendo sido recentemente reabilitada.",
+      "en": "The Lighthouse or Fort of São José is located at the southern end of Avenida Amílcar Cabral, in a privileged elevated position overlooking the coastal access to Porto Inglês. It is speculated that a fort with the same name existed in the eighteenth century on the northern side of Porto Inglês, built after 1717 by order of King João V to counter British claims over the island. Another hypothesis suggests that the southern fort collapsed and was later rebuilt as a replica, taking on the lighthouse function. The structure is built of stone, features cannons and battlements on the walls, and has been recently rehabilitated."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287265/places/farol.webp",
+    "source": "AFIA",
+    "coordinates": [
+      -23.212674,
+      15.136651
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "fort",
+      "lighthouse",
+      "military history",
+      "porto ingles",
+      "heritage"
+    ]
+  },
+  {
+    "id": "igreja-nossa-senhora-da-luz",
+    "name": {
+      "pt": "Igreja de Nossa Senhora da Luz",
+      "en": "Church of Nossa Senhora da Luz"
+    },
+    "location": {
+      "pt": "Centro da Cidade do Porto Inglês",
+      "en": "Centre of the City of Porto Inglês"
+    },
+    "category": "religious_heritage",
+    "tags": [
+      "igreja",
+      "religião",
+      "arquitetura",
+      "história colonial",
+      "porto inglês"
+    ],
+    "description": {
+      "pt": "Construída em 1872, a Igreja de Nossa Senhora da Luz localiza-se no centro da Cidade do Porto Inglês, numa posição dominante sobre a vila. Inspirada no modelo português, a construção recorreu a materiais provenientes de Portugal, utilizando cerâmica e madeira de coqueiro, com financiamento oriundo do imposto do sal. A obra prolongou-se por sete anos e foi realizada apenas durante as estações secas. A sua criação levou à desativação da Paróquia do Penoso. Segundo a lenda popular, houve várias tentativas de transferir a imagem de Nossa Senhora do Rosário da Capela do Penoso para a Vila, mas a imagem regressava sempre ao Penoso, motivo pelo qual se decidiu mantê-la lá.",
+      "en": "Built in 1872, the Church of Nossa Senhora da Luz is located in the centre of the City of Porto Inglês, occupying a dominant position over the village. Inspired by Portuguese architectural models, the construction used materials brought from Portugal, including pottery and coconut wood, and was funded through salt taxes. The work took seven years to complete and was carried out only during the dry seasons. Its construction led to the deactivation of the Parish of Penoso. According to popular legend, there were several attempts to transfer the image of Our Lady of the Rosary from the Chapel of Penoso to the village, but the image would always reappear in Penoso, leading to the decision to leave it there."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281558/places/Igrejavila.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.211449,
+      15.137913
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "church",
+      "religion",
+      "architecture",
+      "colonial history",
+      "porto ingles"
+    ]
+  },
+  {
+    "id": "sobrado-paicv",
+    "name": {
+      "pt": "Sobrado (Sede do PAICV)",
+      "en": "Townhouse (PAICV headquarters)"
+    },
+    "location": {
+      "pt": "Centro da Cidade do Porto Inglês, junto à Igreja de Nossa Senhora da Luz",
+      "en": "Centre of the City of Porto Inglês, next to the Church of Nossa Senhora da Luz"
+    },
+    "category": "historical_heritage",
+    "tags": [
+      "sobrado",
+      "arquitetura colonial",
+      "política",
+      "história urbana",
+      "porto inglês"
+    ],
+    "description": {
+      "pt": "Situado no centro da Cidade do Porto Inglês, junto à Igreja de Nossa Senhora da Luz, este sobrado é atualmente a sede do PAICV. Pertenceu a António Évora, uma das grandes personalidades da ilha e proprietário de salinas, detentor de uma pequena fortuna. À época, era considerada a melhor moradia do Porto Inglês, contando-se que existiam vários instrumentos musicais na casa, incluindo uma harpa. A construção é composta por dois andares, implantada sobre um pedestal com uma grande escadaria que lhe confere estatuto de casa senhorial. Possui acesso desde as quatro fachadas, destacando-se especialmente a fachada principal orientada a oeste.",
+      "en": "Located in the centre of the City of Porto Inglês, next to the Church of Nossa Senhora da Luz, this townhouse currently serves as the headquarters of the PAICV political party. It once belonged to António Évora, one of the island’s most prominent figures and a saltpan owner who accumulated considerable wealth. At the time, it was considered the finest house in Porto Inglês, and it is said that several musical instruments were kept there, including a harp. The building has two storeys and is set on a pedestal accessed by a large staircase, giving it the status of a manorial house. It has entrances on all four façades, with the main façade facing west standing out."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281559/places/Sobrado.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.211136,
+      15.137416
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "sobrado",
+      "colonial architecture",
+      "politics",
+      "urban history",
+      "porto ingles"
+    ]
+  },
+  {
+    "id": "montinho-de-lume",
+    "name": {
+      "pt": "Montinho de Lume",
+      "en": "Mount de Lume"
+    },
+    "location": {
+      "pt": "Extremo norte da Cidade do Porto Inglês",
+      "en": "Northern end of the City of Porto Inglês"
+    },
+    "category": "mountain",
+    "tags": [
+      "miradouro",
+      "porto inglês",
+      "salinas",
+      "história urbana",
+      "infraestruturas"
+    ],
+    "description": {
+      "pt": "Localizado no extremo norte da Cidade do Porto Inglês, o Montinho de Lume tem cerca de 50 metros de altitude e oferece uma vista privilegiada sobre o Porto Inglês e as Salinas. Atualmente alberga infraestruturas meteorológicas e de comunicação. Antigamente, sob a administração de Silvério António Évora, foi transformado em logradouro público em 1921, na sequência de uma petição popular. Nas imediações localizava-se o antigo cemitério, onde ainda hoje subsistem vestígios do túmulo da família Loufe (Loff).",
+      "en": "Located at the northern end of the City of Porto Inglês, Montinho de Lume is about 50 metres high and offers privileged views over Porto Inglês and the saltpans. It currently hosts meteorological and communication infrastructures. Previously, under the administration of Silvério António Évora, it was turned into a public space in 1921 following a public request. The old cemetery was located nearby, where traces of the Loufe (Loff) family tomb can still be found."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281561/places/Montinho.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2112673,
+      15.1375142
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "viewpoint",
+      "porto ingles",
+      "salt pans",
+      "urban history",
+      "infrastructure"
+    ]
+  },
+  {
+    "id": "praia-bitche-rotcha",
+    "name": {
+      "pt": "Praia de Bitche Rotcha",
+      "en": "Bitche Rotcha Beach"
+    },
+    "location": {
+      "pt": "Oeste do Porto Inglês, junto aos cais",
+      "en": "West of Porto Inglês, near the pier"
+    },
+    "category": "beach",
+    "tags": [
+      "praia urbana",
+      "porto inglês",
+      "pesca artesanal",
+      "história industrial",
+      "cultura"
+    ],
+    "description": {
+      "pt": "Esta extensa praia de areia branca situa-se a oeste do Porto Inglês, junto aos cais. O nome aparenta ter influência inglesa, embora historicamente seja referido que a designação correta poderia ser Praia da Salina ou Praia do Porto. Conta-se que ocorreu o encalhe de alguns barcos nesta praia, entre eles o Constança em 1975, cujos vestígios ainda hoje se encontram enterrados na areia. No século XX teve atividade industrial com a fábrica de conservas IMAL. A praia é frequentada por pescadores artesanais e pela população local para banho e lazer, especialmente no verão, quando acolhe várias atividades culturais e desportivas.",
+      "en": "This extensive white sandy beach is located west of Porto Inglês, near the pier. The name is presumed to be of British influence, although historically it seems the correct designation would be Salina Beach or Porto Beach. Several ship strandings occurred here, including the Constança in 1975, whose remains are still buried in the sand. In the twentieth century, it hosted industrial activity with the IMAL canned food factory. The beach is frequented by artisanal fishermen and local residents for bathing and leisure, especially during summer, when it hosts cultural and sporting activities."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281555/places/vila2.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.21548963333333,
+      15.140366133333336
+    ],
+    "osm_id": "way/237296387",
+    "geo_source": "OSM",
+    "tags_en": [
+      "urban beach",
+      "porto ingles",
+      "artisanal fishing",
+      "industrial history",
+      "cultura"
+    ],
+    "tips": [
+      {
+        "pt": "Jogo de vôlei de praia costuma acontecer entre 16h e 19h.",
+        "en": "Beach volleyball usually happens between 4 and 7pm."
+      }
+    ]
+  },
+  {
+    "id": "rotcha",
+    "name": {
+      "pt": "Rotcha",
+      "en": "Rotcha"
+    },
+    "location": {
+      "pt": "Oeste do Porto Inglês",
+      "en": "West of Porto Inglês"
+    },
+    "category": "beach",
+    "tags": [
+      "praia urbana",
+      "porto inglês",
+      "pesca artesanal",
+      "história industrial",
+      "cultura"
+    ],
+    "description": {
+      "pt": "Rotcha foi o porto informal da ilha do Maio nos anos 80 e 90, antes da construção do porto moderno. Era o principal ponto de chegada de pessoas e mercadorias, e Africano era uma figura local bem conhecida associada ao porto.",
+      "en": "Rotcha was Maio’s informal port in the 1980s–90s, before the modern harbor was built. It was the main landing point for people and goods, and Africano was a well-known local figure associated with the port."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770288664/places/rotcha.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.213305,
+      15.136882
+    ],
+    "osm_id": "way/237296387",
+    "geo_source": "OSM",
+    "tags_en": [
+      "urban beach",
+      "porto ingles",
+      "artisanal fishing",
+      "industrial history",
+      "cultura"
+    ]
+  },
+  {
+    "id": "cooperativa-producao-sal",
+    "name": {
+      "pt": "Cooperativa de Produção de Sal",
+      "en": "Salt Production Cooperative"
+    },
+    "location": {
+      "pt": "Extremo norte do Porto Inglês, no caminho de acesso aos cais",
+      "en": "Extreme north of Porto Inglês, on the access road to the pier"
+    },
+    "category": "economic_activity",
+    "tags": [
+      "salinas",
+      "economia tradicional",
+      "cooperativa",
+      "porto inglês",
+      "trabalho feminino"
+    ],
+    "description": {
+      "pt": "A extração de sal foi a principal atividade económica da ilha durante séculos, entrando em declínio em meados do século XIX. Em 1998 foi criada a cooperativa para a produção de sal, que se tornou operacional em 2003. Localiza-se no extremo norte do Porto Inglês, no caminho de acesso aos cais. É composta por cerca de 15 mulheres, além de 50 a 60 trabalhadores independentes aos quais a cooperativa compra o sal. O processo produtivo depende da época das chuvas e da entrada de água nas salinas, sendo o sal retirado após secagem e posteriormente refinado com água mineral e iodo.",
+      "en": "Salt extraction was the main economic activity on the island for centuries, but declined in the mid-nineteenth century. In 1998, a cooperative was created for salt production, becoming operational in 2003. It is located at the extreme north of Porto Inglês, along the access road to the pier. The cooperative is composed of about 15 women, in addition to 50–60 independent gatherers from whom it purchases salt. The production process depends on the rainy season and the intake of saline water, with salt removed after drying and later refined with mineral water and iodine."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281562/places/sal.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2112673,
+      15.1375142
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "salt pans",
+      "traditional economy",
+      "cooperative",
+      "porto ingles",
+      "womens work"
+    ]
+  },
+  {
+    "id": "ppspi-salinas-porto-ingles",
+    "name": {
+      "pt": "Paisagem Protegida das Salinas do Porto Inglês",
+      "en": "Protected Landscape of Salinas do Porto Inglês"
+    },
+    "location": {
+      "pt": "Entre o porto da Cidade do Porto Inglês, o aeroporto e a aldeia do Morro",
+      "en": "Between the port of Cidade do Porto Inglês, the airport and the village of Morro"
+    },
+    "category": "protected_area",
+    "tags": [
+      "zona húmida",
+      "ramsar",
+      "salinas",
+      "porto inglês",
+      "biodiversidade",
+      "conservação"
+    ],
+    "description": {
+      "pt": "A Paisagem Protegida das Salinas do Porto Inglês (534 ha) situa-se entre o porto da Cidade do Porto Inglês, o aeroporto e a aldeia do Morro. Trata-se da maior área húmida permanente da ilha e uma das mais importantes do arquipélago. Em 2013 foi incluída na lista de zonas húmidas protegidas pela Convenção Ramsar, sendo a quarta do país e a primeira da ilha. Engloba valores ecológicos, paisagísticos, históricos e culturais, sendo frequentada por espécies de aves de interesse para a conservação, algumas protegidas por leis nacionais e convenções internacionais, e outras endémicas de Cabo Verde.",
+      "en": "The Protected Landscape of Salinas do Porto Inglês (534 ha) is located between the port of Cidade do Porto Inglês, the airport and the village of Morro. It is the largest permanent wetland on the island and one of the most important in the archipelago. In 2013 it was listed under the Ramsar Convention, becoming the fourth site in the country and the first on the island. It encompasses ecological, landscape, historical and cultural values and is frequented by bird species of conservation interest, some protected by national and international law and others endemic to Cape Verde."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287271/places/salinas.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.218007259459466,
+      15.14692070540541
+    ],
+    "osm_id": "way/386181060",
+    "geo_source": "OSM",
+    "tags_en": [
+      "wetland",
+      "ramsar",
+      "salt pans",
+      "porto ingles",
+      "biodiversity",
+      "conservação"
+    ]
+  },
+  {
+    "id": "center-salinas-porto-ingles",
+    "name": {
+      "pt": "Salinas do Maio Interpretive Center",
+      "en": "Salinas Interpretive Center"
+    },
+    "location": {
+      "pt": "Entre o porto da Cidade do Porto Inglês, o aeroporto e a aldeia do Morro",
+      "en": "Between the port of Cidade do Porto Inglês, the airport and the village of Morro"
+    },
+    "category": "education_center",
+    "tags": [
+      "zona húmida",
+      "center",
+      "education",
+      "porto inglês",
+      "biodiversidade",
+      "conservação"
+    ],
+    "description": {
+      "pt": "O Centro Interpretativo das Salinas do Maio, localizado junto às salinas de Porto Inglês, na ilha do Maio, Cabo Verde, é um equipamento turístico dedicado à valorização do património cultural, natural e tradicional da ilha, com especial enfoque na produção de sal. O espaço promove um modelo de turismo sustentável e de base comunitária.",
+      "en": "The Salinas do Maio Interpretive Center (Centro Interpretativo das Salinas do Maio), located at the edge of the salt pans in Porto Inglês on Maio Island, Cape Verde, is a tourist facility designed to showcase the island's cultural, natural, and traditional heritage, specifically salt production. It promotes sustainable, community-based tourism. "
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281564/places/center.jpg",
+    "source": "AFIA",
+    "coordinates": [
+      -23.218007259459466,
+      15.14692070540541
+    ],
+    "osm_id": "way/386181060",
+    "geo_source": "OSM",
+    "tags_en": [
+      "wetland",
+      "center",
+      "education",
+      "porto ingles",
+      "biodiversity",
+      "conservação"
+    ]
+  },
+  {
+    "id": "praias-salina-bancona",
+    "name": {
+      "pt": "Praias da Salina e Bancona",
+      "en": "Salina and Bancona Beaches"
+    },
+    "location": {
+      "pt": "Costa sudoeste do Maio, entre o porto e a Boca Morro",
+      "en": "Southwest coast of Maio, between the port and Boca Morro"
+    },
+    "category": "beach",
+    "tags": [
+      "praia",
+      "sal",
+      "porto inglês",
+      "tartarugas marinhas",
+      "história económica"
+    ],
+    "description": {
+      "pt": "As Praias da Salina e Bancona localizam-se na costa sudoeste do Maio, entre o porto e a Boca Morro. Historicamente estão ligadas ao comércio do sal, sendo ainda visíveis, no extremo sul, os vestígios da Ponte Velho, uma estrutura do século XIX com cerca de 160 metros, utilizada para o embarque do sal extraído das Salinas do Porto Inglês. Estas extensas praias de areia branca, com uma linha costeira de cerca de 5 km, são frequentadas por tartarugas marinhas da espécie cabeçuda, tendo sido registados 69 ninhos em 2013, correspondendo a cerca de 5% da atividade de desova no Maio.",
+      "en": "Salina and Bancona Beaches are located on the southwest coast of Maio, between the port and Boca Morro. Historically linked to the salt trade, remains of the nineteenth-century Ponte Velho can still be seen at the southern end of the beach. This structure, about 160 metres long, was used for loading salt extracted from the Salinas of Porto Inglês. These long white sandy beaches, with a coastline of around 5 km, are frequented by nesting loggerhead sea turtles, with 69 nests recorded in 2013, representing about 5% of nesting activity on the island."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770281565/places/praiasalinas.png",
+    "source": "AFIA",
+    "coordinates": [
+      -23.2277749219697,
+      15.154959723484849
+    ],
+    "osm_id": null,
+    "geo_source": "OSM",
+    "tags_en": [
+      "beach",
+      "salt",
+      "porto ingles",
+      "sea turtles",
+      "economic history"
+    ]
+  },
+  {
+    "id": "maio-unesco-biosphere",
+    "name": {
+      "pt": "Reserva da Biosfera da UNESCO — Maio",
+      "en": "UNESCO Biosphere Reserve — Maio"
+    },
+    "location": {
+      "pt": "Ilha do Maio",
+      "en": "Maio Island"
+    },
+    "category": "biosphere",
+    "tags": [
+      "unesco",
+      "biosfera",
+      "sustentabilidade",
+      "ecossistemas marinhos",
+      "paisagens protegidas",
+      "comunidade",
+      "turismo responsável"
+    ],
+    "description": {
+      "pt": "A ilha do Maio faz parte da Reserva da Biosfera da UNESCO de Cabo Verde, um reconhecimento atribuído a lugares onde a natureza e a vida humana coexistem em equilíbrio. Este estatuto reflete as vastas paisagens protegidas do Maio, praias intocadas, salinas e ricos ecossistemas marinhos, bem como as tradições enraizadas e o modo de vida liderado pela comunidade. Ser Reserva da Biosfera significa que o Maio não está apenas protegido, mas é também moldado por práticas sustentáveis — preservando a biodiversidade e apoiando os meios de subsistência locais. Para quem visita, oferece a rara experiência de uma ilha que vive ao seu próprio ritmo, onde conservação, cultura e quotidiano são inseparáveis.",
+      "en": "Maio Island is part of the UNESCO Biosphere Reserve of Cabo Verde, a recognition given to places where nature and human life coexist in balance. This status reflects Maio’s vast protected landscapes, unspoiled beaches, salt flats, and rich marine ecosystems, as well as the island’s deep-rooted traditions and community-led way of life. Being a Biosphere Reserve means Maio is not just protected, but actively shaped by sustainable practices—preserving biodiversity while supporting local livelihoods. For visitors, it offers a rare experience of an island that moves at its own rhythm, where conservation, culture, and everyday life are inseparable."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770351495/places/unesco.jpg",
+    "source": "UNESCO",
+    "coordinates": [
+      -23.15,
+      15.25
+    ],
+    "osm_id": null,
+    "geo_source": "Manual",
+    "tags_en": [
+      "unesco",
+      "biosphere",
+      "sustainability",
+      "marine ecosystems",
+      "protected landscapes",
+      "community",
+      "responsible tourism"
+    ]
+  }
+]

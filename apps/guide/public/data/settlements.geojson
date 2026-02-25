@@ -1,0 +1,528 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-01-28T03:03:35Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Barreiro",
+        "description": {
+          "pt": "Barreiro é uma localidade da ilha do Maio estruturada ao longo da Ribeira do Barreiro, integrando os núcleos de Banda Riba e Lém Varela. Banda Riba situa-se a norte da ribeira, numa posição elevada com vistas panorâmicas sobre o vale, e apresenta um tecido urbano composto sobretudo por vivendas unifamiliares de um piso, com traços de arquitetura tradicional. Lém Varela, localizada a sul da ribeira, tem uma estrutura urbana mais linear e contínua, formada maioritariamente por moradias modernas de um piso, e concentra infraestruturas essenciais como ensino, religião, lazer e saúde.",
+          "en": "Barreiro is a settlement on Maio Island developed along the Ribeira do Barreiro, incorporating the areas of Banda Riba and Lém Varela. Banda Riba lies to the north of the riverbed, in an elevated position with panoramic views over the valley, and features mainly single-story detached houses with traditional architectural elements. Lém Varela, located to the south of the riverbed, has a more linear and continuous urban structure, largely composed of modern single-story houses, and hosts key infrastructure such as education, religious facilities, leisure, and healthcare."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1607208,
+          15.1350598
+        ]
+      },
+      "id": "node/1951662272"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Calheta de Cima",
+        "description": {
+          "pt": "Calheta de Cima (Ribona e Lém Tavares) localizam-se na via principal que liga todas as localidades da ilha, constituindo a zona mais populosa da Calheta, com 917 habitantes em 2010 (822 em Ribona). Possuem infraestruturas de lazer, religião, saúde, ensino e serviços públicos. As edificações apresentam características tradicionais, com moradias de um piso. Em Ribona, as casas situam-se em ambos os lados da ribeira da Calheta, sobre plataformas elevadas para evitar inundações. Lém Tavares é composta por cerca de 20 casas, tendo o nome origem nos apelidos dos moradores mais antigos.",
+          "en": "Calheta de Cima (Ribona and Lém Tavares) are located along the main road connecting all villages on the island and form the most populated area of Calheta, with 917 inhabitants in 2010 (822 in Ribona). The area has leisure, religious, health, educational and public service infrastructures. Buildings are mainly traditional single-storey houses. In Ribona, houses are built on platforms along both sides of the Calheta stream to prevent flooding. Lém Tavares consists of around 20 houses and takes its name from the surnames of its oldest residents."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2128887,
+          15.2300929
+        ]
+      },
+      "id": "node/1951662276"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "cascabulho",
+        "name": "Cascabulho",
+        "description": {
+          "pt": "Cascabulho localiza-se no centro-norte da ilha do Maio, entre Morrinho e Santo António, e tinha uma população de 204 habitantes em 2010. Segundo fontes populares, o nome está associado a um monte de cascas de feijões e milho encontrado na zona. O núcleo urbano apresenta uma estrutura linear composta por habitações individuais, dominando a tipologia de moradia tradicional unifamiliar de um piso. Dispõe de infraestruturas como escola de ensino básico, jardim infantil, capela católica, placa desportiva e centro comunitário.",
+          "en": "Cascabulho is located in the north-central part of Maio Island, between Morrinho and Santo António, and had a population of 204 inhabitants in 2010. According to popular sources, its name comes from mounds of corn and bean husks found in the area. The village has a linear structure composed of single-family one-storey houses. Infrastructure includes a primary school, kindergarten, Catholic chapel, sports area and community centre."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1725926,
+          15.269957
+        ]
+      },
+      "id": "node/1951662279"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Figueira da Horta",
+        "description": {
+          "pt": "Figueira Horta localiza-se no centro-sul da ilha, tendo 446 habitantes em 2010. As primeiras habitações foram construídas junto das hortas, outrora ricas em figueiras, que deram origem ao nome da localidade. Destaca-se no Maio como a principal zona agrícola da ilha, sendo a agricultura a principal atividade da população. Apresenta uma morfologia urbana caracterizada por bandas contínuas, sem articulação transversal significativa, dominada por moradias de um piso de tipologia tradicional. Possui infraestruturas como ensino (escola básica e jardim infantil), religião (capela de Cristo Rei), lazer (centro comunitário, praça, polivalente) e saúde (unidade sanitária de base).",
+          "en": "Figueira Horta is located in the south-central part of the island and had 446 inhabitants in 2010. The first dwellings were built along agricultural fields that once had many fig trees, which gave rise to the village name. It stands out in Maio as the island’s main agricultural zone, with farming as the primary activity. Its urban form is characterized by continuous bands of traditional one-storey houses, with basic infrastructures including education, religion, leisure facilities and a basic health unit."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1515291,
+          15.1601318
+        ]
+      },
+      "id": "node/1951662284"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "morrinho",
+        "name": "Morrinho",
+        "description": {
+          "pt": "Morrinho situa-se a noroeste da ilha do Maio e tinha uma população de 444 habitantes em 2010. O núcleo urbano desenvolve-se a partir de dois eixos imperfeitamente perpendiculares que orientam a disposição das edificações. A maioria das habitações segue o estilo tradicional, sendo casas individuais de um piso. A comunidade dedica-se maioritariamente a atividades do setor primário, destacando-se a produção de carvão. Dispõe de infraestruturas de ensino (escola do EBI e jardim infantil), religião (capela), lazer (centro comunitário, praça e campo polivalente) e saúde (unidade sanitária de base).",
+          "en": "Morrinho is located in the north-west of Maio Island and had a population of 444 inhabitants in 2010. Its urban structure is organised around two imperfect perpendicular axes that guide the arrangement of buildings. Most houses follow the traditional style, consisting of single-storey dwellings. The community is mainly dedicated to primary sector activities, with charcoal production being prominent. Infrastructure includes education (primary school and kindergarten), religion (chapel), leisure (community centre, square and sports ground) and health services (basic health unit)."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2043873,
+          15.2655865
+        ]
+      },
+      "id": "node/1951662289"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "morro",
+        "name": "Morro",
+        "description": {
+          "pt": "O Morro localiza-se no sudoeste da ilha, a 5 km a norte do Porto Inglês, com uma população de 310 habitantes em 2010. O núcleo urbano encontra-se anexo à estrada norte-sul que liga a Cidade do Porto Inglês à Calheta. Apresenta uma estrutura urbana dominante no sentido este-oeste, com bandas contínuas e tipologia de habitação tradicional unifamiliar, maioritariamente de um piso. Dispõe de infraestruturas como minimercado, hotel, residências, jardim infantil, escola do EBI, capela, clube comunitário, praça e placa desportiva.",
+          "en": "Morro is located in the southwest of the island, 5 km north of Porto Inglês, with a population of 310 inhabitants in 2010. The settlement is attached to the north–south road connecting Cidade do Porto Inglês and Calheta. It presents an urban structure dominated by the east–west axis, with continuous bands of traditional one-storey single-family houses. Morro contains infrastructures such as a supermarket, hotel, residences, kindergarten, primary school, chapel, community centre, square and sports area."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2217424,
+          15.1796575
+        ]
+      },
+      "id": "node/1951662294"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pedro-vaz",
+        "name": "Pedro Vaz",
+        "description": {
+          "pt": "Localizada a nordeste da ilha, Pedro Vaz contava com 166 habitantes em 2010. Até à chegada dos ingleses ao Porto Inglês no século XVII, esta povoação é apontada como o principal assentamento populacional do Maio. Atualmente é composta por dois núcleos urbanos ligados ao anel de circulação da ilha, com predomínio de moradias unifamiliares de um piso. Destaca-se arquitetonicamente a rua principal do núcleo norte. A localidade dispõe de infraestruturas como escola do ensino básico, jardim infantil, a Capela de São Pedro, um centro de saúde e uma placa desportiva.",
+          "en": "Located in the northeast of the island, Pedro Vaz had a population of 166 people in 2010. Until the arrival of the English to Porto Inglês in the seventeenth century, it is considered to have been the main settlement in Maio. Today it consists of two settlements connected to the island’s ring road, mainly composed of one-storey single-family houses. The most notable architectural feature is the main street in the northern nucleus. The village benefits from infrastructure such as a primary school, kindergarten, the Chapel of São Pedro, a health centre and a sports area."
+        },
+        "image": "/image.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1158373,
+          15.2473839
+        ]
+      },
+      "id": "node/2452058390"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Santo António",
+        "description": {
+          "pt": "Praia Gonçalo e Santo António são as duas menores localidades da ilha do Maio, localizadas no nordeste. Segundo o censo de 2010, contavam com 67 e 22 habitantes, respetivamente. Especula-se que o nome Praia Gonçalo esteja relacionado com Gonçalo Ferreira, cavaleiro da casa do Infante D. Henrique, o primeiro a desembarcar no local aquando da chegada dos descobridores portugueses. As povoações são constituídas por moradias individuais de um piso, organizadas ao longo da estrada principal.",
+          "en": "Praia Gonçalo and Santo António are the two smallest villages on the island, located in the northeast. According to the 2010 census, they had 67 and 22 inhabitants respectively. It is speculated that the name Praia Gonçalo is related to Gonçalo Ferreira, a knight of Infante D. Henrique’s household and the first to land in the area upon the arrival of Portuguese explorers. The villages consist of individual one-storey houses clustered along the main road."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1230088,
+          15.2751226
+        ]
+      },
+      "id": "node/2452079677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Alcatraz",
+        "description": {
+          "pt": "Alcatraz era originalmente um campo aberto com poucas casas ao longo da rua principal, tendo sido habitado por 232 pessoas em 2010. Desenvolveu-se no sentido este-oeste, sem a formação de um núcleo central definido. Pilão Cão é uma pequena localidade próxima, com 102 habitantes em 2010. Urbanisticamente, ambas apresentam uma estrutura linear ao longo da via principal, com habitações unifamiliares tradicionais de um piso. Dispõem de infraestruturas básicas como posto de saúde, escolas, capela, centro comunitário e placa desportiva.",
+          "en": "Alcatraz was originally an open field with a few houses along the main road and had 232 inhabitants in 2010. It developed in an east–west direction without forming a clear central area. Pilão Cão is a nearby small village with 102 inhabitants in 2010. In terms of urban layout, both villages have a linear structure along the main road, with traditional one-storey family houses. They are equipped with basic infrastructure such as a health centre, schools, chapel, community centre and sports area."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1032877,
+          15.2174703
+        ]
+      },
+      "id": "node/2452084818"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Pilão Cão",
+        "description": {
+          "pt": "Pilão Cão é uma pequena localidade rural da ilha do Maio, marcada por paisagem árida, atividades tradicionais e forte ligação à vida comunitária do interior da ilha.",
+          "en": "Pilão Cão is a small rural settlement on Maio Island, characterized by an arid landscape, traditional activities, and a strong connection to inland community life."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1051179,
+          15.2091337
+        ]
+      },
+      "id": "node/2452087922"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Ribeira Dom João",
+        "description": {
+          "pt": "Ribeira D. João localiza-se no sudeste da ilha, com uma população de 203 habitantes segundo o censo de 2010. O nome tem origem numa história de naufrágio de um barco onde o bispo D. João, que ia desembarcar, partiu a perna, dando origem à junção da ribeira e de Dom João. A localidade é composta maioritariamente por moradias novas ou tradicionais com transformações, organizadas em banda de vivenda unifamiliar. Dispõe de infraestruturas de ensino (escola EBJ, jardim), religião (capela) e lazer (clube comunitário, praça desportiva).",
+          "en": "Ribeira D. João is located in the southeast of the island, with a population of 203 inhabitants according to the 2010 census. The name supposedly originated from a shipwreck story in which Bishop D. João broke his leg while disembarking, giving rise to the combination of the stream (ribeira) and Dom João. The village consists mainly of new or traditional houses with transformations, arranged in linear bands of single-family dwellings. Infrastructure includes education (primary school, kindergarten), religion (chapel) and leisure facilities (community club and sports areas)."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.12134,
+          15.1441919
+        ]
+      },
+      "id": "node/2452089702"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Calheta de Baixo",
+        "description": {
+          "pt": "Baxona e Ribinha situam-se no extremo sudoeste da Calheta. Em 2010 registavam 339 habitantes. A maioria das moradias apresenta características tradicionais, com predominância de casas unifamiliares de um piso. A zona da Ribinha é composta por apenas uma rua, com casas de pedra cobertas por telha de duas ou quatro águas. A pesca constitui a principal atividade económica das comunidades, sendo complementada por serviços turísticos associados à praia, como bares, esplanadas e residências.",
+          "en": "Baxona and Ribinha are located at the south-western tip of Calheta, in front of Baxona Beach. In 2010, the area had 339 inhabitants. Most houses are traditional single-storey family homes. Ribinha consists of a single street with stone houses covered with tiled roofs. Fishing is the main economic activity, complemented by tourism-related services linked to the nearby beach, such as bars, terraces and residences."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.215595,
+          15.2258433
+        ]
+      },
+      "id": "node/3241447799"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Calhetinha",
+        "description": {
+          "pt": "Calhetinha é uma pequena localidade costeira da ilha do Maio, caracterizada por uma enseada abrigada, uso tradicional pela comunidade local e uma paisagem simples e pouco alterada.",
+          "en": "Calhetinha is a small coastal settlement on Maio Island, characterized by a sheltered cove, traditional local use, and a simple, lightly developed landscape."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2107908,
+          15.1361681
+        ]
+      },
+      "id": "node/5283443683"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Fontona",
+        "description": {
+          "pt": "Fontona é uma localidade costeira da ilha do Maio, conhecida pela sua pequena praia, ambiente calmo e ligação próxima à comunidade local, mantendo um carácter simples e pouco desenvolvido.",
+          "en": "Fontona is a coastal settlement on Maio Island, known for its small beach, quiet atmosphere, and close connection to the local community, preserving a simple and low-key character."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2125821,
+          15.1431341
+        ]
+      },
+      "id": "node/5283885374"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Ponta Preta",
+        "description": {
+          "pt": "Ponta Preta é uma zona costeira tranquila no sudoeste da ilha do Maio, junto a Porto Inglês, marcada por rochas vulcânicas escuras, uma ampla praia de areia e uma paisagem natural pouco urbanizada.",
+          "en": "Ponta Preta is a quiet coastal area on the southwest of Maio Island, near Porto Inglês, known for its dark volcanic rocks, wide sandy beach, and largely undeveloped natural setting."
+        },
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770287262/places/pontapreta.jpg"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.206944,
+          15.1313069
+        ]
+      },
+      "id": "node/5283443684"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Porto Cais",
+        "description": {
+          "pt": "Situada a noroeste das Terras Salgadas, a cerca de 5 km a norte de Cascabulho, Porto Cais localiza-se numa baía semicircular de águas rasas e calmas, com presença de corais. É um importante refúgio para pescadores, principalmente oriundos da ilha de Santiago, que se deslocam periodicamente para o norte do Maio, onde o mar oferece melhor proveito.",
+          "en": "Porto Cais is a fishing haven located northwest of Terras Salgadas, about 5 km north of Cascabulho. The beach forms a semicircular bay with shallow, calm waters and coral presence. It is an important refuge for fishermen, mainly from Santiago Island, who travel regularly to the north of Maio where fishing conditions are more favourable."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2232427,
+          15.2726197
+        ]
+      },
+      "id": "node/6441064935"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "banda-riba",
+        "name": "Banda Riba",
+        "description": {
+          "pt": "Banda Riba situa-se a norte da Ribeira do Barreiro, com uma população de 140 habitantes em 2010. Devido à sua posição geográfica, proporciona uma vista panorâmica para a ribeira e para Lém Varela. O conjunto urbano está estruturado em bandas de vivendas unifamiliares de um piso, destacando-se arquitetonicamente um conjunto de sete moradias no meio da rua de acesso, com fachadas tradicionais e cobertura de telha.",
+          "en": "Banda Riba is located north of Ribeira do Barreiro, with a population of 140 in 2010. Due to its geographical position, it offers panoramic views of the ribeira (temporal stream) and Lém Varela. The village is structured in bands of single-storey family houses, with the most notable architectural feature being a group of seven houses in the middle of the access road, with traditional façades and tiled roofs."
+        },
+        "image": "/image.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1601029,
+          15.138182
+        ]
+      },
+      "id": "node/7085256919"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "figueira-seca",
+        "name": "Figueira Seca",
+        "description": {
+          "pt": "Figueira Seca é um pequeno conjunto urbano localizado a cerca de 700 metros a este de Figueira Horta, habitado por 83 pessoas em 2010. Segundo relatos, o seu primeiro nome foi Figueira Sabão, passando mais tarde a chamar-se Figueira Seca. As habitações existentes apresentam características da arquitetura tradicional da ilha, na sua maioria de um piso.",
+          "en": "Figueira Seca is a small village located about 700 metres east of Figueira Horta, with a population of 83 in 2010. It was originally known as Figueira Sabão before adopting its current name. The houses display traditional architectural features of the island and are generally single-storey."
+        },
+        "image": "/image.png"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1448847,
+          15.1558583
+        ]
+      },
+      "id": "node/7085257242"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Figueira Horta",
+        "description": {
+          "pt": "Figueira Horta localiza-se no centro-sul da ilha, tendo 446 habitantes em 2010. As primeiras habitações foram construídas junto das hortas, outrora ricas em figueiras, que deram origem ao nome da localidade. Destaca-se no Maio como a principal zona agrícola da ilha, sendo a agricultura a principal atividade da população. Apresenta uma morfologia urbana caracterizada por bandas contínuas, sem articulação transversal significativa, dominada por moradias de um piso de tipologia tradicional. Possui infraestruturas como ensino (escola básica e jardim infantil), religião (capela de Cristo Rei), lazer (centro comunitário, praça, polivalente) e saúde (unidade sanitária de base).",
+          "en": "Figueira Horta is located in the south-central part of the island and had 446 inhabitants in 2010. The first dwellings were built along agricultural fields that once had many fig trees, which gave rise to the village name. It stands out in Maio as the island’s main agricultural zone, with farming as the primary activity. Its urban form is characterized by continuous bands of traditional one-storey houses, with basic infrastructures including education, religion, leisure facilities and a basic health unit."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1515582,
+          15.1597077
+        ]
+      },
+      "id": "node/7085257243"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Lagoa",
+        "description": {
+          "pt": "Estas duas edificações são um dos principais elementos do património arquitectónico da ilha. Localizam-se sobre uma pequena colina, a aproximadamente 1 km a sul de Lém Varela, no caminho que dá acesso à praia de Boca Lagoa. Possuem uma excelente vista panorâmica para a ribeira e para o mar. Estas casas, agora apenas ruínas, foram no passado residência estival dos proprietários, pertencentes à família do senhor António Évora. Construídas em pedra, preservam as características da arquitectura colonial portuguesa em relação à composição das fachadas e à cobertura, compostas de telha a quatro águas assentes sobre estrutura de madeira, sobrepondo a estrutura dos muros.",
+          "en": "These two buildings are one of the main elements of the architectural heritage of the island. They are located on a small hill, approximately 1 km south of Lém Varela, on the track that accesses the beach of Boca Lagoa. Here you can see a great panoramic view of the ocean and the ribeira. These houses, now ruins, were previously the summer residence of the owners, the António Évora family. The houses are made of stone, preserving the characteristics of the colonial Portuguese architecture, this being the composition of the facade and the roof, which are composed of tiles on a wooden structure, superimposing the structure of the walls."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1520342,
+          15.1293489
+        ]
+      },
+      "id": "node/7085257244"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Praia Gonçalo",
+        "description": {
+          "pt": "Praia Gonçalo e Santo António são as duas menores localidades da ilha do Maio, localizadas no nordeste. Segundo o censo de 2010, contavam com 67 e 22 habitantes, respetivamente. Especula-se que o nome Praia Gonçalo esteja relacionado com Gonçalo Ferreira, cavaleiro da casa do Infante D. Henrique, o primeiro a desembarcar no local aquando da chegada dos descobridores portugueses. As povoações são constituídas por moradias individuais de um piso, organizadas ao longo da estrada principal.",
+          "en": "Praia Gonçalo and Santo António are the two smallest villages on the island, located in the northeast. According to the 2010 census, they had 67 and 22 inhabitants respectively. It is speculated that the name Praia Gonçalo is related to Gonçalo Ferreira, a knight of Infante D. Henrique’s household and the first to land in the area upon the arrival of Portuguese explorers. The villages consist of individual one-storey houses clustered along the main road."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1141108,
+          15.2673462
+        ]
+      },
+      "id": "node/7085257280"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Calheta",
+        "description": {
+          "pt": "Calheta é uma vila na costa oeste da ilha do Maio, Cabo Verde, e a segunda localidade mais populosa da ilha**, com 1156 habitantes no censo de 2010. Está situada cerca de 11 km a norte da capital Cidade do Maio e combina tradições piscatórias com crescimento urbano e algum turismo local.",
+          "en": "Calheta is a town on the west coast of Maio Island, Cape Verde, and the **second most populous settlement on the island**, with a **population of 1,156 at the 2010 census**. Located about 11 km north of the island capital Cidade do Maio, it blends traditional fishing activity with ongoing urban growth and some local tourism."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2112107,
+          15.2292429
+        ]
+      },
+      "id": "node/7085257325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Lém Tavares",
+        "description": {
+          "pt": "Lém Tavares é uma pequena localidade da ilha do Maio, situada ao longo da via principal da ilha, composta por cerca de 20 casas. O nome tem origem nos apelidos dos moradores mais antigos, refletindo uma forte ligação à história e identidade comunitária local.",
+          "en": "Lém Tavares is a small settlement on Maio Island, located along the island’s main road and composed of around 20 houses. Its name derives from the surnames of its oldest residents, reflecting a strong connection to local history and community identity."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.209414,
+          15.2277921
+        ]
+      },
+      "id": "node/7085257326"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Ribinha",
+        "description": {
+          "pt": "Ribinha é uma pequena localidade costeira da ilha do Maio, situada no extremo sudoeste da Calheta. Caracteriza-se por uma única rua com casas de pedra de um piso, cobertas por telhados tradicionais, e por uma forte ligação à pesca, complementada por atividades turísticas associadas à praia próxima.",
+          "en": "Ribinha is a small coastal settlement on Maio Island, located at the southwestern edge of Calheta. It is characterized by a single street of traditional single-storey stone houses and a strong connection to fishing, complemented by tourism-related activities linked to the nearby beach."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2165452,
+          15.2270004
+        ]
+      },
+      "id": "node/7085257327"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Cidade do Porto Inglês",
+        "description": {
+          "pt": "A Cidade do Porto Inglês é a sede do concelho e capital da ilha do Maio, localizada no sudoeste da ilha, com 2.971 habitantes em 2010. No século XVII, antes da chegada dos ingleses atraídos pelo comércio do sal, era designada Porto Guindaste. Com o domínio inglês, o nome foi alterado para Porto dos Ingleses e, posteriormente, Porto Inglês. Em 2010, a então Vila de Porto Inglês foi oficialmente elevada a cidade. Urbanisticamente, apresenta uma estrutura organizada em torno de dois eixos principais nos sentidos norte-sul e este-oeste. As habitações individuais de um ou dois pisos continuam a ser o tipo de construção dominante. A cidade concentra grande parte dos serviços da ilha, incluindo transportes, logística, comércio, turismo e serviços públicos.",
+          "en": "Cidade do Porto Inglês is the county seat and capital of Maio Island, located in the southwest of the island, with a population of 2,971 inhabitants in 2010. In the seventeenth century, before the arrival of the English attracted by the salt trade, it was known as Porto Guindaste. Under English dominance, the name was changed to Porto dos Ingleses and later Porto Inglês. In 2010, the town was officially renamed Cidade do Porto Inglês. In urban terms, the city is structured around two main axes running north–south and east–west. One- or two-storey individual houses remain the dominant building type. The city hosts much of the island’s services, including transport, logistics, trade, tourism and public services."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2112673,
+          15.1375142
+        ]
+      },
+      "id": "node/7085257602"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": null,
+        "name": "Povoação Penosa",
+        "description": {
+          "pt": "Povoação Penosa é uma pequena localidade rural da ilha do Maio, situada no interior, caracterizada por ambiente tranquilo, paisagem semiárida e forte ligação às atividades tradicionais e à vida comunitária.",
+          "en": "Povoação Penosa is a small rural settlement on Maio Island, located inland, characterized by a quiet atmosphere, semi-arid landscape, and a strong connection to traditional activities and community life."
+        },
+        "image": null
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1137659,
+          15.2388969
+        ]
+      },
+      "id": "node/11638057772"
+    }
+  ]
+}

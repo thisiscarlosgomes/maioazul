@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "maio-zdti-001",
+      "properties": {
+        "name": "ZDTI Praia do Morro",
+        "layer": "zoning_special",
+        "category": "Ordenamento",
+        "type": "ZDTI",
+        "zoning_code": "ZDTI",
+        "intended_use": "Turismo",
+        "restrictions": "Desenvolvimento condicionado",
+        "legal_status": "Planeamento",
+        "source": "AFIA – Ilha do Maio",
+        "source_year": 2014,
+        "source_pages": [21],
+        "confidence": "cartographic",
+        "notes": null
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": []
+      }
+    }
+  ]
+}
