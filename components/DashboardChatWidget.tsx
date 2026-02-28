@@ -121,8 +121,8 @@ export default function DashboardChatWidget() {
                     <Sparkles className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="text-base font-semibold">MaioAzul AI</p>
-                    <p className="text-sm text-[#111111]/52">chat do dashboard</p>
+                    <p className="text-base font-semibold">Maioazul AI</p>
+                    <p className="text-sm text-[#111111]/52">Assistente</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -177,7 +177,7 @@ export default function DashboardChatWidget() {
                             : "mt-2 pl-2 text-[12px] text-[#111111]/46"
                         }
                       >
-                        {message.role === "user" ? "você" : "Maioazul AI"} •{" "}
+                        {message.role === "user" ? "você" : "Maioazul"} •{" "}
                         {formatMessageTime(message.createdAt)}
                       </p>
                     </motion.div>
@@ -223,13 +223,13 @@ export default function DashboardChatWidget() {
                 <div className="rounded-[24px] border border-[rgba(17,17,17,0.1)] bg-white p-3">
                   <textarea
                     className="min-h-[44px] w-full resize-none bg-transparent px-1 py-1 text-sm leading-6 text-[#111111] outline-none placeholder:text-[#111111]/38"
-                    rows={2}
+                    rows={1}
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={handleTextareaKeyDown}
                     placeholder="Faça uma pergunta..."
                     value={input}
                   />
-                  <div className="mt-3 flex items-center justify-between gap-4">
+                  <div className="mt-1 flex items-center justify-between gap-4">
                     <p className="text-[11px] text-[#111111]/44">
                       enter para enviar
                     </p>
@@ -245,7 +245,7 @@ export default function DashboardChatWidget() {
                 </div>
                 <div className="mt-3 flex items-center justify-center text-[12px] text-[#111111]/48">
                   <a className="transition hover:text-[#111111]/72" href="/mcp-guide">
-                    powered by maioazul mcp
+                    Powered by Maioazul MCP
                   </a>
                 </div>
                 {error ? <p className="mt-3 text-sm text-[#b42318]">{error}</p> : null}
