@@ -30,5 +30,12 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
 , "app/directory", "app/directory"  ],
-  "exclude": ["node_modules", "apps/**/*"]
+  "exclude": [
+    "node_modules",
+    "apps/**/*",
+    "mcp/**/*",
+    "mcp-ts-sdk-inspect/**/*",
+    "mcp-ts-sdk-inspect2/**/*",
+    "datagouv-mcp-inspect/**/*"
+  ]
 }
