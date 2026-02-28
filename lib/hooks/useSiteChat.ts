@@ -26,6 +26,20 @@ const DEFAULT_WELCOME_MESSAGE: SiteChatMessage = {
 
 const STORAGE_KEY = "maioazul-site-chat-v2";
 
+function formatQuotaReset(resetAt: string | null | undefined) {
+  if (!resetAt) return "mais tarde";
+
+  const date = new Date(resetAt);
+  if (Number.isNaN(date.getTime())) return "mais tarde";
+
+  return new Intl.DateTimeFormat("pt-PT", {
+    day: "2-digit",
+    month: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
 export function useSiteChat() {
   const [messages, setMessages] = useState<SiteChatMessage[]>([
     DEFAULT_WELCOME_MESSAGE,
@@ -103,8 +117,22 @@ export function useSiteChat() {
 
       const payload = await res.json().catch(() => ({}));
       if (!res.ok) {
+        if (res.status === 429) {
+          const limit =
+            typeof payload?.limit === "number" ? payload.limit : 10;
+          const resetLabel = formatQuotaReset(
+            typeof payload?.resetAt === "string" ? payload.resetAt : null,
+          );
+
+          throw new Error(
+            `Atingiste o limite de ${limit} mensagens por 24 horas. Tenta novamente em ${resetLabel}.`,
+          );
+        }
+
         throw new Error(
-          typeof payload?.error === "string" ? payload.error : "Chat request failed",
+          typeof payload?.error === "string"
+            ? payload.error
+            : "O pedido de chat falhou.",
         );
       }
 
@@ -124,7 +152,7 @@ export function useSiteChat() {
       setError(
         submissionError instanceof Error
           ? submissionError.message
-          : "Something went wrong.",
+          : "Ocorreu um erro.",
       );
     } finally {
       setLoading(false);
