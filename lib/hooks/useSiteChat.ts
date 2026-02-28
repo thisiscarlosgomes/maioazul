@@ -142,7 +142,7 @@ export function useSiteChat() {
         content:
           typeof payload?.message === "string" && payload.message.trim().length > 0
             ? payload.message.trim()
-            : "Nao consegui gerar uma resposta.",
+            : "Não consegui gerar uma resposta.",
         toolEvents: Array.isArray(payload?.toolEvents) ? payload.toolEvents : [],
         createdAt: new Date().toISOString(),
       };

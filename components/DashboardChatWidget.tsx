@@ -177,7 +177,7 @@ export default function DashboardChatWidget() {
                             : "mt-2 pl-2 text-[12px] text-[#111111]/46"
                         }
                       >
-                        {message.role === "user" ? "voce" : "MaioAzul AI"} •{" "}
+                        {message.role === "user" ? "você" : "Maioazul AI"} •{" "}
                         {formatMessageTime(message.createdAt)}
                       </p>
                     </motion.div>
@@ -226,7 +226,7 @@ export default function DashboardChatWidget() {
                     rows={2}
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={handleTextareaKeyDown}
-                    placeholder="Faca uma pergunta..."
+                    placeholder="Faça uma pergunta..."
                     value={input}
                   />
                   <div className="mt-3 flex items-center justify-between gap-4">
@@ -244,7 +244,9 @@ export default function DashboardChatWidget() {
                   </div>
                 </div>
                 <div className="mt-3 flex items-center justify-center text-[12px] text-[#111111]/48">
-                  <span>powered by maioazul mcp</span>
+                  <a className="transition hover:text-[#111111]/72" href="/mcp-guide">
+                    powered by maioazul mcp
+                  </a>
                 </div>
                 {error ? <p className="mt-3 text-sm text-[#b42318]">{error}</p> : null}
               </form>
@@ -256,7 +258,7 @@ export default function DashboardChatWidget() {
       {!open ? (
         <motion.button
           aria-label="Abrir chat MaioAzul"
-          className="pointer-events-auto fixed bottom-5 right-5 flex h-16 w-16 items-center justify-center rounded-full border border-[#111111] bg-white text-[#111111] shadow-[0_20px_40px_rgba(0,0,0,0.18)] sm:bottom-6 sm:right-6"
+          className="pointer-events-auto fixed bottom-5 right-5 flex h-16 w-16 items-center justify-center rounded-full border border-[#10069F] bg-[#10069F] text-white shadow-[0_20px_40px_rgba(16,6,159,0.28)] sm:bottom-6 sm:right-6"
           onClick={() => setOpen(true)}
           transition={{ type: "spring", stiffness: 380, damping: 22 }}
           type="button"

@@ -4,9 +4,9 @@ import { FormEvent } from "react";
 import { useSiteChat } from "@/lib/hooks/useSiteChat";
 
 const STARTER_PROMPTS = [
-  "Como esta o turismo no Maio em 2025?",
+  "Como está o turismo no Maio em 2025?",
   "Compare os indicadores de turismo do Maio e do Sal em 2025.",
-  "Mostra-me as principais metricas centrais do Maio.",
+  "Mostra-me as principais métricas centrais do Maio.",
 ];
 
 export default function SiteChatPage() {
@@ -22,15 +22,15 @@ export default function SiteChatPage() {
       <section className="border-b border-[rgba(17,17,17,0.08)]">
         <div className="mx-auto max-w-6xl px-7 py-12">
           <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#10069F]">
-            MaioAzul Chat
+            Maioazul Chat
           </p>
           <h1 className="mt-4 max-w-3xl text-[clamp(2rem,4vw,3.4rem)] leading-[1.04]">
             chat de dados para o maio
           </h1>
           <p className="mt-4 max-w-2xl text-[15px] leading-7 text-[#111111]/68">
-            Este chat do site usa ferramentas nativas do MaioAzul no servidor para consultar visao geral do turismo,
-            indicadores, trimestres e metricas centrais. O MCP continua disponivel para clientes externos, mas o chat
-            do site usa a mesma logica diretamente.
+            Este chat do site usa ferramentas nativas do Maioazul no servidor para consultar visão geral do turismo,
+            indicadores, trimestres e métricas centrais. O MCP continua disponível para clientes externos, mas o chat
+            do site usa a mesma lógica diretamente.
           </p>
         </div>
       </section>
@@ -56,9 +56,9 @@ export default function SiteChatPage() {
           <div className="rounded-[24px] border border-[rgba(17,17,17,0.08)] bg-[#f8f8f5] p-6">
             <h2 className="text-[1.25rem]">Como funciona</h2>
             <ul className="mt-5 list-disc space-y-3 pl-5 text-[14px] leading-6 text-[#111111]/72">
-              <li>O modelo corre no servidor, nao no navegador.</li>
-              <li>Quando precisa de dados, o chat chama ferramentas nativas do MaioAzul.</li>
-              <li>Essas ferramentas usam a mesma logica base do servidor MCP publico.</li>
+              <li>O modelo corre no servidor, não no navegador.</li>
+              <li>Quando precisa de dados, o chat chama ferramentas nativas do Maioazul.</li>
+              <li>Essas ferramentas usam a mesma lógica base do servidor MCP público.</li>
             </ul>
           </div>
         </aside>
@@ -97,19 +97,19 @@ export default function SiteChatPage() {
           </div>
 
           <form className="border-t border-[rgba(17,17,17,0.08)] px-6 py-5" onSubmit={handleSubmit}>
-            <label className="sr-only" htmlFor="chat-input">
-              Faca uma pergunta
+              <label className="sr-only" htmlFor="chat-input">
+              Faça uma pergunta
             </label>
             <textarea
               id="chat-input"
               className="min-h-[110px] w-full resize-y rounded-[20px] border border-[rgba(17,17,17,0.08)] px-4 py-3 text-sm outline-none transition focus:border-[#111111]/22"
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Pergunte sobre turismo no Maio, indicadores ou metricas do dashboard..."
+              placeholder="Pergunte sobre turismo no Maio, indicadores ou métricas do dashboard..."
               value={input}
             />
             <div className="mt-4 flex items-center justify-between gap-4">
               <p className="text-[13px] text-[#111111]/56">
-                Chat no servidor com ferramentas nativas de dados do MaioAzul.
+                Chat no servidor com ferramentas nativas de dados do Maioazul.
               </p>
               <button
                 className="rounded-full bg-[#111111] px-5 py-2.5 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"

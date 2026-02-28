@@ -41,9 +41,9 @@ type ChatRateLimitDoc = {
 };
 
 const SYSTEM_PROMPT = `
-Você é o assistente do site MaioAzul.
+Você é o assistente do site Maioazul.
 
-Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio e os dados comparativos entre ilhas da plataforma MaioAzul.
+Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio e os dados comparativos entre ilhas da plataforma Maioazul.
 Use as ferramentas disponíveis quando a pergunta depender de métricas de turismo, trimestres, indicadores ou métricas centrais do Maio.
 
 Política comparativa:
@@ -102,7 +102,7 @@ function extractOutputText(response: OpenAI.Responses.Response): string {
     }
   }
 
-  return "I could not generate a response.";
+  return "Não consegui gerar uma resposta.";
 }
 
 function getClientAddress(request: Request): string | null {
