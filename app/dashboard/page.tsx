@@ -38,6 +38,7 @@ import { TourismIslandBaseline } from "@/components/TourismIslandBaseline";
 import { HospedesDormidasStackedChart } from "@/components/dashboard/HospedesDormidasStackedChart";
 import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
+import DashboardChatWidget from "@/components/DashboardChatWidget";
 
 import {
   useTourismBaseline2024,
@@ -1685,6 +1686,7 @@ export default function TourismPage() {
           <BaselineNote />
         )}
       </div>
+      <DashboardChatWidget />
     </div>
   );
 }
