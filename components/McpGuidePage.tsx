@@ -7,6 +7,7 @@ const PROD_ENDPOINT = "https://www.maioazul.com/api/mcp";
 const clients = [
   {
     name: "ChatGPT",
+    href: "https://chatgpt.com",
     note: "Disponível em planos pagos com suporte a conectores.",
     steps: [
       "Abra o ChatGPT no navegador e entre em Definições.",
@@ -15,25 +16,27 @@ const clients = [
     ],
     code: PROD_ENDPOINT,
   },
-  {
-    name: "Claude Desktop",
-    note: "Use uma ponte MCP remota no ficheiro de configuração do Claude Desktop.",
-    steps: [
-      "Abra o ficheiro de configuração do Claude Desktop.",
-      "Adicione um novo servidor dentro de mcpServers.",
-      "Reinicie o Claude Desktop depois de guardar.",
-    ],
-    code: `{
-  "mcpServers": {
-    "maioazul": {
-      "command": "npx",
-      "args": ["mcp-remote", "${PROD_ENDPOINT}"]
-    }
-  }
-}`,
-  },
+//   {
+//     name: "Claude Desktop",
+//     href: "https://claude.ai/download",
+//     note: "Use uma ponte MCP remota no ficheiro de configuração do Claude Desktop.",
+//     steps: [
+//       "Abra o ficheiro de configuração do Claude Desktop.",
+//       "Adicione um novo servidor dentro de mcpServers.",
+//       "Reinicie o Claude Desktop depois de guardar.",
+//     ],
+//     code: `{
+//   "mcpServers": {
+//     "maioazul": {
+//       "command": "npx",
+//       "args": ["mcp-remote", "${PROD_ENDPOINT}"]
+//     }
+//   }
+// }`,
+//   },
   {
     name: "Claude Code",
+    href: "https://docs.anthropic.com/en/docs/claude-code",
     note: "Registo direto por HTTP a partir do terminal.",
     steps: [
       "Abra o terminal.",
@@ -42,24 +45,25 @@ const clients = [
     ],
     code: `claude mcp add --transport http maioazul ${PROD_ENDPOINT}`,
   },
-  {
-    name: "Gemini CLI",
-    note: "Adicione o servidor MCP ao ficheiro settings.json.",
-    steps: [
-      "Abra ~/.gemini/settings.json.",
-      "Adicione a entrada mcpServers abaixo.",
-      "Reinicie o Gemini CLI.",
-    ],
-    code: `{
-  "mcpServers": {
-    "maioazul": {
-      "httpUrl": "${PROD_ENDPOINT}"
-    }
-  }
-}`,
-  },
+//   {
+//     name: "Gemini CLI",
+//     note: "Adicione o servidor MCP ao ficheiro settings.json.",
+//     steps: [
+//       "Abra ~/.gemini/settings.json.",
+//       "Adicione a entrada mcpServers abaixo.",
+//       "Reinicie o Gemini CLI.",
+//     ],
+//     code: `{
+//   "mcpServers": {
+//     "maioazul": {
+//       "httpUrl": "${PROD_ENDPOINT}"
+//     }
+//   }
+// }`,
+//   },
   {
     name: "Cursor",
+    href: "https://www.cursor.com",
     note: "O Cursor permite servidores MCP nas Definições.",
     steps: [
       "Abra as Definições do Cursor.",
@@ -75,57 +79,57 @@ const clients = [
   }
 }`,
   },
-  {
-    name: "VS Code",
-    note: "Use uma entrada MCP HTTP no settings.json.",
-    steps: [
-      "Abra o ficheiro Settings JSON.",
-      "Adicione a definição do servidor abaixo.",
-      "Recarregue o editor se necessário.",
-    ],
-    code: `{
-  "servers": {
-    "maioazul": {
-      "url": "${PROD_ENDPOINT}",
-      "type": "http"
-    }
-  }
-}`,
-  },
-  {
-    name: "Windsurf",
-    note: "Use a configuração com ponte MCP remota.",
-    steps: [
-      "Abra ~/.codeium/mcp_config.json.",
-      "Adicione a entrada MCP abaixo.",
-      "Reinicie o Windsurf.",
-    ],
-    code: `{
-  "mcpServers": {
-    "maioazul": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "${PROD_ENDPOINT}"]
-    }
-  }
-}`,
-  },
-  {
-    name: "AnythingLLM",
-    note: "Use uma definição MCP streamable.",
-    steps: [
-      "Abra anythingllm_mcp_servers.json na pasta de armazenamento da aplicação.",
-      "Adicione a configuração abaixo.",
-      "Reinicie o AnythingLLM.",
-    ],
-    code: `{
-  "mcpServers": {
-    "maioazul": {
-      "type": "streamable",
-      "url": "${PROD_ENDPOINT}"
-    }
-  }
-}`,
-  },
+//   {
+//     name: "VS Code",
+//     note: "Use uma entrada MCP HTTP no settings.json.",
+//     steps: [
+//       "Abra o ficheiro Settings JSON.",
+//       "Adicione a definição do servidor abaixo.",
+//       "Recarregue o editor se necessário.",
+//     ],
+//     code: `{
+//   "servers": {
+//     "maioazul": {
+//       "url": "${PROD_ENDPOINT}",
+//       "type": "http"
+//     }
+//   }
+// }`,
+//   },
+//   {
+//     name: "Windsurf",
+//     note: "Use a configuração com ponte MCP remota.",
+//     steps: [
+//       "Abra ~/.codeium/mcp_config.json.",
+//       "Adicione a entrada MCP abaixo.",
+//       "Reinicie o Windsurf.",
+//     ],
+//     code: `{
+//   "mcpServers": {
+//     "maioazul": {
+//       "command": "npx",
+//       "args": ["-y", "mcp-remote", "${PROD_ENDPOINT}"]
+//     }
+//   }
+// }`,
+//   },
+//   {
+//     name: "AnythingLLM",
+//     note: "Use uma definição MCP streamable.",
+//     steps: [
+//       "Abra anythingllm_mcp_servers.json na pasta de armazenamento da aplicação.",
+//       "Adicione a configuração abaixo.",
+//       "Reinicie o AnythingLLM.",
+//     ],
+//     code: `{
+//   "mcpServers": {
+//     "maioazul": {
+//       "type": "streamable",
+//       "url": "${PROD_ENDPOINT}"
+//     }
+//   }
+// }`,
+//   },
 ];
 
 function CodeBlock({ code }: { code: string }) {
@@ -142,14 +146,14 @@ function CodeBlock({ code }: { code: string }) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-[22px] bg-[#111111]">
-      <pre className="overflow-x-auto px-5 py-4 pb-16 font-mono text-sm leading-6 text-white">
+    <div className="relative overflow-hidden rounded-[12px] bg-[#111111]">
+      <pre className="overflow-x-auto px-5 py-4 pb-16 font-mono text-xs leading-4 text-white">
         <code>{code}</code>
       </pre>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#111111] to-transparent" />
       <div className="absolute bottom-4 right-4">
         <button
-          className="rounded-full border border-white/14 bg-white/8 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/14"
+          className="rounded-sm border border-white/14 bg-white/8 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/14"
           onClick={copyCode}
           type="button"
         >
@@ -178,10 +182,7 @@ export default function McpGuidePage() {
       <header className="border-b border-[rgba(17,17,17,0.08)]">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-7 py-6">
           <img alt="Maioazul" className="h-[18px] w-auto" src="/maioazul.png" />
-          <nav className="flex items-center gap-6 text-sm font-semibold text-[#111111]/75">
-            <a className="transition hover:text-[#111111]" href={PROD_ENDPOINT}>
-              Endpoint MCP
-            </a>
+          <nav className="flex items-center gap-6 text-sm font-semibold text-[#000]">
             <a className="transition hover:text-[#111111]" href="/dashboard">
               Portal de Dados
             </a>
@@ -194,7 +195,7 @@ export default function McpGuidePage() {
         <div className="relative mx-auto grid w-full max-w-6xl gap-8 px-7 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="max-w-3xl">
             <h1 className="pt-4 text-[clamp(1.9rem,3.6vw,2.8rem)] leading-[1.08]">
-              Servidor MCP de Dados
+              Maioazul MCP
             </h1>
             <p className="mt-6 max-w-2xl text-[15px] leading-7 text-[rgba(17,17,17,0.7)]">
               O Maioazul tem um endpoint MCP público de leitura para dashboards de turismo e dados entre
@@ -212,7 +213,7 @@ export default function McpGuidePage() {
                 {PROD_ENDPOINT}
               </a>
               <button
-                className="rounded-full border border-[rgba(17,17,17,0.12)] px-3 py-1.5 text-sm font-medium text-[#111111] transition hover:bg-[#111111]/[0.03]"
+                className="rounded-sm border border-[rgba(17,17,17,0.12)] px-3 py-1.5 text-sm font-medium text-[#111111] transition hover:bg-[#111111]/[0.03]"
                 onClick={copyEndpoint}
                 type="button"
               >
@@ -234,22 +235,31 @@ export default function McpGuidePage() {
             <h2 className="mt-3 text-[1.55rem] tracking-[-0.02em] sm:text-[1.8rem]">
               Adicionar Maioazul ao seu cliente
             </h2>
-            <p className="mt-4 text-[13px] leading-6 text-[#111111]/68">
+            <p className="mt-1 text-[13px] leading-6 text-[#111111]/68">
               Os exemplos abaixo seguem o mesmo padrão geral usado em guias MCP públicos, adaptado para o endpoint
               alojado do Maioazul.
             </p>
           </div>
 
-          <div className="mt-8 grid gap-6">
+          <div className="mt-8 grid gap-4">
             {clients.map((client) => (
               <article
                 key={client.name}
-                className="grid gap-6 rounded-[24px] border border-[rgba(17,17,17,0.08)] bg-white p-6 lg:grid-cols-[0.4fr_0.6fr]"
+                className="grid gap-6 rounded-[12px] border border-[rgba(17,17,17,0.08)] bg-white p-6 lg:grid-cols-[0.5fr_0.5fr]"
               >
                 <div>
-                  <h3 className="text-[1.2rem] tracking-[-0.02em]">{client.name}</h3>
+                  <h3 className="text-[1.2rem] tracking-[-0.02em]">
+                    <a
+                      className="underline transition hover:text-[#10069F]"
+                      href={client.href}
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      {client.name}
+                    </a>
+                  </h3>
                   <p className="mt-2 text-[13px] leading-6 text-[#111111]/66">{client.note}</p>
-                  <ul className="mt-4 list-disc space-y-1.5 pl-5 text-[13px] leading-5 text-[#111111]/74 marker:text-[#111111]/55">
+                  <ul className="mt-3 list-disc space-y-1.5 pl-5 text-[13px] leading-4 text-[#111111]/74 marker:text-[#111111]/55">
                     {client.steps.map((step) => (
                       <li key={step}>{step}</li>
                     ))}
@@ -265,7 +275,7 @@ export default function McpGuidePage() {
       <footer className="border-t border-[rgba(17,17,17,0.08)] py-12">
         <div className="w-full px-7">
           <pre className="flex w-full justify-center overflow-x-auto whitespace-pre font-mono text-[12px] leading-none text-[#111111]/72 sm:text-[14px]">
-{`░▒▓█  M A I O A Z U L  █▓▒░`}
+            {`░▒▓█  M A I O A Z U L  █▓▒░`}
           </pre>
         </div>
       </footer>
