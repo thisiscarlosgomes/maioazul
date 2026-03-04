@@ -8,19 +8,19 @@ import { useSiteChat, type SiteChatContext } from "@/lib/hooks/useSiteChat";
 
 const DEFAULT_QUICK_PROMPT_SETS = [
   [
-    "Quais são os 3 sinais mais importantes da economia do Maio neste ano?",
-    "Compara Maio, Sal e Boa Vista: onde estamos fortes e onde há maior risco?",
-    "Se fosses gestor municipal, quais seriam as 2 prioridades imediatas com base nos dados?",
+    "Quais são os 3 indicadores mais relevantes do Maio neste ano?",
+    "Compara Maio, Sal e Boa Vista com base nos dados disponíveis.",
+    "Que tendências principais aparecem nos dados mais recentes?",
   ],
   [
-    "Que indicadores mostram maior pressão económica no Maio neste momento?",
-    "Se tivéssemos de agir em 90 dias, quais seriam os focos de maior impacto?",
-    "Onde os dados indicam dependência excessiva e que alternativa existe?",
+    "Que indicadores mostram maior variação no Maio neste momento?",
+    "Quais áreas concentram maior peso nos dados atuais?",
+    "Onde os dados mostram maior dependência estrutural?",
   ],
   [
-    "Resume o estado do Maio em linguagem executiva: força, risco e próximo passo.",
-    "Que comparação entre ilhas ajuda melhor a definir prioridades para o Maio?",
-    "Qual é a decisão mais urgente que os dados suportam hoje?",
+    "Resume o estado do Maio em termos de tendência, escala e variação.",
+    "Que comparação entre ilhas é mais informativa com os dados atuais?",
+    "Que conclusão principal os dados permitem tirar neste momento?",
   ],
 ];
 

@@ -36,19 +36,19 @@ import type {
 const YEARS = ["2026", "2025"];
 const BUDGET_CHAT_PROMPT_SETS = [
   [
-    "Quais são os 3 maiores riscos do orçamento de 2026 e como mitigar?",
-    "Que programas concentram mais investimento e que impacto prático isso sugere?",
-    "Compara 2025 vs 2026: o que melhorou, o que piorou e qual a prioridade agora?",
+    "Quais são os 3 pontos mais relevantes do orçamento de 2026?",
+    "Que programas concentram mais investimento e qual é o seu peso relativo?",
+    "Compara 2025 vs 2026: que mudanças principais aparecem nos dados?",
   ],
   [
-    "Onde o orçamento está mais exposto a dependência de financiamento externo?",
-    "Quais projetos parecem ter maior retorno público no curto prazo?",
-    "Se tivesses de cortar 5% da despesa, onde os dados sugerem menor impacto social?",
+    "Onde o orçamento mostra maior dependência de financiamento externo?",
+    "Quais projetos têm maior montante publicado?",
+    "Que rubricas de despesa têm maior peso no total?",
   ],
   [
-    "Que leitura executiva podes fazer do orçamento: força, risco e decisão imediata?",
-    "Qual rubrica de despesa merece maior monitorização mensal e porquê?",
-    "Que ajustes estratégicos fariam o orçamento mais resiliente no próximo ano?",
+    "Que leitura executiva podes fazer do orçamento com base nos números publicados?",
+    "Qual rubrica de despesa varia mais entre 2025 e 2026?",
+    "Que tendências de financiamento se destacam no período disponível?",
   ],
 ];
 const FUNDING_SOURCE_COLORS = [

@@ -65,19 +65,19 @@ const ISLANDS = [ALL_ISLANDS_LABEL, "Maio"];
 const YEARS = ["2026", "2025", "2024"];
 const DASHBOARD_CHAT_PROMPT_SETS = [
   [
-    "Quais são os 3 sinais mais importantes da economia do Maio neste ano?",
-    "Compara Maio, Sal e Boa Vista: onde estamos fortes e onde há maior risco?",
-    "Que alertas estratégicos aparecem quando cruzamos turismo e dados municipais?",
+    "Quais são os 3 indicadores mais relevantes da economia do Maio neste ano?",
+    "Compara Maio, Sal e Boa Vista com base nos dados disponíveis.",
+    "Que padrões aparecem quando cruzamos turismo e dados municipais?",
   ],
   [
-    "Quais indicadores mostram pressão turística com maior impacto local?",
-    "Onde o Maio está a crescer de forma saudável e onde há risco de desequilíbrio?",
-    "Se fosses gestor municipal, quais seriam as 2 prioridades imediatas com base nos dados?",
+    "Quais indicadores mostram maior pressão turística local?",
+    "Onde o Maio apresenta maior crescimento relativo nos dados?",
+    "Que áreas merecem maior monitorização segundo os dados atuais?",
   ],
   [
-    "Resume o estado do Maio em 3 linhas: força, fragilidade e oportunidade.",
-    "Que decisão de curto prazo é mais defensável olhando para os dados atuais?",
-    "Que comparação entre ilhas melhor ajuda a definir estratégia para o Maio?",
+    "Resume o estado do Maio em 3 linhas com base nos dados disponíveis.",
+    "Que leitura de curto prazo os dados atuais permitem?",
+    "Que comparação entre ilhas é mais útil para contexto?",
   ],
 ];
 
