@@ -110,6 +110,8 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
   async function submitMessage(text: string) {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
+    const previousRemaining = remainingQuestions;
+    const optimisticRemaining = Math.max(0, previousRemaining - 1);
 
     const userMessage: SiteChatMessage = {
       id: `user-${Date.now()}`,
@@ -123,6 +125,7 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
     setInput("");
     setLoading(true);
     setError(null);
+    setRemainingQuestions(optimisticRemaining);
 
     try {
       const res = await fetch("/api/chat", {
@@ -174,6 +177,7 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
         setRemainingQuestions(payload.remaining);
       }
     } catch (submissionError) {
+      setRemainingQuestions(previousRemaining);
       setError(
         submissionError instanceof Error
           ? submissionError.message
