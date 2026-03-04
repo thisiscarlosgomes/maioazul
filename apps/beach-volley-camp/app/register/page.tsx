@@ -62,11 +62,11 @@ export default function RegisterPage() {
               <a className="transition hover:text-[#CEEC58]" href="/">
                 Coach
               </a>
-              <a className="transition hover:text-[#CEEC58]" href="https://maioazul.com/parcerias">
+              <a className="transition hover:text-[#CEEC58]" href="https://maioazul.com/partners">
                 Parcerias
               </a>
               <a
-                className="!hidden inline-flex items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white hover:!text-[#111111]"
+                className="inline-flex items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white hover:!text-[#111111]"
                 href="/register"
               >
                 Participe
@@ -96,7 +96,7 @@ export default function RegisterPage() {
                 <a className="transition hover:text-[#111111]" href="/">
                   Coach
                 </a>
-                <a className="transition hover:text-[#111111]" href="https://maioazul.com/parcerias">
+                <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
                   Parcerias
                 </a>
 
@@ -222,7 +222,7 @@ export default function RegisterPage() {
             Programa
           </a>
 
-          <a className="transition hover:text-[#111111]" href="https://maioazul.com/parcerias">
+          <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
             Parcerias
           </a>
 

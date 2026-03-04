@@ -16,13 +16,22 @@ const MAX_TOOL_ROUNDS = 6;
 const CHAT_QUERY_LIMIT = 10;
 const CHAT_QUERY_WINDOW_MS = 24 * 60 * 60 * 1000;
 const CHAT_RATE_LIMIT_COLLECTION = "chat_rate_limits";
+const CHAT_USAGE_STATS_COLLECTION = "chat_usage_stats";
 let rateLimitCollectionPromise:
   | Promise<Awaited<ReturnType<typeof initializeRateLimitCollection>>>
+  | null = null;
+let usageStatsCollectionPromise:
+  | Promise<Awaited<ReturnType<typeof initializeUsageStatsCollection>>>
   | null = null;
 
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
+};
+
+type ChatContext = {
+  surface?: "dashboard" | "orcamento" | "mcp-guide" | "generic";
+  year?: number | string;
 };
 
 type ToolEvent = {
@@ -40,17 +49,30 @@ type ChatRateLimitDoc = {
   count?: number;
 };
 
+type ChatUsageStatsDoc = {
+  _id: string;
+  kind: "global" | "daily";
+  date?: string;
+  updatedAt: Date;
+  createdAt: Date;
+  lastMessageAt: Date;
+};
+
+type ChatUsageKind = "success" | "rate_limited" | "error";
+
 const SYSTEM_PROMPT = `
 Você é o assistente do site Maioazul.
 
-Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio e os dados comparativos entre ilhas da plataforma Maioazul.
-Use as ferramentas disponíveis quando a pergunta depender de métricas de turismo, trimestres, indicadores ou métricas centrais do Maio.
+Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio, os dados comparativos entre ilhas da plataforma Maioazul e o orçamento municipal do Maio.
+Use as ferramentas disponíveis quando a pergunta depender de métricas de turismo, trimestres, indicadores, métricas centrais do Maio ou dados do orçamento municipal.
 
 Política comparativa:
 - O Maio é o foco principal.
 - Quando o utilizador pedir comparação sem indicar ilhas, prefira comparar Maio com Sal e Boa Vista.
 - Se o utilizador perguntar por outra ilha, responda com os dados disponíveis para essa ilha.
 - Use a ferramenta de comparação entre ilhas sempre que isso ajudar.
+- Quando a pergunta for sobre orçamento, prefira a ferramenta de orçamento validado em vez de inferir a partir de texto solto.
+- Quando a pergunta comparar 2025 e 2026, prefira a ferramenta de comparação orçamental em vez de combinar duas leituras separadas.
 
 Regras:
 - Responda sempre em português.
@@ -58,8 +80,76 @@ Regras:
 - Prefira respostas baseadas em ferramentas, não em suposições.
 - Se os dados estiverem em falta ou pouco claros, diga isso claramente.
 - Não invente métricas, anos ou comparações.
-- Quando útil, resuma os números em linguagem simples em vez de despejar JSON bruto.
+- Para respostas baseadas em dados, começa por uma leitura humana do que os números significam.
+- Depois, usa no máximo 2 ou 3 pontos curtos com os números mais importantes.
+- Evita listar tabelas completas, linhas em bruto ou blocos de JSON, a menos que o utilizador peça detalhe.
+- Quando uma ferramenta devolver "insights" ou "takeaways", usa isso como base principal da resposta.
 `.trim();
+
+function normalizeChatContext(value: unknown): ChatContext | null {
+  if (!value || typeof value !== "object") return null;
+
+  const candidate = value as Record<string, unknown>;
+  const surface =
+    candidate.surface === "dashboard" ||
+    candidate.surface === "orcamento" ||
+    candidate.surface === "mcp-guide" ||
+    candidate.surface === "generic"
+      ? candidate.surface
+      : undefined;
+
+  const year =
+    typeof candidate.year === "number" || typeof candidate.year === "string"
+      ? candidate.year
+      : undefined;
+
+  if (!surface && year === undefined) {
+    return null;
+  }
+
+  return { surface, year };
+}
+
+function buildChatInstructions(context: ChatContext | null) {
+  if (!context) {
+    return SYSTEM_PROMPT;
+  }
+
+  const contextLines: string[] = [];
+
+  if (context.surface === "orcamento") {
+    contextLines.push(
+      "Contexto da interface: o utilizador está na página de orçamento municipal.",
+    );
+    contextLines.push(
+      "Prioriza respostas sobre receitas, despesas, investimento, projetos, financiamento e comparação entre 2025 e 2026.",
+    );
+    contextLines.push(
+      "Para orçamento, privilegia sínteses executivas e interpretações curtas, não despejo de rubricas.",
+    );
+  } else if (context.surface === "dashboard") {
+    contextLines.push(
+      "Contexto da interface: o utilizador está no dashboard principal de dados.",
+    );
+  } else if (context.surface === "mcp-guide") {
+    contextLines.push(
+      "Contexto da interface: o utilizador está na página do guia MCP.",
+    );
+  }
+
+  if (context.year !== undefined && context.year !== null && `${context.year}`.trim() !== "") {
+    contextLines.push(`Ano de contexto da interface: ${context.year}.`);
+    contextLines.push(
+      "Se a pergunta for ambígua e o ano não for dito explicitamente, usa primeiro este ano de contexto.",
+    );
+  }
+
+  if (contextLines.length === 0) {
+    return SYSTEM_PROMPT;
+  }
+
+  return `${SYSTEM_PROMPT}\n\nContexto adicional:\n- ${contextLines.join("\n- ")}`;
+}
 
 function isChatMessage(value: unknown): value is ChatMessage {
   if (!value || typeof value !== "object") return false;
@@ -159,6 +249,113 @@ async function getRateLimitCollection() {
   return rateLimitCollectionPromise;
 }
 
+async function initializeUsageStatsCollection() {
+  if (!process.env.MONGODB_URI) {
+    return null;
+  }
+
+  const { default: clientPromise } = await import("@/lib/mongodb");
+  const client = await clientPromise;
+  const db = client.db(process.env.MONGODB_DB || "maioazul");
+  const collection = db.collection<ChatUsageStatsDoc>(CHAT_USAGE_STATS_COLLECTION);
+
+  await collection.createIndex({ kind: 1, date: 1 }, { unique: true, sparse: true });
+
+  return collection;
+}
+
+async function getUsageStatsCollection() {
+  if (!usageStatsCollectionPromise) {
+    usageStatsCollectionPromise = initializeUsageStatsCollection();
+  }
+
+  return usageStatsCollectionPromise;
+}
+
+function getSurfaceKey(context: ChatContext | null) {
+  switch (context?.surface) {
+    case "dashboard":
+    case "orcamento":
+    case "mcp-guide":
+    case "generic":
+      return context.surface;
+    default:
+      return "generic";
+  }
+}
+
+function getUtcDateKey(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
+async function trackChatUsage(params: {
+  kind: ChatUsageKind;
+  context: ChatContext | null;
+  toolCallCount?: number;
+}) {
+  const collection = await getUsageStatsCollection();
+  if (!collection) return;
+
+  const now = new Date();
+  const surface = getSurfaceKey(params.context);
+  const dateKey = getUtcDateKey(now);
+  const isSuccess = params.kind === "success";
+  const isRateLimited = params.kind === "rate_limited";
+  const isError = params.kind === "error";
+  const toolCalls = params.toolCallCount ?? 0;
+
+  const increment = {
+    requests_total: 1,
+    successful_requests_total: isSuccess ? 1 : 0,
+    rate_limited_requests_total: isRateLimited ? 1 : 0,
+    failed_requests_total: isError ? 1 : 0,
+    user_messages_total: isSuccess ? 1 : 0,
+    assistant_messages_total: isSuccess ? 1 : 0,
+    tool_calls_total: toolCalls,
+    [`by_surface.${surface}.requests_total`]: 1,
+    [`by_surface.${surface}.successful_requests_total`]: isSuccess ? 1 : 0,
+    [`by_surface.${surface}.rate_limited_requests_total`]: isRateLimited ? 1 : 0,
+    [`by_surface.${surface}.failed_requests_total`]: isError ? 1 : 0,
+    [`by_surface.${surface}.user_messages_total`]: isSuccess ? 1 : 0,
+    [`by_surface.${surface}.assistant_messages_total`]: isSuccess ? 1 : 0,
+    [`by_surface.${surface}.tool_calls_total`]: toolCalls,
+  };
+
+  await Promise.all([
+    collection.updateOne(
+      { _id: "global" },
+      {
+        $set: {
+          kind: "global",
+          updatedAt: now,
+          lastMessageAt: now,
+        },
+        $inc: increment,
+        $setOnInsert: {
+          createdAt: now,
+        },
+      },
+      { upsert: true },
+    ),
+    collection.updateOne(
+      { _id: `day:${dateKey}` },
+      {
+        $set: {
+          kind: "daily",
+          date: dateKey,
+          updatedAt: now,
+          lastMessageAt: now,
+        },
+        $inc: increment,
+        $setOnInsert: {
+          createdAt: now,
+        },
+      },
+      { upsert: true },
+    ),
+  ]);
+}
+
 async function consumeChatQueryQuota(request: Request) {
   const collection = await getRateLimitCollection();
   if (!collection) {
@@ -231,6 +428,8 @@ async function consumeChatQueryQuota(request: Request) {
 
 export async function POST(request: Request) {
   const apiKey = process.env.OPENAI_API_KEY;
+  let requestContext: ChatContext | null = null;
+
   if (!apiKey) {
     return NextResponse.json(
       { error: "Missing OPENAI_API_KEY" },
@@ -241,6 +440,8 @@ export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => ({}));
     const messages = normalizeMessages(body?.messages);
+    const context = normalizeChatContext(body?.context);
+    requestContext = context;
 
     if (messages.length === 0) {
       return NextResponse.json(
@@ -251,6 +452,11 @@ export async function POST(request: Request) {
 
     const quota = await consumeChatQueryQuota(request);
     if (!quota.allowed) {
+      await trackChatUsage({
+        kind: "rate_limited",
+        context,
+      });
+
       return NextResponse.json(
         {
           error: "Daily chat limit reached. You can send up to 10 messages every 24 hours.",
@@ -269,7 +475,7 @@ export async function POST(request: Request) {
 
     let response = await client.responses.create({
       model: DEFAULT_MODEL,
-      instructions: SYSTEM_PROMPT,
+      instructions: buildChatInstructions(context),
       input: messages,
       tools,
       parallel_tool_calls: true,
@@ -346,6 +552,12 @@ export async function POST(request: Request) {
       });
     }
 
+    await trackChatUsage({
+      kind: "success",
+      context,
+      toolCallCount: toolEvents.length,
+    });
+
     return NextResponse.json({
       message: extractOutputText(response),
       toolEvents,
@@ -354,6 +566,10 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Chat API error", error);
+    await trackChatUsage({
+      kind: "error",
+      context: requestContext,
+    });
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Chat API error",

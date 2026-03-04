@@ -16,15 +16,30 @@ export type SiteChatMessage = {
   createdAt: string;
 };
 
-const DEFAULT_WELCOME_MESSAGE: SiteChatMessage = {
-  id: "welcome",
-  role: "assistant",
-  content:
-    "Pergunte sobre turismo no Maio, indicadores ou métricas centrais.",
-  createdAt: new Date().toISOString(),
+export type SiteChatContext = {
+  surface?: "dashboard" | "orcamento" | "mcp-guide" | "generic";
+  year?: number | string;
 };
 
+type UseSiteChatOptions = {
+  storageKey?: string;
+  welcomeMessage?: string;
+  context?: SiteChatContext;
+};
+
+const DEFAULT_WELCOME_MESSAGE =
+  "Pergunte sobre turismo no Maio, indicadores ou métricas centrais.";
 const STORAGE_KEY = "maioazul-site-chat-v2";
+const CHAT_QUERY_LIMIT = 10;
+
+function buildWelcomeMessage(message: string): SiteChatMessage {
+  return {
+    id: "welcome",
+    role: "assistant",
+    content: message,
+    createdAt: new Date().toISOString(),
+  };
+}
 
 function formatQuotaReset(resetAt: string | null | undefined) {
   if (!resetAt) return "mais tarde";
@@ -40,17 +55,20 @@ function formatQuotaReset(resetAt: string | null | undefined) {
   }).format(date);
 }
 
-export function useSiteChat() {
+export function useSiteChat(options: UseSiteChatOptions = {}) {
+  const storageKey = options.storageKey ?? STORAGE_KEY;
+  const welcomeMessage = options.welcomeMessage ?? DEFAULT_WELCOME_MESSAGE;
   const [messages, setMessages] = useState<SiteChatMessage[]>([
-    DEFAULT_WELCOME_MESSAGE,
+    buildWelcomeMessage(welcomeMessage),
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [remainingQuestions, setRemainingQuestions] = useState(CHAT_QUERY_LIMIT);
 
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem(STORAGE_KEY);
+      const raw = window.localStorage.getItem(storageKey);
       if (!raw) return;
 
       const parsed = JSON.parse(raw);
@@ -71,7 +89,7 @@ export function useSiteChat() {
         setMessages(
           restored.map((message) =>
             message.id === "welcome"
-              ? { ...DEFAULT_WELCOME_MESSAGE, createdAt: message.createdAt }
+              ? { ...buildWelcomeMessage(welcomeMessage), createdAt: message.createdAt }
               : message,
           ),
         );
@@ -79,15 +97,15 @@ export function useSiteChat() {
     } catch {
       // Ignore invalid local chat cache.
     }
-  }, []);
+  }, [storageKey, welcomeMessage]);
 
   useEffect(() => {
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+      window.localStorage.setItem(storageKey, JSON.stringify(messages));
     } catch {
       // Ignore storage write failures.
     }
-  }, [messages]);
+  }, [messages, storageKey]);
 
   async function submitMessage(text: string) {
     const trimmed = text.trim();
@@ -112,6 +130,7 @@ export function useSiteChat() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: nextMessages.map(({ role, content }) => ({ role, content })),
+          context: options.context,
         }),
       });
 
@@ -119,7 +138,10 @@ export function useSiteChat() {
       if (!res.ok) {
         if (res.status === 429) {
           const limit =
-            typeof payload?.limit === "number" ? payload.limit : 10;
+            typeof payload?.limit === "number" ? payload.limit : CHAT_QUERY_LIMIT;
+          setRemainingQuestions(
+            typeof payload?.remaining === "number" ? payload.remaining : 0,
+          );
           const resetLabel = formatQuotaReset(
             typeof payload?.resetAt === "string" ? payload.resetAt : null,
           );
@@ -148,6 +170,9 @@ export function useSiteChat() {
       };
 
       setMessages((current) => [...current, assistantMessage]);
+      if (typeof payload?.remaining === "number") {
+        setRemainingQuestions(payload.remaining);
+      }
     } catch (submissionError) {
       setError(
         submissionError instanceof Error
@@ -159,12 +184,31 @@ export function useSiteChat() {
     }
   }
 
+  function resetChat() {
+    setMessages([
+      buildWelcomeMessage(welcomeMessage),
+    ]);
+    setInput("");
+    setLoading(false);
+    setError(null);
+    setRemainingQuestions(CHAT_QUERY_LIMIT);
+
+    try {
+      window.localStorage.removeItem(storageKey);
+    } catch {
+      // Ignore storage write failures.
+    }
+  }
+
   return {
     messages,
     input,
     setInput,
     loading,
     error,
+    remainingQuestions,
+    maxQuestions: CHAT_QUERY_LIMIT,
     submitMessage,
+    resetChat,
   };
 }

@@ -11,6 +11,7 @@ const copy = {
       "Maioazul is an NGO that works toward the progressive construction of Maio Island’s socioeconomic autonomy. We develop initiatives aligned with the island’s reality, strengthening its collective capacity and creating conditions to retain and organize value within the territory.\n\nWe believe in structured development, at the right scale and with continuity, where innovation, the blue economy, and community move together while respecting Maio’s identity, rhythm, and history.",
     partners: "Partners",
     dataPortal: "Data Portal",
+    budget: "Budget",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
     facebook: "Facebook",
@@ -22,6 +23,7 @@ const copy = {
       "A Maioazul é uma ONG que trabalha para a construção progressiva da autonomia socioeconómica da Ilha do Maio. Desenvolvemos iniciativas alinhadas com a realidade da ilha, reforçando a sua capacidade colectiva e criando condições para reter e organizar valor no território.\n\nAcreditamos num desenvolvimento estruturado, à escala certa e com continuidade onde inovação, economia azul e comunidade caminham juntas, respeitando a identidade, o ritmo e a história do Maio.",
     partners: "Parceiros",
     dataPortal: "Portal de Dados",
+    budget: "Orçamento",
     launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
     facebook: "Facebook",
@@ -101,7 +103,9 @@ export default function HomeClient() {
           </h1>
 
           <p className="text-lg text-white/80 max-w-2xl">{t.description}</p>
-          <p className="hidden text-lg text-white/80 max-w-2xl">"De empreendedores do Maio, para empreendedores do Maio"</p>
+          <p className="hidden text-lg text-white/80 max-w-2xl">
+            &quot;De empreendedores do Maio, para empreendedores do Maio&quot;
+          </p>
 
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <Link
@@ -115,6 +119,12 @@ export default function HomeClient() {
               className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
             >
               {t.dataPortal}
+            </Link>
+            <Link
+              href="/orcamento"
+              className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
+            >
+              {t.budget}
             </Link>
           </div>
 

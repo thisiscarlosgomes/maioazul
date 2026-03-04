@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Map",
+  title: "Interactive Map",
   description:
-    "Explore Maio on an interactive map with beaches, settlements, protected areas, and trails.",
+    "Explore Maio on an interactive map with beaches, villages, protected areas, trails, and key places across the island.",
   alternates: { canonical: "/map" },
   openGraph: {
-    title: "Map · MaioAzul",
+    title: "Interactive Map · MaioAzul",
     description:
-      "Explore Maio on an interactive map with beaches, settlements, protected areas, and trails.",
+      "Interactive map of Maio with beaches, villages, protected areas, trails, and key places.",
     url: "/map",
   },
 };

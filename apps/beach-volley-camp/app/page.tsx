@@ -84,11 +84,11 @@ export default function CampPage() {
               <a className="transition hover:text-[#CEEC58]" href="#coach">
                 Coach
               </a>
-              <a className="transition hover:text-[#CEEC58]" href="https://maioazul.com/parcerias">
+              <a className="transition hover:text-[#CEEC58]" href="https://maioazul.com/partners">
                 Parcerias
               </a>
               <a
-                className="!hidden inline-flex items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition"
+                className=" inline-flex items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition"
                 href="/register"
               >
                 Participe
@@ -118,11 +118,11 @@ export default function CampPage() {
                 <a className="transition hover:text-[#111111]" href="#coach">
                   Coach
                 </a>
-                <a className="transition hover:text-[#111111]" href="https://maioazul.com/parcerias">
+                <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
                   Parcerias
                 </a>
                 <a
-                  className="!hidden inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-4 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-black! transition"
+                  className=" inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-4 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-black! transition"
                   href="/register"
                 >
                   Inscrição aberta
@@ -295,7 +295,7 @@ export default function CampPage() {
               ))}
             </div>
 
-            <div className="!hidden mt-8 flex justify-center">
+            <div className="mt-8 flex justify-center">
               <a
                 className="inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-7 py-3 text-sm font-semibold text-[#111111]"
                 href="/register"
@@ -417,11 +417,11 @@ export default function CampPage() {
             Programa
           </a>
 
-          <a className="transition hover:text-[#111111]" href="https://maioazul.com/parcerias">
+          <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
             Parcerias
           </a>
 
-          <a className="!hidden transition hover:text-[#111111]" href="/register">
+          <a className="transition hover:text-[#111111]" href="/register">
             Participe
           </a>
 

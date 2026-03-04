@@ -73,7 +73,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark bg-background">
+    <html lang="en" className="bg-background">
 
       <head>
         {/* Preload local font */}
@@ -116,7 +116,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="light">
           <LayoutShell>{children}</LayoutShell>
         </ThemeProvider>
         <ServiceWorkerRegister />

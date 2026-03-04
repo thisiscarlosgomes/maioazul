@@ -20,7 +20,6 @@ import {
     Smartphone,
 } from "lucide-react";
 import maplibregl from "maplibre-gl";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Drawer } from "vaul";
 import { hasVoiceForId, playVoice, stopVoice, useVoiceManifest, useVoiceState } from "@/lib/voice";
@@ -2875,7 +2874,6 @@ export default function MapPage() {
                                     EN
                                 </button>
                             </div>
-                            <ThemeToggle />
                         </div>
 
                     </div>

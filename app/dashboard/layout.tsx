@@ -3,12 +3,12 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Maio Data Dashboard",
   description:
-    "Key indicators, tourism baselines, and local data for the island of Maio.",
+    "Key indicators, tourism baselines, and local transparency data for the island of Maio, Cabo Verde.",
   alternates: { canonical: "/dashboard" },
   openGraph: {
     title: "Maio Data Dashboard · MaioAzul",
     description:
-      "Key indicators, tourism baselines, and local data for the island of Maio.",
+      "Explore indicators, tourism baselines, and local transparency data for Maio.",
     url: "/dashboard",
   },
 };

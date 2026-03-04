@@ -104,7 +104,7 @@ export default function HomeClient() {
 
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <Link
-              href="https://maioazul.com/parcerias"
+              href="https://maioazul.com/partners"
               className="border border-white/40 px-8 py-4 rounded-full text-white/70 text-center inline-block transition hover:text-white hover:border-white"
             >
               {t.partners}

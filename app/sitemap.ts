@@ -28,7 +28,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/places",
     "/favorites",
     "/directory",
+    "/admin",
     "/dashboard",
+    "/orcamento",
     "/chat",
     "/mcp-guide",
   ];

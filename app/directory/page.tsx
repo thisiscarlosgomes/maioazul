@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Directory",
+  title: "Local Directory",
   description:
-    "A growing directory of Maio-based food, activities, and local initiatives.",
+    "Browse a growing Maio directory of local businesses, food, services, activities, and community initiatives.",
   alternates: { canonical: "/directory" },
   openGraph: {
-    title: "Directory · MaioAzul",
+    title: "Local Directory · MaioAzul",
     description:
-      "A growing directory of Maio-based food, activities, and local initiatives.",
+      "Browse local businesses, food, services, activities, and initiatives across Maio.",
     url: "/directory",
   },
 };

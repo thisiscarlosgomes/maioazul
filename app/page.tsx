@@ -4,14 +4,14 @@ import HomeClient from "@/components/HomeClient";
 export const metadata: Metadata = {
   title: "Maio, at its own pace",
   description:
-    "A quiet, local-first guide to the island of Maio, Cabo Verde. A slower way to understand nature, people, and everyday life — built to last.",
+    "Discover Maio, Cabo Verde with a local-first guide to places, experiences, weather, travel context, and everyday island life.",
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Maio, at its own pace",
     description:
-      "A slower way to discover Maio. Rooted in local life, shared with care, and built to last.",
+      "Discover Maio through local places, practical tools, and island context shared with care.",
     url: "/",
     images: [
       {
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Maio, at its own pace",
     description:
-      "A slower way to discover Maio. Rooted in local life, shared with care, and built to last.",
+      "Discover Maio through local places, practical tools, and island context shared with care.",
     images: ["/og2.jpg"],
   },
 };

@@ -3,14 +3,22 @@
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUp, ChevronDown, MessageCircle, Sparkles, X } from "lucide-react";
-import { useSiteChat } from "@/lib/hooks/useSiteChat";
+import { ArrowUp, ChevronDown, MessageCircle, RotateCcw, Sparkles, X } from "lucide-react";
+import { useSiteChat, type SiteChatContext } from "@/lib/hooks/useSiteChat";
 
-const QUICK_PROMPTS = [
+const DEFAULT_QUICK_PROMPTS = [
   "Como está o Maio em 2025?",
   "Comparar Maio e Sal.",
   "Mostrar métricas centrais do Maio.",
 ];
+
+type DashboardChatWidgetProps = {
+  quickPrompts?: string[];
+  welcomeMessage?: string;
+  placeholder?: string;
+  storageKey?: string;
+  context?: SiteChatContext;
+};
 
 function ThinkingLoader() {
   return (
@@ -47,16 +55,30 @@ function formatMessageTime(iso: string) {
   return `${diffDays}d`;
 }
 
-export default function DashboardChatWidget() {
-  const { messages, input, setInput, loading, error, submitMessage } = useSiteChat();
+export default function DashboardChatWidget({
+  quickPrompts = DEFAULT_QUICK_PROMPTS,
+  welcomeMessage,
+  placeholder = "Faça uma pergunta...",
+  storageKey,
+  context,
+}: DashboardChatWidgetProps) {
+  const {
+    messages,
+    input,
+    setInput,
+    loading,
+    error,
+    remainingQuestions,
+    maxQuestions,
+    submitMessage,
+    resetChat,
+  } = useSiteChat({
+    welcomeMessage,
+    storageKey,
+    context,
+  });
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
 
   useEffect(() => {
     const node = scrollRef.current;
@@ -91,7 +113,7 @@ export default function DashboardChatWidget() {
     await submitMessage(input);
   }
 
-  if (!mounted) {
+  if (typeof document === "undefined") {
     return null;
   }
 
@@ -126,6 +148,13 @@ export default function DashboardChatWidget() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
+                  <button
+                    className="flex h-9 w-9 items-center justify-center rounded-full text-[#111111]/64 transition hover:bg-[#111111]/6 hover:text-[#111111]"
+                    onClick={resetChat}
+                    type="button"
+                  >
+                    <RotateCcw className="h-4.5 w-4.5" />
+                  </button>
                   <button
                     className="hidden h-9 w-9 items-center justify-center rounded-full text-[#111111]/64 transition hover:bg-[#111111]/6 hover:text-[#111111] sm:flex"
                     onClick={() => setOpen(false)}
@@ -165,7 +194,7 @@ export default function DashboardChatWidget() {
                         className={
                           message.role === "user"
                             ? "max-w-[85%] rounded-[22px] bg-[#111111] px-4 py-3 text-sm leading-6 text-white"
-                            : "max-w-[88%] rounded-[22px] bg-[#f3f3ef] px-4 py-3 text-sm leading-6 text-[#111111]"
+                            : "max-w-[88%] rounded-[22px] border border-[rgba(17,17,17,0.06)] bg-[#f3f3ef] px-4 py-3 text-sm leading-6 text-[#111111]"
                         }
                       >
                         <p className="whitespace-pre-wrap">{message.content}</p>
@@ -190,7 +219,7 @@ export default function DashboardChatWidget() {
                     className="grid gap-2"
                     initial={{ opacity: 0, y: 8 }}
                   >
-                    {QUICK_PROMPTS.map((prompt) => (
+                    {quickPrompts.map((prompt) => (
                       <button
                         key={prompt}
                         className="rounded-[16px] border border-[rgba(17,17,17,0.08)] bg-[#f8f8f5] px-4 py-3 text-left text-sm text-[#111111]/84 transition hover:bg-[#f1f1ec]"
@@ -226,12 +255,12 @@ export default function DashboardChatWidget() {
                     rows={1}
                     onChange={(event) => setInput(event.target.value)}
                     onKeyDown={handleTextareaKeyDown}
-                    placeholder="Faça uma pergunta..."
+                    placeholder={placeholder}
                     value={input}
                   />
-                  <div className="mt-1 flex items-center justify-between gap-4">
+                  <div className="flex items-center justify-between gap-4">
                     <p className="text-[11px] text-[#111111]/44">
-                      enter para enviar
+                      enter para enviar · {remainingQuestions}/{maxQuestions} perguntas restantes
                     </p>
                     <motion.button
                       className="flex h-9 w-9 items-center justify-center rounded-full bg-[#111111] text-white transition disabled:cursor-not-allowed disabled:opacity-45"
@@ -244,7 +273,7 @@ export default function DashboardChatWidget() {
                   </div>
                 </div>
                 <div className="mt-3 flex items-center justify-center text-[12px] text-[#111111]/48">
-                  <a className="transition hover:text-[#111111]/72" href="/mcp-guide">
+                  <a className="transition hover:text-[#111111]/72" href="/mcp-guide" target="_blank">
                     Powered by Maioazul MCP
                   </a>
                 </div>

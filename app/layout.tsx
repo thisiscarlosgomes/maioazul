@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s · MaioAzul",
     },
     description:
-      "MaioAzul is a quiet, local-first guide to the island of Maio, Cabo Verde. A slower way to understand nature, people, and everyday life — built to last.",
+      "MaioAzul is a local-first guide to Maio, Cabo Verde, with maps, places, experiences, practical information, and island data for residents and visitors.",
     alternates: {
       canonical: "https://www.maioazul.com",
       languages: {
@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
       url: "https://www.maioazul.com",
       title: "Maio, at its own pace",
       description:
-        "A slower way to discover Maio. Rooted in local life, shared with care, and built to last.",
+        "Explore Maio through local places, practical tools, and on-the-ground context, built with care for residents and visitors.",
       images: [
         {
           url: "https://www.maioazul.com/og2.jpg",
@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: "MaioAzul",
       description:
-        "A quiet, local-first guide to the island of Maio, Cabo Verde.",
+        "Local-first guide to Maio, Cabo Verde: maps, places, experiences, and practical island information.",
       images: ["https://www.maioazul.com/og2.jpg"],
     },
     icons: {

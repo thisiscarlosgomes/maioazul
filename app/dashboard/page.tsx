@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, useRef, useMemo, type ReactNode } from "react";
 import {
   Table,
@@ -29,7 +30,7 @@ import { dictionary, type Locale } from "@/lib/i18n";
 import { buildIslandTldr } from "@/lib/tldr";
 import { TldrDrawer } from "@/components/TldrDrawer";
 
-import { Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 
 import { TourismAccommodationTable } from "@/components/TourismAccommodationTable";
 import { TourismStructuralBaseline } from "@/components/TourismStructuralBaseline";
@@ -62,6 +63,12 @@ import { fetchJsonOfflineFirst } from "@/lib/offline";
 const ALL_ISLANDS_LABEL = "Todas as Ilhas";
 const ISLANDS = [ALL_ISLANDS_LABEL, "Maio"];
 const YEARS = ["2026", "2025", "2024"];
+const DASHBOARD_CHAT_PROMPTS = [
+  "Como está o Maio em 2025?",
+  "Comparar Maio e Sal.",
+  "Mostrar métricas centrais do Maio.",
+  "Mostrar dados municipais do Maio.",
+];
 
 type YearCapabilities = {
   hasBaseline2024: boolean;
@@ -1429,10 +1436,17 @@ export default function TourismPage() {
             <div className="flex items-start justify-between gap-6">
               <div>
                 <h1 className="text-xl font-semibold">{t.title}</h1>
-                <p className="text-sm text-muted-foreground">{t.subtitle}</p>
+                <p className="hidden text-sm text-muted-foreground sm:block">{t.subtitle}</p>
               </div>
 
               <div className="flex items-center gap-3">
+                <Link
+                  href="/orcamento"
+                  className="hidden h-9 items-center gap-2 rounded-md border border-border px-3 text-sm text-foreground transition hover:bg-accent sm:inline-flex"
+                >
+                  Orçamento Municipal
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
                 {ilha !== ALL_ISLANDS_LABEL && capabilities.hasInsights && (
                   <button
                     onClick={() => setOpen(true)}
@@ -1443,6 +1457,16 @@ export default function TourismPage() {
                 )}
                 <ThemeToggle />
               </div>
+            </div>
+
+            <div className="sm:hidden">
+              <Link
+                href="/orcamento"
+                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-border px-4 text-sm text-foreground transition hover:bg-accent"
+              >
+                Orçamento Municipal
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
 
             {/* Filters */}
@@ -1685,8 +1709,12 @@ export default function TourismPage() {
         {(capabilities.hasBaseline2024 || capabilities.hasLiveTourism) && (
           <BaselineNote />
         )}
+
       </div>
-      <DashboardChatWidget />
+      <DashboardChatWidget
+        quickPrompts={DASHBOARD_CHAT_PROMPTS}
+        welcomeMessage="Pergunte sobre turismo, métricas centrais ou dados municipais do Maio."
+      />
     </div>
   );
 }

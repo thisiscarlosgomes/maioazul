@@ -124,6 +124,8 @@ function createMcpServer(request: Request): McpServer {
   registerTool(server, request, "get_tourism_overview");
   registerTool(server, request, "get_tourism_indicators");
   registerTool(server, request, "get_maio_core_metrics");
+  registerTool(server, request, "get_maio_budget");
+  registerTool(server, request, "get_maio_budget_comparison");
   registerTool(server, request, "get_tourism_quarters");
   registerTool(server, request, "get_island_comparison_snapshot");
 

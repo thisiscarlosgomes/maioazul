@@ -37,7 +37,7 @@ export async function generateMetadata({
   const description =
     place?.description?.en ||
     place?.description?.pt ||
-    "Discover a place on the island of Maio.";
+    "Discover a place on the island of Maio, Cabo Verde, with local context and practical information.";
 
   return {
     title: name,

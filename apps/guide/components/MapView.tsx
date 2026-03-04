@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function MapPage() {
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -136,9 +135,7 @@ export default function MapPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-          </div>
+          <div className="flex items-center gap-2" />
         </div>
 
         {/* Map */}
