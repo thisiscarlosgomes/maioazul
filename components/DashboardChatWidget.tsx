@@ -6,14 +6,27 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUp, ChevronDown, MessageCircle, RotateCcw, Sparkles, X } from "lucide-react";
 import { useSiteChat, type SiteChatContext } from "@/lib/hooks/useSiteChat";
 
-const DEFAULT_QUICK_PROMPTS = [
-  "Como está o Maio em 2025?",
-  "Comparar Maio e Sal.",
-  "Mostrar métricas centrais do Maio.",
+const DEFAULT_QUICK_PROMPT_SETS = [
+  [
+    "Quais são os 3 sinais mais importantes da economia do Maio neste ano?",
+    "Compara Maio, Sal e Boa Vista: onde estamos fortes e onde há maior risco?",
+    "Se fosses gestor municipal, quais seriam as 2 prioridades imediatas com base nos dados?",
+  ],
+  [
+    "Que indicadores mostram maior pressão económica no Maio neste momento?",
+    "Se tivéssemos de agir em 90 dias, quais seriam os focos de maior impacto?",
+    "Onde os dados indicam dependência excessiva e que alternativa existe?",
+  ],
+  [
+    "Resume o estado do Maio em linguagem executiva: força, risco e próximo passo.",
+    "Que comparação entre ilhas ajuda melhor a definir prioridades para o Maio?",
+    "Qual é a decisão mais urgente que os dados suportam hoje?",
+  ],
 ];
 
 type DashboardChatWidgetProps = {
   quickPrompts?: string[];
+  quickPromptSets?: string[][];
   welcomeMessage?: string;
   placeholder?: string;
   storageKey?: string;
@@ -56,7 +69,8 @@ function formatMessageTime(iso: string) {
 }
 
 export default function DashboardChatWidget({
-  quickPrompts = DEFAULT_QUICK_PROMPTS,
+  quickPrompts = [],
+  quickPromptSets,
   welcomeMessage,
   placeholder = "Faça uma pergunta...",
   storageKey,
@@ -79,6 +93,20 @@ export default function DashboardChatWidget({
   });
   const [open, setOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  const selectedQuickPrompts = useState<string[]>(() => {
+    const candidateSets = (quickPromptSets ?? []).filter((set) => Array.isArray(set) && set.length > 0);
+    if (candidateSets.length > 0) {
+      return candidateSets[Math.floor(Math.random() * candidateSets.length)];
+    }
+
+    if (quickPrompts.length > 0) {
+      return quickPrompts;
+    }
+
+    return DEFAULT_QUICK_PROMPT_SETS[
+      Math.floor(Math.random() * DEFAULT_QUICK_PROMPT_SETS.length)
+    ];
+  })[0];
 
   useEffect(() => {
     const node = scrollRef.current;
@@ -219,7 +247,7 @@ export default function DashboardChatWidget({
                     className="grid gap-2"
                     initial={{ opacity: 0, y: 8 }}
                   >
-                    {quickPrompts.map((prompt) => (
+                    {selectedQuickPrompts.map((prompt) => (
                       <button
                         key={prompt}
                         className="rounded-[16px] border border-[rgba(17,17,17,0.08)] bg-[#f8f8f5] px-4 py-3 text-left text-sm text-[#111111]/84 transition hover:bg-[#f1f1ec]"

@@ -4,6 +4,7 @@ import { MongoClient } from "mongodb";
 
 const root = process.cwd();
 const CHAT_USAGE_STATS_COLLECTION = "chat_usage_stats";
+const MONGODB_DB = process.env.MONGODB_DB || "maioazul";
 
 async function loadEnvFile(filePath) {
   try {
@@ -44,7 +45,7 @@ async function run() {
   const client = new MongoClient(MONGODB_URI);
   await client.connect();
 
-  const db = process.env.MONGODB_DB ? client.db(process.env.MONGODB_DB) : client.db();
+  const db = client.db(MONGODB_DB);
   const col = db.collection(CHAT_USAGE_STATS_COLLECTION);
 
   const [globalDoc, recentDaily] = await Promise.all([
@@ -94,6 +95,7 @@ async function run() {
   console.log(
     JSON.stringify(
       {
+        database: MONGODB_DB,
         global: globalDoc,
         recentDaily,
       },

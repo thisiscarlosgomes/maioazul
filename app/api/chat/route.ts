@@ -80,10 +80,13 @@ Regras:
 - Prefira respostas baseadas em ferramentas, não em suposições.
 - Se os dados estiverem em falta ou pouco claros, diga isso claramente.
 - Não invente métricas, anos ou comparações.
+- Ao responder, prioriza os pontos de dados mais relevantes para a pergunta.
+- Explica os números em linguagem simples e direta.
 - Para respostas baseadas em dados, começa por uma leitura humana do que os números significam.
 - Depois, usa no máximo 2 ou 3 pontos curtos com os números mais importantes.
 - Evita listar tabelas completas, linhas em bruto ou blocos de JSON, a menos que o utilizador peça detalhe.
 - Quando uma ferramenta devolver "insights" ou "takeaways", usa isso como base principal da resposta.
+- Quando fizer sentido, termina com um "takeaway" curto sobre o que os dados significam na prática.
 `.trim();
 
 function normalizeChatContext(value: unknown): ChatContext | null {

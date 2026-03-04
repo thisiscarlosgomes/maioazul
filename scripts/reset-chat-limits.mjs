@@ -4,6 +4,7 @@ import { MongoClient } from "mongodb";
 
 const root = process.cwd();
 const CHAT_RATE_LIMIT_COLLECTION = "chat_rate_limits";
+const MONGODB_DB = process.env.MONGODB_DB || "maioazul";
 
 async function loadEnvFile(filePath) {
   try {
@@ -44,7 +45,7 @@ async function run() {
   const client = new MongoClient(MONGODB_URI);
   await client.connect();
 
-  const db = process.env.MONGODB_DB ? client.db(process.env.MONGODB_DB) : client.db();
+  const db = client.db(MONGODB_DB);
   const col = db.collection(CHAT_RATE_LIMIT_COLLECTION);
 
   const result = await col.deleteMany({});
@@ -52,6 +53,7 @@ async function run() {
   await client.close();
 
   console.log("Chat limits reset complete");
+  console.log(`Database: ${MONGODB_DB}`);
   console.log(`Deleted rate-limit records: ${result.deletedCount}`);
   console.log("All users now effectively have a fresh 10-message allowance.");
 }

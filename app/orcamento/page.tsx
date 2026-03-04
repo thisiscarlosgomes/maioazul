@@ -34,10 +34,22 @@ import type {
 } from "@/lib/budget";
 
 const YEARS = ["2026", "2025"];
-const BUDGET_CHAT_PROMPTS = [
-  "Resume o orçamento de 2026.",
-  "Quais são os maiores projetos deste ano?",
-  "Compara o orçamento de 2025 e 2026.",
+const BUDGET_CHAT_PROMPT_SETS = [
+  [
+    "Quais são os 3 maiores riscos do orçamento de 2026 e como mitigar?",
+    "Que programas concentram mais investimento e que impacto prático isso sugere?",
+    "Compara 2025 vs 2026: o que melhorou, o que piorou e qual a prioridade agora?",
+  ],
+  [
+    "Onde o orçamento está mais exposto a dependência de financiamento externo?",
+    "Quais projetos parecem ter maior retorno público no curto prazo?",
+    "Se tivesses de cortar 5% da despesa, onde os dados sugerem menor impacto social?",
+  ],
+  [
+    "Que leitura executiva podes fazer do orçamento: força, risco e decisão imediata?",
+    "Qual rubrica de despesa merece maior monitorização mensal e porquê?",
+    "Que ajustes estratégicos fariam o orçamento mais resiliente no próximo ano?",
+  ],
 ];
 const FUNDING_SOURCE_COLORS = [
   "#6f779b",
@@ -455,7 +467,7 @@ export default function OrcamentoPage() {
               </Card>
             </div>
 
-            <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+            <div className="grid gap-6 xl:grid-cols-2">
               <Card>
                 <CardHeader>
                   <CardTitle>Afetação funcional</CardTitle>
@@ -663,7 +675,7 @@ export default function OrcamentoPage() {
       <DashboardChatWidget
         context={{ surface: "orcamento", year: Number(year) }}
         placeholder="Pergunte sobre o orçamento..."
-        quickPrompts={BUDGET_CHAT_PROMPTS}
+        quickPromptSets={BUDGET_CHAT_PROMPT_SETS}
         storageKey="maioazul-site-chat-budget-v1"
         welcomeMessage="Pergunte sobre o orçamento municipal do Maio, projetos, fontes de financiamento ou diferenças entre 2025 e 2026."
       />
