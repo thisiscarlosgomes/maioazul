@@ -148,11 +148,12 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
               <button
                 type="button"
                 onClick={dismissPortalIntro}
-                className="inline-flex w-full items-center justify-center rounded-lg border border-border bg-muted px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+                className="inline-flex w-full items-center justify-center rounded-lg border border-border bg-muted p-2 text-sm font-medium text-foreground transition hover:bg-accent"
               >
                 Fechar
               </button>
             </div>
+            <div className="mt-3 text-xs opacity-50">maioazul.com</div>
           </div>
         </div>
       )}
