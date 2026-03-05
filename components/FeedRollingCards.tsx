@@ -70,7 +70,7 @@ export default function FeedRollingCards() {
 
     const load = async () => {
       try {
-        const res = await fetch("/api/feed?limit=24", { cache: "no-store" });
+        const res = await fetch("/api/feed?limit=24");
         const data = (await res.json()) as FeedResponse;
 
         if (cancelled) return;

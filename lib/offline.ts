@@ -1,10 +1,55 @@
 const OFFLINE_PREFIX = "/data/offline";
+const DEFAULT_CACHE_TTL_MS = 5 * 60 * 1000;
+
+type JsonCacheEntry = {
+  expiresAt: number;
+  value: unknown;
+};
+
+const jsonMemoryCache = new Map<string, JsonCacheEntry>();
+const inflightJsonRequests = new Map<string, Promise<unknown>>();
 
 function getBaseUrl() {
   if (typeof window !== "undefined") {
     return window.location.origin;
   }
   return "http://localhost";
+}
+
+function shouldBypassMemoryCache(init?: RequestInit) {
+  const method = (init?.method ?? "GET").toUpperCase();
+  return init?.cache === "no-store" || method !== "GET";
+}
+
+function cacheTtlForUrl(apiUrl: string) {
+  try {
+    const url = new URL(apiUrl, getBaseUrl());
+    const path = url.pathname;
+
+    if (path === "/api/places") return 24 * 60 * 60 * 1000;
+    if (path.startsWith("/api/transparencia/turismo/2024/")) return 24 * 60 * 60 * 1000;
+    if (
+      path === "/api/maio/weather" ||
+      path === "/api/maio/wind" ||
+      path === "/api/maio/marine" ||
+      path === "/api/maio/air"
+    ) {
+      return 15 * 60 * 1000;
+    }
+    if (path === "/api/schedules/boats" || path === "/api/schedules/flights") {
+      return 15 * 60 * 1000;
+    }
+    if (
+      path === "/api/transparencia/municipal/maio/orcamento" ||
+      path === "/api/transparencia/nacional/receitas/cv"
+    ) {
+      return 60 * 60 * 1000;
+    }
+  } catch {
+    // Ignore parse failures and keep default TTL.
+  }
+
+  return DEFAULT_CACHE_TTL_MS;
 }
 
 export function buildOfflineUrl(apiUrl: string) {
@@ -104,7 +149,9 @@ export async function fetchOfflineFirst(
 
   if (candidate) {
     try {
-      const offlineRes = await fetch(candidate, { cache: "no-store" });
+      const offlineRes = await fetch(candidate, {
+        cache: shouldBypassMemoryCache(init) ? "no-store" : "force-cache",
+      });
       if (offlineRes.ok) return offlineRes;
     } catch {
       // Ignore offline lookup failures and fall back to the API.
@@ -114,17 +161,58 @@ export async function fetchOfflineFirst(
   return fetch(apiUrl, init);
 }
 
-export async function fetchJsonOfflineFirst<T = any>(
+export async function fetchJsonOfflineFirst<T = unknown>(
   apiUrl: string,
   init?: RequestInit,
   offlineUrl?: string | null
 ): Promise<T> {
-  try {
-    const res = await fetchOfflineFirst(apiUrl, init, offlineUrl);
-    if (!res.ok) {
-      return {} as T;
+  const bypassCache = shouldBypassMemoryCache(init);
+  const cacheKey = `${apiUrl}::${offlineUrl ?? ""}`;
+  const now = Date.now();
+
+  if (!bypassCache) {
+    const cached = jsonMemoryCache.get(cacheKey);
+    if (cached && cached.expiresAt > now) {
+      return cached.value as T;
     }
-    return res.json() as Promise<T>;
+
+    const pending = inflightJsonRequests.get(cacheKey);
+    if (pending) {
+      return pending as Promise<T>;
+    }
+  }
+
+  const request = (async () => {
+    try {
+      const res = await fetchOfflineFirst(apiUrl, init, offlineUrl);
+      if (!res.ok) {
+        return {} as T;
+      }
+      const payload = (await res.json()) as T;
+
+      if (!bypassCache) {
+        jsonMemoryCache.set(cacheKey, {
+          value: payload,
+          expiresAt: Date.now() + cacheTtlForUrl(apiUrl),
+        });
+      }
+
+      return payload;
+    } catch {
+      return {} as T;
+    } finally {
+      if (!bypassCache) {
+        inflightJsonRequests.delete(cacheKey);
+      }
+    }
+  })();
+
+  if (!bypassCache) {
+    inflightJsonRequests.set(cacheKey, request as Promise<unknown>);
+  }
+
+  try {
+    return await request;
   } catch {
     return {} as T;
   }

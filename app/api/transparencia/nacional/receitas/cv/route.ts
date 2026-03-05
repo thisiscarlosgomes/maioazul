@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
+export const revalidate = 3600;
+
 type RecebedoriaRow = {
   recebedoria: string;
   value: number;
@@ -98,6 +100,12 @@ function mapYearDoc(doc: ReceitaYearDoc) {
   };
 }
 
+function cacheHeaders() {
+  return {
+    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=21600",
+  };
+}
+
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -128,15 +136,18 @@ export async function GET() {
           })()
         : null;
 
-    return NextResponse.json({
-      scope: "national",
-      dataset: "receitas_cv_recebedorias",
-      unit: "CVE",
-      data,
-      source: "Portal Transparência CV · Por Recebedorias",
-      fallback: docs.length === 0,
-      updatedAt: latestUpdatedAt,
-    });
+    return NextResponse.json(
+      {
+        scope: "national",
+        dataset: "receitas_cv_recebedorias",
+        unit: "CVE",
+        data,
+        source: "Portal Transparência CV · Por Recebedorias",
+        fallback: docs.length === 0,
+        updatedAt: latestUpdatedAt,
+      },
+      { headers: cacheHeaders() }
+    );
   } catch (err) {
     console.error("[Nacional Receitas CV]", err);
     return NextResponse.json(
@@ -149,7 +160,7 @@ export async function GET() {
         fallback: true,
         updatedAt: null,
       },
-      { status: 200 }
+      { status: 200, headers: cacheHeaders() }
     );
   }
 }

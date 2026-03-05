@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
+export const revalidate = 300;
+
 type FeedItem = {
   id: string;
   title: string;
@@ -207,12 +209,19 @@ export async function GET(req: Request) {
       .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
       .slice(0, limit);
 
-    return NextResponse.json({
-      ok: true,
-      generatedAt: new Date().toISOString(),
-      count: items.length,
-      items,
-    });
+    return NextResponse.json(
+      {
+        ok: true,
+        generatedAt: new Date().toISOString(),
+        count: items.length,
+        items,
+      },
+      {
+        headers: {
+          "Cache-Control": "public, s-maxage=300, stale-while-revalidate=1800",
+        },
+      }
+    );
   } catch (error) {
     console.error("[feed] failed to build feed", error);
     return NextResponse.json(

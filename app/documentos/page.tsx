@@ -15,19 +15,6 @@ type DocumentItem = {
 type ManifestValue = string | { title?: string; name?: string };
 type DocsManifest = Record<string, ManifestValue>;
 
-const DOCUMENTS_CHAT_PROMPT_SETS = [
-  [
-    "Resume os documentos disponíveis e explica para que serve cada um.",
-    "Que diferenças principais existem entre estes boletins oficiais?",
-    "Quais documentos parecem mais relevantes para orçamento municipal?",
-  ],
-  [
-    "Explica este documento em linguagem simples.",
-    "Que datas e números importantes aparecem nestes PDFs?",
-    "Quais documentos devo ler primeiro para entender decisões municipais?",
-  ],
-];
-
 export const metadata: Metadata = {
   title: "Documentos",
   description: "Lista de documentos PDF disponíveis para download.",
@@ -153,11 +140,8 @@ export default async function DocumentosPage() {
         )}
       </section>
       <DashboardChatWidget
-        context={{ surface: "generic" }}
-        placeholder="Pergunte sobre os documentos..."
-        quickPromptSets={DOCUMENTS_CHAT_PROMPT_SETS}
+        context={{ surface: "documentos" }}
         storageKey="maioazul-site-chat-documentos-v1"
-        welcomeMessage="Posso ajudar a resumir os documentos, explicar termos e destacar os pontos mais importantes de cada PDF."
       />
     </main>
   );

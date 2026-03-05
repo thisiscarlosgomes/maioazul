@@ -407,7 +407,7 @@ function LocalGovernmentOverview({
 
         // If offline cache came back empty/malformed, force a live read.
         if (!rows.length) {
-          const liveRes = await fetch(url, { cache: "no-store" });
+          const liveRes = await fetch(url);
           const liveJson = normalize(await liveRes.json());
           if (Array.isArray(liveJson.data) && liveJson.data.length) {
             rows = liveJson.data;
@@ -1579,7 +1579,7 @@ export default function TourismPage() {
             YEAR = 2024 · BASELINE
         ========================= */}
 
-        {ilha === "Maio" && year !== "2025" && (
+        {ilha === "Maio" && year !== "2025" && year !== "2024" && (
           <MaioPopulationSnapshot
             t={t}
             onData={(data) =>
