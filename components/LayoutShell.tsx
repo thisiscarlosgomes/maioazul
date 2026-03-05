@@ -21,7 +21,7 @@ function shouldShowNav(pathname: string | null) {
 export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const showNav = shouldShowNav(pathname);
-  const showAppHeader = Boolean(pathname && pathname !== "/");
+  const showAppHeader = Boolean(pathname && pathname !== "/" && pathname !== "/partners");
   const [hideNav, setHideNav] = useState(false);
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
