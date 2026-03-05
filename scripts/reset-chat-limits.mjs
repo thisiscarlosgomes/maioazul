@@ -55,7 +55,7 @@ async function run() {
   console.log("Chat limits reset complete");
   console.log(`Database: ${MONGODB_DB}`);
   console.log(`Deleted rate-limit records: ${result.deletedCount}`);
-  console.log("All users now effectively have a fresh 20-message allowance.");
+  console.log("All users now effectively have a fresh 10-message allowance.");
 }
 
 run().catch((err) => {

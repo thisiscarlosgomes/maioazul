@@ -17,7 +17,7 @@ export type SiteChatMessage = {
 };
 
 export type SiteChatContext = {
-  surface?: "dashboard" | "orcamento" | "mcp-guide" | "generic";
+  surface?: "dashboard" | "orcamento" | "mcp-guide" | "documentos" | "generic";
   year?: number | string;
 };
 
@@ -30,7 +30,7 @@ type UseSiteChatOptions = {
 const DEFAULT_WELCOME_MESSAGE =
   "Pergunte sobre turismo, orçamento municipal e também sobre o Código de Postura do Maio.";
 const STORAGE_KEY = "maioazul-site-chat-v2";
-const CHAT_QUERY_LIMIT = 20;
+const CHAT_QUERY_LIMIT = 10;
 
 function buildWelcomeMessage(message: string): SiteChatMessage {
   return {

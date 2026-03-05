@@ -1,4 +1,6 @@
 import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import OpenAI from "openai";
 import { NextResponse } from "next/server";
 import {
@@ -13,7 +15,7 @@ export const runtime = "nodejs";
 const DEFAULT_MODEL = process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
 const MAX_MESSAGES = 12;
 const MAX_TOOL_ROUNDS = 6;
-const CHAT_QUERY_LIMIT = 20;
+const CHAT_QUERY_LIMIT = 10;
 const CHAT_QUERY_WINDOW_MS = 24 * 60 * 60 * 1000;
 const CHAT_RATE_LIMIT_COLLECTION = "chat_rate_limits";
 const CHAT_USAGE_STATS_COLLECTION = "chat_usage_stats";
@@ -34,7 +36,7 @@ type ChatMessage = {
 };
 
 type ChatContext = {
-  surface?: "dashboard" | "orcamento" | "mcp-guide" | "generic";
+  surface?: "dashboard" | "orcamento" | "mcp-guide" | "documentos" | "generic";
   year?: number | string;
 };
 
@@ -113,6 +115,7 @@ function normalizeChatContext(value: unknown): ChatContext | null {
     candidate.surface === "dashboard" ||
     candidate.surface === "orcamento" ||
     candidate.surface === "mcp-guide" ||
+    candidate.surface === "documentos" ||
     candidate.surface === "generic"
       ? candidate.surface
       : undefined;
@@ -156,6 +159,13 @@ function buildChatInstructions(context: ChatContext | null) {
   } else if (context.surface === "mcp-guide") {
     contextLines.push(
       "Contexto da interface: o utilizador está na página do guia MCP.",
+    );
+  } else if (context.surface === "documentos") {
+    contextLines.push(
+      "Contexto da interface: o utilizador está na página de documentos PDF.",
+    );
+    contextLines.push(
+      "Quando a pergunta for sobre documentos disponíveis, usa somente o catálogo real em /public/docs/manifest.json e não inventes anos/títulos.",
     );
   }
 
@@ -527,6 +537,82 @@ function detectCompensationIntent(normalizedMessage: string): CompensationIntent
   const roleTarget = extractCompensationRoleQuery(normalizedMessage);
   if (!roleTarget) return null;
   return { kind: "salary_by_role", target: roleTarget };
+}
+
+type PublicDocEntry = {
+  fileName: string;
+  displayName: string;
+  title?: string;
+};
+
+type DocsManifestValue = string | { title?: string; name?: string };
+
+async function loadPublicDocsCatalog(): Promise<PublicDocEntry[]> {
+  const manifestPath = path.join(process.cwd(), "public", "docs", "manifest.json");
+  const raw = await readFile(manifestPath, "utf8");
+  const parsed = JSON.parse(raw) as Record<string, DocsManifestValue>;
+
+  const entries = Object.entries(parsed)
+    .filter(([fileName]) => fileName.toLowerCase().endsWith(".pdf"))
+    .map(([fileName, value]) => {
+      const displayName =
+        (typeof value === "string" ? undefined : value?.name)?.trim() ||
+        fileName.replace(/\.pdf$/i, "").replace(/[_-]+/g, " ").trim();
+      const title = (typeof value === "string" ? value : value?.title)?.trim();
+      return {
+        fileName,
+        displayName,
+        title: title && title !== displayName ? title : undefined,
+      };
+    });
+
+  return entries.sort((a, b) => a.displayName.localeCompare(b.displayName, "pt"));
+}
+
+async function tryResolveDocumentsAnswer(params: {
+  messages: ChatMessage[];
+  context: ChatContext | null;
+}) {
+  const latestUserMessage = [...params.messages]
+    .reverse()
+    .find((item) => item.role === "user")?.content;
+
+  if (!latestUserMessage) return null;
+  const query = normalizeText(latestUserMessage);
+
+  const asksForDocs =
+    query.includes("documento") ||
+    query.includes("documentos") ||
+    query.includes("pdf") ||
+    query.includes("boletim");
+  const asksForSummary =
+    query.includes("resum") ||
+    query.includes("explica") ||
+    query.includes("para que serve") ||
+    query.includes("quais sao");
+
+  if (!asksForDocs) return null;
+  if (params.context?.surface !== "documentos" && !asksForSummary) return null;
+
+  let docs: PublicDocEntry[] = [];
+  try {
+    docs = await loadPublicDocsCatalog();
+  } catch {
+    return null;
+  }
+  if (!docs.length) return null;
+
+  const lines = docs.map((doc, idx) => {
+    const titlePart = doc.title ? ` — ${doc.title}` : "";
+    return `${idx + 1}. ${doc.displayName}${titlePart}`;
+  });
+
+  return {
+    message:
+      `Documentos disponíveis no portal:\n\n${lines.join("\n")}\n\n` +
+      "Nota: o orçamento municipal publicado é o de 2026 (BO n.º 34, 23/02/2026).",
+    toolEvents: [] as ToolEvent[],
+  };
 }
 
 async function tryResolveCompensationAnswer(params: {
@@ -1014,7 +1100,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json(
         {
-          error: "Daily chat limit reached. You can send up to 20 messages every 24 hours.",
+          error: "Daily chat limit reached. You can send up to 10 messages every 24 hours.",
           limit: CHAT_QUERY_LIMIT,
           windowHours: 24,
           remaining: quota.remaining,
@@ -1029,6 +1115,25 @@ export async function POST(request: Request) {
       messages,
       context,
     });
+
+    const directDocumentsAnswer = await tryResolveDocumentsAnswer({
+      messages,
+      context,
+    });
+    if (directDocumentsAnswer) {
+      await trackChatUsage({
+        kind: "success",
+        context,
+        toolCallCount: directDocumentsAnswer.toolEvents.length,
+      });
+
+      return NextResponse.json({
+        message: directDocumentsAnswer.message,
+        toolEvents: directDocumentsAnswer.toolEvents,
+        model: "direct-documents-resolver",
+        remaining: quota.remaining,
+      });
+    }
 
     if (directSalaryAnswer) {
       await trackChatUsage({
