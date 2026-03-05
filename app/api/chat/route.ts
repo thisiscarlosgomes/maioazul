@@ -17,11 +17,15 @@ const CHAT_QUERY_LIMIT = 10;
 const CHAT_QUERY_WINDOW_MS = 24 * 60 * 60 * 1000;
 const CHAT_RATE_LIMIT_COLLECTION = "chat_rate_limits";
 const CHAT_USAGE_STATS_COLLECTION = "chat_usage_stats";
+const CHAT_USERS_COLLECTION = "chat_users";
 let rateLimitCollectionPromise:
   | Promise<Awaited<ReturnType<typeof initializeRateLimitCollection>>>
   | null = null;
 let usageStatsCollectionPromise:
   | Promise<Awaited<ReturnType<typeof initializeUsageStatsCollection>>>
+  | null = null;
+let usersCollectionPromise:
+  | Promise<Awaited<ReturnType<typeof initializeUsersCollection>>>
   | null = null;
 
 type ChatMessage = {
@@ -56,6 +60,15 @@ type ChatUsageStatsDoc = {
   updatedAt: Date;
   createdAt: Date;
   lastMessageAt: Date;
+};
+
+type ChatUserDoc = {
+  _id: string;
+  firstSeenAt: Date;
+  lastSeenAt: Date;
+  updatedAt: Date;
+  createdAt: Date;
+  requests_total?: number;
 };
 
 type ChatUsageKind = "success" | "rate_limited" | "error";
@@ -275,6 +288,30 @@ async function getUsageStatsCollection() {
   return usageStatsCollectionPromise;
 }
 
+async function initializeUsersCollection() {
+  if (!process.env.MONGODB_URI) {
+    return null;
+  }
+
+  const { default: clientPromise } = await import("@/lib/mongodb");
+  const client = await clientPromise;
+  const db = client.db(process.env.MONGODB_DB || "maioazul");
+  const collection = db.collection<ChatUserDoc>(CHAT_USERS_COLLECTION);
+
+  await collection.createIndex({ updatedAt: -1 });
+  await collection.createIndex({ firstSeenAt: -1 });
+
+  return collection;
+}
+
+async function getUsersCollection() {
+  if (!usersCollectionPromise) {
+    usersCollectionPromise = initializeUsersCollection();
+  }
+
+  return usersCollectionPromise;
+}
+
 function getSurfaceKey(context: ChatContext | null) {
   switch (context?.surface) {
     case "dashboard":
@@ -289,6 +326,34 @@ function getSurfaceKey(context: ChatContext | null) {
 
 function getUtcDateKey(date: Date) {
   return date.toISOString().slice(0, 10);
+}
+
+async function trackChatUser(request: Request, context: ChatContext | null) {
+  const collection = await getUsersCollection();
+  if (!collection) return;
+
+  const now = new Date();
+  const userKey = getClientRateLimitKey(request);
+  const surface = getSurfaceKey(context);
+
+  await collection.updateOne(
+    { _id: userKey },
+    {
+      $set: {
+        lastSeenAt: now,
+        updatedAt: now,
+      },
+      $setOnInsert: {
+        firstSeenAt: now,
+        createdAt: now,
+      },
+      $inc: {
+        requests_total: 1,
+        [`by_surface.${surface}.requests_total`]: 1,
+      },
+    },
+    { upsert: true },
+  );
 }
 
 async function trackChatUsage(params: {
@@ -451,6 +516,12 @@ export async function POST(request: Request) {
         { error: "Missing messages" },
         { status: 400 },
       );
+    }
+
+    try {
+      await trackChatUser(request, context);
+    } catch (error) {
+      console.error("[Chat User Tracking]", error);
     }
 
     const quota = await consumeChatQueryQuota(request);

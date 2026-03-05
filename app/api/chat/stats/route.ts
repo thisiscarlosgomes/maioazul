@@ -19,14 +19,23 @@ type ChatStatsDoc = {
   by_surface?: Record<string, Record<string, number>>;
 };
 
+type ChatUserDoc = {
+  _id: string;
+  firstSeenAt?: Date | string;
+  lastSeenAt?: Date | string;
+};
+
 export async function GET() {
   try {
     const { default: clientPromise } = await import("@/lib/mongodb");
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB || "maioazul");
     const col = db.collection<ChatStatsDoc>("chat_usage_stats");
+    const usersCol = db.collection<ChatUserDoc>("chat_users");
+    const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const last48Hours = new Date(Date.now() - 48 * 60 * 60 * 1000);
 
-    const [globalDoc, recentDaily] = await Promise.all([
+    const [globalDoc, recentDaily, totalUsers, activeUsers24h, activeUsers48h] = await Promise.all([
       col.findOne(
         { _id: "global" },
         {
@@ -66,11 +75,25 @@ export async function GET() {
         .sort({ date: -1 })
         .limit(7)
         .toArray(),
+      usersCol.countDocuments({}),
+      usersCol.countDocuments({ lastSeenAt: { $gte: last24Hours } }),
+      usersCol.countDocuments({ lastSeenAt: { $gte: last48Hours } }),
     ]);
 
     return NextResponse.json({
       ok: true,
-      global: globalDoc,
+      global: globalDoc
+        ? {
+            ...globalDoc,
+            total_users: totalUsers,
+            active_users_24h: activeUsers24h,
+            active_users_48h: activeUsers48h,
+          }
+        : {
+            total_users: totalUsers,
+            active_users_24h: activeUsers24h,
+            active_users_48h: activeUsers48h,
+          },
       recentDaily,
     });
   } catch (error) {

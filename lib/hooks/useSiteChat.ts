@@ -150,7 +150,7 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
           );
 
           throw new Error(
-            `Atingiste o limite de ${limit} mensagens por 24 horas. Tenta novamente em ${resetLabel}.`,
+            `Atingiste o limite de ${limit} mensagens por 24 horas. Tenta novamente mais tarde.`,
           );
         }
 

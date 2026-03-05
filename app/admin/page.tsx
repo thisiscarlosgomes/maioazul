@@ -27,6 +27,9 @@ type ChatUsageStatsResponse = {
     user_messages_total?: number;
     assistant_messages_total?: number;
     tool_calls_total?: number;
+    total_users?: number;
+    active_users_24h?: number;
+    active_users_48h?: number;
     by_surface?: Record<string, Record<string, number>>;
     lastMessageAt?: string;
   } | null;
@@ -59,7 +62,7 @@ const formatShortDateTime = (value: string | null | undefined) =>
 function LoadingGrid() {
   return (
     <KpiGrid>
-      {Array.from({ length: 4 }).map((_, index) => (
+      {Array.from({ length: 6 }).map((_, index) => (
         <div key={index} className="rounded-lg border border-border bg-card p-4">
           <Skeleton className="h-3 w-24" />
           <Skeleton className="mt-3 h-8 w-20" />
@@ -156,6 +159,11 @@ export default function AdminPage() {
           ) : (
             <KpiGrid>
               <KpiStat label="Pedidos totais" value={formatNumber(global?.requests_total ?? 0)} />
+              <KpiStat label="Utilizadores" value={formatNumber(global?.total_users ?? 0)} />
+              <KpiStat
+                label="Utilizadores (48h)"
+                value={formatNumber(global?.active_users_48h ?? 0)}
+              />
               <KpiStat
                 label="Mensagens assistente"
                 value={formatNumber(global?.assistant_messages_total ?? 0)}
