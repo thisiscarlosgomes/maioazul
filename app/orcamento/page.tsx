@@ -431,7 +431,7 @@ export default function OrcamentoPage() {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-6">
         <div className="pt-6">
-          <h1 className="text-xl font-semibold">Orçamento Municipal do Maio 2026</h1>
+          <h1 className="text-lg font-semibold sm:text-xl">Orçamento Municipal do Maio 2026</h1>
           <p className="hidden text-sm text-muted-foreground sm:block">
             Receitas, despesas, investimento e enquadramento legal do orçamento aprovado.
           </p>
@@ -485,7 +485,7 @@ export default function OrcamentoPage() {
               <KpiStat label="Receita total" value={formatCompactCve(summary.totalRevenueCve)} />
               <div className="rounded-lg border border-border bg-card p-4">
                 <div className="text-xs text-muted-foreground">Despesa total</div>
-                <div className="mt-1 text-xl font-semibold">
+                <div className="mt-1 text-lg font-semibold sm:text-xl">
                   {formatCompactCve(summary.totalExpenseCve)}
                 </div>
               </div>
@@ -494,7 +494,7 @@ export default function OrcamentoPage() {
                   <div className="text-xs text-muted-foreground">
                     {isSurplus ? "Saldo orçamental" : "Necessidade de financiamento"}
                   </div>
-                  <div className="mt-1 text-xl font-semibold">
+                  <div className="mt-1 text-lg font-semibold sm:text-xl">
                     {formatCompactCve(Math.abs(summary.fiscalBalanceCve))}
                   </div>
                 </div>
@@ -515,7 +515,7 @@ export default function OrcamentoPage() {
                     <Card>
                       <CardContent className="p-4">
                         <div className="text-xs text-muted-foreground">Quadro base (anual)</div>
-                        <div className="mt-1 text-xl font-semibold">
+                        <div className="mt-1 text-lg font-semibold sm:text-xl">
                           {formatCve(compensationFramework.base?.totalAnnualCve ?? 0)}
                         </div>
                         <div className="mt-1 text-xs text-muted-foreground">
@@ -526,7 +526,7 @@ export default function OrcamentoPage() {
                     <Card>
                       <CardContent className="p-4">
                         <div className="text-xs text-muted-foreground">Acréscimos (anual)</div>
-                        <div className="mt-1 text-xl font-semibold">
+                        <div className="mt-1 text-lg font-semibold sm:text-xl">
                           {formatCve(compensationFramework.adjustments?.totalAnnualCve ?? 0)}
                         </div>
                         <div className="mt-1 text-xs text-muted-foreground">
@@ -537,7 +537,7 @@ export default function OrcamentoPage() {
                     <Card>
                       <CardContent className="p-4">
                         <div className="text-xs text-muted-foreground">Total combinado (anual)</div>
-                        <div className="mt-1 text-xl font-semibold">
+                        <div className="mt-1 text-lg font-semibold sm:text-xl">
                           {formatCve(compensationFramework.combined.totalAnnualCve)}
                         </div>
                         <div className="mt-1 text-xs text-muted-foreground">
@@ -577,7 +577,7 @@ export default function OrcamentoPage() {
                                 <div className="flex items-center justify-between gap-6">
                                   <div className="min-w-0">
                                     <div className="font-medium">{row.departmentName}</div>
-                                    <div className="text-xs text-muted-foreground">
+                                    <div className="hidden text-xs text-muted-foreground sm:block">
                                       Clique para ver cargos e compensações
                                     </div>
                                   </div>
@@ -600,17 +600,17 @@ export default function OrcamentoPage() {
                                       <TableHeader>
                                         <TableRow>
                                           <TableHead>Cargo</TableHead>
-                                          <TableHead>Grupo</TableHead>
+                                          <TableHead className="hidden md:table-cell">Grupo</TableHead>
                                           <TableHead className="text-right">Vagas</TableHead>
                                           <TableHead className="text-right">Mensal</TableHead>
-                                          <TableHead className="text-right">Anual</TableHead>
+                                          <TableHead className="hidden text-right md:table-cell">Anual</TableHead>
                                         </TableRow>
                                       </TableHeader>
                                       <TableBody>
                                         {mergedPositions.map((position) => (
                                           <TableRow key={`base-pos-${position.id}`}>
                                             <TableCell>{position.positionTitle}</TableCell>
-                                            <TableCell className="text-muted-foreground">
+                                            <TableCell className="hidden text-muted-foreground md:table-cell">
                                               {position.staffGroup ?? "—"}
                                             </TableCell>
                                             <TableCell className="text-right">
@@ -619,7 +619,7 @@ export default function OrcamentoPage() {
                                             <TableCell className="text-right">
                                               {formatCve(position.monthlySalaryCve)}
                                             </TableCell>
-                                            <TableCell className="text-right">
+                                            <TableCell className="hidden text-right md:table-cell">
                                               {formatCve(position.annualSalaryCve)}
                                             </TableCell>
                                           </TableRow>
@@ -653,7 +653,7 @@ export default function OrcamentoPage() {
                   <Card>
                     <CardContent className="p-4">
                       <div className="text-xs text-muted-foreground">Montante total alocado</div>
-                      <div className="mt-1 text-xl font-semibold">
+                      <div className="mt-1 text-lg font-semibold sm:text-xl">
                         {formatCve(projectStats.totalAllocatedCve)}
                       </div>
                     </CardContent>
@@ -661,7 +661,7 @@ export default function OrcamentoPage() {
                   <Card>
                     <CardContent className="p-4">
                       <div className="text-xs text-muted-foreground">Número de projetos</div>
-                      <div className="mt-1 text-xl font-semibold">
+                      <div className="mt-1 text-lg font-semibold sm:text-xl">
                         {formatNumber(projectStats.projectCount)}
                       </div>
                     </CardContent>
@@ -669,7 +669,7 @@ export default function OrcamentoPage() {
                   <Card>
                     <CardContent className="p-4">
                       <div className="text-xs text-muted-foreground">Maior gasto em projeto</div>
-                      <div className="mt-1 text-xl font-semibold">
+                      <div className="mt-1 text-lg font-semibold sm:text-xl">
                         {projectStats.topProject
                           ? formatCve(projectStats.topProject.amountCve)
                           : "—"}
@@ -717,7 +717,7 @@ export default function OrcamentoPage() {
                             <Table>
                               <TableHeader>
                                 <TableRow>
-                                  <TableHead>Subprograma</TableHead>
+                                  <TableHead className="hidden md:table-cell">Subprograma</TableHead>
                                   <TableHead>Projeto</TableHead>
                                   <TableHead className="text-right">Montante</TableHead>
                                 </TableRow>
@@ -727,7 +727,7 @@ export default function OrcamentoPage() {
                                   <TableRow
                                     key={`${group.programName}-${project.projectName}-${project.amountCve}`}
                                   >
-                                    <TableCell className="align-top text-muted-foreground">
+                                    <TableCell className="hidden align-top text-muted-foreground md:table-cell">
                                       {project.subprogramName ?? ""}
                                     </TableCell>
                                     <TableCell className="align-top">
@@ -766,13 +766,13 @@ export default function OrcamentoPage() {
                       <div className="grid gap-3 xl:grid-cols-2">
                         <div className="rounded-lg border border-border bg-muted/20 p-4">
                           <div className="text-sm text-muted-foreground">Receita corrente</div>
-                          <div className="mt-2 text-xl font-semibold">
+                          <div className="mt-2 text-lg font-semibold sm:text-xl">
                             {formatCve(summary.currentRevenueCve)}
                           </div>
                         </div>
                         <div className="rounded-lg border border-border bg-muted/20 p-4">
                           <div className="text-sm text-muted-foreground">Receita de capital</div>
-                          <div className="mt-2 text-xl font-semibold">
+                          <div className="mt-2 text-lg font-semibold sm:text-xl">
                             {formatCve(summary.capitalRevenueCve)}
                           </div>
                         </div>
@@ -789,13 +789,13 @@ export default function OrcamentoPage() {
                       <div className="grid gap-3 xl:grid-cols-2">
                         <div className="rounded-lg border border-border bg-muted/20 p-4">
                           <div className="text-sm text-muted-foreground">Despesa corrente</div>
-                          <div className="mt-2 text-xl font-semibold">
+                          <div className="mt-2 text-lg font-semibold sm:text-xl">
                             {formatCve(summary.currentExpenseCve)}
                           </div>
                         </div>
                         <div className="rounded-lg border border-border bg-muted/20 p-4">
                           <div className="text-sm text-muted-foreground">Despesa de capital</div>
-                          <div className="mt-2 text-xl font-semibold">
+                          <div className="mt-2 text-lg font-semibold sm:text-xl">
                             {formatCve(summary.capitalExpenseCve)}
                           </div>
                         </div>

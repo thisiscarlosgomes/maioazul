@@ -29,7 +29,7 @@ export default function AppHeader() {
         <div className="flex min-w-0 items-center gap-3">
           <Link
             href="/"
-            className="truncate font-mono text-sm font-semibold uppercase tracking-[0.08em] text-foreground"
+            className="truncate font-mono text-sm font-semibold uppercase text-foreground"
           >
             Portal de dados do Maio
           </Link>

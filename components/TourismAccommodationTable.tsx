@@ -14,23 +14,32 @@ import {
 const formatNumber = (v: number) =>
   new Intl.NumberFormat("pt-PT").format(v);
 
+type TourismHotelIsland = {
+  ilha?: string;
+  totals?: {
+    establishments?: number;
+    staff?: number;
+    staff_per_establishment?: number;
+  };
+};
+
+type AccommodationRow = {
+  ilha: string;
+  estabelecimentos: string;
+  trabalhadores: string;
+  "trabalhadores / unidade": string;
+};
+
 export function TourismAccommodationTable({
   ilha,
 }: {
   ilha: string;
 }) {
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<AccommodationRow[]>([]);
 
   useEffect(() => {
     fetchJsonOfflineFirst<{
-      islands?: Array<{
-        ilha?: string;
-        totals?: {
-          establishments?: number;
-          staff?: number;
-          staff_per_establishment?: number;
-        };
-      }>;
+      islands?: TourismHotelIsland[];
     }>("/api/transparencia/turismo/hoteis")
       .then((res) => {
         const islands = res.islands || [];
@@ -39,18 +48,18 @@ export function TourismAccommodationTable({
           ilha === "Todas"
             ? islands
             : islands.filter(
-                (i: any) =>
-                  i.ilha.toLowerCase() === ilha.toLowerCase()
+                (i) =>
+                  (i.ilha ?? "").toLowerCase() === ilha.toLowerCase()
               );
 
         setRows(
-          filtered.map((i: any) => ({
-            ilha: i.ilha,
-            estabelecimentos: formatNumber(i.totals.establishments),
-            trabalhadores: formatNumber(i.totals.staff),
+          filtered.map((i) => ({
+            ilha: i.ilha ?? "—",
+            estabelecimentos: formatNumber(i.totals?.establishments ?? 0),
+            trabalhadores: formatNumber(i.totals?.staff ?? 0),
             "trabalhadores / unidade":
-              i.totals.staff_per_establishment > 0
-                ? i.totals.staff_per_establishment.toFixed(1)
+              (i.totals?.staff_per_establishment ?? 0) > 0
+                ? (i.totals?.staff_per_establishment ?? 0).toFixed(1)
                 : "—",
           }))
         );
@@ -77,7 +86,7 @@ export function TourismAccommodationTable({
               <TableHead>Ilha</TableHead>
               <TableHead>Estabelecimentos</TableHead>
               <TableHead>Trabalhadores</TableHead>
-              <TableHead>Trabalhadores / unidade</TableHead>
+              <TableHead className="hidden md:table-cell">Trabalhadores / unidade</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -87,7 +96,7 @@ export function TourismAccommodationTable({
                 <TableCell>{r.ilha}</TableCell>
                 <TableCell>{r.estabelecimentos}</TableCell>
                 <TableCell>{r.trabalhadores}</TableCell>
-                <TableCell>{r["trabalhadores / unidade"]}</TableCell>
+                <TableCell className="hidden md:table-cell">{r["trabalhadores / unidade"]}</TableCell>
               </TableRow>
             ))}
           </TableBody>

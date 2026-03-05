@@ -8,7 +8,7 @@ export function KpiStat({ label, value }: { label: string; value: string }) {
   return (
     <div className="rounded-lg border border-border bg-card p-4">
       <div className="text-xs text-muted-foreground">{label}</div>
-      <div className="mt-1 text-xl font-semibold">{value}</div>
+      <div className="mt-1 text-lg font-semibold sm:text-xl">{value}</div>
     </div>
   );
 }

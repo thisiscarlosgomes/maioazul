@@ -805,7 +805,7 @@ function ReceitasSection({
         <div className="flex items-center gap-2">
           <span>{formatPercent(r.share)}</span>
           <span
-            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${band.className}`}
+            className={`hidden items-center rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-flex ${band.className}`}
           >
             {band.label}
           </span>
@@ -1542,7 +1542,7 @@ export default function TourismPage() {
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-6">
         <div className="space-y-4 pt-6">
           <div>
-            <h1 className="text-xl font-semibold">{t.title}</h1>
+            <h1 className="text-lg font-semibold sm:text-xl">{t.title}</h1>
             <p className="hidden text-sm text-muted-foreground sm:block">{t.subtitle}</p>
           </div>
 
@@ -1883,6 +1883,17 @@ function DataTable({
   }
 
   const columns = Object.keys(rows[0]);
+  const mobileHiddenColumns = new Set([
+    "índice_sazonalidade",
+    "indice_sazonalidade",
+    "índice_pressão",
+    "indice_pressao",
+    "variação_yoy",
+    "variacao_yoy",
+  ]);
+  const columnLabelMap: Record<string, string> = {
+    peso_no_total: "% total",
+  };
 
   return (
     <div className="rounded-lg border border-border overflow-x-auto">
@@ -1890,7 +1901,12 @@ function DataTable({
         <TableHeader>
           <TableRow>
             {columns.map((k) => (
-              <TableHead key={k}>{k}</TableHead>
+              <TableHead
+                key={k}
+                className={mobileHiddenColumns.has(k) ? "hidden md:table-cell" : undefined}
+              >
+                {columnLabelMap[k] ?? k}
+              </TableHead>
             ))}
           </TableRow>
         </TableHeader>
@@ -1904,14 +1920,22 @@ function DataTable({
                   return (
                     <TableCell
                       key={key}
-                      className={cell.className}
+                      className={[
+                        cell.className,
+                        mobileHiddenColumns.has(key) ? "hidden md:table-cell" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                     >
                       {cell.value}
                     </TableCell>
                   );
                 }
                 return (
-                  <TableCell key={key}>
+                  <TableCell
+                    key={key}
+                    className={mobileHiddenColumns.has(key) ? "hidden md:table-cell" : undefined}
+                  >
                     {cell}
                   </TableCell>
                 );

@@ -91,7 +91,7 @@ export default async function DocumentosPage() {
       />
       <section className="relative z-10 mx-auto w-full max-w-6xl space-y-6 px-6 pb-16 pt-2">
         <header className="pt-6">
-          <h1 className="text-xl font-semibold">Documentos</h1>
+          <h1 className="text-lg font-semibold sm:text-xl">Documentos</h1>
           <p className="hidden text-sm text-muted-foreground sm:block">
             Clique num ficheiro para descarregar o PDF.
           </p>
