@@ -1,4 +1,10 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Orcamento Municipal do Maio",
@@ -18,5 +24,5 @@ export default function OrcamentoLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <div className={inter.className}>{children}</div>;
 }

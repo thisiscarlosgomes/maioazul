@@ -1481,9 +1481,9 @@ export default function TourismPage() {
             </div>
 
             {/* Filters */}
-            <div className="flex items-center gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center">
               <Select value={ilha} onValueChange={setIlha}>
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-full sm:w-[120px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -1496,7 +1496,7 @@ export default function TourismPage() {
               </Select>
 
               <Select value={year} onValueChange={setYear}>
-                <SelectTrigger className="w-[120px]">
+                <SelectTrigger className="w-full sm:w-[120px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>

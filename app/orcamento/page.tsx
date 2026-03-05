@@ -12,13 +12,6 @@ import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Table,
   TableBody,
   TableCell,
@@ -33,7 +26,7 @@ import type {
   BudgetProjectItem,
 } from "@/lib/budget";
 
-const YEARS = ["2026", "2025"];
+const FIXED_BUDGET_YEAR = "2026";
 const BUDGET_CHAT_PROMPT_SETS = [
   [
     "Quais são os 3 pontos mais relevantes do orçamento de 2026?",
@@ -52,12 +45,12 @@ const BUDGET_CHAT_PROMPT_SETS = [
   ],
 ];
 const FUNDING_SOURCE_COLORS = [
-  "#6f779b",
-  "#4b4fa3",
-  "#2f5ea8",
-  "#9249b5",
-  "#c76d2d",
-  "#6b7280",
+  "#1E78FF",
+  "#FFB703",
+  "#22C55E",
+  "#14B8A6",
+  "#8B5CF6",
+  "#6B7280",
 ];
 
 const formatCve = (value: number) =>
@@ -73,6 +66,9 @@ const formatCompactCve = (value: number) =>
     compactDisplay: "short",
     maximumFractionDigits: 1,
   }).format(value)} CVE`;
+
+const formatNumber = (value: number) =>
+  new Intl.NumberFormat("pt-PT").format(value);
 
 const formatPercent = (value: number | null | undefined) =>
   typeof value === "number" ? `${value.toFixed(2)}%` : "—";
@@ -134,12 +130,19 @@ function BreakdownBars({
     return <EmptyState message="Sem dados para esta secção." />;
   }
 
-  const maxValue = Math.max(...items.map((item) => item.amountCve), 1);
+  const totalValue = items.reduce((sum, item) => sum + item.amountCve, 0);
 
   return (
     <div className="space-y-3">
       {items.map((item) => (
         <div key={`${item.code ?? item.label}-${item.amountCve}`} className="space-y-1.5">
+          {(() => {
+            const fallbackShare = totalValue > 0 ? (item.amountCve / totalValue) * 100 : 0;
+            const share = typeof item.sharePct === "number" ? item.sharePct : fallbackShare;
+            const widthPct = Math.max(Math.min(share, 100), 4);
+
+            return (
+              <>
           <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
               <div className="font-medium leading-tight">{item.label}</div>
@@ -157,9 +160,12 @@ function BreakdownBars({
           <div className="h-2 rounded-full bg-muted/70">
             <div
               className={`h-2 rounded-full ${colorClassName}`}
-              style={{ width: `${Math.max((item.amountCve / maxValue) * 100, 4)}%` }}
+              style={{ width: `${widthPct}%` }}
             />
           </div>
+              </>
+            );
+          })()}
         </div>
       ))}
     </div>
@@ -169,12 +175,13 @@ function BreakdownBars({
 type GroupedProjects = {
   programName: string;
   totalAmountCve: number;
+  sharePct: number;
   projectCount: number;
   projects: BudgetProjectItem[];
 };
 
 export default function OrcamentoPage() {
-  const [year, setYear] = useState("2026");
+  const year = FIXED_BUDGET_YEAR;
   const [data, setData] = useState<BudgetApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -230,8 +237,9 @@ export default function OrcamentoPage() {
       const current = groups.get(project.programName) ?? {
         programName: project.programName,
         totalAmountCve: 0,
+        sharePct: 0,
         projectCount: 0,
-        projects: [],
+        projects: [] as BudgetProjectItem[],
       };
 
       current.totalAmountCve += project.amountCve;
@@ -240,12 +248,32 @@ export default function OrcamentoPage() {
       groups.set(project.programName, current);
     }
 
-    return Array.from(groups.values())
+    const values = Array.from(groups.values());
+    const totalAmount = values.reduce((sum, group) => sum + group.totalAmountCve, 0);
+
+    return values
       .map((group) => ({
         ...group,
+        sharePct:
+          totalAmount > 0 ? Number(((group.totalAmountCve / totalAmount) * 100).toFixed(2)) : 0,
         projects: group.projects.sort((a, b) => b.amountCve - a.amountCve),
       }))
       .sort((a, b) => b.totalAmountCve - a.totalAmountCve);
+  }, [data]);
+  const projectStats = useMemo(() => {
+    const projects = data?.investmentProjects ?? [];
+    const totalAllocatedCve = projects.reduce((sum, project) => sum + project.amountCve, 0);
+    const topProject = projects.reduce<BudgetProjectItem | null>(
+      (currentTop, project) =>
+        !currentTop || project.amountCve > currentTop.amountCve ? project : currentTop,
+      null,
+    );
+
+    return {
+      totalAllocatedCve,
+      projectCount: projects.length,
+      topProject,
+    };
   }, [data]);
 
   return (
@@ -269,7 +297,7 @@ export default function OrcamentoPage() {
                   <span>Orçamento</span>
                 </div>
                 <div>
-                  <h1 className="text-xl font-semibold">Orçamento Municipal do Maio</h1>
+                  <h1 className="text-xl font-semibold">Orçamento Municipal do Maio 2026</h1>
                   <p className="hidden text-sm text-muted-foreground sm:block">
                     Receitas, despesas, investimento e enquadramento legal do orçamento
                     aprovado.
@@ -288,20 +316,6 @@ export default function OrcamentoPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Select value={year} onValueChange={setYear}>
-                <SelectTrigger className="w-[140px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {YEARS.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {item}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
           </div>
         </div>
 
@@ -379,6 +393,112 @@ export default function OrcamentoPage() {
                 value={formatPercent(summary.investmentSharePct)}
               />
             </KpiGrid>
+               <SectionBlock
+              title="Principais projetos"
+              description="Projetos agrupados por programa. Clique para abrir o detalhe."
+            >
+              <div className="space-y-4">
+                 <div className="grid gap-4 md:grid-cols-3">
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="text-xs text-muted-foreground">Montante total alocado</div>
+                      <div className="mt-1 text-xl font-semibold">
+                        {formatCve(projectStats.totalAllocatedCve)}
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="text-xs text-muted-foreground">Número de projetos</div>
+                      <div className="mt-1 text-xl font-semibold">
+                        {formatNumber(projectStats.projectCount)}
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="text-xs text-muted-foreground">Maior gasto em projeto</div>
+                      <div className="mt-1 text-xl font-semibold">
+                        {projectStats.topProject
+                          ? formatCve(projectStats.topProject.amountCve)
+                          : "—"}
+                      </div>
+                      <div className="mt-1 text-xs text-muted-foreground line-clamp-2">
+                        {projectStats.topProject?.projectName ?? ""}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+                <div className="rounded-lg border border-border overflow-hidden">
+                  <div className="divide-y divide-border">
+                    {groupedProjects.map((group) => (
+                      <details key={group.programName} className="group">
+                        <summary className="cursor-pointer list-none bg-card px-4 py-4 marker:hidden transition hover:bg-muted/20">
+                          <div className="flex items-center justify-between gap-6">
+                            <div className="min-w-0">
+                              <div className="font-medium">{group.programName}</div>
+                              <div className="text-sm text-muted-foreground">
+                                {group.projectCount} projetos
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <div className="text-right">
+                                <div className="font-medium">
+                                  {formatCve(group.totalAmountCve)}
+                                </div>
+                                <div className="text-xs text-muted-foreground">
+                                  {formatPercent(group.sharePct)}
+                                </div>
+                              </div>
+                              <ChevronDown className="h-4 w-4 text-muted-foreground transition group-open:rotate-180" />
+                            </div>
+                          </div>
+                          <div className="mt-3 h-2 rounded-full bg-muted/70">
+                          <div
+                            className="h-2 rounded-full bg-[#1E78FF]"
+                            style={{ width: `${Math.max(group.sharePct, 4)}%` }}
+                          />
+                          </div>
+                        </summary>
+
+                        <div className="border-t border-border bg-muted/10 px-4 py-3">
+                          <div className="rounded-lg border border-border overflow-x-auto bg-background">
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Subprograma</TableHead>
+                                  <TableHead>Projeto</TableHead>
+                                  <TableHead className="text-right">Montante</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {group.projects.map((project) => (
+                                  <TableRow
+                                    key={`${group.programName}-${project.projectName}-${project.amountCve}`}
+                                  >
+                                    <TableCell className="align-top text-muted-foreground">
+                                      {project.subprogramName ?? ""}
+                                    </TableCell>
+                                    <TableCell className="align-top">
+                                      {project.projectName}
+                                    </TableCell>
+                                    <TableCell className="text-right align-top">
+                                      {formatCve(project.amountCve)}
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </div>
+                        </div>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+
+               
+              </div>
+            </SectionBlock>
 
             <div className="grid">
               <SectionBlock
@@ -446,7 +566,7 @@ export default function OrcamentoPage() {
                 <CardContent>
                   <BreakdownBars
                     items={data.revenueBreakdown}
-                    colorClassName="bg-[#1d8f6d]"
+                    colorClassName="bg-[#1E78FF]"
                   />
                 </CardContent>
               </Card>
@@ -461,7 +581,7 @@ export default function OrcamentoPage() {
                 <CardContent>
                   <BreakdownBars
                     items={data.expenseBreakdown}
-                    colorClassName="bg-[#c76d2d]"
+                    colorClassName="bg-[#FFB703]"
                   />
                 </CardContent>
               </Card>
@@ -478,7 +598,7 @@ export default function OrcamentoPage() {
                 <CardContent>
                   <BreakdownBars
                     items={data.functionalBreakdown}
-                    colorClassName="bg-[#2f5ea8]"
+                    colorClassName="bg-[#1E78FF]"
                   />
                 </CardContent>
               </Card>
@@ -552,93 +672,7 @@ export default function OrcamentoPage() {
               </Card>
             </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Programas de investimento</CardTitle>
-                <CardDescription>
-                  Agregação dos projetos por eixo ou programa.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {data.investmentPrograms.length ? (
-                  <BreakdownBars
-                    items={data.investmentPrograms.map((program) => ({
-                      code: null,
-                      label: `${program.label} · ${program.projectCount} projetos`,
-                      amountCve: program.amountCve,
-                      sharePct: null,
-                    }))}
-                    colorClassName="bg-[#9249b5]"
-                  />
-                ) : (
-                  <EmptyState message="Sem programa de investimento publicado." />
-                )}
-              </CardContent>
-            </Card>
-
-            <SectionBlock
-              title="Principais projetos"
-              description="Projetos agrupados por programa. Clique para abrir o detalhe."
-            >
-              <div className="rounded-lg border border-border overflow-hidden">
-                <div className="divide-y divide-border">
-                  {groupedProjects.map((group) => (
-                    <details key={group.programName} className="group">
-                      <summary className="flex cursor-pointer list-none items-center justify-between gap-6 bg-card px-4 py-4 marker:hidden transition hover:bg-muted/20">
-                        <div className="min-w-0">
-                          <div className="font-medium">{group.programName}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {group.projectCount} projetos
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <div className="text-right">
-                            <div className="font-medium">
-                              {formatCve(group.totalAmountCve)}
-                            </div>
-                            <div className="text-xs text-muted-foreground">
-                              total do programa
-                            </div>
-                          </div>
-                          <ChevronDown className="h-4 w-4 text-muted-foreground transition group-open:rotate-180" />
-                        </div>
-                      </summary>
-
-                      <div className="border-t border-border bg-muted/10 px-4 py-3">
-                        <div className="rounded-lg border border-border overflow-x-auto bg-background">
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                                <TableHead>Subprograma</TableHead>
-                                <TableHead>Projeto</TableHead>
-                                <TableHead className="text-right">Montante</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              {group.projects.map((project) => (
-                                <TableRow
-                                  key={`${group.programName}-${project.projectName}-${project.amountCve}`}
-                                >
-                                  <TableCell className="align-top text-muted-foreground">
-                                    {project.subprogramName ?? ""}
-                                  </TableCell>
-                                  <TableCell className="align-top">
-                                    {project.projectName}
-                                  </TableCell>
-                                  <TableCell className="text-right align-top">
-                                    {formatCve(project.amountCve)}
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </div>
-                      </div>
-                    </details>
-                  ))}
-                </div>
-              </div>
-            </SectionBlock>
+         
 
             <div>
               <SectionBlock
