@@ -10,6 +10,7 @@ import { pauseVoice, resumeVoice, stopVoice, useVoiceState } from "@/lib/voice";
 import { useLang } from "@/lib/lang";
 
 const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
+const PORTAL_INTRO_STORAGE_KEY = "maio-portal-intro-seen-v1";
 
 function shouldShowNav(pathname: string | null) {
   if (!pathname) return false;
@@ -22,6 +23,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const showNav = shouldShowNav(pathname);
   const showAppHeader = Boolean(pathname && pathname !== "/" && pathname !== "/partners");
+  const [showPortalIntro, setShowPortalIntro] = useState(false);
   const [hideNav, setHideNav] = useState(false);
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
@@ -67,6 +69,25 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!pathname || pathname === "/") return;
+    const hasSeenIntro = window.localStorage.getItem(PORTAL_INTRO_STORAGE_KEY) === "1";
+    if (!hasSeenIntro) {
+      queueMicrotask(() => {
+        setShowPortalIntro(true);
+      });
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleOpenPortalIntro = () => setShowPortalIntro(true);
+    window.addEventListener("maio-open-portal-intro", handleOpenPortalIntro);
+    return () => {
+      window.removeEventListener("maio-open-portal-intro", handleOpenPortalIntro);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     if (voiceState.status !== "paused") return;
     const raw = window.localStorage.getItem("maio-voice-autoresume");
     if (!raw) return;
@@ -77,6 +98,13 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       resumeVoice();
     }
   }, [voiceState.status]);
+
+  const dismissPortalIntro = () => {
+    setShowPortalIntro(false);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(PORTAL_INTRO_STORAGE_KEY, "1");
+    }
+  };
 
   return (
     <>
@@ -97,6 +125,37 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       >
         {children}
       </div>
+      {showPortalIntro && (
+        <div
+          className="fixed inset-0 z-[90] flex items-end bg-black/45 p-3 backdrop-blur-sm sm:items-center sm:justify-center sm:p-6"
+          onClick={dismissPortalIntro}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Sobre o Portal de Dados"
+            className="w-full rounded-2xl border border-border bg-background p-5 sm:max-w-xl sm:rounded-3xl sm:p-6"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <h2 className="text-lg font-semibold sm:text-xl">O que é o Portal de Dados do Maio?</h2>
+            <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+              Pela primeira vez, informação pública sobre a Ilha do Maio está organizada num só lugar.
+              O portal reúne indicadores, orçamento municipal, documentos públicos e dados territoriais.
+              Com apoio de inteligência artificial, qualquer cidadão pode explorar os dados, acompanhar
+              tendências e compreender melhor o desenvolvimento da ilha.
+            </p>
+            <div className="mt-5">
+              <button
+                type="button"
+                onClick={dismissPortalIntro}
+                className="inline-flex w-full items-center justify-center rounded-lg border border-border bg-muted px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {!hideNav && showVoicePill && (
         <div className="fixed inset-x-0 z-50" style={{ bottom: voicePillBottom }}>
           <div className="mx-auto max-w-3xl px-10">

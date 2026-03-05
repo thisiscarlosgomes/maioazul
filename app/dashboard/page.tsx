@@ -22,6 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Drawer } from "vaul";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { dictionary, type Locale } from "@/lib/i18n";
@@ -1170,6 +1171,55 @@ function PressurePill({ value }: { value: number }) {
   );
 }
 
+function InfoHelp({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label={title}
+              className="hidden cursor-help text-muted-foreground md:inline-flex"
+            >
+              ⓘ
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs text-sm">
+            <p className="mb-1 font-medium">{title}</p>
+            <p>{description}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <Drawer.Root>
+        <Drawer.Trigger asChild>
+          <button
+            type="button"
+            aria-label={title}
+            className="cursor-pointer text-muted-foreground md:hidden"
+          >
+            ⓘ
+          </button>
+        </Drawer.Trigger>
+        <Drawer.Portal>
+          <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/45 backdrop-blur-sm md:hidden" />
+          <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl border border-border bg-background p-4 pb-24 outline-none md:hidden">
+            <Drawer.Title className="text-base font-semibold">{title}</Drawer.Title>
+            <div className="mt-2 text-sm text-muted-foreground">{description}</div>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
+    </>
+  );
+}
+
 function TourismPressure({
   ilha,
   t,
@@ -1222,23 +1272,10 @@ function TourismPressure({
       <div>
         <h2 className="flex items-center gap-2 font-semibold">
           {t.tourismPressure}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="text-muted-foreground cursor-help">
-                ⓘ
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs text-sm">
-                <p className="font-medium mb-1">
-                  Índice de Pressão Turística
-                </p>
-                <p>
-                  Relação entre dormidas turísticas e população residente.
-                  Valores mais elevados indicam maior pressão sobre serviços
-                  e habitação locais.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <InfoHelp
+            title="Índice de Pressão Turística"
+            description="Relação entre dormidas turísticas e população residente. Valores mais elevados indicam maior pressão sobre serviços e habitação locais."
+          />
         </h2>
 
       </div>
@@ -1380,24 +1417,10 @@ function SeasonalityIndex({
       <div>
         <h2 className="flex items-center gap-2 font-semibold">
           {t.seasonality}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="text-muted-foreground cursor-help">
-                ⓘ
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs text-sm">
-                <p className="font-medium mb-1">
-                  Contraste Sazonal (Q3 / Q1)
-                </p>
-                <p>
-                  Mede quantas vezes o verão é mais ativo do que o inverno em
-                  termos de dormidas turísticas. Valores elevados indicam forte
-                  concentração da atividade no verão. Valores próximos de 1
-                  indicam uma distribuição mais equilibrada ao longo do ano.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <InfoHelp
+            title="Contraste Sazonal (Q3 / Q1)"
+            description="Mede quantas vezes o verão é mais ativo do que o inverno em termos de dormidas turísticas. Valores elevados indicam forte concentração da atividade no verão. Valores próximos de 1 indicam uma distribuição mais equilibrada ao longo do ano."
+          />
         </h2>
 
       </div>

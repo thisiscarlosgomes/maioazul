@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, Sparkles } from "lucide-react";
+import { CircleHelp, Menu, Sparkles } from "lucide-react";
 import { Drawer } from "vaul";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -21,6 +21,9 @@ export default function AppHeader() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const openSparkles = () => {
     window.dispatchEvent(new CustomEvent("maio-open-sparkles"));
+  };
+  const openPortalIntro = () => {
+    window.dispatchEvent(new CustomEvent("maio-open-portal-intro"));
   };
 
   return (
@@ -76,6 +79,17 @@ export default function AppHeader() {
                 <div className="mt-5 flex items-center gap-2 border-t border-border pt-4">
                   <button
                     type="button"
+                    aria-label="Open portal info"
+                    onClick={() => {
+                      openPortalIntro();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-background text-muted-foreground transition hover:text-foreground"
+                  >
+                    <CircleHelp className="h-5 w-5" />
+                  </button>
+                  <button
+                    type="button"
                     aria-label="Open sparkles insights"
                     title={
                       onDashboard
@@ -121,6 +135,14 @@ export default function AppHeader() {
               );
             })}
           </nav>
+          <button
+            type="button"
+            aria-label="Open portal info"
+            onClick={openPortalIntro}
+            className="hidden h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition hover:text-foreground md:inline-flex"
+          >
+            <CircleHelp className="h-4 w-4" />
+          </button>
           <button
             type="button"
             aria-label="Open sparkles insights"
