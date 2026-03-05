@@ -57,20 +57,20 @@ const FALLBACK_DATA: ReceitaYearDoc[] = [
     dataset: "receitas_cv_recebedorias",
     year: 2026,
     rows: [
-      { recebedoria: "Boa Vista", value: 88279986 },
-      { recebedoria: "Brava", value: 4180910 },
+      { recebedoria: "Boa Vista", value: 153773334 },
+      { recebedoria: "Brava", value: 5956149 },
       { recebedoria: "Exterior", value: 0 },
-      { recebedoria: "Fogo", value: 34203322 },
-      { recebedoria: "Maio", value: 6424792 },
+      { recebedoria: "Fogo", value: 61503908 },
+      { recebedoria: "Maio", value: 10434981 },
       { recebedoria: "Outras fontes", value: 0 },
-      { recebedoria: "Sal", value: 1255162600 },
-      { recebedoria: "Santiago", value: 4294483183 },
-      { recebedoria: "Santo Antão", value: 182141318 },
-      { recebedoria: "São Nicolau", value: 12113466 },
-      { recebedoria: "São Vicente", value: 575709623 },
+      { recebedoria: "Sal", value: 2398399928 },
+      { recebedoria: "Santiago", value: 7657993671 },
+      { recebedoria: "Santo Antão", value: 256944813 },
+      { recebedoria: "São Nicolau", value: 24805974 },
+      { recebedoria: "São Vicente", value: 990992905 },
       { recebedoria: "Várias Ilhas de Cabo Verde", value: 0 },
     ],
-    total: 6452699200,
+    total: 11560805663,
   },
 ];
 
@@ -101,7 +101,7 @@ function mapYearDoc(doc: ReceitaYearDoc) {
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db(process.env.MONGODB_DB || "maioazul");
     const col = db.collection<ReceitaYearDoc>("receitas_cv_recebedorias");
 
     const docs = await col

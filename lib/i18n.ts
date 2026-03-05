@@ -4,9 +4,9 @@ export type Locale = "pt" | "en";
 
 export const dictionary = {
     pt: {
-        title: "Portal de Dados do Maio",
+        title: "Indicadores do desenvolvimento e turismo",
         subtitle:
-            "Indicadores do desenvolvimento e turismo da ilha do Maio",
+            "Indicadores da ilha, Transferências do Estado, Receitas, Alojamento turistico...",
 
         localGovernment: "Governo Local",
         localPopulation: "população",

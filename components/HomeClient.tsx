@@ -50,7 +50,10 @@ export default function HomeClient() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden px-10">
+    <main
+      className="relative h-screen w-screen overflow-hidden px-10"
+      style={{ fontFamily: "Mabry, Inter, ui-sans-serif, system-ui, -apple-system" }}
+    >
       {/* Background image */}
       <img
         src="/image.png"

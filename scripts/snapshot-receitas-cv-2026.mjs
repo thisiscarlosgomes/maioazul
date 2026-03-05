@@ -3,14 +3,9 @@ import { promises as fs } from "fs";
 import { MongoClient } from "mongodb";
 
 const root = process.cwd();
-
-const MUNICIPIO = "CMMAIO";
-const YEAR = 2026;
-const KEY = `transf:${YEAR}:${MUNICIPIO}`;
-const MONTHLY_VALUES_2026 = {
-  1: 9219167,
-  2: 9219167,
-};
+const TARGET_YEAR = 2026;
+const DATASET = "receitas_cv_recebedorias";
+const SNAPSHOT_COLLECTION = "receitas_cv_recebedorias_snapshots";
 
 const loadEnvFile = async (filePath) => {
   try {
@@ -43,6 +38,7 @@ await loadEnvFile(path.join(root, ".env"));
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const MONGODB_DB = process.env.MONGODB_DB || "maioazul";
+const SNAPSHOT_LABEL = process.env.RECEITAS_2026_SNAPSHOT_LABEL || "2026-01";
 
 if (!MONGODB_URI) {
   console.error("Missing MONGODB_URI in env.");
@@ -53,52 +49,50 @@ async function run() {
   const client = new MongoClient(MONGODB_URI);
   await client.connect();
   const db = client.db(MONGODB_DB);
-  const col = db.collection("transparencia_raw");
+  const active = db.collection(DATASET);
+  const snapshots = db.collection(SNAPSHOT_COLLECTION);
 
-  const existing = await col.findOne({ key: KEY });
-  const baseData = Array.isArray(existing?.data) ? existing.data : [];
+  await snapshots.createIndex(
+    { dataset: 1, year: 1, snapshotLabel: 1 },
+    { unique: true },
+  );
 
-  const monthKeys = Object.keys(MONTHLY_VALUES_2026).map((m) => Number(m));
-  const filtered = baseData.filter((row) => !monthKeys.includes(Number(row?.MES)));
-  const updates = monthKeys.map((month) => ({
-    MES: month,
-    VALOR_PAGO: MONTHLY_VALUES_2026[month],
-    SIGLA: MUNICIPIO,
-  }));
-  const updatedData = [...filtered, ...updates].sort((a, b) => Number(a.MES) - Number(b.MES));
+  const existing = await active.findOne({ dataset: DATASET, year: TARGET_YEAR });
+  if (!existing) {
+    throw new Error(`No active doc found for ${DATASET} year=${TARGET_YEAR}.`);
+  }
 
-  await col.updateOne(
-    { key: KEY },
+  await snapshots.updateOne(
+    { dataset: DATASET, year: TARGET_YEAR, snapshotLabel: SNAPSHOT_LABEL },
     {
       $set: {
-        key: KEY,
-        data: updatedData,
-        meta: {
-          year: YEAR,
-          municipio: MUNICIPIO,
-          view: "month",
-          source: "Portal Transparência CV",
-          note: "2026 atualizado manualmente (MES=1 e MES=2).",
-        },
-        updatedAt: new Date(),
+        sourceUpdatedAt: new Date(),
+        note: "Snapshot manual do estado atual de 2026.",
       },
       $setOnInsert: {
+        dataset: DATASET,
+        year: TARGET_YEAR,
+        snapshotLabel: SNAPSHOT_LABEL,
+        payload: {
+          dataset: existing.dataset,
+          year: existing.year,
+          rows: existing.rows ?? [],
+          total: existing.total ?? 0,
+          updatedAt: existing.updatedAt ?? null,
+          revisionLabel: existing.revisionLabel ?? null,
+        },
         createdAt: new Date(),
       },
     },
-    { upsert: true }
+    { upsert: true },
   );
 
   await client.close();
-  console.log(`Transferências atualizadas: ${KEY}`);
-  console.log(
-    monthKeys
-      .map((month) => `MES=${month}, VALOR_PAGO=${MONTHLY_VALUES_2026[month]}`)
-      .join(" | "),
-  );
+  console.log(`Snapshot saved: ${DATASET} ${TARGET_YEAR} ${SNAPSHOT_LABEL}`);
 }
 
 run().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+

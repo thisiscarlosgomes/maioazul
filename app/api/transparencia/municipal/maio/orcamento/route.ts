@@ -42,7 +42,19 @@ export async function GET(req: Request) {
         : AVAILABLE_BUDGET_YEARS[0];
 
     const mongoPayload = await getBudgetDatasetFromMongo(year);
-    const payload = mongoPayload ?? (await getBudgetDataset(String(year)));
+    const localPayload = await getBudgetDataset(String(year));
+    const payload = mongoPayload
+      ? {
+          ...localPayload,
+          ...mongoPayload,
+          staffingPositions:
+            (mongoPayload as { staffingPositions?: unknown }).staffingPositions ??
+            localPayload.staffingPositions,
+          compensationFramework:
+            (mongoPayload as { compensationFramework?: unknown }).compensationFramework ??
+            localPayload.compensationFramework,
+        }
+      : localPayload;
 
     return NextResponse.json(payload);
   } catch (error) {

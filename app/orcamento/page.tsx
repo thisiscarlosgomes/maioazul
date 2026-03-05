@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 import DashboardChatWidget from "@/components/DashboardChatWidget";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,6 +22,7 @@ import type {
   BudgetApiResponse,
   BudgetBreakdownItem,
   BudgetProjectItem,
+  BudgetStaffingPosition,
 } from "@/lib/budget";
 
 const FIXED_BUDGET_YEAR = "2026";
@@ -32,16 +31,19 @@ const BUDGET_CHAT_PROMPT_SETS = [
     "Quais são os 3 pontos mais relevantes do orçamento de 2026?",
     "Que programas concentram mais investimento e qual é o seu peso relativo?",
     "Compara 2025 vs 2026: que mudanças principais aparecem nos dados?",
+    "Quais são as regras para licença de construção no Código de Postura?",
   ],
   [
     "Onde o orçamento mostra maior dependência de financiamento externo?",
     "Quais projetos têm maior montante publicado?",
     "Que rubricas de despesa têm maior peso no total?",
+    "Quais são as regras para licença de construção no Código de Postura?",
   ],
   [
     "Que leitura executiva podes fazer do orçamento com base nos números publicados?",
     "Qual rubrica de despesa varia mais entre 2025 e 2026?",
     "Que tendências de financiamento se destacam no período disponível?",
+    "Quais são as regras para licença de construção no Código de Postura?",
   ],
 ];
 const FUNDING_SOURCE_COLORS = [
@@ -81,6 +83,15 @@ const formatDate = (value: string | null | undefined) =>
         day: "2-digit",
       }).format(new Date(value))
     : "—";
+
+const normalizeDepartmentKey = (value: string) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\btransportes\b/gi, "transporte")
+    .replace(/[^a-zA-Z0-9]+/g, " ")
+    .trim()
+    .toLowerCase();
 
 function LoadingTable() {
   return (
@@ -183,6 +194,11 @@ type GroupedProjects = {
 export default function OrcamentoPage() {
   const year = FIXED_BUDGET_YEAR;
   const [data, setData] = useState<BudgetApiResponse | null>(null);
+  const [compensationData, setCompensationData] = useState<{
+    year: number;
+    framework: NonNullable<BudgetApiResponse["compensationFramework"]>;
+    staffingPositions: BudgetStaffingPosition[];
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -202,14 +218,45 @@ export default function OrcamentoPage() {
 
         if (!payload || !payload.summary) {
           setData(null);
+          setCompensationData(null);
           setError("Falha ao carregar orçamento.");
           return;
         }
 
+        let resolvedCompensation = payload.compensationFramework;
+        let resolvedCompensationYear = payload.year;
+        let resolvedCompensationStaffingPositions = payload.staffingPositions ?? [];
+
+        if (!resolvedCompensation && payload.year !== 2025) {
+          try {
+            const fallback2025 = await fetchJsonOfflineFirst<BudgetApiResponse>(
+              "/api/transparencia/municipal/maio/orcamento?year=2025"
+            );
+
+            if (fallback2025?.compensationFramework) {
+              resolvedCompensation = fallback2025.compensationFramework;
+              resolvedCompensationYear = fallback2025.year;
+              resolvedCompensationStaffingPositions = fallback2025.staffingPositions ?? [];
+            }
+          } catch {
+            // fallback is optional; ignore and keep main payload
+          }
+        }
+
+        setCompensationData(
+          resolvedCompensation
+            ? {
+                year: resolvedCompensationYear,
+                framework: resolvedCompensation,
+                staffingPositions: resolvedCompensationStaffingPositions,
+              }
+            : null
+        );
         setData(payload);
       } catch {
         if (!cancelled) {
           setData(null);
+          setCompensationData(null);
           setError("Falha ao carregar orçamento.");
         }
       } finally {
@@ -228,6 +275,102 @@ export default function OrcamentoPage() {
 
   const summary = data?.summary;
   const isSurplus = (summary?.fiscalBalanceCve ?? 0) >= 0;
+  const compensationFramework = compensationData?.framework ?? null;
+  const staffingPositions = useMemo<BudgetStaffingPosition[]>(
+    () => compensationData?.staffingPositions ?? data?.staffingPositions ?? [],
+    [compensationData?.staffingPositions, data?.staffingPositions],
+  );
+  const staffingByDepartment = useMemo(() => {
+    const grouped = new Map<string, typeof staffingPositions>();
+
+    for (const row of staffingPositions) {
+      const key = normalizeDepartmentKey(row.costCenterName);
+      const current = grouped.get(key) ?? [];
+      current.push(row);
+      grouped.set(key, current);
+    }
+
+    for (const [key, rows] of grouped) {
+      grouped.set(
+        key,
+        rows.sort((a, b) => b.annualSalaryCve - a.annualSalaryCve),
+      );
+    }
+
+    return grouped;
+  }, [staffingPositions]);
+  const adjustmentItemsByDepartment = useMemo(() => {
+    const grouped = new Map<
+      string,
+      Array<{
+        id: string;
+        positionTitle: string;
+        staffGroup: string | null;
+        vacancyCount: number;
+        monthlySalaryCve: number;
+        annualSalaryCve: number;
+      }>
+    >();
+
+    const items = compensationFramework?.adjustments?.items ?? [];
+    for (const item of items) {
+      const key = normalizeDepartmentKey(item.departmentName);
+      const current = grouped.get(key) ?? [];
+      current.push({
+        id: `adj-${key}-${item.positionTitle}-${item.annualCve}`,
+        positionTitle: item.positionTitle,
+        staffGroup: item.employmentType,
+        vacancyCount: item.vacancies,
+        monthlySalaryCve: item.monthlyCve,
+        annualSalaryCve: item.annualCve,
+      });
+      grouped.set(key, current);
+    }
+
+    return grouped;
+  }, [compensationFramework?.adjustments?.items]);
+  const compensationDepartments = useMemo(() => {
+    const base = compensationFramework?.base?.departments ?? [];
+    const adjustments = compensationFramework?.adjustments?.departments ?? [];
+    const merged = new Map<
+      string,
+      {
+        departmentName: string;
+        vacancies: number;
+        monthlyCve: number;
+        annualCve: number;
+      }
+    >();
+
+    for (const row of base) {
+      const key = normalizeDepartmentKey(row.departmentName);
+      merged.set(key, {
+        departmentName: row.departmentName,
+        vacancies: row.vacancies,
+        monthlyCve: row.monthlyCve,
+        annualCve: row.annualCve,
+      });
+    }
+
+    for (const row of adjustments) {
+      const key = normalizeDepartmentKey(row.departmentName);
+      const current = merged.get(key);
+      if (current) {
+        current.vacancies += row.vacancies;
+        current.monthlyCve += row.monthlyCve;
+        current.annualCve += row.annualCve;
+      } else {
+        merged.set(key, {
+          departmentName: row.departmentName,
+          vacancies: row.vacancies,
+          monthlyCve: row.monthlyCve,
+          annualCve: row.annualCve,
+        });
+      }
+    }
+
+    return Array.from(merged.values()).sort((a, b) => b.annualCve - a.annualCve);
+  }, [compensationFramework?.base?.departments, compensationFramework?.adjustments?.departments]);
   const groupedProjects = useMemo<GroupedProjects[]>(() => {
     if (!data) return [];
 
@@ -287,36 +430,11 @@ export default function OrcamentoPage() {
       />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-6">
-        <div className="border-b border-border">
-          <div className="pt-6 pb-6 space-y-3">
-            <div className="flex items-start justify-between gap-6">
-              <div className="space-y-2">
-                <div className="hidden flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  <span>Transparência Municipal</span>
-                  <span className="h-1 w-1 rounded-full bg-border" />
-                  <span>Orçamento</span>
-                </div>
-                <div>
-                  <h1 className="text-xl font-semibold">Orçamento Municipal do Maio 2026</h1>
-                  <p className="hidden text-sm text-muted-foreground sm:block">
-                    Receitas, despesas, investimento e enquadramento legal do orçamento
-                    aprovado.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <Link
-                  href="/dashboard"
-                  className="inline-flex h-9 items-center rounded-md border border-border px-3 text-sm text-foreground transition hover:bg-accent"
-                >
-                  Dashboard
-                </Link>
-                <ThemeToggle />
-              </div>
-            </div>
-
-          </div>
+        <div className="pt-6">
+          <h1 className="text-xl font-semibold">Orçamento Municipal do Maio 2026</h1>
+          <p className="hidden text-sm text-muted-foreground sm:block">
+            Receitas, despesas, investimento e enquadramento legal do orçamento aprovado.
+          </p>
         </div>
 
         {loading ? (
@@ -363,13 +481,6 @@ export default function OrcamentoPage() {
           <EmptyState message={error ?? "Sem dados disponíveis para o ano selecionado."} />
         ) : (
           <>
-            <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm">
-              <strong>Fonte:</strong> {data.sourceDocument.title ?? "Documento publicado"}.
-              Publicado em {formatDate(data.sourceDocument.publicationDate)} no BO{" "}
-              {data.sourceDocument.publicationIssueNumber ?? "—"}.
-              {data.notes.length ? ` ${data.notes[0]}` : ""}
-            </div>
-
             <KpiGrid>
               <KpiStat label="Receita total" value={formatCompactCve(summary.totalRevenueCve)} />
               <div className="rounded-lg border border-border bg-card p-4">
@@ -393,6 +504,146 @@ export default function OrcamentoPage() {
                 value={formatPercent(summary.investmentSharePct)}
               />
             </KpiGrid>
+
+            {compensationFramework ? (
+              <SectionBlock
+                title="Quadro de compensação do pessoal"
+                description={`Quadro base e acréscimos projetados (referência ${compensationData?.year}).`}
+              >
+                <div className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-3">
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="text-xs text-muted-foreground">Quadro base (anual)</div>
+                        <div className="mt-1 text-xl font-semibold">
+                          {formatCve(compensationFramework.base?.totalAnnualCve ?? 0)}
+                        </div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {formatNumber(compensationFramework.base?.totalVacancies ?? 0)} vagas
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="text-xs text-muted-foreground">Acréscimos (anual)</div>
+                        <div className="mt-1 text-xl font-semibold">
+                          {formatCve(compensationFramework.adjustments?.totalAnnualCve ?? 0)}
+                        </div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {formatNumber(compensationFramework.adjustments?.totalVacancies ?? 0)} vagas
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="text-xs text-muted-foreground">Total combinado (anual)</div>
+                        <div className="mt-1 text-xl font-semibold">
+                          {formatCve(compensationFramework.combined.totalAnnualCve)}
+                        </div>
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          {formatNumber(compensationFramework.combined.totalVacancies)} vagas
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {compensationDepartments.length ? (
+                    <div className="rounded-lg border border-border overflow-hidden">
+                      <div className="divide-y divide-border">
+                        {compensationDepartments.map((row) => {
+                          const key = normalizeDepartmentKey(row.departmentName);
+                          const basePositions = staffingByDepartment.get(key) ?? [];
+                          const projectedPositions = adjustmentItemsByDepartment.get(key) ?? [];
+                          const existingKeys = new Set(
+                            basePositions.map(
+                              (position) =>
+                                `${position.positionTitle.toLowerCase()}|${position.vacancyCount}|${position.annualSalaryCve}`,
+                            ),
+                          );
+                          const mergedPositions = [
+                            ...basePositions,
+                            ...projectedPositions.filter((position) => {
+                              const key = `${position.positionTitle.toLowerCase()}|${position.vacancyCount}|${position.annualSalaryCve}`;
+                              return !existingKeys.has(key);
+                            }),
+                          ].sort((a, b) => b.annualSalaryCve - a.annualSalaryCve);
+
+                          return (
+                            <details
+                              key={`base-${row.departmentName}-${row.annualCve}`}
+                              className="group"
+                            >
+                              <summary className="cursor-pointer list-none bg-card px-4 py-4 marker:hidden transition hover:bg-muted/20">
+                                <div className="flex items-center justify-between gap-6">
+                                  <div className="min-w-0">
+                                    <div className="font-medium">{row.departmentName}</div>
+                                    <div className="text-xs text-muted-foreground">
+                                      Clique para ver cargos e compensações
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-4">
+                                    <div className="text-right">
+                                      <div className="font-medium">{formatCve(row.annualCve)}</div>
+                                      <div className="text-xs text-muted-foreground">
+                                        {formatNumber(row.vacancies)} vagas
+                                      </div>
+                                    </div>
+                                    <ChevronDown className="h-4 w-4 text-muted-foreground transition group-open:rotate-180" />
+                                  </div>
+                                </div>
+                              </summary>
+
+                              <div className="border-t border-border bg-muted/10 px-4 py-3">
+                                {mergedPositions.length ? (
+                                  <div className="rounded-lg border border-border overflow-x-auto bg-background">
+                                    <Table>
+                                      <TableHeader>
+                                        <TableRow>
+                                          <TableHead>Cargo</TableHead>
+                                          <TableHead>Grupo</TableHead>
+                                          <TableHead className="text-right">Vagas</TableHead>
+                                          <TableHead className="text-right">Mensal</TableHead>
+                                          <TableHead className="text-right">Anual</TableHead>
+                                        </TableRow>
+                                      </TableHeader>
+                                      <TableBody>
+                                        {mergedPositions.map((position) => (
+                                          <TableRow key={`base-pos-${position.id}`}>
+                                            <TableCell>{position.positionTitle}</TableCell>
+                                            <TableCell className="text-muted-foreground">
+                                              {position.staffGroup ?? "—"}
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                              {formatNumber(position.vacancyCount)}
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                              {formatCve(position.monthlySalaryCve)}
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                              {formatCve(position.annualSalaryCve)}
+                                            </TableCell>
+                                          </TableRow>
+                                        ))}
+                                      </TableBody>
+                                    </Table>
+                                  </div>
+                                ) : (
+                                  <div className="rounded-lg border border-dashed border-border bg-background p-4 text-sm text-muted-foreground">
+                                    Sem detalhe de cargos disponível para esta unidade no dataset atual.
+                                  </div>
+                                )}
+                              </div>
+                            </details>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
+
+                  {null}
+                </div>
+              </SectionBlock>
+            ) : null}
                <SectionBlock
               title="Principais projetos"
               description="Projetos agrupados por programa. Clique para abrir o detalhe."
@@ -703,6 +954,10 @@ export default function OrcamentoPage() {
                 </div>
               </SectionBlock>
             </div>
+
+            <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm">
+              <strong>Fontes:</strong> Deliberação n.º 10/2025 – Orçamento Municipal 2026, publicado no Boletim Oficial n.º 34, de 23/02/2026.
+            </div>
           </>
         )}
       </div>
@@ -711,7 +966,7 @@ export default function OrcamentoPage() {
         placeholder="Pergunte sobre o orçamento..."
         quickPromptSets={BUDGET_CHAT_PROMPT_SETS}
         storageKey="maioazul-site-chat-budget-v1"
-        welcomeMessage="Pergunte sobre o orçamento municipal do Maio, projetos, fontes de financiamento ou diferenças entre 2025 e 2026."
+        welcomeMessage="Pergunte sobre o orçamento municipal do Maio, projetos, fontes de financiamento, diferenças entre 2025 e 2026 e também sobre o Código de Postura."
       />
     </div>
   );

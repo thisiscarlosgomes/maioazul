@@ -1,4 +1,6 @@
 import * as z from "zod/v4";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { extname, resolve } from "node:path";
 import type {
   BudgetApiResponse,
   BudgetBreakdownItem,
@@ -13,10 +15,32 @@ type CoreMetricRow = {
   unit?: string;
   breakdown?: Record<string, unknown> | null;
 };
+type LegalChunk = {
+  id: string;
+  doc_id: string;
+  source_pdf: string;
+  page_start: number;
+  page_end: number;
+  title?: string | null;
+  chapter?: string | null;
+  section?: string | null;
+  article_heading?: string | null;
+  article_number?: number | null;
+  part_index?: number | null;
+  parts_total?: number | null;
+  text: string;
+};
+type IndexedLegalChunk = LegalChunk & { _search: string };
+type LegalCorpus = {
+  paths: string[];
+  chunks: IndexedLegalChunk[];
+};
 
 const MIN_YEAR = 2024;
 const MAX_YEAR = 2035;
 const AVAILABLE_BUDGET_YEARS = [2025, 2026] as const;
+const LEGAL_CHUNKS_ENV_PATH = process.env.LEGAL_CODE_CHUNKS_PATH;
+let legalCorpusCache: { cacheKey: string; corpus: LegalCorpus } | null = null;
 
 export class ToolHttpError extends Error {
   status: number;
@@ -75,6 +99,8 @@ export const toolSchemas = {
           "investment_programs",
           "investment_projects",
           "funding_sources",
+          "compensation_framework",
+          "staffing_positions",
           "legal_highlights",
           "fiscal_operations",
         ])
@@ -96,6 +122,29 @@ export const toolSchemas = {
       project_limit: z.number().int().min(1).max(20).default(5),
     })
     .strict(),
+  get_maio_compensation_lookup: z
+    .object({
+      year: z.union([z.literal(2025), z.literal(2026)]).default(2026),
+      query: z.string().min(1).max(120),
+      limit: z.number().int().min(1).max(20).default(5),
+    })
+    .strict(),
+  search_codigo_postura: z
+    .object({
+      query: z.string().min(2).max(300),
+      top_k: z.number().int().min(1).max(20).default(5),
+      article_number: z.number().int().min(1).max(1000).optional(),
+      doc_id: z.string().min(2).max(120).optional(),
+    })
+    .strict(),
+  get_codigo_postura_article: z
+    .object({
+      article_number: z.number().int().min(1).max(1000),
+      doc_id: z.string().min(2).max(120).optional(),
+      max_chars: z.number().int().min(200).max(60000).default(12000),
+    })
+    .strict(),
+  get_codigo_postura_stats: z.object({}).strict(),
 };
 
 export type MaioToolName = keyof typeof toolSchemas;
@@ -249,6 +298,8 @@ export const nativeToolDefinitions = {
             "investment_programs",
             "investment_projects",
             "funding_sources",
+            "compensation_framework",
+            "staffing_positions",
             "legal_highlights",
             "fiscal_operations",
           ],
@@ -324,6 +375,110 @@ export const nativeToolDefinitions = {
       additionalProperties: false,
     },
   },
+  get_maio_compensation_lookup: {
+    title: "Lookup Maio Compensation",
+    description:
+      "Returns exact compensation rows for a role/title query (for example Presidente or Vereadores), plus top compensation references. Uses 2025 staffing as fallback when 2026 lacks staffing annex details.",
+    parameters: {
+      type: "object",
+      properties: {
+        year: {
+          type: "integer",
+          enum: [...AVAILABLE_BUDGET_YEARS],
+          description: "Reference year for the budget context.",
+        },
+        query: {
+          type: "string",
+          minLength: 1,
+          maxLength: 120,
+          description: "Role or position text to search in staffing rows.",
+        },
+        limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 20,
+          description: "Maximum number of matching staffing rows to return.",
+        },
+      },
+      required: ["year", "query", "limit"],
+      additionalProperties: false,
+    },
+  },
+  search_codigo_postura: {
+    title: "Search Codigo de Postura",
+    description:
+      "Searches the local Codigo de Postura corpus and returns ranked snippets with article and page citations.",
+    parameters: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          minLength: 2,
+          maxLength: 300,
+          description: "Natural-language query in Portuguese or English.",
+        },
+        top_k: {
+          type: "integer",
+          minimum: 1,
+          maximum: 20,
+          description: "Maximum number of ranked results.",
+        },
+        article_number: {
+          type: ["integer", "null"],
+          minimum: 1,
+          maximum: 1000,
+          description: "Optional exact article number filter.",
+        },
+        doc_id: {
+          type: ["string", "null"],
+          minLength: 2,
+          maxLength: 120,
+          description: "Optional document id filter when multiple legal corpora are loaded.",
+        },
+      },
+      required: ["query", "top_k", "article_number", "doc_id"],
+      additionalProperties: false,
+    },
+  },
+  get_codigo_postura_article: {
+    title: "Get Codigo de Postura Article",
+    description: "Returns full text for one article number with page/title/chapter citations.",
+    parameters: {
+      type: "object",
+      properties: {
+        article_number: {
+          type: "integer",
+          minimum: 1,
+          maximum: 1000,
+          description: "Exact article number to retrieve.",
+        },
+        doc_id: {
+          type: ["string", "null"],
+          minLength: 2,
+          maxLength: 120,
+          description: "Optional document id filter when multiple legal corpora are loaded.",
+        },
+        max_chars: {
+          type: "integer",
+          minimum: 200,
+          maximum: 60000,
+          description: "Maximum number of characters returned in article text.",
+        },
+      },
+      required: ["article_number", "doc_id", "max_chars"],
+      additionalProperties: false,
+    },
+  },
+  get_codigo_postura_stats: {
+    title: "Get Codigo de Postura Stats",
+    description: "Returns loaded legal corpus coverage and document/article counts.",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
+      additionalProperties: false,
+    },
+  },
 } as const;
 
 function normalizeNulls<T>(value: T): T {
@@ -341,6 +496,111 @@ function normalizeNulls<T>(value: T): T {
   }
 
   return value;
+}
+
+function normalizeSearchText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function listJsonlFilesRecursively(dirPath: string): string[] {
+  const out: string[] = [];
+  const entries = readdirSync(dirPath, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = resolve(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      out.push(...listJsonlFilesRecursively(fullPath));
+      continue;
+    }
+    if (entry.isFile() && extname(entry.name).toLowerCase() === ".jsonl") {
+      out.push(fullPath);
+    }
+  }
+  return out;
+}
+
+function resolveLegalChunksPaths(): string[] {
+  const roots = [
+    LEGAL_CHUNKS_ENV_PATH,
+    resolve(process.cwd(), "data/codigo_postura/chunks.jsonl"),
+    resolve(process.cwd(), "data/codigo_postura"),
+    resolve(process.cwd(), "../data/codigo_postura/chunks.jsonl"),
+    resolve(process.cwd(), "../data/codigo_postura"),
+  ].filter((value): value is string => Boolean(value));
+
+  const files = new Set<string>();
+  for (const path of roots) {
+    if (!existsSync(path)) continue;
+    const stats = statSync(path);
+    if (stats.isDirectory()) {
+      for (const file of listJsonlFilesRecursively(path)) files.add(file);
+      continue;
+    }
+    if (stats.isFile() && extname(path).toLowerCase() === ".jsonl") {
+      files.add(path);
+    }
+  }
+
+  const resolved = [...files].sort();
+  if (resolved.length === 0) {
+    throw new Error(
+      "Legal chunks files not found. Set LEGAL_CODE_CHUNKS_PATH (file/dir) or place chunks under data/codigo_postura.",
+    );
+  }
+  return resolved;
+}
+
+function loadLegalCorpus(): LegalCorpus {
+  const paths = resolveLegalChunksPaths();
+  const cacheKey = paths.join("|");
+  if (legalCorpusCache && legalCorpusCache.cacheKey === cacheKey) {
+    return legalCorpusCache.corpus;
+  }
+
+  const rows: IndexedLegalChunk[] = [];
+  for (const path of paths) {
+    const fileRows = readFileSync(path, "utf8")
+      .split("\n")
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => JSON.parse(line) as LegalChunk)
+      .map((row) => ({
+        ...row,
+        _search: normalizeSearchText(
+          [row.title, row.chapter, row.section, row.article_heading, row.text]
+            .filter(Boolean)
+            .join(" "),
+        ),
+      }));
+    rows.push(...fileRows);
+  }
+
+  const corpus: LegalCorpus = { paths, chunks: rows };
+  legalCorpusCache = { cacheKey, corpus };
+  return corpus;
+}
+
+function countOccurrences(haystack: string, needle: string) {
+  if (!needle) return 0;
+  let count = 0;
+  let idx = haystack.indexOf(needle);
+  while (idx !== -1) {
+    count += 1;
+    idx = haystack.indexOf(needle, idx + needle.length);
+  }
+  return count;
+}
+
+function articleSort(a: IndexedLegalChunk, b: IndexedLegalChunk): number {
+  if (a.page_start !== b.page_start) return a.page_start - b.page_start;
+  const aPart = a.part_index ?? 1;
+  const bPart = b.part_index ?? 1;
+  if (aPart !== bPart) return aPart - bPart;
+  return a.id.localeCompare(b.id);
 }
 
 function getBaseUrl(request: Request): string {
@@ -531,6 +791,10 @@ function buildBudgetSectionPayload(
       return payload.investmentProjects.slice(0, projectLimit);
     case "funding_sources":
       return payload.fundingSources;
+    case "compensation_framework":
+      return payload.compensationFramework;
+    case "staffing_positions":
+      return payload.staffingPositions;
     case "legal_highlights":
       return payload.legalHighlights;
     case "fiscal_operations":
@@ -555,6 +819,72 @@ function formatPercent(value: number | null | undefined) {
 
 function takeTop<T>(items: T[], limit: number) {
   return items.slice(0, limit);
+}
+
+function normalizeLookupText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function isPartialCompensationPeriod(note: string | null | undefined) {
+  if (!note) return false;
+  const value = normalizeLookupText(note);
+  return (
+    value.includes("10 dias") ||
+    value.includes("2 meses") ||
+    value.includes("licenca") ||
+    value.includes("licenca sem vencimento") ||
+    value.includes("proporcional")
+  );
+}
+
+async function getBudgetWithStaffingFallback(request: Request, year: 2025 | 2026) {
+  const payload = (await fetchJson(request, "/api/transparencia/municipal/maio/orcamento", {
+    year,
+  })) as BudgetApiResponse;
+  let staffingReferenceYear: number | null = null;
+  let effectivePayload = payload;
+
+  const missingStaffingDetail =
+    !payload.compensationFramework || payload.staffingPositions.length === 0;
+
+  if (year !== 2025 && missingStaffingDetail) {
+    const fallbackPayload = (await fetchJson(
+      request,
+      "/api/transparencia/municipal/maio/orcamento",
+      {
+        year: 2025,
+      },
+    )) as BudgetApiResponse;
+
+    const mergedStaffingPositions =
+      payload.staffingPositions.length > 0
+        ? payload.staffingPositions
+        : fallbackPayload.staffingPositions;
+    const mergedCompensationFramework =
+      payload.compensationFramework ?? fallbackPayload.compensationFramework;
+
+    if (mergedStaffingPositions.length > 0 || mergedCompensationFramework) {
+      staffingReferenceYear = 2025;
+      effectivePayload = {
+        ...payload,
+        staffingPositions: mergedStaffingPositions,
+        compensationFramework: mergedCompensationFramework,
+        summary: {
+          ...payload.summary,
+          staffingDataAvailable:
+            payload.summary.staffingDataAvailable ||
+            mergedStaffingPositions.length > 0 ||
+            Boolean(mergedCompensationFramework),
+        },
+      };
+    }
+  }
+
+  return { payload: effectivePayload, staffingReferenceYear };
 }
 
 function describeBreakdownItem(
@@ -679,6 +1009,8 @@ function buildCompactBudgetSummary(payload: BudgetApiResponse, projectLimit: num
     investmentPrograms: takeTop(payload.investmentPrograms, 6),
     fundingSources: payload.fundingSources,
     investmentProjects: takeTop(payload.investmentProjects, projectLimit),
+    compensationFramework: payload.compensationFramework,
+    staffingPositions: payload.staffingPositions,
     fiscalOperations: payload.fiscalOperations,
     notes: payload.notes,
     limits: {
@@ -689,6 +1021,7 @@ function buildCompactBudgetSummary(payload: BudgetApiResponse, projectLimit: num
       returned_expense_rows: Math.min(5, payload.expenseBreakdown.length),
       returned_functional_rows: Math.min(5, payload.functionalBreakdown.length),
       returned_department_rows: Math.min(5, payload.departmentBreakdown.length),
+      returned_staffing_rows: payload.staffingPositions.length,
     },
   };
 }
@@ -995,45 +1328,237 @@ async function getMaioBudget(request: Request, rawArgs: unknown) {
     normalizeNulls(rawArgs ?? {}),
   );
 
-  const payload = (await fetchJson(request, "/api/transparencia/municipal/maio/orcamento", {
-    year,
-  })) as BudgetApiResponse;
+  const { payload: effectivePayload, staffingReferenceYear } =
+    await getBudgetWithStaffingFallback(request, year);
 
-  const boundedProjects = payload.investmentProjects.slice(0, project_limit);
+  const boundedProjects = effectivePayload.investmentProjects.slice(0, project_limit);
 
   if (section !== "all") {
-    const sectionPayload = buildBudgetSectionPayload(payload, section, project_limit);
+    const sectionPayload = buildBudgetSectionPayload(
+      effectivePayload,
+      section,
+      project_limit,
+    );
 
     return {
-      scope: payload.scope,
-      dataset: payload.dataset,
-      municipality: payload.municipality,
-      year: payload.year,
-      availableYears: payload.availableYears,
+      scope: effectivePayload.scope,
+      dataset: effectivePayload.dataset,
+      municipality: effectivePayload.municipality,
+      year: effectivePayload.year,
+      availableYears: effectivePayload.availableYears,
       view,
       section,
-      sourceDocument: payload.sourceDocument,
-      decision: payload.decision,
-      summary: payload.summary,
-      insights: buildBudgetInsights(payload, Math.min(project_limit, 5)),
+      sourceDocument: effectivePayload.sourceDocument,
+      decision: effectivePayload.decision,
+      summary: effectivePayload.summary,
+      insights: buildBudgetInsights(effectivePayload, Math.min(project_limit, 5)),
+      staffing_reference_year: staffingReferenceYear,
       data: sectionPayload,
       limits:
         section === "investment_projects"
           ? {
               requested_project_limit: project_limit,
-              total_projects_available: payload.investmentProjects.length,
+              total_projects_available: effectivePayload.investmentProjects.length,
               returned_projects: boundedProjects.length,
             }
           : undefined,
-      notes: payload.notes,
+      notes: effectivePayload.notes,
     };
   }
 
   if (view === "full") {
-    return payload;
+    return {
+      ...effectivePayload,
+      staffing_reference_year: staffingReferenceYear,
+    };
   }
 
-  return buildCompactBudgetSummary(payload, project_limit);
+  return {
+    ...buildCompactBudgetSummary(effectivePayload, project_limit),
+    staffing_reference_year: staffingReferenceYear,
+  };
+}
+
+async function getMaioCompensationLookup(request: Request, rawArgs: unknown) {
+  const { year, query, limit } = toolSchemas.get_maio_compensation_lookup.parse(
+    normalizeNulls(rawArgs ?? {}),
+  );
+  const { payload, staffingReferenceYear } = await getBudgetWithStaffingFallback(request, year);
+  const normalizedQuery = normalizeLookupText(query);
+  const tokens = normalizedQuery.split(/\s+/).filter((token) => token.length > 1);
+
+  const baseRows = payload.staffingPositions.map((row) => {
+    const vacancies = row.vacancyCount > 0 ? row.vacancyCount : 1;
+    return {
+      position_title: row.positionTitle,
+      cost_center: row.costCenterName,
+      staff_group: row.staffGroup,
+      vacancies: row.vacancyCount,
+      monthly_total_cve: row.monthlySalaryCve,
+      monthly_per_vaga_cve: Math.round(row.monthlySalaryCve / vacancies),
+      annual_total_cve: row.annualSalaryCve,
+      annual_per_vaga_cve: Math.round(row.annualSalaryCve / vacancies),
+      is_partial_period: isPartialCompensationPeriod(row.observation),
+      note: row.observation ?? null,
+      source_type: "base" as const,
+    };
+  });
+
+  const adjustmentRows = (payload.compensationFramework?.adjustments?.items ?? []).map((item) => {
+    const vacancies = item.vacancies > 0 ? item.vacancies : 1;
+    return {
+      position_title: item.positionTitle,
+      cost_center: item.departmentName,
+      staff_group: item.employmentType,
+      vacancies: item.vacancies,
+      monthly_total_cve: item.monthlyCve,
+      monthly_per_vaga_cve: Math.round(item.monthlyCve / vacancies),
+      annual_total_cve: item.annualCve,
+      annual_per_vaga_cve: Math.round(item.annualCve / vacancies),
+      is_partial_period: isPartialCompensationPeriod(item.notes),
+      note: item.notes ?? null,
+      source_type: "adjustment" as const,
+    };
+  });
+
+  const mergedRows = [...baseRows, ...adjustmentRows];
+  const dedupedRows = Array.from(
+    new Map(
+      mergedRows.map((row) => [
+        `${normalizeLookupText(row.position_title)}|${normalizeLookupText(row.cost_center)}|${row.vacancies}|${row.monthly_total_cve}|${row.annual_total_cve}`,
+        row,
+      ]),
+    ).values(),
+  );
+
+  const rowScore = (row: (typeof dedupedRows)[number]) => {
+    const position = normalizeLookupText(row.position_title);
+    const group = normalizeLookupText(row.staff_group ?? "");
+    const costCenter = normalizeLookupText(row.cost_center);
+    const target = `${position} ${group} ${costCenter}`.trim();
+    let score = 0;
+
+    // Strongly prioritize role/title matches over department-name matches.
+    if (position === normalizedQuery) score += 100;
+    else if (position.startsWith(normalizedQuery)) score += 60;
+    else if (position.includes(normalizedQuery)) score += 40;
+
+    if (group === normalizedQuery) score += 24;
+    else if (group.includes(normalizedQuery)) score += 12;
+
+    if (costCenter === normalizedQuery) score += 10;
+    else if (costCenter.includes(normalizedQuery)) score += 4;
+
+    if (target.includes(normalizedQuery)) score += 2;
+
+    for (const token of tokens) {
+      if (position.includes(token)) score += 8;
+      else if (group.includes(token)) score += 3;
+      else if (costCenter.includes(token)) score += 1;
+    }
+    return score;
+  };
+
+  const matches = dedupedRows
+    .map((row) => ({ row, score: rowScore(row) }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return b.row.monthly_total_cve - a.row.monthly_total_cve;
+    })
+    .slice(0, limit)
+    .map((entry) => entry.row);
+
+  const topByMonthlyTotalLine = dedupedRows
+    .slice()
+    .sort((a, b) => b.monthly_total_cve - a.monthly_total_cve)[0];
+  const topByMonthlyPerVaga = dedupedRows
+    .slice()
+    .sort((a, b) => {
+      const aVac = a.vacancies > 0 ? a.vacancies : 1;
+      const bVac = b.vacancies > 0 ? b.vacancies : 1;
+      return b.monthly_total_cve / bVac - a.monthly_total_cve / aVac;
+    })[0];
+  const topByMonthlyPerVagaCurrent = dedupedRows
+    .filter((row) => !row.is_partial_period)
+    .slice()
+    .sort((a, b) => {
+      const aVac = a.vacancies > 0 ? a.vacancies : 1;
+      const bVac = b.vacancies > 0 ? b.vacancies : 1;
+      return b.monthly_total_cve / bVac - a.monthly_total_cve / aVac;
+    })[0];
+
+  return {
+    scope: payload.scope,
+    dataset: "budget_compensation_lookup" as const,
+    municipality: payload.municipality,
+    year: payload.year,
+    staffing_reference_year: staffingReferenceYear,
+    query,
+    matches,
+    canonical_rows: dedupedRows,
+    top_reference: {
+      by_monthly_total_line: topByMonthlyTotalLine
+        ? {
+            position_title: topByMonthlyTotalLine.position_title,
+            monthly_total_cve: topByMonthlyTotalLine.monthly_total_cve,
+            annual_total_cve: topByMonthlyTotalLine.annual_total_cve,
+            vacancies: topByMonthlyTotalLine.vacancies,
+            cost_center: topByMonthlyTotalLine.cost_center,
+            source_type: topByMonthlyTotalLine.source_type,
+            is_partial_period: topByMonthlyTotalLine.is_partial_period,
+          }
+        : null,
+      by_monthly_per_vaga: topByMonthlyPerVaga
+        ? {
+            position_title: topByMonthlyPerVaga.position_title,
+            monthly_per_vaga_cve: Math.round(
+              topByMonthlyPerVaga.monthly_total_cve /
+                (topByMonthlyPerVaga.vacancies > 0 ? topByMonthlyPerVaga.vacancies : 1),
+            ),
+            annual_per_vaga_cve: Math.round(
+              topByMonthlyPerVaga.annual_total_cve /
+                (topByMonthlyPerVaga.vacancies > 0 ? topByMonthlyPerVaga.vacancies : 1),
+            ),
+            vacancies: topByMonthlyPerVaga.vacancies,
+            cost_center: topByMonthlyPerVaga.cost_center,
+            source_type: topByMonthlyPerVaga.source_type,
+            is_partial_period: topByMonthlyPerVaga.is_partial_period,
+          }
+        : null,
+      by_monthly_per_vaga_current: topByMonthlyPerVagaCurrent
+        ? {
+            position_title: topByMonthlyPerVagaCurrent.position_title,
+            monthly_per_vaga_cve: Math.round(
+              topByMonthlyPerVagaCurrent.monthly_total_cve /
+                (topByMonthlyPerVagaCurrent.vacancies > 0
+                  ? topByMonthlyPerVagaCurrent.vacancies
+                  : 1),
+            ),
+            annual_per_vaga_cve: Math.round(
+              topByMonthlyPerVagaCurrent.annual_total_cve /
+                (topByMonthlyPerVagaCurrent.vacancies > 0
+                  ? topByMonthlyPerVagaCurrent.vacancies
+                  : 1),
+            ),
+            vacancies: topByMonthlyPerVagaCurrent.vacancies,
+            cost_center: topByMonthlyPerVagaCurrent.cost_center,
+            source_type: topByMonthlyPerVagaCurrent.source_type,
+            is_partial_period: topByMonthlyPerVagaCurrent.is_partial_period,
+          }
+        : null,
+    },
+    totals: {
+      staffing_rows_available: dedupedRows.length,
+      matches_found: matches.length,
+      partial_period_rows: dedupedRows.filter((row) => row.is_partial_period).length,
+    },
+    methodology: {
+      note:
+        "Os valores por linha podem representar total agregado da linha para o número de vagas. Use monthly_per_vaga_cve para leitura individual por vaga.",
+      current_ranking_excludes_partial_period_rows: true,
+    },
+  };
 }
 
 async function getMaioBudgetComparison(request: Request, rawArgs: unknown) {
@@ -1057,6 +1582,140 @@ async function getMaioBudgetComparison(request: Request, rawArgs: unknown) {
   return buildBudgetComparison(fromPayload, toPayload, project_limit);
 }
 
+async function searchCodigoPostura(_request: Request, rawArgs: unknown) {
+  const { query, top_k, article_number, doc_id } = toolSchemas.search_codigo_postura.parse(
+    normalizeNulls(rawArgs ?? {}),
+  );
+  const { paths, chunks } = loadLegalCorpus();
+  const queryNorm = normalizeSearchText(query);
+  const queryTokens = queryNorm.split(" ").filter((token) => token.length >= 2);
+
+  const ranked = chunks
+    .filter((chunk) => (doc_id ? chunk.doc_id === doc_id : true))
+    .filter((chunk) => (article_number ? chunk.article_number === article_number : true))
+    .map((chunk) => {
+      let score = 0;
+      if (chunk._search.includes(queryNorm)) score += 8;
+      for (const token of queryTokens) {
+        score += countOccurrences(chunk._search, token) * 1.2;
+      }
+      if (!score) return null;
+      return {
+        score: Number(score.toFixed(3)),
+        id: chunk.id,
+        article_number: chunk.article_number ?? null,
+        article_heading: chunk.article_heading ?? null,
+        title: chunk.title ?? null,
+        chapter: chunk.chapter ?? null,
+        section: chunk.section ?? null,
+        page_start: chunk.page_start,
+        page_end: chunk.page_end,
+        source_pdf: chunk.source_pdf,
+        snippet: chunk.text.replace(/\s+/g, " ").trim().slice(0, 420),
+      };
+    })
+    .filter((row): row is NonNullable<typeof row> => Boolean(row))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, top_k);
+
+  return {
+    query,
+    top_k,
+    article_number: article_number ?? null,
+    doc_id: doc_id ?? null,
+    corpus_paths: paths,
+    total_results: ranked.length,
+    results: ranked,
+  };
+}
+
+async function getCodigoPosturaArticle(_request: Request, rawArgs: unknown) {
+  const { article_number, doc_id, max_chars } = toolSchemas.get_codigo_postura_article.parse(
+    normalizeNulls(rawArgs ?? {}),
+  );
+  const { paths, chunks } = loadLegalCorpus();
+  const articleChunks = chunks
+    .filter((chunk) => chunk.article_number === article_number)
+    .filter((chunk) => (doc_id ? chunk.doc_id === doc_id : true))
+    .sort(articleSort);
+
+  if (articleChunks.length === 0) {
+    throw new Error(`Article ${article_number} not found${doc_id ? ` for doc_id=${doc_id}` : ""}.`);
+  }
+
+  const fullText = articleChunks.map((chunk) => chunk.text.trim()).join("\n\n").trim();
+  const trimmed = fullText.slice(0, max_chars);
+  const first = articleChunks[0];
+
+  return {
+    article_number,
+    doc_id: first.doc_id,
+    article_heading: first.article_heading ?? null,
+    title: first.title ?? null,
+    chapter: first.chapter ?? null,
+    section: first.section ?? null,
+    page_start: Math.min(...articleChunks.map((chunk) => chunk.page_start)),
+    page_end: Math.max(...articleChunks.map((chunk) => chunk.page_end)),
+    chunks_used: articleChunks.length,
+    corpus_paths: paths,
+    truncated: fullText.length > trimmed.length,
+    char_count: trimmed.length,
+    text: trimmed,
+    source_pdf: first.source_pdf,
+  };
+}
+
+async function getCodigoPosturaStats(_request: Request, _rawArgs: unknown) {
+  const { paths, chunks } = loadLegalCorpus();
+  const docs = new Map<
+    string,
+    {
+      doc_id: string;
+      source_pdf: string;
+      chunk_count: number;
+      article_numbers: Set<number>;
+      page_start: number;
+      page_end: number;
+    }
+  >();
+
+  for (const chunk of chunks) {
+    const existing = docs.get(chunk.doc_id) ?? {
+      doc_id: chunk.doc_id,
+      source_pdf: chunk.source_pdf,
+      chunk_count: 0,
+      article_numbers: new Set<number>(),
+      page_start: Number.POSITIVE_INFINITY,
+      page_end: 0,
+    };
+    existing.chunk_count += 1;
+    if (chunk.article_number != null) existing.article_numbers.add(chunk.article_number);
+    existing.page_start = Math.min(existing.page_start, chunk.page_start);
+    existing.page_end = Math.max(existing.page_end, chunk.page_end);
+    docs.set(chunk.doc_id, existing);
+  }
+
+  const docSummaries = [...docs.values()]
+    .map((doc) => ({
+      doc_id: doc.doc_id,
+      source_pdf: doc.source_pdf,
+      chunk_count: doc.chunk_count,
+      article_count: doc.article_numbers.size,
+      min_article: doc.article_numbers.size ? Math.min(...doc.article_numbers) : null,
+      max_article: doc.article_numbers.size ? Math.max(...doc.article_numbers) : null,
+      page_start: Number.isFinite(doc.page_start) ? doc.page_start : null,
+      page_end: doc.page_end || null,
+    }))
+    .sort((a, b) => a.doc_id.localeCompare(b.doc_id));
+
+  return {
+    corpus_paths: paths,
+    total_chunks: chunks.length,
+    total_docs: docSummaries.length,
+    docs: docSummaries,
+  };
+}
+
 export async function executeMaioTool(request: Request, name: MaioToolName, rawArgs: unknown) {
   switch (name) {
     case "get_tourism_overview":
@@ -1075,6 +1734,14 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getMaioBudgetComparison(request, rawArgs);
     case "get_maio_budget_metrics_snapshot":
       return getMaioBudgetMetricsSnapshot(request, rawArgs);
+    case "get_maio_compensation_lookup":
+      return getMaioCompensationLookup(request, rawArgs);
+    case "search_codigo_postura":
+      return searchCodigoPostura(request, rawArgs);
+    case "get_codigo_postura_article":
+      return getCodigoPosturaArticle(request, rawArgs);
+    case "get_codigo_postura_stats":
+      return getCodigoPosturaStats(request, rawArgs);
     default: {
       const exhaustive: never = name;
       throw new Error(`Unsupported tool: ${exhaustive}`);

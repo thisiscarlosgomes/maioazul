@@ -13,7 +13,7 @@ export const runtime = "nodejs";
 const DEFAULT_MODEL = process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
 const MAX_MESSAGES = 12;
 const MAX_TOOL_ROUNDS = 6;
-const CHAT_QUERY_LIMIT = 10;
+const CHAT_QUERY_LIMIT = 20;
 const CHAT_QUERY_WINDOW_MS = 24 * 60 * 60 * 1000;
 const CHAT_RATE_LIMIT_COLLECTION = "chat_rate_limits";
 const CHAT_USAGE_STATS_COLLECTION = "chat_usage_stats";
@@ -76,8 +76,8 @@ type ChatUsageKind = "success" | "rate_limited" | "error";
 const SYSTEM_PROMPT = `
 Você é o assistente do site Maioazul.
 
-Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio, os dados comparativos entre ilhas da plataforma Maioazul e o orçamento municipal do Maio.
-Use as ferramentas disponíveis quando a pergunta depender de métricas de turismo, trimestres, indicadores, métricas centrais do Maio ou dados do orçamento municipal.
+Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio, os dados comparativos entre ilhas da plataforma Maioazul, o orçamento municipal do Maio e o Código de Postura do Município do Maio.
+Use as ferramentas disponíveis quando a pergunta depender de métricas de turismo, trimestres, indicadores, métricas centrais do Maio, dados do orçamento municipal ou conteúdo do Código de Postura.
 
 Política comparativa:
 - O Maio é o foco principal.
@@ -87,6 +87,8 @@ Política comparativa:
 - Quando a pergunta for sobre orçamento, prefira a ferramenta de orçamento validado em vez de inferir a partir de texto solto.
 - Quando a pergunta comparar 2025 e 2026, prefira a ferramenta de comparação orçamental em vez de combinar duas leituras separadas.
 - Quando a pergunta cruzar orçamento e métricas gerais do Maio, use primeiro a ferramenta de snapshot cruzado de orçamento+métricas.
+- Para perguntas sobre salário/remuneração por cargo (ex.: presidente, vereadores), use a ferramenta de compensação por cargo e responda com o valor exato da linha do cargo.
+- Para perguntas legais/regulatórias (ex.: licenças, obras, infrações, coimas, horários, civismo), consulta primeiro o Código de Postura com as ferramentas de pesquisa legal e cita artigo/página quando possível.
 
 Regras:
 - Responda sempre em português.
@@ -143,6 +145,9 @@ function buildChatInstructions(context: ChatContext | null) {
     );
     contextLines.push(
       "Para orçamento, privilegia sínteses executivas e interpretações curtas, não despejo de rubricas.",
+    );
+    contextLines.push(
+      "Se a pergunta for sobre Código de Postura, regras legais, licenças, obras, coimas ou fiscalização, muda para as ferramentas legais em vez de responder só com orçamento.",
     );
   } else if (context.surface === "dashboard") {
     contextLines.push(
@@ -327,6 +332,481 @@ function getSurfaceKey(context: ChatContext | null) {
 
 function getUtcDateKey(date: Date) {
   return date.toISOString().slice(0, 10);
+}
+
+function normalizeText(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .toLowerCase()
+    .trim();
+}
+
+function resolveContextBudgetYear(context: ChatContext | null) {
+  const parsed = Number(context?.year);
+  return parsed === 2025 || parsed === 2026 ? parsed : 2026;
+}
+
+type BudgetStaffingRow = {
+  position_title?: string;
+  monthly_total_cve?: number;
+  annual_total_cve?: number;
+  monthly_per_vaga_cve?: number;
+  annual_per_vaga_cve?: number;
+  vacancies?: number;
+  cost_center?: string;
+};
+
+function buildRoleMatchScore(roleTarget: string, row: BudgetStaffingRow) {
+  const role = normalizeText(roleTarget);
+  const roleTokens = role.split(/\s+/).filter((token) => token.length > 1);
+  const position = normalizeText(String(row.position_title ?? ""));
+  const group = normalizeText(String((row as { staff_group?: string }).staff_group ?? ""));
+  const costCenter = normalizeText(String(row.cost_center ?? ""));
+
+  let score = 0;
+
+  if (position === role) score += 300;
+  else if (position.startsWith(role)) score += 180;
+  else if (position.includes(role)) score += 120;
+
+  if (group === role) score += 40;
+  else if (group.includes(role)) score += 20;
+
+  if (costCenter === role) score += 10;
+  else if (costCenter.includes(role)) score += 5;
+
+  if (roleTokens.length > 0) {
+    const positionTokenHits = roleTokens.filter((token) => position.includes(token)).length;
+    const groupTokenHits = roleTokens.filter((token) => group.includes(token)).length;
+    const costCenterTokenHits = roleTokens.filter((token) => costCenter.includes(token)).length;
+    score += positionTokenHits * 24;
+    score += groupTokenHits * 5;
+    score += costCenterTokenHits * 2;
+    if (positionTokenHits === roleTokens.length) score += 40;
+  }
+
+  return score;
+}
+
+function pickBestRoleMatch(roleTarget: string, rows: BudgetStaffingRow[]) {
+  return rows
+    .map((row) => ({
+      row,
+      score: buildRoleMatchScore(roleTarget, row),
+      monthly: Number(row.monthly_total_cve ?? 0),
+    }))
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => {
+      if (b.score !== a.score) return b.score - a.score;
+      return b.monthly - a.monthly;
+    })[0]?.row;
+}
+
+type CompensationIntent =
+  | { kind: "top_salary" }
+  | { kind: "salary_total" }
+  | { kind: "salary_by_department"; target: string }
+  | { kind: "salary_by_role"; target: string };
+
+function formatCveValue(value: number) {
+  return `${new Intl.NumberFormat("pt-PT").format(value)} CVE`;
+}
+
+const COMPENSATION_QUERY_STOPWORDS = new Set([
+  "qual",
+  "quais",
+  "quanto",
+  "quantos",
+  "salario",
+  "salarios",
+  "remuneracao",
+  "remuneracoes",
+  "ganha",
+  "ganham",
+  "atual",
+  "atuais",
+  "cargo",
+  "cargos",
+  "funcao",
+  "funcoes",
+  "camara",
+  "municipal",
+  "municipio",
+  "maio",
+  "todos",
+  "todas",
+  "total",
+  "totais",
+  "mais",
+  "alto",
+  "alta",
+  "de",
+  "do",
+  "da",
+  "dos",
+  "das",
+  "e",
+  "em",
+  "na",
+  "no",
+  "nas",
+  "nos",
+  "para",
+  "por",
+  "o",
+  "a",
+  "os",
+  "as",
+]);
+
+function extractCompensationRoleQuery(normalizedMessage: string) {
+  const tokens = normalizedMessage
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter(Boolean)
+    .filter((token) => !COMPENSATION_QUERY_STOPWORDS.has(token));
+
+  return tokens.join(" ").trim();
+}
+
+function detectCompensationIntent(normalizedMessage: string): CompensationIntent | null {
+  const hasCompensationTerm =
+    normalizedMessage.includes("salario") ||
+    normalizedMessage.includes("remuneracao") ||
+    normalizedMessage.includes("compensacao") ||
+    normalizedMessage.includes("vencimento") ||
+    normalizedMessage.includes("ordenado") ||
+    normalizedMessage.includes("ganha");
+
+  if (!hasCompensationTerm) return null;
+
+  if (
+    normalizedMessage.includes("quem ganha mais") ||
+    normalizedMessage.includes("quem recebe mais") ||
+    normalizedMessage.includes("maior salario") ||
+    normalizedMessage.includes("salario mais alto") ||
+    normalizedMessage.includes("salario mais elevado") ||
+    normalizedMessage.includes("remuneracao mais alta") ||
+    normalizedMessage.includes("vencimento mais alto") ||
+    normalizedMessage.includes("mais alto da camara") ||
+    normalizedMessage.includes("mais alta da camara") ||
+    normalizedMessage.includes("mais alto na camara") ||
+    normalizedMessage.includes("mais alta na camara")
+  ) {
+    return { kind: "top_salary" };
+  }
+
+  if (
+    normalizedMessage.includes("salario total") ||
+    normalizedMessage.includes("compensacao total") ||
+    normalizedMessage.includes("total da camara") ||
+    normalizedMessage.includes("massa salarial")
+  ) {
+    return { kind: "salary_total" };
+  }
+
+  const departmentTarget = (() => {
+    const candidates = [
+      "gabinete do presidente",
+      "assembleia municipal",
+      "direcao de administracao, financas e patrimonio",
+      "direcao de desenvolvimento economico e social",
+      "direcao de ambiente, saneamento e protecao civil",
+      "direcao de urbanismo, infraestruturas e transporte",
+      "direcao de fiscalizacao",
+    ];
+    return candidates.find((candidate) => normalizedMessage.includes(candidate)) ?? null;
+  })();
+  if (departmentTarget) {
+    return { kind: "salary_by_department", target: departmentTarget };
+  }
+
+  const roleTarget = extractCompensationRoleQuery(normalizedMessage);
+  if (!roleTarget) return null;
+  return { kind: "salary_by_role", target: roleTarget };
+}
+
+async function tryResolveCompensationAnswer(params: {
+  request: Request;
+  messages: ChatMessage[];
+  context: ChatContext | null;
+}) {
+  const latestUserMessage = [...params.messages]
+    .reverse()
+    .find((item) => item.role === "user")?.content;
+
+  if (!latestUserMessage) return null;
+
+  const query = normalizeText(latestUserMessage);
+  const intent = detectCompensationIntent(query);
+  if (!intent) return null;
+
+  if (intent.kind === "salary_total") {
+    const budgetResult = (await executeMaioTool(
+      params.request,
+      "get_maio_budget",
+      {
+        year: resolveContextBudgetYear(params.context),
+        view: "summary",
+        section: "compensation_framework",
+        project_limit: 8,
+      },
+    )) as {
+      data?: {
+        combined?: { totalMonthlyCve?: number; totalAnnualCve?: number; totalVacancies?: number };
+      } | null;
+      staffing_reference_year?: number | null;
+      year?: number;
+    };
+
+    const combined = budgetResult?.data?.combined;
+    if (!combined) return null;
+
+    const referenceYear = budgetResult.staffing_reference_year ?? budgetResult.year ?? null;
+    const yearNote = typeof referenceYear === "number" ? ` (referência ${referenceYear})` : "";
+
+    return {
+      message:
+        `A compensação total do quadro de pessoal é ${formatCveValue(
+          combined.totalMonthlyCve ?? 0,
+        )} por mês e ${formatCveValue(combined.totalAnnualCve ?? 0)} por ano${yearNote}, ` +
+        `para ${new Intl.NumberFormat("pt-PT").format(combined.totalVacancies ?? 0)} vagas.`,
+      toolEvents: [
+        {
+          name: "get_maio_budget" as MaioToolName,
+          arguments: {
+            year: resolveContextBudgetYear(params.context),
+            view: "summary",
+            section: "compensation_framework",
+            project_limit: 8,
+          },
+          ok: true,
+        },
+      ] satisfies ToolEvent[],
+    };
+  }
+
+  if (intent.kind === "top_salary") {
+    const topResult = (await executeMaioTool(
+      params.request,
+      "get_maio_compensation_lookup",
+      {
+        year: resolveContextBudgetYear(params.context),
+        query: "todos",
+        limit: 1,
+      },
+    ).catch(() => null)) as
+      | {
+          staffing_reference_year?: number | null;
+          top_reference?: {
+            by_monthly_total_line?: {
+              position_title?: string;
+              monthly_total_cve?: number;
+            } | null;
+            by_monthly_per_vaga?: {
+              position_title?: string;
+              monthly_per_vaga_cve?: number;
+            } | null;
+            by_monthly_per_vaga_current?: {
+              position_title?: string;
+              monthly_per_vaga_cve?: number;
+            } | null;
+          };
+        }
+      | null;
+    const topTotal = topResult?.top_reference?.by_monthly_total_line;
+    const topPerVaga =
+      topResult?.top_reference?.by_monthly_per_vaga_current ??
+      topResult?.top_reference?.by_monthly_per_vaga;
+    if (!topPerVaga?.position_title || typeof topPerVaga.monthly_per_vaga_cve !== "number")
+      return null;
+    const groupReferenceYear = topResult?.staffing_reference_year ?? null;
+    const groupYearNote = typeof groupReferenceYear === "number" ? ` (referência ${groupReferenceYear})` : "";
+
+    const message =
+      `Pelo critério individual (por vaga), o salário mensal mais alto é ${formatCveValue(
+        topPerVaga.monthly_per_vaga_cve,
+      )} para ${topPerVaga.position_title}${groupYearNote}.` +
+      (topTotal?.position_title && typeof topTotal.monthly_total_cve === "number"
+        ? ` Nota: por linha agregada (soma de múltiplas vagas), o maior total mensal é ${formatCveValue(
+            topTotal.monthly_total_cve,
+          )} para ${topTotal.position_title}.`
+        : "");
+
+    return {
+      message,
+      toolEvents: [
+        {
+          name: "get_maio_compensation_lookup" as MaioToolName,
+          arguments: {
+            year: resolveContextBudgetYear(params.context),
+            query: "todos",
+            limit: 1,
+          },
+          ok: true,
+        },
+      ] satisfies ToolEvent[],
+    };
+  }
+
+  if (intent.kind === "salary_by_department") {
+    const budgetResult = (await executeMaioTool(
+      params.request,
+      "get_maio_budget",
+      {
+        year: resolveContextBudgetYear(params.context),
+        view: "summary",
+        section: "compensation_framework",
+        project_limit: 8,
+      },
+    )) as {
+      data?: {
+        base?: { departments?: Array<{ departmentName?: string; vacancies?: number; monthlyCve?: number; annualCve?: number }> } | null;
+        adjustments?: { departments?: Array<{ departmentName?: string; vacancies?: number; monthlyCve?: number; annualCve?: number }> } | null;
+      } | null;
+      staffing_reference_year?: number | null;
+      year?: number;
+    };
+
+    const merged = new Map<string, { departmentName: string; vacancies: number; monthlyCve: number; annualCve: number }>();
+    const pushRows = (rows?: Array<{ departmentName?: string; vacancies?: number; monthlyCve?: number; annualCve?: number }>) => {
+      for (const row of rows ?? []) {
+        const name = String(row.departmentName ?? "").trim();
+        if (!name) continue;
+        const key = normalizeText(name);
+        const current = merged.get(key) ?? { departmentName: name, vacancies: 0, monthlyCve: 0, annualCve: 0 };
+        current.vacancies += Number(row.vacancies ?? 0);
+        current.monthlyCve += Number(row.monthlyCve ?? 0);
+        current.annualCve += Number(row.annualCve ?? 0);
+        merged.set(key, current);
+      }
+    };
+    pushRows(budgetResult?.data?.base?.departments);
+    pushRows(budgetResult?.data?.adjustments?.departments);
+
+    const target = Array.from(merged.values()).find((row) =>
+      normalizeText(row.departmentName).includes(intent.target),
+    );
+    if (!target) return null;
+
+    const referenceYear = budgetResult.staffing_reference_year ?? budgetResult.year ?? null;
+    const yearNote = typeof referenceYear === "number" ? ` (referência ${referenceYear})` : "";
+
+    return {
+      message:
+        `${target.departmentName}: total mensal de ${formatCveValue(
+          target.monthlyCve,
+        )}, total anual de ${formatCveValue(target.annualCve)} e ${new Intl.NumberFormat(
+          "pt-PT",
+        ).format(target.vacancies)} vagas${yearNote}.`,
+      toolEvents: [
+        {
+          name: "get_maio_budget" as MaioToolName,
+          arguments: {
+            year: resolveContextBudgetYear(params.context),
+            view: "summary",
+            section: "compensation_framework",
+            project_limit: 8,
+          },
+          ok: true,
+        },
+      ] satisfies ToolEvent[],
+    };
+  }
+
+  if (intent.kind !== "salary_by_role") return null;
+  const roleQuery = intent.target;
+
+  let rawResult = (await executeMaioTool(
+    params.request,
+    "get_maio_compensation_lookup",
+    {
+      year: resolveContextBudgetYear(params.context),
+      query: roleQuery,
+      limit: 20,
+    },
+  )) as {
+    matches?: BudgetStaffingRow[];
+    canonical_rows?: BudgetStaffingRow[];
+    staffing_reference_year?: number | null;
+  };
+
+  let rows = Array.isArray(rawResult?.matches) ? rawResult.matches : [];
+  const canonicalRows = Array.isArray(rawResult?.canonical_rows) ? rawResult.canonical_rows : [];
+
+  // Retry with singularized token form for plural queries (e.g., "vereadores" -> "vereador").
+  if (rows.length === 0 && /\w+s\b/.test(roleQuery)) {
+    const singularQuery = roleQuery
+      .split(/\s+/)
+      .map((token) => (token.endsWith("s") ? token.slice(0, -1) : token))
+      .join(" ")
+      .trim();
+
+    if (singularQuery && singularQuery !== roleQuery) {
+      rawResult = (await executeMaioTool(
+        params.request,
+        "get_maio_compensation_lookup",
+        {
+          year: resolveContextBudgetYear(params.context),
+          query: singularQuery,
+          limit: 20,
+        },
+      )) as {
+        matches?: BudgetStaffingRow[];
+        canonical_rows?: BudgetStaffingRow[];
+        staffing_reference_year?: number | null;
+      };
+      rows = Array.isArray(rawResult?.matches) ? rawResult.matches : [];
+    }
+  }
+
+  const rankedPool =
+    canonicalRows.length > 0
+      ? canonicalRows
+      : rows;
+  const target = pickBestRoleMatch(roleQuery, rankedPool) ?? rows[0];
+  if (!target || typeof target.monthly_total_cve !== "number") return null;
+
+  const referenceYear = rawResult.staffing_reference_year ?? null;
+  const yearNote =
+    typeof referenceYear === "number"
+      ? ` (referência ${referenceYear})`
+      : "";
+  const vacancies = typeof target.vacancies === "number" ? target.vacancies : 0;
+  const perVaga =
+    typeof target.monthly_per_vaga_cve === "number"
+      ? target.monthly_per_vaga_cve
+      : target.monthly_total_cve;
+  const annualTotal =
+    typeof target.annual_total_cve === "number" ? target.annual_total_cve : 0;
+
+  const message = vacancies > 1
+    ? `Para ${target.position_title}, o total mensal é ${formatCveValue(
+        target.monthly_total_cve,
+      )} para ${vacancies} vagas (média de ${formatCveValue(
+        perVaga,
+      )} por vaga), com anual total de ${formatCveValue(annualTotal)}${yearNote}.`
+    : `Para ${target.position_title}, o salário mensal é ${formatCveValue(
+        target.monthly_total_cve,
+      )} e o anual é ${formatCveValue(annualTotal)}${yearNote}.`;
+
+  return {
+    message,
+    toolEvents: [
+      {
+        name: "get_maio_compensation_lookup" as MaioToolName,
+        arguments: {
+          year: resolveContextBudgetYear(params.context),
+          query: roleQuery,
+          limit: 20,
+        },
+        ok: true,
+      },
+    ] satisfies ToolEvent[],
+  };
 }
 
 async function trackChatUser(request: Request, context: ChatContext | null) {
@@ -534,7 +1014,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json(
         {
-          error: "Daily chat limit reached. You can send up to 10 messages every 24 hours.",
+          error: "Daily chat limit reached. You can send up to 20 messages every 24 hours.",
           limit: CHAT_QUERY_LIMIT,
           windowHours: 24,
           remaining: quota.remaining,
@@ -542,6 +1022,27 @@ export async function POST(request: Request) {
         },
         { status: 429 },
       );
+    }
+
+    const directSalaryAnswer = await tryResolveCompensationAnswer({
+      request,
+      messages,
+      context,
+    });
+
+    if (directSalaryAnswer) {
+      await trackChatUsage({
+        kind: "success",
+        context,
+        toolCallCount: directSalaryAnswer.toolEvents.length,
+      });
+
+      return NextResponse.json({
+        message: directSalaryAnswer.message,
+        toolEvents: directSalaryAnswer.toolEvents,
+        model: "direct-budget-resolver",
+        remaining: quota.remaining,
+      });
     }
 
     const client = new OpenAI({ apiKey });

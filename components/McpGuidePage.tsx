@@ -146,7 +146,14 @@ function CodeBlock({ code }: { code: string }) {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-[12px] bg-[#111111]">
+    <div className="relative overflow-hidden rounded-[12px] border border-[rgba(255,255,255,0.1)] bg-[#111111]">
+      <div className="flex h-9 items-center border-b border-white/10 bg-[#2f3440] px-3">
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+          <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+          <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+        </div>
+      </div>
       <pre className="overflow-x-auto px-5 py-4 pb-16 font-mono text-xs leading-4 text-white">
         <code>{code}</code>
       </pre>
@@ -179,17 +186,6 @@ export default function McpGuidePage() {
 
   return (
     <div className="bg-white text-[#111111]">
-      <header className="border-b border-[rgba(17,17,17,0.08)]">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-7 py-6">
-          <img alt="Maioazul" className="h-[18px] w-auto" src="/maioazul.png" />
-          <nav className="flex items-center gap-6 text-sm font-semibold text-[#000]">
-            <a className="transition hover:text-[#111111]" href="/dashboard">
-              Portal de Dados
-            </a>
-          </nav>
-        </div>
-      </header>
-
       <section className="relative overflow-hidden pb-20 pt-14">
         <div className="absolute inset-0 bg-gradient-to-b from-[#f9f9f2] via-white to-[#10069F]/10" />
         <div className="relative mx-auto grid w-full max-w-6xl gap-8 px-7 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">

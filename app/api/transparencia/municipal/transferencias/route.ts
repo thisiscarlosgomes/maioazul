@@ -4,7 +4,10 @@ import clientPromise from "@/lib/mongodb";
 const CMMAIO_FALLBACK: Record<number, Array<{ MES: number; VALOR_PAGO: number; SIGLA: string }>> = {
   2024: [{ MES: 12, VALOR_PAGO: 125537932, SIGLA: "CMMAIO" }],
   2025: [{ MES: 12, VALOR_PAGO: 107960558, SIGLA: "CMMAIO" }],
-  2026: [{ MES: 1, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" }],
+  2026: [
+    { MES: 1, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
+    { MES: 2, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
+  ],
 };
 
 type TransferenciaRawRow = {

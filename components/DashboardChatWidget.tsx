@@ -1,9 +1,10 @@
 "use client";
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUp, ChevronDown, MessageCircle, RotateCcw, Sparkles, X } from "lucide-react";
+import { ArrowUp, ChevronDown, MessageCircle, RotateCcw, X } from "lucide-react";
 import { useSiteChat, type SiteChatContext } from "@/lib/hooks/useSiteChat";
 
 const DEFAULT_QUICK_PROMPT_SETS = [
@@ -23,6 +24,9 @@ const DEFAULT_QUICK_PROMPT_SETS = [
     "Que conclusão principal os dados permitem tirar neste momento?",
   ],
 ];
+const MAX_VISIBLE_QUICK_PROMPTS = 3;
+const CODIGO_POSTURA_PROMPT =
+  "Quais são as regras para licença de construção no Código de Postura?";
 
 type DashboardChatWidgetProps = {
   quickPrompts?: string[];
@@ -107,6 +111,29 @@ export default function DashboardChatWidget({
       Math.floor(Math.random() * DEFAULT_QUICK_PROMPT_SETS.length)
     ];
   })[0];
+  const visibleQuickPrompts = useState<string[]>(() => {
+    const uniquePrompts = Array.from(
+      new Set(selectedQuickPrompts.map((prompt) => prompt.trim()).filter(Boolean)),
+    );
+
+    const limited = uniquePrompts.slice(0, MAX_VISIBLE_QUICK_PROMPTS);
+    const hasCodigoPrompt = limited.some(
+      (prompt) => prompt.toLowerCase() === CODIGO_POSTURA_PROMPT.toLowerCase(),
+    );
+
+    if (hasCodigoPrompt) {
+      return limited;
+    }
+
+    if (limited.length < MAX_VISIBLE_QUICK_PROMPTS) {
+      return [...limited, CODIGO_POSTURA_PROMPT];
+    }
+
+    return [
+      ...limited.slice(0, MAX_VISIBLE_QUICK_PROMPTS - 1),
+      CODIGO_POSTURA_PROMPT,
+    ];
+  })[0];
 
   useEffect(() => {
     const node = scrollRef.current;
@@ -167,8 +194,14 @@ export default function DashboardChatWidget({
             >
               <div className="flex items-center justify-between border-b border-[rgba(17,17,17,0.08)] px-4 py-4 sm:px-5">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#111111] text-white">
-                    <Sparkles className="h-5 w-5" />
+                  <div className="h-11 w-11 overflow-hidden rounded-full">
+                    <Image
+                      src="/maioazul.jpg"
+                      alt="Maioazul"
+                      width={44}
+                      height={44}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                   <div>
                     <p className="text-base font-semibold">Maioazul AI</p>
@@ -247,7 +280,7 @@ export default function DashboardChatWidget({
                     className="grid gap-2"
                     initial={{ opacity: 0, y: 8 }}
                   >
-                    {selectedQuickPrompts.map((prompt) => (
+                    {visibleQuickPrompts.map((prompt) => (
                       <button
                         key={prompt}
                         className="rounded-[16px] border border-[rgba(17,17,17,0.08)] bg-[#f8f8f5] px-4 py-3 text-left text-sm text-[#111111]/84 transition hover:bg-[#f1f1ec]"

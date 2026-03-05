@@ -25,12 +25,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "",
     "/map",
+    "/feed",
     "/places",
     "/favorites",
     "/directory",
     "/admin",
     "/dashboard",
     "/orcamento",
+    "/documentos",
     "/chat",
     "/mcp-guide",
   ];

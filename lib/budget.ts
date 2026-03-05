@@ -96,6 +96,40 @@ type RawFiscalOperations = {
   notes?: string[];
 };
 
+type RawCompensationDepartment = {
+  department_name?: string;
+  vacancies?: number;
+  monthly_cve?: number;
+  annual_cve?: number;
+};
+
+type RawCompensationItem = {
+  department_name?: string;
+  position_title?: string;
+  vacancies?: number;
+  monthly_cve?: number;
+  annual_cve?: number;
+  employment_type?: string;
+  notes?: string;
+};
+
+type RawCompensationBlock = {
+  source_page?: number;
+  title?: string;
+  total_vacancies?: number;
+  total_monthly_cve?: number;
+  total_annual_cve?: number;
+  departments?: RawCompensationDepartment[];
+  items?: RawCompensationItem[];
+  notes?: string[];
+};
+
+type RawCompensationFramework = {
+  currency?: string;
+  base?: RawCompensationBlock;
+  adjustments?: RawCompensationBlock;
+};
+
 type RawBudgetDocument = {
   source_document?: RawSourceDocument;
   decision?: RawDecision;
@@ -108,7 +142,10 @@ type RawBudgetDocument = {
   staffing_summary?: { total_positions?: number } | null;
   legal_highlights?: RawLegalHighlight[];
   fiscal_operations?: RawFiscalOperations;
+  compensation_framework?: RawCompensationFramework;
 };
+
+type RawStaffingPositionRow = Record<string, unknown>;
 
 export type BudgetBreakdownItem = {
   code: string | null;
@@ -123,6 +160,19 @@ export type BudgetProjectItem = {
   projectName: string;
   classificationCode: string | null;
   amountCve: number;
+  sourcePage: number | null;
+};
+
+export type BudgetStaffingPosition = {
+  id: string;
+  costCenterName: string;
+  budgetCode: string | null;
+  staffGroup: string | null;
+  positionTitle: string;
+  vacancyCount: number;
+  monthlySalaryCve: number;
+  annualSalaryCve: number;
+  observation: string | null;
   sourcePage: number | null;
 };
 
@@ -184,6 +234,52 @@ export type BudgetApiResponse = {
     type: string | null;
     amountCve: number;
   }>;
+  staffingPositions: BudgetStaffingPosition[];
+  compensationFramework: {
+    currency: string;
+    base: {
+      sourcePage: number | null;
+      title: string | null;
+      totalVacancies: number;
+      totalMonthlyCve: number;
+      totalAnnualCve: number;
+      departments: Array<{
+        departmentName: string;
+        vacancies: number;
+        monthlyCve: number;
+        annualCve: number;
+      }>;
+      notes: string[];
+    } | null;
+    adjustments: {
+      sourcePage: number | null;
+      title: string | null;
+      totalVacancies: number;
+      totalMonthlyCve: number;
+      totalAnnualCve: number;
+      departments: Array<{
+        departmentName: string;
+        vacancies: number;
+        monthlyCve: number;
+        annualCve: number;
+      }>;
+      items: Array<{
+        departmentName: string;
+        positionTitle: string;
+        vacancies: number;
+        monthlyCve: number;
+        annualCve: number;
+        employmentType: string | null;
+        notes: string | null;
+      }>;
+      notes: string[];
+    } | null;
+    combined: {
+      totalVacancies: number;
+      totalMonthlyCve: number;
+      totalAnnualCve: number;
+    };
+  } | null;
   legalHighlights: RawLegalHighlight[];
   fiscalOperations: RawFiscalOperations | null;
   notes: string[];
@@ -349,6 +445,337 @@ function getFundingSources(fundingSources: RawFundingSource[]) {
     .sort((a, b) => b.amountCve - a.amountCve);
 }
 
+function getStaffingPositions(
+  positions: Array<Record<string, unknown>> | undefined
+): BudgetStaffingPosition[] {
+  return (positions ?? [])
+    .map((raw) => ({
+      id: String(raw.id ?? ""),
+      costCenterName: String(raw.cost_center_name ?? "").trim(),
+      budgetCode:
+        typeof raw.budget_code === "string" && raw.budget_code.trim()
+          ? raw.budget_code.trim()
+          : null,
+      staffGroup:
+        typeof raw.staff_group === "string" && raw.staff_group.trim()
+          ? raw.staff_group.trim()
+          : null,
+      positionTitle: String(raw.position_title ?? "").trim(),
+      vacancyCount:
+        typeof raw.vacancy_count === "number" ? raw.vacancy_count : 0,
+      monthlySalaryCve:
+        typeof raw.monthly_salary_cve === "number" ? raw.monthly_salary_cve : 0,
+      annualSalaryCve:
+        typeof raw.annual_salary_cve === "number" ? raw.annual_salary_cve : 0,
+      observation:
+        typeof raw.observation === "string" && raw.observation.trim()
+          ? raw.observation.trim()
+          : null,
+      sourcePage:
+        typeof raw.source_page === "number" ? raw.source_page : null,
+    }))
+    .filter((item) => item.id && item.costCenterName && item.positionTitle)
+    .sort((a, b) => b.annualSalaryCve - a.annualSalaryCve);
+}
+
+const STAFFING_CORRECTIONS_2025: RawStaffingPositionRow[] = [
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-v",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.02",
+    staff_group: "Pessoal de Quadro",
+    position_title: "Apoio Operacional",
+    level_label: "V",
+    vacancy_count: 1,
+    monthly_salary_cve: 45000,
+    annual_salary_cve: 540000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-tecnico-i-contratado",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Tecnico",
+    level_label: "I",
+    vacancy_count: 1,
+    monthly_salary_cve: 73000,
+    annual_salary_cve: 876000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-assistente-tecnico-vi-a",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Assistente Tecnico",
+    level_label: "VI",
+    vacancy_count: 1,
+    monthly_salary_cve: 63000,
+    annual_salary_cve: 756000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-assistente-tecnico-vi-b",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Assistente Tecnico",
+    level_label: "VI",
+    vacancy_count: 1,
+    monthly_salary_cve: 63000,
+    annual_salary_cve: 693000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-assistente-tecnico-i",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Assistente Tecnico",
+    level_label: "I",
+    vacancy_count: 4,
+    monthly_salary_cve: 236000,
+    annual_salary_cve: 2832000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-i-a",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "I",
+    vacancy_count: 1,
+    monthly_salary_cve: 45000,
+    annual_salary_cve: 540000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-iii-a",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "III",
+    vacancy_count: 1,
+    monthly_salary_cve: 31000,
+    annual_salary_cve: 372000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-iv",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "IV",
+    vacancy_count: 2,
+    monthly_salary_cve: 74000,
+    annual_salary_cve: 888000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-iii-b",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "III",
+    vacancy_count: 3,
+    monthly_salary_cve: 93000,
+    annual_salary_cve: 1116000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-ii",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "II",
+    vacancy_count: 1,
+    monthly_salary_cve: 33000,
+    annual_salary_cve: 396000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-i-b",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "I",
+    vacancy_count: 1,
+    monthly_salary_cve: 23000,
+    annual_salary_cve: 276000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dafp-apoio-op-i-52",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Administracao, Financas e Patrimonio",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "I",
+    vacancy_count: 52,
+    monthly_salary_cve: 988000,
+    annual_salary_cve: 11856000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-ddes-tecnico-i-c",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Desenvolvimento Economico e Social",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Tecnico",
+    level_label: "I",
+    vacancy_count: 1,
+    monthly_salary_cve: 73000,
+    annual_salary_cve: 876000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-ddes-assistente-tecnico-i",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Desenvolvimento Economico e Social",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Assistente Tecnico",
+    level_label: "I",
+    vacancy_count: 1,
+    monthly_salary_cve: 59000,
+    annual_salary_cve: 708000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-ddes-apoio-op-ii",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Desenvolvimento Economico e Social",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "II",
+    vacancy_count: 1,
+    monthly_salary_cve: 25000,
+    annual_salary_cve: 300000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dasc-apoio-op-iii",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Ambiente, Saneamento e Protecao Civil",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "III",
+    vacancy_count: 1,
+    monthly_salary_cve: 31000,
+    annual_salary_cve: 279000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-dasc-apoio-op-i-30",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Ambiente, Saneamento e Protecao Civil",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "I",
+    vacancy_count: 30,
+    monthly_salary_cve: 518000,
+    annual_salary_cve: 6216000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-duit-apoio-op-v",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Urbanismo, Infraestruturas e Transporte",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "V",
+    vacancy_count: 1,
+    monthly_salary_cve: 45000,
+    annual_salary_cve: 540000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-duit-apoio-op-iv",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Urbanismo, Infraestruturas e Transporte",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "IV",
+    vacancy_count: 2,
+    monthly_salary_cve: 74000,
+    annual_salary_cve: 888000,
+    source_page: 12,
+  },
+  {
+    id: "cv-maio-2025-staff-duit-apoio-op-i-4",
+    map_number: "Proposta do quadro de pessoal",
+    cost_center_name: "Direcao de Urbanismo, Infraestruturas e Transporte",
+    budget_code: "02.01.01.01.03",
+    staff_group: "Pessoal Contratado",
+    position_title: "Apoio Operacional",
+    level_label: "I",
+    vacancy_count: 4,
+    monthly_salary_cve: 100000,
+    annual_salary_cve: 1200000,
+    source_page: 12,
+  },
+];
+
+function staffingSignature(raw: RawStaffingPositionRow) {
+  const normalize = (value: unknown) => String(value ?? "").trim().toLowerCase();
+  return [
+    normalize(raw.cost_center_name),
+    normalize(raw.budget_code),
+    normalize(raw.position_title),
+    normalize(raw.level_label),
+    Number(raw.vacancy_count ?? 0),
+    Number(raw.monthly_salary_cve ?? 0),
+    Number(raw.annual_salary_cve ?? 0),
+  ].join("|");
+}
+
+function withStaffingCorrections(
+  year: BudgetYear,
+  rows: Array<Record<string, unknown>> | undefined,
+) {
+  const base = Array.isArray(rows) ? [...rows] : [];
+  if (year !== 2025) return base;
+
+  const seen = new Set(base.map((row) => staffingSignature(row)));
+  for (const correction of STAFFING_CORRECTIONS_2025) {
+    const signature = staffingSignature(correction);
+    if (seen.has(signature)) continue;
+    base.push({
+      ...correction,
+      extraction_confidence: 0.85,
+      needs_manual_review: true,
+    });
+    seen.add(signature);
+  }
+
+  return base;
+}
+
 function countManualReviews(raw: RawBudgetDocument) {
   const collections = [
     raw.budget_line_items ?? [],
@@ -403,6 +830,78 @@ function buildSummary(raw: RawBudgetDocument) {
   };
 }
 
+function normalizeCompensationBlock(block?: RawCompensationBlock | null) {
+  if (!block) return null;
+
+  const departments = (block.departments ?? [])
+    .filter((item) => item.department_name)
+    .map((item) => ({
+      departmentName: item.department_name?.trim() || "Sem designacao",
+      vacancies: item.vacancies ?? 0,
+      monthlyCve: item.monthly_cve ?? 0,
+      annualCve: item.annual_cve ?? 0,
+    }))
+    .sort((a, b) => b.annualCve - a.annualCve);
+
+  return {
+    sourcePage: typeof block.source_page === "number" ? block.source_page : null,
+    title: block.title?.trim() || null,
+    totalVacancies:
+      block.total_vacancies ??
+      departments.reduce((sum, item) => sum + item.vacancies, 0),
+    totalMonthlyCve:
+      block.total_monthly_cve ??
+      departments.reduce((sum, item) => sum + item.monthlyCve, 0),
+    totalAnnualCve:
+      block.total_annual_cve ??
+      departments.reduce((sum, item) => sum + item.annualCve, 0),
+    departments,
+    notes: (block.notes ?? []).filter((note): note is string => Boolean(note)),
+  };
+}
+
+function buildCompensationFramework(raw: RawBudgetDocument) {
+  const framework = raw.compensation_framework;
+  if (!framework) return null;
+
+  const base = normalizeCompensationBlock(framework.base);
+  const adjustmentsBase = normalizeCompensationBlock(framework.adjustments);
+  const adjustmentItems = (framework.adjustments?.items ?? [])
+    .filter((item) => item.department_name && item.position_title)
+    .map((item) => ({
+      departmentName: item.department_name?.trim() || "Sem designacao",
+      positionTitle: item.position_title?.trim() || "Sem cargo",
+      vacancies: item.vacancies ?? 0,
+      monthlyCve: item.monthly_cve ?? 0,
+      annualCve: item.annual_cve ?? 0,
+      employmentType: item.employment_type?.trim() || null,
+      notes: item.notes?.trim() || null,
+    }))
+    .sort((a, b) => b.annualCve - a.annualCve);
+
+  const adjustments = adjustmentsBase
+    ? {
+        ...adjustmentsBase,
+        items: adjustmentItems,
+      }
+    : null;
+
+  const combinedTotalVacancies = (base?.totalVacancies ?? 0) + (adjustments?.totalVacancies ?? 0);
+  const combinedTotalMonthly = (base?.totalMonthlyCve ?? 0) + (adjustments?.totalMonthlyCve ?? 0);
+  const combinedTotalAnnual = (base?.totalAnnualCve ?? 0) + (adjustments?.totalAnnualCve ?? 0);
+
+  return {
+    currency: framework.currency?.trim() || "CVE",
+    base,
+    adjustments,
+    combined: {
+      totalVacancies: combinedTotalVacancies,
+      totalMonthlyCve: combinedTotalMonthly,
+      totalAnnualCve: combinedTotalAnnual,
+    },
+  };
+}
+
 function normalizeBudgetDocument(year: BudgetYear, raw: RawBudgetDocument): BudgetApiResponse {
   const items = raw.budget_line_items ?? [];
   const projects = raw.investment_projects ?? [];
@@ -444,6 +943,13 @@ function normalizeBudgetDocument(year: BudgetYear, raw: RawBudgetDocument): Budg
     investmentPrograms: getInvestmentPrograms(projects),
     investmentProjects: getInvestmentProjects(projects),
     fundingSources: getFundingSources(fundingSources),
+    staffingPositions: getStaffingPositions(
+      withStaffingCorrections(
+        year,
+        raw.staffing_positions as Array<Record<string, unknown>> | undefined,
+      ),
+    ),
+    compensationFramework: buildCompensationFramework(raw),
     legalHighlights: raw.legal_highlights ?? [],
     fiscalOperations: raw.fiscal_operations ?? null,
     notes: raw.source_document?.ingestion_notes ?? [],

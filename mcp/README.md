@@ -51,6 +51,54 @@ This MCP server wraps existing dashboard APIs from this repo. It does not duplic
 - Output:
   - `{ tool, ok, payload }`
 
+### 5) `search_codigo_postura`
+
+- Purpose: ranked semantic/keyword search over locally indexed legal corpus chunks
+- Local source: `data/codigo_postura/*.jsonl` (or `LEGAL_CODE_CHUNKS_PATH`)
+- Input:
+  - `query: string`
+  - `top_k: number` (`1-20`, default: `5`)
+  - `article_number?: number`
+  - `doc_id?: string`
+- Output:
+  - `{ tool, ok, payload }` with cited snippets (`article_number`, pages, title/chapter, source_pdf)
+
+### 6) `get_codigo_postura_article`
+
+- Purpose: deterministic retrieval of full text for one legal article
+- Input:
+  - `article_number: number`
+  - `doc_id?: string`
+  - `max_chars: number` (`200-60000`, default: `12000`)
+- Output:
+  - `{ tool, ok, payload }` with full/trimmed text and page citations
+
+### 7) `list_codigo_postura_articles`
+
+- Purpose: list available article numbers and structural citations by document
+- Input:
+  - `doc_id?: string`
+  - `limit: number` (`1-1000`, default: `400`)
+- Output:
+  - `{ tool, ok, payload }` with article metadata entries
+
+### 8) `get_codigo_postura_stats`
+
+- Purpose: corpus coverage stats (documents, chunks, article ranges)
+- Input:
+  - none
+- Output:
+  - `{ tool, ok, payload }`
+
+### 9) `get_codigo_postura_qa`
+
+- Purpose: extraction quality diagnostics for legal corpus chunks
+- Input:
+  - `doc_id?: string`
+  - `sample_limit: number` (`5-200`, default: `40`)
+- Output:
+  - `{ tool, ok, payload }` with `suspicious_ratio`, `severity`, `reason_breakdown`, and cited sample lines
+
 ## Error Model
 
 All tools return a single JSON text payload.
@@ -142,6 +190,7 @@ Notes:
 - `MCP_HTTP_PORT` (default: `3333`)
 - `MCP_HTTP_PATH` (default: `/mcp`)
 - `MCP_HEALTH_PATH` (default: `/health`)
+- `LEGAL_CODE_CHUNKS_PATH` (optional absolute path to one `.jsonl` file or a directory containing `.jsonl` files)
 
 ## Connect MCP client (stdio)
 
@@ -171,7 +220,7 @@ cd /Users/carlos/maioazul/mcp
 npm run smoke:http
 ```
 
-This checks all 4 tools through the MCP HTTP transport and exits non-zero if any call fails.
+This checks all 9 tools through the MCP HTTP transport and exits non-zero if any call fails.
 
 ## Next hardening steps
 

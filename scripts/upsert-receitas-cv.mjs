@@ -47,22 +47,81 @@ const DATA = [
     dataset: "receitas_cv_recebedorias",
     year: 2026,
     rows: [
-      { recebedoria: "Boa Vista", value: 88279986 },
-      { recebedoria: "Brava", value: 4180910 },
+      { recebedoria: "Boa Vista", value: 153773334 },
+      { recebedoria: "Brava", value: 5956149 },
       { recebedoria: "Exterior", value: 0 },
-      { recebedoria: "Fogo", value: 34203322 },
-      { recebedoria: "Maio", value: 6424792 },
+      { recebedoria: "Fogo", value: 61503908 },
+      { recebedoria: "Maio", value: 10434981 },
       { recebedoria: "Outras fontes", value: 0 },
-      { recebedoria: "Sal", value: 1255162600 },
-      { recebedoria: "Santiago", value: 4294483183 },
-      { recebedoria: "Santo Antão", value: 182141318 },
-      { recebedoria: "São Nicolau", value: 12113466 },
-      { recebedoria: "São Vicente", value: 575709623 },
+      { recebedoria: "Sal", value: 2398399928 },
+      { recebedoria: "Santiago", value: 7657993671 },
+      { recebedoria: "Santo Antão", value: 256944813 },
+      { recebedoria: "São Nicolau", value: 24805974 },
+      { recebedoria: "São Vicente", value: 990992905 },
       { recebedoria: "Várias Ilhas de Cabo Verde", value: 0 },
     ],
-    total: 6452699200,
+    total: 11560805663,
   },
 ];
+
+const SNAPSHOT_COLLECTION = "receitas_cv_recebedorias_snapshots";
+const ACTIVE_COLLECTION = "receitas_cv_recebedorias";
+const SNAPSHOT_TARGET_YEAR = 2026;
+
+function normalizeRows(rows = []) {
+  return rows
+    .map((row) => ({
+      recebedoria: String(row.recebedoria ?? "").trim(),
+      value: Number(row.value ?? 0),
+    }))
+    .filter((row) => row.recebedoria.length > 0);
+}
+
+function stableRowsSignature(rows = []) {
+  return JSON.stringify(
+    normalizeRows(rows)
+      .slice()
+      .sort((a, b) => a.recebedoria.localeCompare(b.recebedoria))
+      .map((row) => [row.recebedoria, row.value]),
+  );
+}
+
+function docsDiffer(existing, incoming) {
+  if (!existing) return true;
+  if (Number(existing.total ?? 0) !== Number(incoming.total ?? 0)) return true;
+  return stableRowsSignature(existing.rows) !== stableRowsSignature(incoming.rows);
+}
+
+async function loadDataOverride() {
+  const dataFile = process.env.RECEITAS_CV_DATA_FILE?.trim();
+  if (!dataFile) return null;
+
+  const resolved = path.isAbsolute(dataFile)
+    ? dataFile
+    : path.join(process.cwd(), dataFile);
+  const raw = await fs.readFile(resolved, "utf8");
+  const parsed = JSON.parse(raw);
+
+  if (!Array.isArray(parsed)) {
+    throw new Error("RECEITAS_CV_DATA_FILE must contain a JSON array.");
+  }
+
+  return parsed;
+}
+
+function resolveSnapshotLabel(existingDoc, incomingDoc) {
+  const explicit = process.env.RECEITAS_2026_SNAPSHOT_LABEL?.trim();
+  if (explicit) return explicit;
+
+  const previousLabel =
+    typeof existingDoc?.revisionLabel === "string" ? existingDoc.revisionLabel.trim() : "";
+  if (previousLabel) return previousLabel;
+
+  const dtRaw = existingDoc?.updatedAt ?? incomingDoc?.updatedAt ?? new Date();
+  const dt = dtRaw instanceof Date ? dtRaw : new Date(dtRaw);
+  const month = Number.isFinite(dt.getTime()) ? dt.getUTCMonth() + 1 : 1;
+  return `${SNAPSHOT_TARGET_YEAR}-${String(month).padStart(2, "0")}`;
+}
 
 const loadEnvFile = async (filePath) => {
   try {
@@ -102,22 +161,78 @@ if (!MONGODB_URI) {
 }
 
 const run = async () => {
+  const dataOverride = await loadDataOverride();
+  const records = dataOverride ?? DATA;
+
   const client = new MongoClient(MONGODB_URI);
   await client.connect();
   const db = client.db(MONGODB_DB);
-  const col = db.collection("receitas_cv_recebedorias");
+  const col = db.collection(ACTIVE_COLLECTION);
+  const snapshots = db.collection(SNAPSHOT_COLLECTION);
 
   await col.createIndex({ dataset: 1, year: 1 }, { unique: true });
+  await snapshots.createIndex(
+    { dataset: 1, year: 1, snapshotLabel: 1 },
+    { unique: true },
+  );
 
   let inserted = 0;
   let updated = 0;
+  let snapshotted = 0;
 
-  for (const row of DATA) {
+  for (const row of records) {
+    const existing = await col.findOne({ dataset: row.dataset, year: row.year });
+
+    if (
+      Number(row.year) === SNAPSHOT_TARGET_YEAR &&
+      existing &&
+      docsDiffer(existing, row)
+    ) {
+      const snapshotLabel = resolveSnapshotLabel(existing, row);
+      await snapshots.updateOne(
+        {
+          dataset: existing.dataset,
+          year: existing.year,
+          snapshotLabel,
+        },
+        {
+          $setOnInsert: {
+            dataset: existing.dataset,
+            year: existing.year,
+            snapshotLabel,
+            payload: {
+              dataset: existing.dataset,
+              year: existing.year,
+              rows: normalizeRows(existing.rows),
+              total: Number(existing.total ?? 0),
+              updatedAt: existing.updatedAt ?? null,
+              revisionLabel: existing.revisionLabel ?? null,
+            },
+            createdAt: new Date(),
+          },
+          $set: {
+            sourceUpdatedAt: new Date(),
+            note:
+              process.env.RECEITAS_2026_SNAPSHOT_NOTE?.trim() ||
+              "Snapshot automático antes de atualizar 2026.",
+          },
+        },
+        { upsert: true },
+      );
+      snapshotted += 1;
+    }
+
     const res = await col.updateOne(
       { dataset: row.dataset, year: row.year },
       {
         $set: {
           ...row,
+          rows: normalizeRows(row.rows),
+          total: Number(row.total ?? 0),
+          revisionLabel:
+            Number(row.year) === SNAPSHOT_TARGET_YEAR
+              ? process.env.RECEITAS_2026_REVISION_LABEL?.trim() || row.revisionLabel || null
+              : row.revisionLabel || null,
           updatedAt: new Date(),
         },
         $setOnInsert: {
@@ -135,6 +250,7 @@ const run = async () => {
   console.log("Receitas CV upsert complete");
   console.log(`Inserted: ${inserted}`);
   console.log(`Updated: ${updated}`);
+  console.log(`Snapshots created/updated: ${snapshotted}`);
 };
 
 run().catch((err) => {

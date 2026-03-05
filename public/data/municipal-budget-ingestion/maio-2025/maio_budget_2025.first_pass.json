@@ -1151,5 +1151,160 @@
       "extraction_confidence": 0.95,
       "needs_manual_review": false
     }
-  ]
+  ],
+  "compensation_framework": {
+    "currency": "CVE",
+    "base": {
+      "source_page": 12,
+      "title": "Proposta do quadro de pessoal da Câmara Municipal para o ano 2025",
+      "total_vacancies": 102,
+      "total_monthly_cve": 4513427,
+      "total_annual_cve": 51309614,
+      "departments": [
+        {
+          "department_name": "Assembleia Municipal",
+          "vacancies": 2,
+          "monthly_cve": 78511,
+          "annual_cve": 942132
+        },
+        {
+          "department_name": "Gabinete do Presidente",
+          "vacancies": 6,
+          "monthly_cve": 737758,
+          "annual_cve": 7544586
+        },
+        {
+          "department_name": "Direção de Administração, Finanças e Património",
+          "vacancies": 74,
+          "monthly_cve": 2185158,
+          "annual_cve": 26158896
+        },
+        {
+          "department_name": "Direção de Desenvolvimento Económico e Social",
+          "vacancies": 5,
+          "monthly_cve": 303000,
+          "annual_cve": 2249000
+        },
+        {
+          "department_name": "Direção de Ambiente, Saneamento e Proteção Civil",
+          "vacancies": 2,
+          "monthly_cve": 636000,
+          "annual_cve": 7539000
+        },
+        {
+          "department_name": "Direção de Urbanismo, Infraestruturas e Transporte",
+          "vacancies": 11,
+          "monthly_cve": 511000,
+          "annual_cve": 6132000
+        },
+        {
+          "department_name": "Direção de Fiscalização",
+          "vacancies": 2,
+          "monthly_cve": 62000,
+          "annual_cve": 744000
+        }
+      ],
+      "notes": [
+        "Documento base: BO 81, 05/05/2025, pág. 25.",
+        "Totais por centro de custo conforme tabela publicada."
+      ]
+    },
+    "adjustments": {
+      "source_page": 13,
+      "title": "Mapa de previsão de acréscimos das despesas com o pessoal (2025)",
+      "total_vacancies": 9,
+      "total_monthly_cve": 550324,
+      "total_annual_cve": 5099026,
+      "departments": [
+        {
+          "department_name": "Gabinete do Presidente",
+          "vacancies": 4,
+          "monthly_cve": 239471,
+          "annual_cve": 2695549
+        },
+        {
+          "department_name": "Direção de Administração, Finanças e Património",
+          "vacancies": 2,
+          "monthly_cve": 67295,
+          "annual_cve": 605655
+        },
+        {
+          "department_name": "Direção de Urbanismo, Infraestruturas e Transportes",
+          "vacancies": 3,
+          "monthly_cve": 243558,
+          "annual_cve": 1797822
+        }
+      ],
+      "items": [
+        {
+          "department_name": "Gabinete do Presidente",
+          "position_title": "Diretor de Gabinete Nível III",
+          "vacancies": 1,
+          "monthly_cve": 112158,
+          "annual_cve": 1233738,
+          "employment_type": "Nomeação"
+        },
+        {
+          "department_name": "Gabinete do Presidente",
+          "position_title": "Secretária do Presidente Nível II",
+          "vacancies": 1,
+          "monthly_cve": 65945,
+          "annual_cve": 725395,
+          "employment_type": "Nomeação"
+        },
+        {
+          "department_name": "Gabinete do Presidente",
+          "position_title": "Condutor",
+          "vacancies": 1,
+          "monthly_cve": 61368,
+          "annual_cve": 736416,
+          "employment_type": "Nomeação"
+        },
+        {
+          "department_name": "Gabinete do Presidente",
+          "position_title": "Assessor Nível III",
+          "vacancies": 1,
+          "monthly_cve": 112158,
+          "annual_cve": 1009422,
+          "employment_type": "Nomeação"
+        },
+        {
+          "department_name": "Direção de Administração, Finanças e Património",
+          "position_title": "Delegado Municipal",
+          "vacancies": 2,
+          "monthly_cve": 67295,
+          "annual_cve": 605655,
+          "employment_type": "Nomeação"
+        },
+        {
+          "department_name": "Direção de Urbanismo, Infraestruturas e Transportes",
+          "position_title": "Técnico Nível I",
+          "vacancies": 1,
+          "monthly_cve": 58400,
+          "annual_cve": 350400,
+          "employment_type": "Estágio probatório"
+        },
+        {
+          "department_name": "Direção de Urbanismo, Infraestruturas e Transportes",
+          "position_title": "Técnico Nível I",
+          "vacancies": 1,
+          "monthly_cve": 73000,
+          "annual_cve": 438000,
+          "employment_type": "Contrato por tempo indeterminado"
+        },
+        {
+          "department_name": "Direção de Urbanismo, Infraestruturas e Transportes",
+          "position_title": "Diretor Nível III",
+          "vacancies": 1,
+          "monthly_cve": 112158,
+          "annual_cve": 1009422,
+          "employment_type": "Nomeação"
+        }
+      ],
+      "notes": [
+        "Documento de ajuste: BO 81, 05/05/2025, pág. 26 (acréscimos).",
+        "Este bloco deve ser somado ao quadro base para análise do custo total projetado."
+      ]
+    }
+  }
 }

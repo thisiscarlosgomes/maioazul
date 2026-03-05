@@ -4,7 +4,8 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
-import { Pause, Play, X } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
+import { Pause, Play } from "lucide-react";
 import { pauseVoice, resumeVoice, stopVoice, useVoiceState } from "@/lib/voice";
 import { useLang } from "@/lib/lang";
 
@@ -20,6 +21,7 @@ function shouldShowNav(pathname: string | null) {
 export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const showNav = shouldShowNav(pathname);
+  const showAppHeader = Boolean(pathname && pathname !== "/");
   const [hideNav, setHideNav] = useState(false);
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
@@ -78,6 +80,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
 
   return (
     <>
+      {showAppHeader && <AppHeader />}
       <div
         className={showNav ? "min-h-[100svh] pb-24" : "min-h-[100svh]"}
         style={

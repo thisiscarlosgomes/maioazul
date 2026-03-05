@@ -8,6 +8,11 @@ const calls = [
   ['get_tourism_indicators', { ilha: 'Maio', year: 2025 }],
   ['get_maio_core_metrics', { year: 2025, limit: 3 }],
   ['get_tourism_quarters', { year: 2025 }],
+  ['get_codigo_postura_stats', {}],
+  ['get_codigo_postura_qa', { sample_limit: 10 }],
+  ['list_codigo_postura_articles', { limit: 5 }],
+  ['get_codigo_postura_article', { article_number: 1, max_chars: 1200 }],
+  ['search_codigo_postura', { query: 'licença de construção', top_k: 3 }],
 ];
 
 async function main() {
@@ -30,7 +35,12 @@ async function main() {
 
     const summary = Array.isArray(parsed.payload?.data)
       ? { rows: parsed.payload.data.length }
-      : { keys: Object.keys(parsed.payload ?? {}).slice(0, 8) };
+      : {
+          keys: Object.keys(parsed.payload ?? {}).slice(0, 8),
+          total_results: parsed.payload?.total_results,
+          total_articles: parsed.payload?.total_articles,
+          total_docs: parsed.payload?.total_docs,
+        };
 
     console.log(JSON.stringify({ tool: name, ok: true, summary }));
   }

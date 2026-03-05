@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState, useRef, useMemo, type ReactNode } from "react";
 import {
   Table,
@@ -25,12 +24,9 @@ import {
 } from "@/components/ui/tooltip";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { buildIslandTldr } from "@/lib/tldr";
 import { TldrDrawer } from "@/components/TldrDrawer";
-
-import { ArrowRight, Sparkles } from "lucide-react";
 
 import { TourismAccommodationTable } from "@/components/TourismAccommodationTable";
 import { TourismStructuralBaseline } from "@/components/TourismStructuralBaseline";
@@ -63,21 +59,30 @@ import { fetchJsonOfflineFirst } from "@/lib/offline";
 const ALL_ISLANDS_LABEL = "Todas as Ilhas";
 const ISLANDS = [ALL_ISLANDS_LABEL, "Maio"];
 const YEARS = ["2026", "2025", "2024"];
+const RECEITAS_COMPOSITION_COLORS = [
+  "#1E78FF",
+  "#FBBF24",
+  "#22C55E",
+  "#14B8A6",
+];
 const DASHBOARD_CHAT_PROMPT_SETS = [
   [
     "Quais são os 3 indicadores mais relevantes da economia do Maio neste ano?",
     "Compara Maio, Sal e Boa Vista com base nos dados disponíveis.",
     "Que padrões aparecem quando cruzamos turismo e dados municipais?",
+    "Quais são as regras para licença de construção no Código de Postura?",
   ],
   [
     "Quais indicadores mostram maior pressão turística local?",
     "Onde o Maio apresenta maior crescimento relativo nos dados?",
     "Que áreas merecem maior monitorização segundo os dados atuais?",
+    "Quais são as regras para licença de construção no Código de Postura?",
   ],
   [
     "Resume o estado do Maio em 3 linhas com base nos dados disponíveis.",
     "Que leitura de curto prazo os dados atuais permitem?",
     "Que comparação entre ilhas é mais útil para contexto?",
+    "Quais são as regras para licença de construção no Código de Postura?",
   ],
 ];
 
@@ -668,6 +673,7 @@ function ReceitasSection({
   ilha,
   year,
   onData,
+  onMeta,
 }: {
   ilha: string;
   year: string;
@@ -678,6 +684,7 @@ function ReceitasSection({
     islandLabel: string;
     shareNational: number;
   }) => void;
+  onMeta?: (meta: string | null) => void;
 }) {
   const lastEmittedRef = useRef<string | null>(null);
   const { data, loading, error } = useDashboardQuery<ReceitasApiResponse>({
@@ -720,6 +727,21 @@ function ReceitasSection({
       shareNational: summary.share,
     });
   }, [selected, summary, ilha, selectedIslandLabel, onData]);
+
+  useEffect(() => {
+    if (!selected) {
+      onMeta?.(null);
+      return;
+    }
+
+    const meta = `Fonte: ${
+      data?.source || "Portal Transparência CV"
+    } · Atualizado: ${formatShortDate(data?.updatedAt || null)}${
+      data?.fallback ? " · modo fallback" : ""
+    }`;
+
+    onMeta?.(meta);
+  }, [selected, data?.source, data?.updatedAt, data?.fallback, onMeta]);
 
   if (!selected && loading) {
     return (
@@ -765,12 +787,14 @@ function ReceitasSection({
     );
   }
 
-  const tableRows = buildReceitasTableRows(
+  const rankedRows = buildReceitasTableRows(
     selected,
     previousYear,
     ilha,
     ALL_ISLANDS_LABEL
-  ).map((r) => ({
+  );
+
+  const tableRows = rankedRows.map((r) => ({
     ranking: `${r.rank}º`,
     ilha: r.ilha,
     receitas: formatCVE(r.value),
@@ -791,14 +815,20 @@ function ReceitasSection({
     variação_yoy: formatDeltaPercent(r.yoy),
   }));
 
+  const compositionChartData = rankedRows
+    .slice()
+    .sort((a, b) => b.value - a.value)
+    .map((r) => ({
+      rank: r.rank,
+      ilha: r.ilha,
+      receitas: Number((r.value / 1_000_000).toFixed(2)),
+      peso: Number(r.share.toFixed(2)),
+    }));
+
   return (
     <SectionBlock
       title={`Receitas (${year})`}
-      description={`Receita arrecadada por recebedorias. Fonte: ${
-        data?.source || "Portal Transparência CV"
-      } · Atualizado: ${formatShortDate(data?.updatedAt || null)}${
-        data?.fallback ? " · modo fallback" : ""
-      }`}
+      description="Receita arrecadada por recebedorias."
     >
       <KpiGrid>
         <KpiStat label="Total arrecadado" value={formatCVE(selected.total)} />
@@ -817,6 +847,51 @@ function ReceitasSection({
       </KpiGrid>
 
       <DataTable rows={tableRows} loading={loading} error={error} />
+
+      {ilha === ALL_ISLANDS_LABEL ? (
+        <div className="rounded-lg border border-border p-4 md:p-5 space-y-3">
+          <div>
+            <h3 className="font-medium">Composição por ilha</h3>
+            <p className="text-sm text-muted-foreground">
+              Participação de cada ilha no total arrecadado.
+            </p>
+          </div>
+
+          <div className="space-y-3 md:space-y-4">
+            {compositionChartData.map((entry) => {
+              const color =
+                RECEITAS_COMPOSITION_COLORS[
+                  (Number(entry.rank ?? 1) - 1) %
+                    RECEITAS_COMPOSITION_COLORS.length
+                ];
+              return (
+                <div key={entry.ilha} className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-3 text-sm">
+                    <span className="font-medium">{entry.ilha}</span>
+                    <span className="text-muted-foreground">
+                      {entry.peso.toFixed(2)}% ·{" "}
+                      {entry.receitas.toLocaleString("pt-PT", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      M CVE
+                    </span>
+                  </div>
+                  <div className="h-2 rounded-full bg-muted/50 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all"
+                      style={{
+                        width: `${Math.max(0, Math.min(100, entry.peso))}%`,
+                        backgroundColor: color,
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </SectionBlock>
   );
 }
@@ -1371,14 +1446,30 @@ export default function TourismPage() {
   const t = dictionary[locale];
 
   const [ilha, setIlha] = useState("Maio");
-  const [year, setYear] = useState("2025");
+  const [year, setYear] = useState("2026");
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const handleSparkles = () => {
+      setIlha((current) => (current === ALL_ISLANDS_LABEL ? "Maio" : current));
+      setYear((current) =>
+        YEAR_CAPABILITIES[current]?.hasInsights ? current : "2025"
+      );
+      setOpen(true);
+    };
+
+    window.addEventListener("maio-open-sparkles", handleSparkles);
+    return () => {
+      window.removeEventListener("maio-open-sparkles", handleSparkles);
+    };
+  }, []);
 
   const [populationData, setPopulationData] = useState<DerivedPopulationData>({});
   const [derivedMetrics, setDerivedMetrics] = useState<DerivedMetricsData>({});
   const [tourismOverviewData, setTourismOverviewData] =
     useState<DerivedTourismOverviewData>({});
   const [receitasData, setReceitasData] = useState<DerivedReceitasData>({});
+  const [receitasMeta, setReceitasMeta] = useState<string | null>(null);
   const capabilities = YEAR_CAPABILITIES[year] || YEAR_CAPABILITIES["2025"];
 
   const tldr = useMemo(
@@ -1403,6 +1494,14 @@ export default function TourismPage() {
   );
 
   const { sections, globalVerdict } = tldr;
+  const sidebarSections = useMemo(
+    () =>
+      sections.filter(
+        (section) =>
+          section.title !== "Sazonalidade" && section.title !== "Receitas"
+      ),
+    [sections]
+  );
 
   const { data: baseline2024, loading: baselineLoading } =
     useTourismBaseline2024();
@@ -1441,73 +1540,38 @@ export default function TourismPage() {
       />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-6">
-        {/* Header */}
-        <div className="border-b border-border">
-          <div className="pt-6 pb-6 space-y-2">
-            <div className="flex items-start justify-between gap-6">
-              <div>
-                <h1 className="text-xl font-semibold">{t.title}</h1>
-                <p className="hidden text-sm text-muted-foreground sm:block">{t.subtitle}</p>
-              </div>
+        <div className="space-y-4 pt-6">
+          <div>
+            <h1 className="text-xl font-semibold">{t.title}</h1>
+            <p className="hidden text-sm text-muted-foreground sm:block">{t.subtitle}</p>
+          </div>
 
-              <div className="flex items-center gap-3">
-                <Link
-                  href="/orcamento"
-                  className="hidden h-9 items-center gap-2 rounded-md border border-border px-3 text-sm text-foreground transition hover:bg-accent sm:inline-flex"
-                >
-                  Orçamento Municipal
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                {ilha !== ALL_ISLANDS_LABEL && capabilities.hasInsights && (
-                  <button
-                    onClick={() => setOpen(true)}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border"
-                  >
-                    <Sparkles className="h-4 w-4 text-amber-500" />
-                  </button>
-                )}
-                <ThemeToggle />
-              </div>
-            </div>
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center">
+            <Select value={ilha} onValueChange={setIlha}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ISLANDS.map((i) => (
+                  <SelectItem key={i} value={i}>
+                    {i}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            <div className="sm:hidden">
-              <Link
-                href="/orcamento"
-                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border border-border px-4 text-sm text-foreground transition hover:bg-accent"
-              >
-                Orçamento Municipal
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            {/* Filters */}
-            <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center">
-              <Select value={ilha} onValueChange={setIlha}>
-                <SelectTrigger className="w-full sm:w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ISLANDS.map((i) => (
-                    <SelectItem key={i} value={i}>
-                      {i}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={year} onValueChange={setYear}>
-                <SelectTrigger className="w-full sm:w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {YEARS.map((y) => (
-                    <SelectItem key={y} value={y}>
-                      {y}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Select value={year} onValueChange={setYear}>
+              <SelectTrigger className="w-full sm:w-[120px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {YEARS.map((y) => (
+                  <SelectItem key={y} value={y}>
+                    {y}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -1515,7 +1579,7 @@ export default function TourismPage() {
             YEAR = 2024 · BASELINE
         ========================= */}
 
-        {ilha === "Maio" && (
+        {ilha === "Maio" && year !== "2025" && (
           <MaioPopulationSnapshot
             t={t}
             onData={(data) =>
@@ -1527,7 +1591,12 @@ export default function TourismPage() {
           />
         )}
 
-        <ReceitasSection ilha={ilha} year={year} onData={setReceitasData} />
+        <ReceitasSection
+          ilha={ilha}
+          year={year}
+          onData={setReceitasData}
+          onMeta={setReceitasMeta}
+        />
 
         {ilha === ALL_ISLANDS_LABEL &&
           (capabilities.hasBaseline2024 || capabilities.hasLiveTourism) && (
@@ -1537,7 +1606,7 @@ export default function TourismPage() {
           </>
         )}
 
-        {ilha === "Maio" && capabilities.hasLocalGovernment && (
+        {ilha === "Maio" && capabilities.hasLocalGovernment && year !== "2025" && (
           <LocalGovernmentOverview t={t} year={year} />
         )}
 
@@ -1708,7 +1777,7 @@ export default function TourismPage() {
                     open={open}
                     onOpenChange={setOpen}
                     title="Estado atual da ilha"
-                    sections={sections}
+                    sections={sidebarSections}
                     globalVerdict={globalVerdict}
                   />
                 )}
@@ -1721,10 +1790,16 @@ export default function TourismPage() {
           <BaselineNote />
         )}
 
+        {receitasMeta ? (
+          <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
+            {receitasMeta}
+          </div>
+        ) : null}
+
       </div>
       <DashboardChatWidget
         quickPromptSets={DASHBOARD_CHAT_PROMPT_SETS}
-        welcomeMessage="Pergunte sobre turismo, métricas centrais ou dados municipais do Maio."
+        welcomeMessage="Pergunte sobre turismo, métricas centrais, dados municipais e também sobre o Código de Postura."
       />
     </div>
   );

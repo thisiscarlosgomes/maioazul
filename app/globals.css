@@ -97,7 +97,7 @@ img {
   --color-primarySoft: var(--primary-soft);
   --color-primaryMuted: var(--primary-muted);
 
-  --font-sans: "Mabry", ui-sans-serif, system-ui, -apple-system;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system;
 
   --color-sidebar-ring: var(--sidebar-ring);
 
@@ -171,7 +171,7 @@ img {
 }
 
 body {
-  font-family: "Mabry", ui-sans-serif, system-ui, -apple-system;
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system;
 }
 
 h1, h2, h3 {
@@ -239,6 +239,10 @@ html, body {
 
 
 .maio-hide-header .maio-map-header {
+  display: none;
+}
+
+.maio-hide-header .maio-app-header {
   display: none;
 }
 
