@@ -86,6 +86,7 @@ Política comparativa:
 - Use a ferramenta de comparação entre ilhas sempre que isso ajudar.
 - Quando a pergunta for sobre orçamento, prefira a ferramenta de orçamento validado em vez de inferir a partir de texto solto.
 - Quando a pergunta comparar 2025 e 2026, prefira a ferramenta de comparação orçamental em vez de combinar duas leituras separadas.
+- Quando a pergunta cruzar orçamento e métricas gerais do Maio, use primeiro a ferramenta de snapshot cruzado de orçamento+métricas.
 
 Regras:
 - Responda sempre em português.

@@ -6,6 +6,13 @@ import type {
 } from "@/lib/budget";
 
 type Query = Record<string, string | number | undefined | null>;
+type CoreMetricRow = {
+  category?: string;
+  metric?: string;
+  value?: number;
+  unit?: string;
+  breakdown?: Record<string, unknown> | null;
+};
 
 const MIN_YEAR = 2024;
 const MAX_YEAR = 2035;
@@ -79,6 +86,13 @@ export const toolSchemas = {
     .object({
       from_year: z.union([z.literal(2025), z.literal(2026)]).default(2025),
       to_year: z.union([z.literal(2025), z.literal(2026)]).default(2026),
+      project_limit: z.number().int().min(1).max(20).default(5),
+    })
+    .strict(),
+  get_maio_budget_metrics_snapshot: z
+    .object({
+      year: z.union([z.literal(2025), z.literal(2026)]).default(2025),
+      metric_limit: z.number().int().min(3).max(20).default(8),
       project_limit: z.number().int().min(1).max(20).default(5),
     })
     .strict(),
@@ -278,6 +292,35 @@ export const nativeToolDefinitions = {
         },
       },
       required: ["from_year", "to_year", "project_limit"],
+      additionalProperties: false,
+    },
+  },
+  get_maio_budget_metrics_snapshot: {
+    title: "Get Maio Budget + Metrics Snapshot",
+    description:
+      "Returns a concise cross-dataset snapshot combining Maio municipal budget data with Maio core metrics for the same year when available, including practical non-causal cross-signals for decision support.",
+    parameters: {
+      type: "object",
+      properties: {
+        year: {
+          type: "integer",
+          enum: [...AVAILABLE_BUDGET_YEARS],
+          description: "Reference budget year.",
+        },
+        metric_limit: {
+          type: "integer",
+          minimum: 3,
+          maximum: 20,
+          description: "Maximum number of key metrics included in the cross snapshot.",
+        },
+        project_limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 20,
+          description: "Maximum number of top investment projects included in the snapshot.",
+        },
+      },
+      required: ["year", "metric_limit", "project_limit"],
       additionalProperties: false,
     },
   },
@@ -789,6 +832,164 @@ function buildBudgetComparison(fromPayload: BudgetApiResponse, toPayload: Budget
   };
 }
 
+function findMetric(
+  rows: CoreMetricRow[],
+  category: string,
+  metric: string,
+) {
+  return rows.find(
+    (row) => row.category === category && row.metric === metric && typeof row.value === "number",
+  );
+}
+
+function formatMetricValue(row: CoreMetricRow | undefined) {
+  if (!row || typeof row.value !== "number") return null;
+  if (row.unit === "percent") return `${row.value.toFixed(1)}%`;
+  if (row.unit === "households") return `${Math.round(row.value)} agregados`;
+  if (row.unit === "people") return `${row.value.toFixed(1)} pessoas`;
+  return `${row.value}`;
+}
+
+function getShareByLabel(items: BudgetBreakdownItem[], regex: RegExp) {
+  const target = items.find((item) => regex.test(item.label));
+  return target?.sharePct ?? null;
+}
+
+function buildBudgetMetricsSignals(
+  budget: BudgetApiResponse,
+  metricsRows: CoreMetricRow[],
+) {
+  const investmentShare = budget.summary.investmentSharePct;
+  const transferShare = getShareByLabel(budget.revenueBreakdown, /transfer/i);
+  const personnelShare = getShareByLabel(budget.expenseBreakdown, /pessoal/i);
+  const unemployment = findMetric(metricsRows, "labor", "unemployment_rate");
+  const youthUnemployment = findMetric(metricsRows, "labor", "youth_unemployment_rate");
+  const internet = findMetric(metricsRows, "ict", "internet_access_home");
+  const water = findMetric(metricsRows, "living_conditions", "water_network_access");
+  const electricity = findMetric(metricsRows, "living_conditions", "electricity_access");
+  const households = findMetric(metricsRows, "households", "total_households");
+
+  const signals = [
+    `Estrutura orçamental ${budget.year}: investimento em ${investmentShare.toFixed(2)}% da despesa total e saldo de ${formatCompactCve(budget.summary.fiscalBalanceCve)}.`,
+    transferShare !== null
+      ? `Transferências representam ${transferShare.toFixed(2)}% da receita.`
+      : null,
+    personnelShare !== null
+      ? `Despesas com pessoal representam ${personnelShare.toFixed(2)}% da despesa.`
+      : null,
+    unemployment
+      ? `Mercado de trabalho (mesmo referencial anual de métricas): desemprego em ${formatMetricValue(unemployment)}.`
+      : null,
+    youthUnemployment
+      ? `Desemprego jovem em ${formatMetricValue(youthUnemployment)}, útil para priorizar programas de qualificação e empregabilidade.`
+      : null,
+    internet && water && electricity
+      ? `Serviços básicos e conectividade: internet ${formatMetricValue(internet)}, água em rede ${formatMetricValue(water)} e eletricidade ${formatMetricValue(electricity)}.`
+      : null,
+    households
+      ? `Escala social de referência: ${formatMetricValue(households)}.`
+      : null,
+  ].filter((line): line is string => Boolean(line));
+
+  return signals.slice(0, 6);
+}
+
+async function getMaioBudgetMetricsSnapshot(request: Request, rawArgs: unknown) {
+  const { year, metric_limit, project_limit } = toolSchemas.get_maio_budget_metrics_snapshot.parse(
+    normalizeNulls(rawArgs ?? {}),
+  );
+
+  const budgetPayload = (await fetchJson(request, "/api/transparencia/municipal/maio/orcamento", {
+    year,
+  })) as BudgetApiResponse;
+
+  const sameYearMetrics = (await fetchJson(
+    request,
+    "/api/transparencia/municipal/maio/core-metrics",
+    { year },
+  )) as { data?: CoreMetricRow[] };
+
+  const sameYearRows = Array.isArray(sameYearMetrics?.data) ? sameYearMetrics.data : [];
+  const fallbackYear = year === 2026 ? 2025 : year;
+
+  const fallbackMetrics =
+    sameYearRows.length === 0 && fallbackYear !== year
+      ? ((await fetchJson(request, "/api/transparencia/municipal/maio/core-metrics", {
+          year: fallbackYear,
+        })) as { data?: CoreMetricRow[] })
+      : null;
+
+  const selectedRows =
+    sameYearRows.length > 0
+      ? sameYearRows
+      : Array.isArray(fallbackMetrics?.data)
+        ? fallbackMetrics.data
+        : [];
+
+  const keyMetricPriority = [
+    ["labor", "employment_rate"],
+    ["labor", "unemployment_rate"],
+    ["labor", "youth_unemployment_rate"],
+    ["households", "total_households"],
+    ["households", "average_household_size"],
+    ["ict", "internet_access_home"],
+    ["living_conditions", "water_network_access"],
+    ["living_conditions", "electricity_access"],
+    ["living_conditions", "bathroom_access"],
+    ["education", "literacy_rate"],
+  ] as const;
+
+  const keyMetrics = keyMetricPriority
+    .map(([category, metric]) => findMetric(selectedRows, category, metric))
+    .filter((row): row is CoreMetricRow => Boolean(row))
+    .slice(0, metric_limit)
+    .map((row) => ({
+      category: row.category ?? null,
+      metric: row.metric ?? null,
+      value: typeof row.value === "number" ? row.value : null,
+      unit: row.unit ?? null,
+      breakdown: row.breakdown ?? null,
+    }));
+
+  return {
+    scope: "municipal" as const,
+    dataset: "budget_metrics_snapshot" as const,
+    municipality: "Maio" as const,
+    requested_year: year,
+    budget_year: budgetPayload.year,
+    metrics_year:
+      sameYearRows.length > 0
+        ? year
+        : selectedRows.length > 0
+          ? fallbackYear
+          : null,
+    fallback_applied: sameYearRows.length === 0 && selectedRows.length > 0 && fallbackYear !== year,
+    caveat:
+      sameYearRows.length === 0 && selectedRows.length > 0 && fallbackYear !== year
+        ? `Não existem core metrics publicados para ${year}; foi usado ${fallbackYear} como referencial de métricas.`
+        : null,
+    budget_summary: {
+      total_revenue_cve: budgetPayload.summary.totalRevenueCve,
+      total_expense_cve: budgetPayload.summary.totalExpenseCve,
+      fiscal_balance_cve: budgetPayload.summary.fiscalBalanceCve,
+      investment_share_pct: budgetPayload.summary.investmentSharePct,
+    },
+    top_budget_items: {
+      revenue: takeTop(budgetPayload.revenueBreakdown, 4),
+      expense: takeTop(budgetPayload.expenseBreakdown, 4),
+      projects: takeTop(budgetPayload.investmentProjects, project_limit),
+    },
+    key_metrics: keyMetrics,
+    cross_signals: buildBudgetMetricsSignals(budgetPayload, selectedRows),
+    methodology: {
+      type: "descriptive_cross_reading",
+      correlation_statistical: false,
+      note:
+        "Leitura cruzada descritiva para suporte à decisão. Associações apresentadas não implicam causalidade estatística.",
+    },
+  };
+}
+
 async function getMaioBudget(request: Request, rawArgs: unknown) {
   const { year, view, section, project_limit } = toolSchemas.get_maio_budget.parse(
     normalizeNulls(rawArgs ?? {}),
@@ -872,6 +1073,8 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getMaioBudget(request, rawArgs);
     case "get_maio_budget_comparison":
       return getMaioBudgetComparison(request, rawArgs);
+    case "get_maio_budget_metrics_snapshot":
+      return getMaioBudgetMetricsSnapshot(request, rawArgs);
     default: {
       const exhaustive: never = name;
       throw new Error(`Unsupported tool: ${exhaustive}`);
