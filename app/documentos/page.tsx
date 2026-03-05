@@ -108,9 +108,9 @@ export default async function DocumentosPage() {
                 key={doc.name}
                 href={doc.href}
                 download={doc.name}
-                className="group flex h-full flex-col gap-5 rounded-[2rem] border border-border bg-card p-4 transition hover:-translate-y-0.5 hover:border-foreground/20"
+                className="group flex h-full flex-col gap-5 rounded-[1rem] border border-border p-4 transition hover:-translate-y-0.5 hover:border-foreground/20"
               >
-                <div className="relative aspect-[4/3] overflow-hidden rounded-[1.75rem] border border-border bg-[#0f1014] p-4">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-[1rem] p-4">
                   <Image
                     src="/pdf.png"
                     alt="Documento PDF"
