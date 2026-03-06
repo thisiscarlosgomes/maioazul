@@ -79,6 +79,12 @@ export const toolSchemas = {
       year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
     })
     .strict(),
+  get_tourism_population: z
+    .object({
+      year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
+      ilha: z.string().min(1).max(64).optional(),
+    })
+    .strict(),
   get_island_comparison_snapshot: z
     .object({
       year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
@@ -241,6 +247,30 @@ export const nativeToolDefinitions = {
         },
       },
       required: ["year"],
+      additionalProperties: false,
+    },
+  },
+  get_tourism_population: {
+    title: "Get Tourism Population",
+    description:
+      "Returns resident population by island, including national share. Falls back to latest available year if requested year has no data.",
+    parameters: {
+      type: "object",
+      properties: {
+        year: {
+          type: ["integer", "null"],
+          minimum: MIN_YEAR,
+          maximum: MAX_YEAR,
+          description: "Reference year.",
+        },
+        ilha: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 64,
+          description: "Optional island filter (e.g., Maio).",
+        },
+      },
+      required: ["year", "ilha"],
       additionalProperties: false,
     },
   },
@@ -695,6 +725,11 @@ async function getMaioCoreMetrics(request: Request, rawArgs: unknown) {
 async function getTourismQuarters(request: Request, rawArgs: unknown) {
   const { year } = toolSchemas.get_tourism_quarters.parse(normalizeNulls(rawArgs ?? {}));
   return fetchJson(request, "/api/transparencia/turismo/quarters", { year });
+}
+
+async function getTourismPopulation(request: Request, rawArgs: unknown) {
+  const { year, ilha } = toolSchemas.get_tourism_population.parse(normalizeNulls(rawArgs ?? {}));
+  return fetchJson(request, "/api/transparencia/turismo/population", { year, ilha });
 }
 
 async function getIslandComparisonSnapshot(request: Request, rawArgs: unknown) {
@@ -1743,6 +1778,8 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getMaioCoreMetrics(request, rawArgs);
     case "get_tourism_quarters":
       return getTourismQuarters(request, rawArgs);
+    case "get_tourism_population":
+      return getTourismPopulation(request, rawArgs);
     case "get_island_comparison_snapshot":
       return getIslandComparisonSnapshot(request, rawArgs);
     case "get_maio_budget":

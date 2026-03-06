@@ -137,9 +137,6 @@ function BreakdownBars({
           <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
               <div className="font-medium leading-tight">{item.label}</div>
-              {item.code ? (
-                <div className="text-xs text-muted-foreground">{item.code}</div>
-              ) : null}
             </div>
             <div className="shrink-0 text-right">
               <div className="font-medium">{formatCompactCve(item.amountCve)}</div>
@@ -488,40 +485,35 @@ export default function OrcamentoPage() {
             {compensationFramework ? (
               <SectionBlock
                 title="Quadro de compensação do pessoal"
-                description={`Quadro base e acréscimos projetados (referência ${compensationData?.year}).`}
+                description={`Quadro base e acréscimos projetados (ultima referência ${compensationData?.year}).`}
               >
                 <div className="space-y-4">
                   <div className="grid gap-4 md:grid-cols-3">
-                    <Card>
+
+                     <Card>
                       <CardContent className="p-4">
-                        <div className="text-xs text-muted-foreground">Quadro base (anual)</div>
+                        <div className="text-xs text-muted-foreground">Total Mensal</div>
                         <div className="mt-1 text-lg font-semibold sm:text-xl">
-                          {formatCve(compensationFramework.base?.totalAnnualCve ?? 0)}
-                        </div>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {formatNumber(compensationFramework.base?.totalVacancies ?? 0)} vagas
+                          {formatCve(compensationFramework.combined.totalMonthlyCve)}
                         </div>
                       </CardContent>
                     </Card>
+
+                    
                     <Card>
                       <CardContent className="p-4">
-                        <div className="text-xs text-muted-foreground">Acréscimos (anual)</div>
-                        <div className="mt-1 text-lg font-semibold sm:text-xl">
-                          {formatCve(compensationFramework.adjustments?.totalAnnualCve ?? 0)}
-                        </div>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {formatNumber(compensationFramework.adjustments?.totalVacancies ?? 0)} vagas
-                        </div>
-                      </CardContent>
-                    </Card>
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="text-xs text-muted-foreground">Total combinado (anual)</div>
+                        <div className="text-xs text-muted-foreground">Total Anual</div>
                         <div className="mt-1 text-lg font-semibold sm:text-xl">
                           {formatCve(compensationFramework.combined.totalAnnualCve)}
                         </div>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {formatNumber(compensationFramework.combined.totalVacancies)} vagas
+                      </CardContent>
+                    </Card>
+                   
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="text-xs text-muted-foreground">Nº Vagas</div>
+                        <div className="mt-1 text-lg font-semibold sm:text-xl">
+                          {formatNumber(compensationFramework.combined.totalVacancies)}
                         </div>
                       </CardContent>
                     </Card>
@@ -653,9 +645,6 @@ export default function OrcamentoPage() {
                         {projectStats.topProject
                           ? formatCve(projectStats.topProject.amountCve)
                           : "—"}
-                      </div>
-                      <div className="mt-1 text-xs text-muted-foreground line-clamp-2">
-                        {projectStats.topProject?.projectName ?? ""}
                       </div>
                     </CardContent>
                   </Card>
@@ -936,7 +925,10 @@ export default function OrcamentoPage() {
             </div>
 
             <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm">
-              <strong>Fontes:</strong> Deliberação n.º 10/2025 – Orçamento Municipal 2026, publicado no Boletim Oficial n.º 34, de 23/02/2026.
+              <strong>Fonte:</strong>{" "}
+              <a href="/documentos" className="underline underline-offset-4 hover:text-foreground">
+                Ver e baixar documentos
+              </a>
             </div>
           </>
         )}

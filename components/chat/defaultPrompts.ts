@@ -1,5 +1,5 @@
 export const DEFAULT_CHAT_QUICK_PROMPTS = [
-  "Como está o turismo no Maio este ano?",
+  "Quais os principais destaques do orçamento municipal de 2026.",
   "Como está distribuído o orçamento municipal do Maio?",
 ];
 

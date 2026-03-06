@@ -828,9 +828,11 @@ function ReceitasSection({
       return;
     }
 
-    const meta = `Fonte: ${
-      data?.source || "Portal Transparência CV"
-    } · Atualizado: ${formatShortDate(data?.updatedAt || null)}${
+    const baseSource = data?.source || "Portal Transparência CV";
+    const sourceWithIne = baseSource.includes("INE.CV")
+      ? baseSource
+      : `${baseSource} · INE.CV`;
+    const meta = `Fonte: ${sourceWithIne} · Atualizado: ${formatShortDate(data?.updatedAt || null)}${
       data?.fallback ? " · modo fallback" : ""
     }`;
 
@@ -1909,8 +1911,9 @@ export default function TourismPage() {
         )}
 
         {receitasMeta ? (
-          <div className="rounded-lg border border-border bg-card/60 px-4 py-3 text-sm text-muted-foreground">
-            {receitasMeta}
+          <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm">
+            <strong>Fonte:</strong>{" "}
+            {receitasMeta.replace(/^Fonte:\s*/i, "")}
           </div>
         ) : null}
 

@@ -157,7 +157,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
                 Fechar
               </button>
             </div>
-            <div className="mt-3 text-xs opacity-50">maioazul.com</div>
+            <div className="mt-3 text-xs opacity-50">Um projeto publico da maioazul.com</div>
           </div>
         </div>
       )}

@@ -20,7 +20,7 @@ function ThinkingLoader() {
         <motion.span
           key={index}
           animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
-          className="h-2 w-2 rounded-full bg-muted-foreground"
+          className="h-2 w-2 rounded-full bg-[#1E78FF]/50"
           transition={{
             duration: 0.9,
             ease: "easeInOut",
@@ -119,7 +119,7 @@ export default function SiteChatPage() {
             {visibleMessages.map((message) => (
               <div key={message.id} className={message.role === "user" ? "flex flex-col items-end" : "flex flex-col items-start"}>
                 {message.role === "assistant" && message.id === "welcome" ? (
-                  <p className="mb-2 pl-1 text-xl font-semibold leading-tight text-foreground">
+                  <p className="mb-2 text-xl font-semibold leading-tight text-foreground">
                     Bem-vindo, como posso ajudar?
                   </p>
                 ) : null}
@@ -167,7 +167,7 @@ export default function SiteChatPage() {
             ))}
             {loading ? (
               <div className="flex justify-start">
-                <div className="rounded-[22px] border border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
+                <div className="rounded-[22px] px-4 py-3 text-sm text-muted-foreground">
                   <ThinkingLoader />
                 </div>
               </div>
@@ -183,7 +183,7 @@ export default function SiteChatPage() {
               {STARTER_PROMPTS.map((prompt) => (
                 <button
                   key={prompt}
-                  className="w-full rounded-full border border-border bg-muted px-4 py-2.5 text-center text-sm font-medium text-foreground transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-55"
+                  className="w-full rounded-full border border-border hover:cursor-pointer px-4 py-2.5 text-center text-sm font-medium text-foreground transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-55"
                   onClick={() => handleStarterPrompt(prompt)}
                   type="button"
                 >
@@ -194,7 +194,7 @@ export default function SiteChatPage() {
           ) : null}
 
           <form
-            className={`relative mx-auto w-full max-w-6xl rounded-[24px] border border-border bg-card py-2.5 px-3 ${
+            className={`relative mx-auto w-full max-w-6xl rounded-[24px] border border-border  py-2.5 px-3 ${
               showQuickPrompts ? "mt-3" : "mt-0"
             }`}
             onSubmit={handleSubmit}

@@ -12,7 +12,7 @@ export default function ChatMarkdownContent({ content }: ChatMarkdownContentProp
         ul: ({ children }) => <ul className="list-inside list-disc whitespace-normal [li_&]:pl-6">{children}</ul>,
         ol: ({ children }) => <ol className="list-inside list-decimal whitespace-normal">{children}</ol>,
         li: ({ children }) => <li className="my-0 leading-6">{children}</li>,
-        p: ({ children }) => <p className="leading-6 mb-3">{children}</p>,
+        p: ({ children }) => <p className="leading-6 mb-2 mt-2">{children}</p>,
         a: (props) => (
           <a
             {...props}

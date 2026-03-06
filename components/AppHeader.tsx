@@ -11,7 +11,7 @@ const links: Array<{ href: string; label: string; hidden?: boolean }> = [
   { href: "/", label: "Home" },
   { href: "/dashboard", label: "Indicadores" },
   { href: "/orcamento", label: "Orçamento" },
-  { href: "/documentos", label: "Documentos" },
+  { href: "/documentos", label: "Documentos", hidden: true },
   { href: "/chat", label: "Chat" },
   { href: "/feed", label: "Feed" },
 ];
