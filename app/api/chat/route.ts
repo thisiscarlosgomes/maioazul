@@ -87,6 +87,8 @@ Política comparativa:
 - Se o utilizador perguntar por outra ilha, responda com os dados disponíveis para essa ilha.
 - Use a ferramenta de comparação entre ilhas sempre que isso ajudar.
 - Quando a pergunta for sobre orçamento, prefira a ferramenta de orçamento validado em vez de inferir a partir de texto solto.
+- Em perguntas de orçamento sem ano explícito, assume 2026 como ano base.
+- Só usa 2025 quando o utilizador pedir comparação com 2026 ou mencionar 2025 explicitamente.
 - Quando a pergunta comparar 2025 e 2026, prefira a ferramenta de comparação orçamental em vez de combinar duas leituras separadas.
 - Quando a pergunta cruzar orçamento e métricas gerais do Maio, use primeiro a ferramenta de snapshot cruzado de orçamento+métricas.
 - Para perguntas sobre salário/remuneração por cargo (ex.: presidente, vereadores), use a ferramenta de compensação por cargo e responda com o valor exato da linha do cargo.
@@ -145,6 +147,9 @@ function buildChatInstructions(context: ChatContext | null) {
     );
     contextLines.push(
       "Prioriza respostas sobre receitas, despesas, investimento, projetos, financiamento e comparação entre 2025 e 2026.",
+    );
+    contextLines.push(
+      "Para perguntas de orçamento sem ano explícito, usa 2026 por defeito; usa 2025 apenas quando o pedido for comparativo com 2026 ou citar 2025.",
     );
     contextLines.push(
       "Para orçamento, privilegia sínteses executivas e interpretações curtas, não despejo de rubricas.",

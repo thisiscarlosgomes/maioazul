@@ -117,7 +117,7 @@ export const toolSchemas = {
     .strict(),
   get_maio_budget_metrics_snapshot: z
     .object({
-      year: z.union([z.literal(2025), z.literal(2026)]).default(2025),
+      year: z.union([z.literal(2025), z.literal(2026)]).default(2026),
       metric_limit: z.number().int().min(3).max(20).default(8),
       project_limit: z.number().int().min(1).max(20).default(5),
     })
