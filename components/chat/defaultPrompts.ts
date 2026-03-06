@@ -1,6 +1,7 @@
 export const DEFAULT_CHAT_QUICK_PROMPTS = [
   "Quais os principais destaques do orçamento municipal de 2026.",
-  "Como está distribuído o orçamento municipal do Maio?",
+  "Onde o Maio apresenta maior crescimento relativo nos dados?",
+  "O que devo saber sobre o código de postura municipal?",
 ];
 
 export const DEFAULT_CHAT_WELCOME_MESSAGE =
