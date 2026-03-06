@@ -129,6 +129,7 @@ export const toolSchemas = {
       limit: z.number().int().min(1).max(20).default(5),
     })
     .strict(),
+  get_maio_energy_core: z.object({}).strict(),
   search_codigo_postura: z
     .object({
       query: z.string().min(2).max(300),
@@ -401,6 +402,17 @@ export const nativeToolDefinitions = {
         },
       },
       required: ["year", "query", "limit"],
+      additionalProperties: false,
+    },
+  },
+  get_maio_energy_core: {
+    title: "Get Maio Energy Core",
+    description:
+      "Returns Maio municipal solar energy core dataset, including annual demand range, recommended working value, installed solar capacity, expected generation, and reported demand coverage share.",
+    parameters: {
+      type: "object",
+      properties: {},
+      required: [],
       additionalProperties: false,
     },
   },
@@ -1561,6 +1573,11 @@ async function getMaioCompensationLookup(request: Request, rawArgs: unknown) {
   };
 }
 
+async function getMaioEnergyCore(request: Request, rawArgs: unknown) {
+  toolSchemas.get_maio_energy_core.parse(normalizeNulls(rawArgs ?? {}));
+  return fetchJson(request, "/api/transparencia/municipal/maio/energia");
+}
+
 async function getMaioBudgetComparison(request: Request, rawArgs: unknown) {
   const { from_year, to_year, project_limit } = toolSchemas.get_maio_budget_comparison.parse(
     normalizeNulls(rawArgs ?? {}),
@@ -1736,6 +1753,8 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getMaioBudgetMetricsSnapshot(request, rawArgs);
     case "get_maio_compensation_lookup":
       return getMaioCompensationLookup(request, rawArgs);
+    case "get_maio_energy_core":
+      return getMaioEnergyCore(request, rawArgs);
     case "search_codigo_postura":
       return searchCodigoPostura(request, rawArgs);
     case "get_codigo_postura_article":

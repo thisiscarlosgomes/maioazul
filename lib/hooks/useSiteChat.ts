@@ -28,9 +28,9 @@ type UseSiteChatOptions = {
 };
 
 const DEFAULT_WELCOME_MESSAGE =
-  "Pergunte sobre turismo, orçamento municipal e também sobre o Código de Postura do Maio.";
+  "Pergunte sobre turismo, orçamento municipal, energia solar do Maio e também sobre o Código de Postura do Maio.";
 const STORAGE_KEY = "maioazul-site-chat-v2";
-const CHAT_QUERY_LIMIT = 10;
+const CHAT_QUERY_LIMIT = 5;
 
 function buildWelcomeMessage(message: string): SiteChatMessage {
   return {
@@ -65,8 +65,10 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [remainingQuestions, setRemainingQuestions] = useState(CHAT_QUERY_LIMIT);
+  const [hasRestoredFromStorage, setHasRestoredFromStorage] = useState(false);
 
   useEffect(() => {
+    setHasRestoredFromStorage(false);
     try {
       const raw = window.localStorage.getItem(storageKey);
       if (!raw) return;
@@ -96,16 +98,19 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
       }
     } catch {
       // Ignore invalid local chat cache.
+    } finally {
+      setHasRestoredFromStorage(true);
     }
   }, [storageKey, welcomeMessage]);
 
   useEffect(() => {
+    if (!hasRestoredFromStorage) return;
     try {
       window.localStorage.setItem(storageKey, JSON.stringify(messages));
     } catch {
       // Ignore storage write failures.
     }
-  }, [messages, storageKey]);
+  }, [hasRestoredFromStorage, messages, storageKey]);
 
   async function submitMessage(text: string) {
     const trimmed = text.trim();

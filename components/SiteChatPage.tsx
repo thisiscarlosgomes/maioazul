@@ -1,128 +1,249 @@
 "use client";
 
-import { FormEvent } from "react";
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowUp, Check, Copy, RotateCcw, Sparkles } from "lucide-react";
 import { useSiteChat } from "@/lib/hooks/useSiteChat";
+import ChatMarkdownContent from "@/components/chat/ChatMarkdownContent";
+import {
+  DEFAULT_CHAT_QUICK_PROMPTS,
+  DEFAULT_CHAT_WELCOME_MESSAGE,
+  getVisibleChatQuickPrompts,
+} from "@/components/chat/defaultPrompts";
 
-const STARTER_PROMPTS = [
-  "Como está o turismo no Maio em 2025?",
-  "Compare os indicadores de turismo do Maio e do Sal em 2025.",
-  "Mostra-me as principais métricas centrais do Maio.",
-];
+const STARTER_PROMPTS = getVisibleChatQuickPrompts(DEFAULT_CHAT_QUICK_PROMPTS);
+
+function ThinkingLoader() {
+  return (
+    <div className="flex items-center gap-1.5">
+      {[0, 1, 2].map((index) => (
+        <motion.span
+          key={index}
+          animate={{ opacity: [0.3, 1, 0.3], y: [0, -3, 0] }}
+          className="h-2 w-2 rounded-full bg-muted-foreground"
+          transition={{
+            duration: 0.9,
+            ease: "easeInOut",
+            repeat: Number.POSITIVE_INFINITY,
+            delay: index * 0.12,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function formatMessageTime(iso: string) {
+  const date = new Date(iso);
+  const diffMs = Date.now() - date.getTime();
+  const diffMinutes = Math.max(0, Math.floor(diffMs / 60000));
+
+  if (diffMinutes < 1) return "agora";
+  if (diffMinutes < 60) return `${diffMinutes}m`;
+
+  const diffHours = Math.floor(diffMinutes / 60);
+  if (diffHours < 24) return `${diffHours}h`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays}d`;
+}
 
 export default function SiteChatPage() {
-  const { messages, input, setInput, loading, error, submitMessage } = useSiteChat();
+  const {
+    messages,
+    input,
+    setInput,
+    loading,
+    error,
+    remainingQuestions,
+    maxQuestions,
+    submitMessage,
+    resetChat,
+  } = useSiteChat({
+    welcomeMessage: DEFAULT_CHAT_WELCOME_MESSAGE,
+  });
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     await submitMessage(input);
   }
 
+  async function handleStarterPrompt(prompt: string) {
+    if (loading) return;
+    await submitMessage(prompt);
+  }
+
+  async function handleTextareaKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      await submitMessage(input);
+    }
+  }
+
+  async function handleCopyMessage(messageId: string, content: string) {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedMessageId(messageId);
+      window.setTimeout(() => {
+        setCopiedMessageId((current) => (current === messageId ? null : current));
+      }, 1200);
+    } catch {
+      // Ignore clipboard failures.
+    }
+  }
+
+  const visibleMessages = messages;
+  const showQuickPrompts = !loading && messages.length === 1;
+
+  useEffect(() => {
+    const node = scrollRef.current;
+    if (!node) return;
+    node.scrollTop = node.scrollHeight;
+  }, [messages, loading]);
+
   return (
-    <div className="bg-white text-[#111111]">
-      <section className="border-b border-[rgba(17,17,17,0.08)]">
-        <div className="mx-auto max-w-6xl px-7 py-12">
-          <p className="text-sm font-semibold uppercase tracking-[0.08em] text-[#10069F]">
-            Maioazul Chat
-          </p>
-          <h1 className="mt-4 max-w-3xl text-[clamp(2rem,4vw,3.4rem)] leading-[1.04]">
-            chat de dados para o maio
-          </h1>
-          <p className="mt-4 max-w-2xl text-[15px] leading-7 text-[#111111]/68">
-            Este chat do site usa ferramentas nativas do Maioazul no servidor para consultar visão geral do turismo,
-            indicadores, trimestres e métricas centrais. O MCP continua disponível para clientes externos, mas o chat
-            do site usa a mesma lógica diretamente.
-          </p>
+    <div className="h-[calc(100svh-3.5rem)] overflow-hidden bg-background text-foreground">
+      <section className="mx-auto h-full w-full max-w-6xl px-6 md:px-7">
+        <div
+          ref={scrollRef}
+          className="mx-auto h-full w-full max-w-6xl overflow-y-auto overscroll-contain pb-[19rem] pt-4 md:pb-[17rem]"
+        >
+          <div className="space-y-4 pb-5">
+            {visibleMessages.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                Faça uma pergunta para começar.
+              </p>
+            ) : null}
+            {visibleMessages.map((message) => (
+              <div key={message.id} className={message.role === "user" ? "flex flex-col items-end" : "flex flex-col items-start"}>
+                {message.role === "assistant" && message.id === "welcome" ? (
+                  <p className="mb-2 pl-1 text-xl font-semibold leading-tight text-foreground">
+                    Bem-vindo, como posso ajudar?
+                  </p>
+                ) : null}
+                <div
+                  className={
+                    message.role === "user"
+                      ? "max-w-[85%] rounded-[22px] bg-[#1E78FF] px-4 py-3 text-sm leading-6 text-white"
+                      : "max-w-[88%] px-0 py-0 text-sm leading-6 text-foreground"
+                  }
+                >
+                  {message.role === "user" ? (
+                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  ) : (
+                    <ChatMarkdownContent content={message.content} />
+                  )}
+                </div>
+                {message.id !== "welcome" ? (
+                  <div
+                    className={
+                      message.role === "user"
+                        ? "mt-2 flex w-full items-center justify-end gap-2 pr-2"
+                        : "mt-2 flex w-full max-w-[88%] items-center justify-between gap-2 pl-2 pr-2"
+                    }
+                  >
+                    <p className="text-[12px] text-muted-foreground">
+                      {message.role === "user" ? "você" : "Maioazul"} • {formatMessageTime(message.createdAt)}
+                    </p>
+                    {message.role === "assistant" && message.id !== "welcome" ? (
+                      <button
+                        aria-label="Copiar resposta"
+                        className="inline-flex h-6 w-6 items-center justify-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                        onClick={() => handleCopyMessage(message.id, message.content)}
+                        type="button"
+                      >
+                        {copiedMessageId === message.id ? (
+                          <Check size={13} />
+                        ) : (
+                          <Copy size={13} />
+                        )}
+                      </button>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ))}
+            {loading ? (
+              <div className="flex justify-start">
+                <div className="rounded-[22px] border border-border bg-muted px-4 py-3 text-sm text-muted-foreground">
+                  <ThinkingLoader />
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl gap-8 px-7 py-10 lg:grid-cols-[0.34fr_0.66fr]">
-        <aside className="space-y-6">
-          <div className="rounded-[24px] border border-[rgba(17,17,17,0.08)] bg-white p-6">
-            <h2 className="text-[1.25rem]">Experimente perguntar</h2>
-            <div className="mt-5 flex flex-col gap-3">
+      <div className="fixed inset-x-0 bottom-0 z-30 bg-background/96 backdrop-blur">
+        <div className="mx-auto w-full max-w-6xl px-6 pb-[calc(env(safe-area-inset-bottom)+0.55rem)] pt-2 md:px-7">
+          {showQuickPrompts ? (
+            <div className="mx-auto grid w-full max-w-6xl gap-2 md:grid-cols-2">
               {STARTER_PROMPTS.map((prompt) => (
                 <button
                   key={prompt}
-                  className="rounded-[18px] border border-[rgba(17,17,17,0.08)] px-4 py-3 text-left text-sm transition hover:border-[#111111]/20 hover:bg-[#111111]/[0.02]"
-                  onClick={() => submitMessage(prompt)}
+                  className="w-full rounded-full border border-border bg-muted px-4 py-2.5 text-center text-sm font-medium text-foreground transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-55"
+                  onClick={() => handleStarterPrompt(prompt)}
                   type="button"
                 >
                   {prompt}
                 </button>
               ))}
             </div>
-          </div>
+          ) : null}
 
-          <div className="rounded-[24px] border border-[rgba(17,17,17,0.08)] bg-[#f8f8f5] p-6">
-            <h2 className="text-[1.25rem]">Como funciona</h2>
-            <ul className="mt-5 list-disc space-y-3 pl-5 text-[14px] leading-6 text-[#111111]/72">
-              <li>O modelo corre no servidor, não no navegador.</li>
-              <li>Quando precisa de dados, o chat chama ferramentas nativas do Maioazul.</li>
-              <li>Essas ferramentas usam a mesma lógica base do servidor MCP público.</li>
-            </ul>
-          </div>
-        </aside>
-
-        <div className="rounded-[28px] border border-[rgba(17,17,17,0.08)] bg-white">
-          <div className="max-h-[62vh] space-y-5 overflow-y-auto px-6 py-6">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={
-                  message.role === "user"
-                    ? "ml-auto max-w-[85%] rounded-[22px] bg-[#111111] px-5 py-4 text-sm leading-7 text-white"
-                    : "max-w-[90%] rounded-[22px] bg-[#f5f5f1] px-5 py-4 text-sm leading-7 text-[#111111]"
-                }
-              >
-                <p className="whitespace-pre-wrap">{message.content}</p>
-                {message.toolEvents && message.toolEvents.length > 0 ? (
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {message.toolEvents.map((event, index) => (
-                      <span
-                        key={`${event.name}-${index}`}
-                        className="rounded-full border border-[rgba(17,17,17,0.08)] bg-white px-3 py-1 text-[11px] uppercase tracking-[0.06em] text-[#111111]/72"
-                      >
-                        {event.ok ? "tool" : "tool error"}: {event.name}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            ))}
-            {loading ? (
-              <div className="max-w-[90%] rounded-[22px] bg-[#f5f5f1] px-5 py-4 text-sm text-[#111111]/62">
-                a pensar...
-              </div>
-            ) : null}
-          </div>
-
-          <form className="border-t border-[rgba(17,17,17,0.08)] px-6 py-5" onSubmit={handleSubmit}>
-              <label className="sr-only" htmlFor="chat-input">
+          <form
+            className={`relative mx-auto w-full max-w-6xl rounded-[24px] border border-border bg-card py-2.5 px-3 ${
+              showQuickPrompts ? "mt-3" : "mt-0"
+            }`}
+            onSubmit={handleSubmit}
+          >
+            <label className="sr-only" htmlFor="chat-input">
               Faça uma pergunta
             </label>
             <textarea
               id="chat-input"
-              className="min-h-[110px] w-full resize-y rounded-[20px] border border-[rgba(17,17,17,0.08)] px-4 py-3 text-sm outline-none transition focus:border-[#111111]/22"
+              className="min-h-[54px] w-full resize-none bg-transparent px-1 py-1 text-sm leading-6 text-foreground outline-none placeholder:text-muted-foreground"
               onChange={(event) => setInput(event.target.value)}
-              placeholder="Pergunte sobre turismo no Maio, indicadores ou métricas do dashboard..."
+              onKeyDown={handleTextareaKeyDown}
+              placeholder="Faça uma pergunta..."
               value={input}
             />
-            <div className="mt-4 flex items-center justify-between gap-4">
-              <p className="text-[13px] text-[#111111]/56">
-                Chat no servidor com ferramentas nativas de dados do Maioazul.
-              </p>
-              <button
-                className="rounded-full bg-[#111111] px-5 py-2.5 text-sm font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
-                disabled={loading || input.trim().length === 0}
-                type="submit"
-              >
-                enviar
-              </button>
+
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <span className="inline-flex items-center gap-2 text-sm font-medium">
+                  <Sparkles size={14} />
+                  Maioazul MCP
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  aria-label="Reset chat"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground transition hover:text-foreground"
+                  onClick={resetChat}
+                  type="button"
+                >
+                  <RotateCcw size={17} />
+                </button>
+                <button
+                  aria-label="Send message"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-foreground text-background transition disabled:cursor-not-allowed disabled:opacity-45"
+                  disabled={loading || input.trim().length === 0}
+                  type="submit"
+                >
+                  <ArrowUp size={18} />
+                </button>
+              </div>
+            </div>
+            <div className="mt-1 text-[11px] text-muted-foreground">
+              enter para enviar · {remainingQuestions}/{maxQuestions} perguntas restantes
             </div>
             {error ? <p className="mt-3 text-sm text-[#b42318]">{error}</p> : null}
           </form>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

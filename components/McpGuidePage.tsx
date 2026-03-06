@@ -218,7 +218,7 @@ export default function McpGuidePage() {
             </div>
             <p className="mt-4 text-[13px] leading-6 text-[#111111]/68">
               Não é necessária chave API neste momento. As ferramentas atuais são apenas de leitura e focadas nos
-              dados de turismo do Maio e no dashboard.
+              dados de turismo, orçamento municipal, energia solar e contexto legal do Maio.
             </p>
           </div>
         </div>

@@ -25,6 +25,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   const showAppHeader = Boolean(pathname && pathname !== "/" && pathname !== "/partners");
   const [showPortalIntro, setShowPortalIntro] = useState(false);
   const [hideNav, setHideNav] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false);
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav
@@ -54,6 +55,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     const handler = (event: Event) => {
       const detail = (event as CustomEvent<{ hidden: boolean; hideHeader?: boolean }>).detail;
       setHideNav(Boolean(detail?.hidden));
+      setHideHeader(Boolean(detail?.hideHeader));
       if (detail?.hideHeader) {
         document.body.classList.add("maio-hide-header");
       } else {
@@ -105,23 +107,25 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       window.localStorage.setItem(PORTAL_INTRO_STORAGE_KEY, "1");
     }
   };
+  const contentStyle = {
+    ...(showNav && !hideNav
+      ? {
+          paddingBottom: showVoicePill
+            ? "calc(11rem + env(safe-area-inset-bottom))"
+            : "calc(6.5rem + env(safe-area-inset-bottom))",
+        }
+      : showVoicePill
+        ? { paddingBottom: "calc(5rem + env(safe-area-inset-bottom))" }
+        : {}),
+    ...(showAppHeader && !hideHeader ? { paddingTop: "3.5rem" } : {}),
+  };
 
   return (
     <>
       {showAppHeader && <AppHeader />}
       <div
         className={showNav ? "min-h-[100svh] pb-24" : "min-h-[100svh]"}
-        style={
-          showNav && !hideNav
-            ? {
-                paddingBottom: showVoicePill
-                  ? "calc(11rem + env(safe-area-inset-bottom))"
-                  : "calc(6.5rem + env(safe-area-inset-bottom))",
-              }
-            : showVoicePill
-              ? { paddingBottom: "calc(5rem + env(safe-area-inset-bottom))" }
-              : undefined
-        }
+        style={contentStyle}
       >
         {children}
       </div>

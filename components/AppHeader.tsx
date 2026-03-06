@@ -12,7 +12,8 @@ const links = [
   { href: "/dashboard", label: "Indicadores" },
   { href: "/orcamento", label: "Orçamento" },
   { href: "/documentos", label: "Documentos" },
-  { href: "/feed", label: "Feed", hidden: true },
+  { href: "/chat", label: "Chat" },
+  { href: "/feed", label: "Feed" },
 ];
 
 export default function AppHeader() {
@@ -27,11 +28,11 @@ export default function AppHeader() {
   };
 
   return (
-    <header className="maio-app-header border-b border-border bg-background/95 backdrop-blur">
+    <header className="maio-app-header fixed inset-x-0 top-0 z-[75] border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-6">
         <div className="flex min-w-0 items-center gap-3">
           <Link
-            href="/"
+            href="/dashboard"
             className="truncate font-mono text-sm font-semibold uppercase text-foreground"
           >
             Portal de dados do Maio

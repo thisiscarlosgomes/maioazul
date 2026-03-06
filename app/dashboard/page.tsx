@@ -66,26 +66,6 @@ const RECEITAS_COMPOSITION_COLORS = [
   "#22C55E",
   "#14B8A6",
 ];
-const DASHBOARD_CHAT_PROMPT_SETS = [
-  [
-    "Quais são os 3 indicadores mais relevantes da economia do Maio neste ano?",
-    "Compara Maio, Sal e Boa Vista com base nos dados disponíveis.",
-    "Que padrões aparecem quando cruzamos turismo e dados municipais?",
-    "Quais são as regras para licença de construção no Código de Postura?",
-  ],
-  [
-    "Quais indicadores mostram maior pressão turística local?",
-    "Onde o Maio apresenta maior crescimento relativo nos dados?",
-    "Que áreas merecem maior monitorização segundo os dados atuais?",
-    "Quais são as regras para licença de construção no Código de Postura?",
-  ],
-  [
-    "Resume o estado do Maio em 3 linhas com base nos dados disponíveis.",
-    "Que leitura de curto prazo os dados atuais permitem?",
-    "Que comparação entre ilhas é mais útil para contexto?",
-    "Quais são as regras para licença de construção no Código de Postura?",
-  ],
-];
 
 type YearCapabilities = {
   hasBaseline2024: boolean;
@@ -260,6 +240,44 @@ type SeasonalityApiRow = {
   q1_dormidas?: number;
   q3_dormidas?: number;
   seasonality_index?: number;
+};
+
+type MaioEnergyApiResponse = {
+  scope?: string;
+  dataset?: string;
+  entity?: {
+    country?: string;
+    island?: string;
+    municipality?: string;
+  };
+  as_of_date?: string | null;
+  units?: Record<string, string>;
+  summary?: {
+    annualDemandGwh?: {
+      planningForecast2025?: number | null;
+      impliedCurrentFromSolarPlantReport?: number | null;
+      recommendedWorkingValueGwh?: number | null;
+      lowerBoundGwh?: number | null;
+      upperBoundGwh?: number | null;
+      reason?: string;
+    };
+    solarPlantReference?: {
+      installedCapacityKwp?: number | null;
+      expectedAnnualGenerationMwh?: number | null;
+      reportedShareOfDemandPercent?: number | null;
+    };
+  };
+  source_quality?: {
+    confidence?: string;
+  };
+  sources?: Array<{
+    id?: string;
+    publisher?: string;
+    title?: string;
+    url?: string;
+  }>;
+  fallback?: boolean;
+  updatedAt?: string | null;
 };
 
 type DataTableObjectCell = {
@@ -506,6 +524,81 @@ function LocalGovernmentOverview({
         <Kpi label="Média mensal" value={formatCVE(avgMonthly)} />
         <Kpi label="Por residente" value={formatCVE(perCitizen)} />
       </div>
+    </section>
+  );
+}
+
+function MaioEnergyOverview() {
+  const { data, loading, error } = useDashboardQuery<MaioEnergyApiResponse>({
+    depsKey: "maio-energy-core",
+    staleTimeMs: 6 * 60 * 60 * 1000,
+    queryFn: async () =>
+      fetchJsonOfflineFirst<MaioEnergyApiResponse>(
+        "/api/transparencia/municipal/maio/energia"
+      ),
+  });
+
+  if (loading && !data) {
+    return (
+      <section className="space-y-2">
+        <div>
+          <h2 className="font-semibold">Energia Solar do Maio</h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="rounded-lg border border-border p-4 space-y-3">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-8 w-28" />
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (error || !data?.summary) {
+    return null;
+  }
+
+  const annual = data.summary.annualDemandGwh ?? {};
+  const solar = data.summary.solarPlantReference ?? {};
+
+  const formatFixed = (value: number | null | undefined, fractionDigits = 2) =>
+    typeof value === "number"
+      ? new Intl.NumberFormat("pt-PT", {
+          maximumFractionDigits: fractionDigits,
+          minimumFractionDigits: 0,
+        }).format(value)
+      : "—";
+
+  return (
+    <section className="space-y-2">
+      <div>
+        <h2 className="font-semibold">Energia Solar do Maio</h2>
+        <p className="text-sm text-muted-foreground">
+          Síntese energética municipal com foco em procura anual e cobertura solar.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Kpi
+          label="Procura anual (valor de trabalho)"
+          value={`${formatFixed(annual.recommendedWorkingValueGwh)} GWh`}
+        />
+        <Kpi
+          label="Produção solar anual"
+          value={`${formatFixed(solar.expectedAnnualGenerationMwh, 0)} MWh`}
+        />
+        <Kpi
+          label="Capacidade solar instalada"
+          value={`${formatFixed(solar.installedCapacityKwp, 0)} kWp`}
+        />
+        <Kpi
+          label="Cobertura estimada da procura"
+          value={`${formatFixed(solar.reportedShareOfDemandPercent, 1)}%`}
+        />
+      </div>
+
     </section>
   );
 }
@@ -1633,6 +1726,8 @@ export default function TourismPage() {
           <LocalGovernmentOverview t={t} year={year} />
         )}
 
+        {ilha === "Maio" && <MaioEnergyOverview />}
+
 
 
         {capabilities.hasBaseline2024 && (
@@ -1820,10 +1915,7 @@ export default function TourismPage() {
         ) : null}
 
       </div>
-      <DashboardChatWidget
-        quickPromptSets={DASHBOARD_CHAT_PROMPT_SETS}
-        welcomeMessage="Pergunte sobre turismo, métricas centrais, dados municipais e também sobre o Código de Postura."
-      />
+      <DashboardChatWidget />
     </div>
   );
 }

@@ -12,10 +12,10 @@ import {
 
 export const runtime = "nodejs";
 
-const DEFAULT_MODEL = process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
+const DEFAULT_MODEL = process.env.OPENAI_MODEL ?? "gpt-5.4";
 const MAX_MESSAGES = 12;
 const MAX_TOOL_ROUNDS = 6;
-const CHAT_QUERY_LIMIT = 10;
+const CHAT_QUERY_LIMIT = 5;
 const CHAT_QUERY_WINDOW_MS = 24 * 60 * 60 * 1000;
 const CHAT_RATE_LIMIT_COLLECTION = "chat_rate_limits";
 const CHAT_USAGE_STATS_COLLECTION = "chat_usage_stats";
@@ -78,8 +78,8 @@ type ChatUsageKind = "success" | "rate_limited" | "error";
 const SYSTEM_PROMPT = `
 Você é o assistente do site Maioazul.
 
-Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio, os dados comparativos entre ilhas da plataforma Maioazul, o orçamento municipal do Maio e o Código de Postura do Município do Maio.
-Use as ferramentas disponíveis quando a pergunta depender de métricas de turismo, trimestres, indicadores, métricas centrais do Maio, dados do orçamento municipal ou conteúdo do Código de Postura.
+Sua função é ajudar os utilizadores a compreender os dados de turismo do Maio, os dados comparativos entre ilhas da plataforma Maioazul, o orçamento municipal do Maio, os dados de energia solar do Maio e o Código de Postura do Município do Maio.
+Use as ferramentas disponíveis quando a pergunta depender de métricas de turismo, trimestres, indicadores, métricas centrais do Maio, dados do orçamento municipal, dados energéticos do Maio ou conteúdo do Código de Postura.
 
 Política comparativa:
 - O Maio é o foco principal.
@@ -89,6 +89,7 @@ Política comparativa:
 - Quando a pergunta for sobre orçamento, prefira a ferramenta de orçamento validado em vez de inferir a partir de texto solto.
 - Em perguntas de orçamento sem ano explícito, assume 2026 como ano base.
 - Só usa 2025 quando o utilizador pedir comparação com 2026 ou mencionar 2025 explicitamente.
+- Para perguntas de energia (procura anual, produção solar, cobertura da procura, capacidade instalada), usa a ferramenta de energia do Maio.
 - Quando a pergunta comparar 2025 e 2026, prefira a ferramenta de comparação orçamental em vez de combinar duas leituras separadas.
 - Quando a pergunta cruzar orçamento e métricas gerais do Maio, use primeiro a ferramenta de snapshot cruzado de orçamento+métricas.
 - Para perguntas sobre salário/remuneração por cargo (ex.: presidente, vereadores), use a ferramenta de compensação por cargo e responda com o valor exato da linha do cargo.
@@ -157,13 +158,22 @@ function buildChatInstructions(context: ChatContext | null) {
     contextLines.push(
       "Se a pergunta for sobre Código de Postura, regras legais, licenças, obras, coimas ou fiscalização, muda para as ferramentas legais em vez de responder só com orçamento.",
     );
+    contextLines.push(
+      "Se a pergunta cruzar orçamento com energia municipal, usa também a ferramenta de energia do Maio.",
+    );
   } else if (context.surface === "dashboard") {
     contextLines.push(
       "Contexto da interface: o utilizador está no dashboard principal de dados.",
     );
+    contextLines.push(
+      "O dashboard inclui também síntese energética municipal do Maio (procura anual, produção solar e cobertura estimada).",
+    );
   } else if (context.surface === "mcp-guide") {
     contextLines.push(
       "Contexto da interface: o utilizador está na página do guia MCP.",
+    );
+    contextLines.push(
+      "Quando pedirem exemplos de uso MCP, inclui consultas de turismo, orçamento e energia do Maio.",
     );
   } else if (context.surface === "documentos") {
     contextLines.push(
@@ -338,6 +348,7 @@ function getSurfaceKey(context: ChatContext | null) {
     case "dashboard":
     case "orcamento":
     case "mcp-guide":
+    case "documentos":
     case "generic":
       return context.surface;
     default:
@@ -1105,7 +1116,7 @@ export async function POST(request: Request) {
 
       return NextResponse.json(
         {
-          error: "Daily chat limit reached. You can send up to 10 messages every 24 hours.",
+          error: "Daily chat limit reached. You can send up to 5 messages every 24 hours.",
           limit: CHAT_QUERY_LIMIT,
           windowHours: 24,
           remaining: quota.remaining,
@@ -1161,6 +1172,7 @@ export async function POST(request: Request) {
 
     let response = await client.responses.create({
       model: DEFAULT_MODEL,
+      temperature: 0,
       instructions: buildChatInstructions(context),
       input: messages,
       tools,
@@ -1231,6 +1243,7 @@ export async function POST(request: Request) {
 
       response = await client.responses.create({
         model: DEFAULT_MODEL,
+        temperature: 0,
         previous_response_id: response.id,
         input: outputs,
         tools,

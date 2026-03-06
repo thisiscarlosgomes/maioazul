@@ -32,21 +32,6 @@ const REFRESH_INTERVAL_MS = normalizeInterval(
   DEFAULT_REFRESH_INTERVAL_MS
 );
 
-function formatWhen(value: string) {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "sem data";
-
-  const now = Date.now();
-  const diffMs = date.getTime() - now;
-  const absMs = Math.abs(diffMs);
-  const rtf = new Intl.RelativeTimeFormat("pt-PT", { numeric: "auto" });
-
-  if (absMs < 60_000) return "agora";
-  if (absMs < 60 * 60_000) return rtf.format(Math.round(diffMs / 60_000), "minute");
-  if (absMs < 24 * 60 * 60_000) return rtf.format(Math.round(diffMs / (60 * 60_000)), "hour");
-  return rtf.format(Math.round(diffMs / (24 * 60 * 60_000)), "day");
-}
-
 function formatAbsolute(value: string) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return "data inválida";
@@ -155,9 +140,7 @@ export default function FeedRollingCards() {
               index === 0 ? "border-emerald-500/70" : "border-border"
             }`}
           >
-            <div className="text-xs text-muted-foreground">
-              {formatWhen(item.updatedAt)} · {formatAbsolute(item.updatedAt)}
-            </div>
+            <div className="text-xs text-muted-foreground">{formatAbsolute(item.updatedAt)}</div>
             <h3 className="mt-3 text-base font-semibold text-foreground">{item.title}</h3>
           </Link>
         ))}

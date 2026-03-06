@@ -4,29 +4,17 @@ import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUp, ChevronDown, MessageCircle, RotateCcw, X } from "lucide-react";
+import { ArrowUp, Check, ChevronDown, Copy, MessageCircle, RotateCcw, X } from "lucide-react";
 import { useSiteChat, type SiteChatContext } from "@/lib/hooks/useSiteChat";
+import ChatMarkdownContent from "@/components/chat/ChatMarkdownContent";
+import {
+  DEFAULT_CHAT_QUICK_PROMPTS,
+  getVisibleChatQuickPrompts,
+} from "@/components/chat/defaultPrompts";
 
 const DEFAULT_QUICK_PROMPT_SETS = [
-  [
-    "Quais são os 3 indicadores mais relevantes do Maio neste ano?",
-    "Compara Maio, Sal e Boa Vista com base nos dados disponíveis.",
-    "Que tendências principais aparecem nos dados mais recentes?",
-  ],
-  [
-    "Que indicadores mostram maior variação no Maio neste momento?",
-    "Quais áreas concentram maior peso nos dados atuais?",
-    "Onde os dados mostram maior dependência estrutural?",
-  ],
-  [
-    "Resume o estado do Maio em termos de tendência, escala e variação.",
-    "Que comparação entre ilhas é mais informativa com os dados atuais?",
-    "Que conclusão principal os dados permitem tirar neste momento?",
-  ],
+  DEFAULT_CHAT_QUICK_PROMPTS,
 ];
-const MAX_VISIBLE_QUICK_PROMPTS = 3;
-const CODIGO_POSTURA_PROMPT =
-  "Quais são as regras para licença de construção no Código de Postura?";
 
 type DashboardChatWidgetProps = {
   quickPrompts?: string[];
@@ -96,6 +84,7 @@ export default function DashboardChatWidget({
     context,
   });
   const [open, setOpen] = useState(false);
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const selectedQuickPrompts = useState<string[]>(() => {
     const candidateSets = (quickPromptSets ?? []).filter((set) => Array.isArray(set) && set.length > 0);
@@ -112,27 +101,7 @@ export default function DashboardChatWidget({
     ];
   })[0];
   const visibleQuickPrompts = useState<string[]>(() => {
-    const uniquePrompts = Array.from(
-      new Set(selectedQuickPrompts.map((prompt) => prompt.trim()).filter(Boolean)),
-    );
-
-    const limited = uniquePrompts.slice(0, MAX_VISIBLE_QUICK_PROMPTS);
-    const hasCodigoPrompt = limited.some(
-      (prompt) => prompt.toLowerCase() === CODIGO_POSTURA_PROMPT.toLowerCase(),
-    );
-
-    if (hasCodigoPrompt) {
-      return limited;
-    }
-
-    if (limited.length < MAX_VISIBLE_QUICK_PROMPTS) {
-      return [...limited, CODIGO_POSTURA_PROMPT];
-    }
-
-    return [
-      ...limited.slice(0, MAX_VISIBLE_QUICK_PROMPTS - 1),
-      CODIGO_POSTURA_PROMPT,
-    ];
+    return getVisibleChatQuickPrompts(selectedQuickPrompts);
   })[0];
 
   useEffect(() => {
@@ -166,6 +135,18 @@ export default function DashboardChatWidget({
     if (event.key !== "Enter" || event.shiftKey) return;
     event.preventDefault();
     await submitMessage(input);
+  }
+
+  async function handleCopyMessage(messageId: string, content: string) {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedMessageId(messageId);
+      window.setTimeout(() => {
+        setCopiedMessageId((current) => (current === messageId ? null : current));
+      }, 1200);
+    } catch {
+      // Ignore clipboard failures.
+    }
   }
 
   if (typeof document === "undefined") {
@@ -251,25 +232,52 @@ export default function DashboardChatWidget({
                       initial={{ opacity: 0, y: 12, scale: 0.98 }}
                       transition={{ duration: 0.2, ease: "easeOut" }}
                     >
+                      {message.role === "assistant" && message.id === "welcome" ? (
+                        <p className="mb-2 pl-1 text-md font-semibold leading-tight text-[#111111]">
+                          Bem-vindo, como posso ajudar?
+                        </p>
+                      ) : null}
                       <div
                         className={
                           message.role === "user"
-                            ? "max-w-[85%] rounded-[22px] bg-[#111111] px-4 py-3 text-sm leading-6 text-white"
+                            ? "max-w-[85%] rounded-[22px] bg-[#1E78FF] px-4 py-3 text-sm leading-6 text-white"
                             : "max-w-[88%] rounded-[22px] border border-[rgba(17,17,17,0.06)] bg-[#f3f3ef] px-4 py-3 text-sm leading-6 text-[#111111]"
                         }
                       >
-                        <p className="whitespace-pre-wrap">{message.content}</p>
+                        {message.role === "user" ? (
+                          <p className="whitespace-pre-wrap">{message.content}</p>
+                        ) : (
+                          <ChatMarkdownContent content={message.content} />
+                        )}
                       </div>
-                      <p
-                        className={
-                          message.role === "user"
-                            ? "mt-2 pr-2 text-right text-[12px] text-[#111111]/46"
-                            : "mt-2 pl-2 text-[12px] text-[#111111]/46"
-                        }
-                      >
-                        {message.role === "user" ? "você" : "Maioazul"} •{" "}
-                        {formatMessageTime(message.createdAt)}
-                      </p>
+                      {message.id !== "welcome" ? (
+                        <div
+                          className={
+                            message.role === "user"
+                              ? "mt-2 flex w-full items-center justify-end gap-2 pr-2"
+                              : "mt-2 flex w-full max-w-[88%] items-center justify-between gap-2 pl-2 pr-2"
+                          }
+                        >
+                          <p className="text-[12px] text-[#111111]/46">
+                            {message.role === "user" ? "você" : "Maioazul"} •{" "}
+                            {formatMessageTime(message.createdAt)}
+                          </p>
+                          {message.role === "assistant" && message.id !== "welcome" ? (
+                            <button
+                              aria-label="Copiar resposta"
+                              className="inline-flex h-6 w-6 items-center justify-center rounded-md text-[#111111]/52 transition hover:bg-[#111111]/7 hover:text-[#111111]"
+                              onClick={() => handleCopyMessage(message.id, message.content)}
+                              type="button"
+                            >
+                              {copiedMessageId === message.id ? (
+                                <Check className="h-3.5 w-3.5" />
+                              ) : (
+                                <Copy className="h-3.5 w-3.5" />
+                              )}
+                            </button>
+                          ) : null}
+                        </div>
+                      ) : null}
                     </motion.div>
                   ))}
                 </AnimatePresence>

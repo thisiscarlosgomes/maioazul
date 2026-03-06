@@ -26,26 +26,6 @@ import type {
 } from "@/lib/budget";
 
 const FIXED_BUDGET_YEAR = "2026";
-const BUDGET_CHAT_PROMPT_SETS = [
-  [
-    "Quais são os 3 pontos mais relevantes do orçamento de 2026?",
-    "Que programas concentram mais investimento no orçamento de 2026 e qual é o seu peso relativo?",
-    "Compara 2025 vs 2026: que mudanças principais aparecem nos dados?",
-    "Quais são as regras para licença de construção no Código de Postura?",
-  ],
-  [
-    "Onde o orçamento de 2026 mostra maior dependência de financiamento externo?",
-    "Quais projetos de 2026 têm maior montante publicado?",
-    "Que rubricas de despesa de 2026 têm maior peso no total?",
-    "Quais são as regras para licença de construção no Código de Postura?",
-  ],
-  [
-    "Que leitura executiva podes fazer do orçamento de 2026 com base nos números publicados?",
-    "Qual rubrica de despesa varia mais entre 2025 e 2026?",
-    "Que tendências de financiamento se destacam em 2026?",
-    "Quais são as regras para licença de construção no Código de Postura?",
-  ],
-];
 const FUNDING_SOURCE_COLORS = [
   "#1E78FF",
   "#FFB703",
@@ -963,10 +943,7 @@ export default function OrcamentoPage() {
       </div>
       <DashboardChatWidget
         context={{ surface: "orcamento", year: Number(year) }}
-        placeholder="Pergunte sobre o orçamento..."
-        quickPromptSets={BUDGET_CHAT_PROMPT_SETS}
         storageKey="maioazul-site-chat-budget-v1"
-        welcomeMessage="Pergunte sobre o orçamento municipal do Maio de 2026, projetos, fontes de financiamento e também sobre o Código de Postura. Uso 2025 apenas quando pedir comparação com 2026."
       />
     </div>
   );

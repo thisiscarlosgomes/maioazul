@@ -27,7 +27,10 @@ export default function Page() {
   return (
     <>
       <McpGuidePage />
-      <DashboardChatWidget />
+      <DashboardChatWidget
+        context={{ surface: "mcp-guide" }}
+        welcomeMessage="Pergunte como usar o MCP do Maioazul com dados de turismo, orçamento, energia solar do Maio e Código de Postura."
+      />
     </>
   );
 }
