@@ -13,7 +13,7 @@ type EnergyPayload = {
     island?: string;
     municipality?: string;
   };
-  as_of_date?: string;
+  as_of_date?: string | null;
   units?: Record<string, string>;
   summary?: {
     annualDemandGwh?: {
@@ -32,7 +32,7 @@ type EnergyPayload = {
   };
   source_quality?: unknown;
   sources?: unknown[];
-  updatedAt?: string | Date;
+  updatedAt?: string | Date | null;
 };
 
 function normalizePayload(payload: EnergyPayload, fallback: boolean) {
@@ -151,4 +151,3 @@ export async function GET() {
     );
   }
 }
-

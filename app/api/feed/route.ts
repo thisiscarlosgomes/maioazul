@@ -27,6 +27,11 @@ export async function GET(req: Request) {
 
   try {
     const items: FeedItem[] = [...MANUAL_FEED_UPDATES]
+      .map((item) => ({
+        ...item,
+        detail: item.detail ?? "",
+        source: item.source ?? "manual",
+      }))
       .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
       .slice(0, limit);
 

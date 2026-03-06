@@ -7,7 +7,7 @@ import { CircleHelp, Menu, Sparkles } from "lucide-react";
 import { Drawer } from "vaul";
 import { ThemeToggle } from "@/components/theme-toggle";
 
-const links = [
+const links: Array<{ href: string; label: string; hidden?: boolean }> = [
   { href: "/", label: "Home" },
   { href: "/dashboard", label: "Indicadores" },
   { href: "/orcamento", label: "Orçamento" },
