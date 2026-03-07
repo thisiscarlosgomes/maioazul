@@ -147,7 +147,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       >
         <DialogContent
           aria-label="Sobre o Portal de Dados"
-          className="left-1/2 top-auto bottom-3 z-[90] w-[calc(100vw-1.5rem)] max-w-none translate-x-[-50%] translate-y-0 gap-0 rounded-2xl border-border bg-background p-0 text-left sm:bottom-auto sm:top-1/2 sm:w-full sm:max-w-xl sm:translate-y-[-50%] sm:rounded-3xl"
+          className="z-[90] w-[calc(100vw-1.5rem)] max-w-xl gap-0 rounded-2xl border-border bg-background p-0 text-left sm:rounded-3xl"
           overlayClassName="z-[89] bg-black/45 backdrop-blur-sm"
           showClose={false}
         >

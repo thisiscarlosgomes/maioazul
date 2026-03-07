@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+export const revalidate = 0;
 
 const FEEDBACK_COLLECTION = "feedback_entries";
 const ALLOWED_CATEGORIES = new Set(["sugestoes", "experiencia", "bugs"]);
@@ -12,6 +13,14 @@ type FeedbackPayload = {
   feedback?: string;
   satisfaction?: string;
   sourcePath?: string;
+};
+
+type FeedbackEntryDoc = {
+  category: string;
+  feedback: string;
+  satisfaction: string;
+  sourcePath: string;
+  createdAt: Date | string;
 };
 
 function getClientAddress(request: Request): string | null {
@@ -90,6 +99,55 @@ export async function POST(request: Request) {
       {
         error:
           error instanceof Error ? error.message : "Unexpected feedback error.",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    if (!process.env.MONGODB_URI) {
+      return NextResponse.json({ ok: true, entries: [] }, { status: 200 });
+    }
+
+    const { default: clientPromise } = await import("@/lib/mongodb");
+    const client = await clientPromise;
+    const db = client.db(process.env.MONGODB_DB || "maioazul");
+
+    const { searchParams } = new URL(request.url);
+    const rawLimit = Number(searchParams.get("limit"));
+    const limit =
+      Number.isFinite(rawLimit) && rawLimit > 0
+        ? Math.min(Math.floor(rawLimit), 200)
+        : 100;
+
+    const entries = await db
+      .collection<FeedbackEntryDoc>(FEEDBACK_COLLECTION)
+      .find(
+        {},
+        {
+          projection: {
+            _id: 0,
+            category: 1,
+            feedback: 1,
+            satisfaction: 1,
+            sourcePath: 1,
+            createdAt: 1,
+          },
+        },
+      )
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .toArray();
+
+    return NextResponse.json({ ok: true, entries }, { status: 200 });
+  } catch (error) {
+    console.error("[Feedback API:GET]", error);
+    return NextResponse.json(
+      {
+        ok: false,
+        error: error instanceof Error ? error.message : "Unexpected feedback error.",
       },
       { status: 500 },
     );

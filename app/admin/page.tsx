@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,6 +43,19 @@ type ChatUsageStatsResponse = {
   }>;
 };
 
+type FeedbackEntry = {
+  category?: string;
+  feedback?: string;
+  satisfaction?: string;
+  sourcePath?: string;
+  createdAt?: string;
+};
+
+type FeedbackResponse = {
+  ok: boolean;
+  entries?: FeedbackEntry[];
+};
+
 const formatNumber = (value: number) =>
   new Intl.NumberFormat("pt-PT").format(value);
 
@@ -58,6 +69,23 @@ const formatShortDateTime = (value: string | null | undefined) =>
         minute: "2-digit",
       }).format(new Date(value))
     : "—";
+
+const formatCategory = (value: string | null | undefined) => {
+  if (!value) return "—";
+  if (value === "sugestoes") return "Sugestões";
+  if (value === "experiencia") return "Experiência";
+  if (value === "bugs") return "Bugs";
+  return value;
+};
+
+const formatSatisfaction = (value: string | null | undefined) => {
+  if (!value) return "—";
+  if (value === "very_bad") return "Muito insatisfeito";
+  if (value === "bad") return "Insatisfeito";
+  if (value === "ok") return "Neutro";
+  if (value === "great") return "Muito satisfeito";
+  return value;
+};
 
 function LoadingGrid() {
   return (
@@ -74,6 +102,7 @@ function LoadingGrid() {
 
 export default function AdminPage() {
   const [data, setData] = useState<ChatUsageStatsResponse | null>(null);
+  const [feedbackEntries, setFeedbackEntries] = useState<FeedbackEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -81,14 +110,20 @@ export default function AdminPage() {
 
     async function load() {
       try {
-        const res = await fetch("/api/chat/stats", { cache: "no-store" });
-        const payload = (await res.json()) as ChatUsageStatsResponse;
+        const [statsRes, feedbackRes] = await Promise.all([
+          fetch("/api/chat/stats", { cache: "no-store" }),
+          fetch("/api/feedback?limit=100", { cache: "no-store" }),
+        ]);
+        const payload = (await statsRes.json()) as ChatUsageStatsResponse;
+        const feedbackPayload = (await feedbackRes.json()) as FeedbackResponse;
         if (!cancelled) {
           setData(payload);
+          setFeedbackEntries(feedbackPayload.entries ?? []);
         }
       } catch {
         if (!cancelled) {
           setData({ ok: false, global: null, recentDaily: [] });
+          setFeedbackEntries([]);
         }
       } finally {
         if (!cancelled) {
@@ -106,13 +141,6 @@ export default function AdminPage() {
 
   const global = data?.global;
   const recentDaily = data?.recentDaily ?? [];
-  const surfaces = global?.by_surface
-    ? Object.entries(global.by_surface).sort((a, b) => {
-        const aCount = a[1]?.requests_total ?? 0;
-        const bCount = b[1]?.requests_total ?? 0;
-        return bCount - aCount;
-      })
-    : [];
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -136,16 +164,6 @@ export default function AdminPage() {
                   </p>
                 </div>
               </div>
-
-              <div className="flex items-center gap-3">
-                <Link
-                  href="/dashboard"
-                  className="inline-flex h-9 items-center rounded-md border border-border px-3 text-sm text-foreground transition hover:bg-accent"
-                >
-                  Dashboard
-                </Link>
-                <ThemeToggle />
-              </div>
             </div>
           </div>
         </div>
@@ -161,10 +179,6 @@ export default function AdminPage() {
               <KpiStat label="Pedidos totais" value={formatNumber(global?.requests_total ?? 0)} />
               <KpiStat label="Utilizadores" value={formatNumber(global?.total_users ?? 0)} />
               <KpiStat
-                label="Utilizadores (48h)"
-                value={formatNumber(global?.active_users_48h ?? 0)}
-              />
-              <KpiStat
                 label="Mensagens assistente"
                 value={formatNumber(global?.assistant_messages_total ?? 0)}
               />
@@ -172,99 +186,95 @@ export default function AdminPage() {
                 label="Chamadas de ferramenta"
                 value={formatNumber(global?.tool_calls_total ?? 0)}
               />
-              <KpiStat
-                label="Última mensagem"
-                value={formatShortDateTime(global?.lastMessageAt)}
-              />
             </KpiGrid>
           )}
         </SectionBlock>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Pedidos por dia</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-lg border border-border overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Data</TableHead>
-                      <TableHead className="text-right">Pedidos</TableHead>
-                      <TableHead className="text-right">Sucesso</TableHead>
-                      <TableHead className="text-right">Limite</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {recentDaily.length ? (
-                      recentDaily.map((row) => (
-                        <TableRow key={row.date}>
-                          <TableCell>{row.date ?? "—"}</TableCell>
-                          <TableCell className="text-right">
-                            {formatNumber(row.requests_total ?? 0)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {formatNumber(row.successful_requests_total ?? 0)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {formatNumber(row.rate_limited_requests_total ?? 0)}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={4} className="text-center text-muted-foreground">
-                          Sem atividade registada ainda.
+        <Card>
+          <CardHeader>
+            <CardTitle>Pedidos por dia</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead className="text-right">Pedidos</TableHead>
+                    <TableHead className="text-right">Sucesso</TableHead>
+                    <TableHead className="text-right">Limite</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {recentDaily.length ? (
+                    recentDaily.map((row) => (
+                      <TableRow key={row.date}>
+                        <TableCell>{row.date ?? "—"}</TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(row.requests_total ?? 0)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(row.successful_requests_total ?? 0)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(row.rate_limited_requests_total ?? 0)}
                         </TableCell>
                       </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center text-muted-foreground">
+                        Sem atividade registada ainda.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Superfícies</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-lg border border-border overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Origem</TableHead>
-                      <TableHead className="text-right">Pedidos</TableHead>
-                      <TableHead className="text-right">Ferramentas</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {surfaces.length ? (
-                      surfaces.map(([surface, stats]) => (
-                        <TableRow key={surface}>
-                          <TableCell>{surface}</TableCell>
-                          <TableCell className="text-right">
-                            {formatNumber(stats.requests_total ?? 0)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {formatNumber(stats.tool_calls_total ?? 0)}
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell colSpan={3} className="text-center text-muted-foreground">
-                          Sem superfícies registadas ainda.
+        <Card>
+          <CardHeader>
+            <CardTitle>Feedback recebido</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead>Categoria</TableHead>
+                    <TableHead>Satisfação</TableHead>
+                    <TableHead>Origem</TableHead>
+                    <TableHead>Feedback</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {feedbackEntries.length ? (
+                    feedbackEntries.map((entry, index) => (
+                      <TableRow key={`${entry.createdAt ?? "unknown"}-${index}`}>
+                        <TableCell>{formatShortDateTime(entry.createdAt)}</TableCell>
+                        <TableCell>{formatCategory(entry.category)}</TableCell>
+                        <TableCell>{formatSatisfaction(entry.satisfaction)}</TableCell>
+                        <TableCell>{entry.sourcePath || "—"}</TableCell>
+                        <TableCell className="min-w-[320px] whitespace-pre-wrap break-words">
+                          {entry.feedback || "—"}
                         </TableCell>
                       </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center text-muted-foreground">
+                        Sem feedback registado ainda.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

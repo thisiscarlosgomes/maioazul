@@ -28,7 +28,7 @@ type UseSiteChatOptions = {
 };
 
 const DEFAULT_WELCOME_MESSAGE =
-  "Pergunte sobre turismo, orçamento municipal, energia solar do Maio e também sobre o Código de Postura do Maio.";
+  "Pergunte sobre turismo, orçamento municipal, Quadro de compensação também sobre o Código de Postura do Maio.";
 const STORAGE_KEY = "maioazul-site-chat-v2";
 const CHAT_QUERY_LIMIT = 5;
 
