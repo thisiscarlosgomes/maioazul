@@ -11,6 +11,15 @@ export type ManualFeedItem = {
 // Manual feed entries. Add new items here when updates are provided.
 export const MANUAL_FEED_UPDATES: ManualFeedItem[] = [
   {
+    id: "manual-2026-03-06-receitas-dados-mais-recentes",
+    title: "Dados mais recentes de receitas",
+    detail: "Atualização manual",
+    source: "manual",
+    updatedAt: "2026-03-06T10:00:00+08:00",
+    href: "/orcamento",
+    tone: "data",
+  },
+  {
     id: "manual-2026-03-06-programa-sustentabilidade-energetica-maio",
     title: "Dados da Sustentabilidade Energética",
     detail: "Atualização manual",
@@ -25,6 +34,15 @@ export const MANUAL_FEED_UPDATES: ManualFeedItem[] = [
     detail: "Atualização manual",
     source: "manual",
     updatedAt: "2026-03-05T09:00:00+08:00",
+    href: "/orcamento",
+    tone: "data",
+  },
+  {
+    id: "manual-2026-03-04-transferencias-estado-municipio-maio",
+    title: "Transferências do Estado para o município do Maio",
+    detail: "Atualização manual",
+    source: "manual",
+    updatedAt: "2026-03-04T10:00:00+08:00",
     href: "/orcamento",
     tone: "data",
   },

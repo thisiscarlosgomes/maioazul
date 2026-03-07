@@ -17,7 +17,7 @@ export default function FeedPage() {
         <div className="pt-6">
           <h1 className="text-xl font-semibold">Feed</h1>
           <p className="hidden text-sm text-muted-foreground sm:block">
-            Atualizações do portal de dados em tempo real.
+            Atualizações do portal de dados
           </p>
         </div>
         <FeedRollingCards />

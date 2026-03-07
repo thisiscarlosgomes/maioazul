@@ -8,6 +8,12 @@ import AppHeader from "@/components/AppHeader";
 import { Pause, Play } from "lucide-react";
 import { pauseVoice, resumeVoice, stopVoice, useVoiceState } from "@/lib/voice";
 import { useLang } from "@/lib/lang";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
 const PORTAL_INTRO_STORAGE_KEY = "maio-portal-intro-seen-v1";
@@ -129,25 +135,32 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       >
         {children}
       </div>
-      {showPortalIntro && (
-        <div
-          className="fixed inset-0 z-[90] flex items-end bg-black/45 p-3 backdrop-blur-sm sm:items-center sm:justify-center sm:p-6"
-          onClick={dismissPortalIntro}
+      <Dialog
+        open={showPortalIntro}
+        onOpenChange={(nextOpen) => {
+          if (nextOpen) {
+            setShowPortalIntro(true);
+            return;
+          }
+          dismissPortalIntro();
+        }}
+      >
+        <DialogContent
+          aria-label="Sobre o Portal de Dados"
+          className="left-1/2 top-auto bottom-3 z-[90] w-[calc(100vw-1.5rem)] max-w-none translate-x-[-50%] translate-y-0 gap-0 rounded-2xl border-border bg-background p-0 text-left sm:bottom-auto sm:top-1/2 sm:w-full sm:max-w-xl sm:translate-y-[-50%] sm:rounded-3xl"
+          overlayClassName="z-[89] bg-black/45 backdrop-blur-sm"
+          showClose={false}
         >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Sobre o Portal de Dados"
-            className="w-full rounded-2xl border border-border bg-background p-5 sm:max-w-xl sm:rounded-3xl sm:p-6"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <h2 className="text-lg font-semibold sm:text-xl">O que é o Portal de Dados do Maio?</h2>
-            <p className="mt-3 text-sm text-muted-foreground sm:text-base">
+          <div className="p-5 sm:p-6">
+            <DialogTitle className="text-lg font-semibold leading-tight sm:text-xl">
+              O que é o Portal de Dados do Maio?
+            </DialogTitle>
+            <DialogDescription className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
               Pela primeira vez, informação pública sobre a Ilha do Maio está organizada num só lugar.
               O portal reúne indicadores, orçamento municipal, documentos públicos e dados territoriais.
               Com apoio de inteligência artificial, qualquer cidadão pode explorar os dados, acompanhar
               tendências e compreender melhor o desenvolvimento da ilha.
-            </p>
+            </DialogDescription>
             <div className="mt-5">
               <button
                 type="button"
@@ -159,8 +172,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
             </div>
             <div className="mt-3 text-xs opacity-50">Um projeto publico da maioazul.com</div>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
       {!hideNav && showVoicePill && (
         <div className="fixed inset-x-0 z-50" style={{ bottom: voicePillBottom }}>
           <div className="mx-auto max-w-3xl px-10">

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { CircleHelp, Menu, Sparkles } from "lucide-react";
 import { Drawer } from "vaul";
 import { ThemeToggle } from "@/components/theme-toggle";
+import FeedbackDialog from "@/components/FeedbackDialog";
 
 const links: Array<{ href: string; label: string; hidden?: boolean }> = [
   { href: "/", label: "Home" },
@@ -20,6 +21,7 @@ export default function AppHeader() {
   const pathname = usePathname();
   const onDashboard = pathname === "/dashboard";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
   const openSparkles = () => {
     window.dispatchEvent(new CustomEvent("maio-open-sparkles"));
   };
@@ -28,8 +30,9 @@ export default function AppHeader() {
   };
 
   return (
-    <header className="maio-app-header fixed inset-x-0 top-0 z-[75] border-b border-border bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-6">
+    <>
+      <header className="maio-app-header fixed inset-x-0 top-0 z-[75] border-b border-border bg-background/95 backdrop-blur">
+        <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-4 px-6">
         <div className="flex min-w-0 items-center gap-3">
           <Link
             href="/dashboard"
@@ -78,6 +81,17 @@ export default function AppHeader() {
                   })}
                 </nav>
                 <div className="mt-5 flex items-center gap-2 border-t border-border pt-4">
+                  <button
+                    type="button"
+                    aria-label="Open feedback dialog"
+                    onClick={() => {
+                      setFeedbackOpen(true);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="inline-flex rounded-xl border border-border bg-background px-3 py-2 text-sm text-muted-foreground transition hover:text-foreground"
+                  >
+                    Deixar feedback
+                  </button>
                   <button
                     type="button"
                     aria-label="Open portal info"
@@ -138,6 +152,14 @@ export default function AppHeader() {
           </nav>
           <button
             type="button"
+            aria-label="Open feedback dialog"
+            onClick={() => setFeedbackOpen(true)}
+            className="hidden rounded-md border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground transition hover:text-foreground md:inline-flex"
+          >
+            Deixar feedback
+          </button>
+          <button
+            type="button"
             aria-label="Open portal info"
             onClick={openPortalIntro}
             className="hidden h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground transition hover:text-foreground md:inline-flex"
@@ -163,6 +185,12 @@ export default function AppHeader() {
           </div>
         </div>
       </div>
-    </header>
+      </header>
+      <FeedbackDialog
+        open={feedbackOpen}
+        onOpenChange={setFeedbackOpen}
+        sourcePath={pathname || "unknown"}
+      />
+    </>
   );
 }
