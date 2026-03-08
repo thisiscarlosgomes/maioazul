@@ -168,7 +168,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
           <section className="pointer-events-auto fixed bottom-0 right-0 flex h-[88dvh] w-full max-w-none flex-col rounded-t-[24px] border border-[rgba(17,17,17,0.08)] bg-white text-[#111111] shadow-[0_32px_90px_rgba(0,0,0,0.18)] sm:bottom-6 sm:right-6 sm:h-[min(78vh,720px)] sm:w-[min(92vw,420px)] sm:rounded-[28px] sm:border">
             <header className="flex items-center justify-between border-b border-[rgba(17,17,17,0.08)] px-4 py-4 sm:px-5">
               <div>
-                <p className="text-base font-semibold">Turtle AI</p>
+                <p className="text-base font-semibold">Maioazul AI</p>
                 <p className="text-sm text-[#111111]/52">Assistente</p>
               </div>
               <div className="flex items-center gap-1">

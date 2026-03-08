@@ -26,6 +26,7 @@ import { useFavorites } from "@/lib/favorites";
 import { fetchJsonOfflineFirst } from "@/lib/offline";
 import { useLang } from "@/lib/lang";
 import { setCachedPlaces } from "@/lib/places-cache";
+import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 
 type Place = {
   id: string;
@@ -624,11 +625,15 @@ export default function PlacesIndexPage() {
   }, [places, query, activeTag, activeIntent, lang]);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-8 pb-16">
+    <>
+      <SecondaryPageHeader
+        title={{ pt: "Todos os lugares", en: "All places" }}
+        backHref="/map"
+      />
+      <div className="max-w-5xl mx-auto px-4 pt-6 pb-16">
       <div className="flex items-start justify-between gap-3 maio-fade-up">
         <div>
-          <h1 className="text-2xl font-semibold">{copy[lang].title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {copy[lang].subtitle}
           </p>
         </div>
@@ -787,6 +792,7 @@ export default function PlacesIndexPage() {
             : "Unable to load places right now."}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

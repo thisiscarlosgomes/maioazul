@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useLang } from "@/lib/lang";
+import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 
 export default function ExperiencesPage() {
   const [lang] = useLang();
@@ -151,12 +152,14 @@ export default function ExperiencesPage() {
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
+    <>
+      <SecondaryPageHeader
+        title={{ pt: "Experiências em Maio", en: "Experiences in Maio" }}
+        backHref="/map"
+      />
+      <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
       <div className="w-full">
-        <h1 className="text-2xl font-semibold">
-          {copy[lang].title}
-        </h1>
-        <div className="mt-4">
+        <div className="mt-1">
           <div className="text-sm font-semibold">{copy[lang].aboutTitle}</div>
           <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
             {copy[lang].aboutBody}
@@ -219,6 +222,7 @@ export default function ExperiencesPage() {
           {copy[lang].contact}
         </a>
       </div> */}
-    </div>
+      </div>
+    </>
   );
 }

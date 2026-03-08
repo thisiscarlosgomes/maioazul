@@ -39,6 +39,7 @@ import { hasVoiceForId, pauseVoice, playVoice, resumeVoice, setVoiceSpeed, stopV
 import { fetchJsonOfflineFirst } from "@/lib/offline";
 import { useLang } from "@/lib/lang";
 import { getCachedPlaces, setCachedPlaces } from "@/lib/places-cache";
+import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 
 type Place = {
   id: string;
@@ -339,31 +340,37 @@ export default function PlacePage() {
 
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto pb-32">
-        <div className="relative aspect-[16/9] rounded-2xl bg-muted animate-pulse" />
-        <div className="px-4 pt-6 space-y-3">
-          <div className="h-6 w-2/3 rounded-full bg-muted animate-pulse" />
-          <div className="h-4 w-1/2 rounded-full bg-muted animate-pulse" />
-          <div className="mt-6 h-4 w-full rounded-full bg-muted animate-pulse" />
-          <div className="h-4 w-5/6 rounded-full bg-muted animate-pulse" />
-          <div className="h-4 w-4/6 rounded-full bg-muted animate-pulse" />
-          <div className="mt-6 h-5 w-32 rounded-full bg-muted animate-pulse" />
-          <div className="h-56 w-full rounded-lg bg-muted animate-pulse" />
-          <div className="mt-6 h-5 w-28 rounded-full bg-muted animate-pulse" />
-          <div className="flex gap-4 overflow-hidden">
-            {Array.from({ length: 2 }).map((_, i) => (
-              <div
-                key={`nearby-skel-${i}`}
-                className="min-w-[70%] rounded-2xl border bg-background p-3"
-              >
-                <div className="h-36 w-full rounded-2xl bg-muted animate-pulse" />
-                <div className="mt-3 h-4 w-3/5 rounded-full bg-muted animate-pulse" />
-                <div className="mt-2 h-3 w-full rounded-full bg-muted animate-pulse" />
-              </div>
-            ))}
+      <>
+        <SecondaryPageHeader
+          title={{ pt: "Lugar", en: "Place" }}
+          backHref="/places"
+        />
+        <div className="max-w-3xl mx-auto pb-32">
+          <div className="relative aspect-[16/9] rounded-2xl bg-muted animate-pulse" />
+          <div className="px-4 pt-6 space-y-3">
+            <div className="h-6 w-2/3 rounded-full bg-muted animate-pulse" />
+            <div className="h-4 w-1/2 rounded-full bg-muted animate-pulse" />
+            <div className="mt-6 h-4 w-full rounded-full bg-muted animate-pulse" />
+            <div className="h-4 w-5/6 rounded-full bg-muted animate-pulse" />
+            <div className="h-4 w-4/6 rounded-full bg-muted animate-pulse" />
+            <div className="mt-6 h-5 w-32 rounded-full bg-muted animate-pulse" />
+            <div className="h-56 w-full rounded-lg bg-muted animate-pulse" />
+            <div className="mt-6 h-5 w-28 rounded-full bg-muted animate-pulse" />
+            <div className="flex gap-4 overflow-hidden">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div
+                  key={`nearby-skel-${i}`}
+                  className="min-w-[70%] rounded-2xl border bg-background p-3"
+                >
+                  <div className="h-36 w-full rounded-2xl bg-muted animate-pulse" />
+                  <div className="mt-3 h-4 w-3/5 rounded-full bg-muted animate-pulse" />
+                  <div className="mt-2 h-3 w-full rounded-full bg-muted animate-pulse" />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -442,7 +449,12 @@ export default function PlacePage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto pb-36">
+    <>
+      <SecondaryPageHeader
+        title={pick(place.name) || (lang === "pt" ? "Lugar" : "Place")}
+        backHref="/places"
+      />
+      <div className="max-w-3xl mx-auto pb-36">
       {/* HERO */}
       <div className="relative aspect-[16/9]">
         <img
@@ -451,14 +463,7 @@ export default function PlacePage() {
           className="absolute inset-0 h-full w-full object-cover"
           decoding="async"
         />
-        <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3">
-          <Link
-            href="/map"
-            aria-label="Close"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur hover:bg-black/55 active:scale-[0.95]"
-          >
-            <X className="h-4 w-4" />
-          </Link>
+        <div className="absolute inset-x-0 top-0 flex items-center justify-end p-3">
           <button
             type="button"
                       aria-label={
@@ -1000,7 +1005,8 @@ export default function PlacePage() {
         </Drawer.Root>
       )}
 
-    </div>
+      </div>
+    </>
   );
 }
 

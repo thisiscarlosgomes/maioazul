@@ -37,6 +37,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
             : pathname?.startsWith("/favorites")
               ? "favorites"
               : "guide";
+  const showChatWidget = pathname !== "/";
   const [hideNav, setHideNav] = useState(false);
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
@@ -584,7 +585,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
         </div>
       )}
       {showNav && !hideNav && <BottomNav />}
-      <GuideChatWidget context={{ surface: chatSurface }} />
+      {showChatWidget && <GuideChatWidget context={{ surface: chatSurface }} />}
     </>
   );
 }

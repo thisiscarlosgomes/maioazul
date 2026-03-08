@@ -2842,11 +2842,13 @@ export default function MapPage() {
 
             {!isFullscreen && (
                 <div className="maio-map-header fixed inset-x-0 top-0 z-40 bg-background/90 backdrop-blur">
-                    <div className="max-w-6xl mx-auto px-6 py-4 flex items-start justify-between">
+                    <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
                         <div>
-                            <h1 className="text-xl font-semibold">
-                                {copy[lang].title}
-                            </h1>
+                            <img
+                                src="/visitmaio.svg"
+                                alt="Visit Maio"
+                                className="h-5 w-auto"
+                            />
                         </div>
 
                         <div className="flex items-center gap-2">
@@ -3370,7 +3372,7 @@ export default function MapPage() {
                         <div className="mt-6">
                             <div className="rounded-3xl border border-border bg-background p-6 shadow-sm maio-fade-up">
                                 <div className="text-lg font-semibold">{copy[lang].servicesTitle}</div>
-                                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                                     <button
                                         type="button"
                                         onClick={() => setCurrencyOpen(true)}

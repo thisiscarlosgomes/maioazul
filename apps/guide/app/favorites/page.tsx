@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { useFavorites } from "@/lib/favorites";
 import { useLang } from "@/lib/lang";
 import Link from "next/link";
+import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 
 type Place = {
   id: string;
@@ -54,9 +55,13 @@ export default function FavoritesPage() {
   const favorites = places.filter((place) => favoritesSet.has(place.id));
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
+    <>
+      <SecondaryPageHeader
+        title={{ pt: "Favoritos", en: "Favorites" }}
+        backHref="/map"
+      />
+      <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
       <div>
-        <h1 className="text-2xl font-semibold">{copy[lang].title}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {copy[lang].subtitle}
         </p>
@@ -113,7 +118,7 @@ export default function FavoritesPage() {
         </div>
       </div>
 
-      <div className="mt-12 flex flex-col items-center border-t pt-6 text-center text-xs text-muted-foreground">
+      <div className="mt-12 flex flex-col items-center pt-6 text-center text-xs text-muted-foreground">
         <a
           href="https://maioazul.com"
           target="_blank"
@@ -123,10 +128,10 @@ export default function FavoritesPage() {
           {copy[lang].developmentBy} maiozul.com
         </a>
 
-        <div className="mt-5 text-[11px] font-semibold uppercase tracking-wide text-foreground/70">
+        <div className="hidden mt-5 text-[11px] font-semibold uppercase tracking-wide text-foreground/70">
           {copy[lang].credits}
         </div>
-        <div className="mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 uppercase">
+        <div className="hidden mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 uppercase">
           <span>FMB</span>
           <span>·</span>
           <span>sdtibm</span>
@@ -136,6 +141,7 @@ export default function FavoritesPage() {
           <span>Governo de Cabo Verde</span>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
