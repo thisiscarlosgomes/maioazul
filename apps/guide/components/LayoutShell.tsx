@@ -10,6 +10,7 @@ import { useLang } from "@/lib/lang";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Drawer } from "vaul";
 import { useRef } from "react";
+import GuideChatWidget from "@/components/chat/GuideChatWidget";
 
 const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
 
@@ -24,6 +25,18 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const allowIntroDrawer = pathname !== "/";
   const showNav = shouldShowNav(pathname);
+  const chatSurface =
+    pathname?.startsWith("/mcp-guide") || pathname?.startsWith("/mpc-guide")
+      ? "mcp-guide"
+      : pathname?.startsWith("/map")
+        ? "map"
+        : pathname?.startsWith("/places")
+          ? "places"
+          : pathname?.startsWith("/experiences")
+            ? "experiences"
+            : pathname?.startsWith("/favorites")
+              ? "favorites"
+              : "guide";
   const [hideNav, setHideNav] = useState(false);
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
@@ -571,6 +584,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
         </div>
       )}
       {showNav && !hideNav && <BottomNav />}
+      <GuideChatWidget context={{ surface: chatSurface }} />
     </>
   );
 }
