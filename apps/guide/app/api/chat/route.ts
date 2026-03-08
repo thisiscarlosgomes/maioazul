@@ -321,8 +321,22 @@ export async function POST(request: Request) {
         });
       }
 
+      const functionToolCalls = toolCalls.filter(
+        (
+          call,
+        ): call is OpenAI.Chat.Completions.ChatCompletionMessageFunctionToolCall =>
+          call.type === "function",
+      );
+      if (functionToolCalls.length === 0) {
+        const text = readAssistantText(assistant);
+        return NextResponse.json({
+          message: text || "I couldn't produce an answer.",
+          toolEvents,
+        });
+      }
+
       const currentSignature = JSON.stringify(
-        toolCalls.map((call) => ({
+        functionToolCalls.map((call) => ({
           name: call.function.name,
           arguments: call.function.arguments,
         })),
@@ -337,10 +351,10 @@ export async function POST(request: Request) {
       conversation.push({
         role: "assistant",
         content: assistant.content ?? "",
-        tool_calls: toolCalls,
+        tool_calls: functionToolCalls,
       });
 
-      for (const toolCall of toolCalls) {
+      for (const toolCall of functionToolCalls) {
         const name = toolCall.function.name as GuideToolName;
         const rawArgs = safeParseArguments(toolCall.function.arguments ?? "{}");
 
