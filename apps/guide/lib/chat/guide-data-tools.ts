@@ -264,11 +264,12 @@ export async function executeGuideTool(request: Request, name: GuideToolName, ra
 
   switch (name) {
     case "get_places": {
+      const placeArgs = args as z.infer<typeof toolSchemas.get_places>;
       const payload = await fetchJson(request, "/api/places");
       const list = asArray<Record<string, unknown>>(payload);
-      const query = normalizeText(args.query);
-      const category = normalizeText(args.category);
-      const tag = normalizeText(args.tag);
+      const query = normalizeText(placeArgs.query);
+      const category = normalizeText(placeArgs.category);
+      const tag = normalizeText(placeArgs.tag);
 
       const filtered = list.filter((place) => {
         const placeName = normalizeText(pickName(place.name));
@@ -309,12 +310,13 @@ export async function executeGuideTool(request: Request, name: GuideToolName, ra
 
       return {
         total: filtered.length,
-        items: filtered.slice(0, args.limit),
+        items: filtered.slice(0, placeArgs.limit),
       };
     }
 
     case "get_place_detail": {
-      return fetchJson(request, `/api/places/${encodeURIComponent(args.id)}`);
+      const detailArgs = args as z.infer<typeof toolSchemas.get_place_detail>;
+      return fetchJson(request, `/api/places/${encodeURIComponent(detailArgs.id)}`);
     }
 
     case "get_maio_weather":
@@ -333,20 +335,29 @@ export async function executeGuideTool(request: Request, name: GuideToolName, ra
       return fetchJson(request, "/api/schedules/flights");
 
     case "get_tourism_overview":
+      {
+        const overviewArgs = args as z.infer<typeof toolSchemas.get_tourism_overview>;
       return fetchJson(request, "/api/transparencia/turismo/overview", {
-        year: args.year,
+        year: overviewArgs.year,
       });
+      }
 
     case "get_tourism_quarters":
+      {
+        const quarterArgs = args as z.infer<typeof toolSchemas.get_tourism_quarters>;
       return fetchJson(request, "/api/transparencia/turismo/quarters", {
-        year: args.year,
+        year: quarterArgs.year,
       });
+      }
 
     case "get_maio_core_metrics":
+      {
+        const metricsArgs = args as z.infer<typeof toolSchemas.get_maio_core_metrics>;
       return fetchJson(request, "/api/transparencia/municipal/maio/core-metrics", {
-        year: args.year,
-        category: args.category,
-        metric: args.metric,
+        year: metricsArgs.year,
+        category: metricsArgs.category,
+        metric: metricsArgs.metric,
       });
+      }
   }
 }
