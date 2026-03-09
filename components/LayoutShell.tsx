@@ -15,7 +15,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
+const navRoutes = ["/places", "/experiences", "/favorites"];
 const PORTAL_INTRO_STORAGE_KEY = "maio-portal-intro-seen-v1";
 
 function shouldShowNav(pathname: string | null) {
