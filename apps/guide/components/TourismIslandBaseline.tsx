@@ -136,7 +136,7 @@ function Kpi({
   value: string;
 }) {
   return (
-    <div className="rounded-lg border border-border bg-card p-4">
+    <div className="rounded-lg border border-border p-4">
       <div className="text-xs text-muted-foreground">
         {label}
       </div>
