@@ -37,8 +37,12 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
             : pathname?.startsWith("/favorites")
               ? "favorites"
               : "guide";
-  const showChatWidget = pathname !== "/";
   const [hideNav, setHideNav] = useState(false);
+  const [isAnyVaulOpen, setIsAnyVaulOpen] = useState(false);
+  const showChatWidget =
+    pathname !== "/" &&
+    !(pathname?.startsWith("/map") && hideNav) &&
+    !isAnyVaulOpen;
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav
@@ -102,6 +106,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
           "Pin places to return later.",
           "Connect with locals — feel the morabeza.",
         ],
+        voiceGuideFallback: "Voice guide",
+        preparingAudio: "Preparing audio...",
       },
       pt: {
         nowPlaying: "A tocar",
@@ -134,6 +140,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
           "Fixe lugares para voltar depois.",
           "Conecte-se com os locais — sinta a morabeza.",
         ],
+        voiceGuideFallback: "Guia de voz",
+        preparingAudio: "A preparar áudio...",
       },
     }),
     []
@@ -354,6 +362,28 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     navigator.serviceWorker.register("/sw.js").catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const hasOpenVaul = () => {
+      const drawerOpen = document.querySelector('[data-vaul-drawer][data-state="open"]');
+      const overlayOpen = document.querySelector('[data-vaul-overlay][data-state="open"]');
+      return Boolean(drawerOpen || overlayOpen);
+    };
+
+    const sync = () => setIsAnyVaulOpen(hasOpenVaul());
+
+    const observer = new MutationObserver(sync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-state"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Drawer.Root
@@ -527,14 +557,14 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
                 <Link
                   href={`/places/${voiceState.placeId}`}
                   prefetch
-                  aria-label={voiceState.title || "Voice guide"}
+                  aria-label={voiceState.title || copy[lang].voiceGuideFallback}
                   className="min-w-0 flex-1 cursor-pointer"
                 >
                   <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
                     {copy[lang].nowPlaying}
                   </div>
                   <div className="text-sm font-semibold text-foreground truncate">
-                    {voiceState.title || "Voice guide"}
+                    {voiceState.title || copy[lang].voiceGuideFallback}
                   </div>
                 </Link>
               ) : (
@@ -543,14 +573,14 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
                     {copy[lang].nowPlaying}
                   </div>
                   <div className="text-sm font-semibold text-foreground truncate">
-                    {voiceState.title || "Voice guide"}
+                    {voiceState.title || copy[lang].voiceGuideFallback}
                   </div>
                 </div>
               )}
               <div className="flex items-center gap-2">
                 {voiceState.status === "loading" ? (
                   <div className="text-xs text-muted-foreground">
-                    {lang === "pt" ? "A preparar áudio..." : "Preparing audio..."}
+                    {copy[lang].preparingAudio}
                   </div>
                 ) : voiceState.status === "paused" ? (
                   <button

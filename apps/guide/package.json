@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "import:airbnb": "node scripts/import-airbnb.mjs",
+    "enrich:airbnb-images": "node scripts/enrich-airbnb-images.mjs",
+    "upload:stay-cloudinary": "node scripts/upload-stay-images-to-cloudinary.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",

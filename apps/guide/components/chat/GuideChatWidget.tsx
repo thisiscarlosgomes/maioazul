@@ -19,18 +19,19 @@ import { useGuideChat, type GuideChatContext } from "@/lib/hooks/useGuideChat";
 import ChatMarkdownContent from "@/components/chat/ChatMarkdownContent";
 import Link from "next/link";
 import Image from "next/image";
+import { useLang } from "@/lib/lang";
 
 type GuideChatWidgetProps = {
   context?: GuideChatContext;
   welcomeMessage?: string;
 };
 
-function formatMessageTime(iso: string) {
+function formatMessageTime(iso: string, lang: "pt" | "en") {
   const date = new Date(iso);
   const diffMs = Date.now() - date.getTime();
   const diffMinutes = Math.max(0, Math.floor(diffMs / 60000));
 
-  if (diffMinutes < 1) return "now";
+  if (diffMinutes < 1) return lang === "pt" ? "agora" : "now";
   if (diffMinutes < 60) return `${diffMinutes}m`;
 
   const diffHours = Math.floor(diffMinutes / 60);
@@ -54,20 +55,21 @@ function ThinkingLoader() {
   );
 }
 
-function weatherLabelFromCode(code?: number) {
-  if (code === undefined) return "Weather";
-  if (code === 0) return "Clear";
-  if ([1, 2].includes(code)) return "Partly cloudy";
-  if (code === 3) return "Cloudy";
-  if ([45, 48].includes(code)) return "Fog";
-  if ([51, 53, 55, 56, 57].includes(code)) return "Drizzle";
-  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return "Rain";
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return "Snow";
-  if ([95, 96, 99].includes(code)) return "Thunder";
-  return "Weather";
+function weatherLabelFromCode(code: number | undefined, lang: "pt" | "en") {
+  if (code === undefined) return lang === "pt" ? "Tempo" : "Weather";
+  if (code === 0) return lang === "pt" ? "Limpo" : "Clear";
+  if ([1, 2].includes(code)) return lang === "pt" ? "Parcialmente nublado" : "Partly cloudy";
+  if (code === 3) return lang === "pt" ? "Nublado" : "Cloudy";
+  if ([45, 48].includes(code)) return lang === "pt" ? "Nevoeiro" : "Fog";
+  if ([51, 53, 55, 56, 57].includes(code)) return lang === "pt" ? "Chuvisco" : "Drizzle";
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return lang === "pt" ? "Chuva" : "Rain";
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return lang === "pt" ? "Neve" : "Snow";
+  if ([95, 96, 99].includes(code)) return lang === "pt" ? "Trovoada" : "Thunder";
+  return lang === "pt" ? "Tempo" : "Weather";
 }
 
 export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWidgetProps) {
+  const [lang] = useLang();
   const { messages, input, setInput, loading, error, submitMessage, resetChat } = useGuideChat({
     context,
     welcomeMessage,
@@ -81,54 +83,91 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
     context?.surface === "experiences" ||
     context?.surface === "favorites";
 
+  const copy = useMemo(
+    () => ({
+      pt: {
+        assistant: "Assistente",
+        closeOverlay: "Fechar chat",
+        promptPlaceholder: "Faça uma pergunta...",
+        enterToSend: "enter para enviar",
+        openAssistant: "Abrir assistente",
+        chat: "Chat",
+        weather: "Tempo",
+        temp: "Temp",
+        humidity: "Humidade",
+        rain: "Chuva",
+        updated: "Atualizado",
+        surf: "Surf",
+        outlook: "Condições",
+      },
+      en: {
+        assistant: "Assistant",
+        closeOverlay: "Close chat",
+        promptPlaceholder: "Ask a question...",
+        enterToSend: "enter to send",
+        openAssistant: "Open assistant",
+        chat: "Chat",
+        weather: "Weather",
+        temp: "Temp",
+        humidity: "Humidity",
+        rain: "Rain",
+        updated: "Updated",
+        surf: "Surf",
+        outlook: "Outlook",
+      },
+    }),
+    []
+  );
+
   const quickPrompts = useMemo(
     () => {
+      const pt = lang === "pt";
       switch (context?.surface) {
         case "map":
           return [
-            "Quais zonas devo explorar hoje no mapa?",
-            "Mostra praias com mar mais calmo.",
-            "Como está o vento e o surf agora?",
-            "Onde vale a pena ir ao fim da tarde?",
+            pt ? "Quais zonas devo explorar hoje no mapa?" : "Which map areas should I explore today?",
+            pt ? "Mostra praias com mar mais calmo." : "Show beaches with calmer sea.",
+            pt ? "Como está o vento e o surf agora?" : "How are wind and surf right now?",
+            pt ? "Onde vale a pena ir ao fim da tarde?" : "Where is best to go late afternoon?",
           ];
         case "places":
           return [
-            "Sugere 5 lugares para primeira visita no Maio.",
-            "Quero natureza e trilhos leves, o que recomendas?",
-            "Mostra lugares bons para famílias.",
-            "Quais lugares têm mais contexto histórico?",
+            pt ? "Sugere 5 lugares para primeira visita no Maio." : "Suggest 5 places for a first visit in Maio.",
+            pt ? "Quero natureza e trilhos leves, o que recomendas?" : "I want nature and easy trails, what do you recommend?",
+            pt ? "Mostra lugares bons para famílias." : "Show places that are good for families.",
+            pt ? "Quais lugares têm mais contexto histórico?" : "Which places have more historical context?",
           ];
         case "experiences":
           return [
-            "Que experiências recomendas para 2 dias?",
-            "Organiza um plano calmo para hoje.",
-            "Quais atividades dependem do vento/surf?",
-            "Que experiências são melhores de manhã cedo?",
+            pt ? "Que experiências recomendas para 2 dias?" : "What experiences do you recommend for 2 days?",
+            pt ? "Organiza um plano calmo para hoje." : "Create a relaxed plan for today.",
+            pt ? "Quais atividades dependem do vento/surf?" : "Which activities depend on wind/surf?",
+            pt ? "Que experiências são melhores de manhã cedo?" : "Which experiences are best early in the morning?",
           ];
         case "favorites":
           return [
-            "Ajuda-me a montar um roteiro com os meus favoritos.",
-            "Como combinar favoritos por proximidade?",
-            "Que favorito combina com um dia de vento forte?",
-            "Sugere ordem de visita para meio dia.",
+            pt ? "Ajuda-me a montar um roteiro com os meus favoritos." : "Help me build an itinerary with my favorites.",
+            pt ? "Como combinar favoritos por proximidade?" : "How can I combine favorites by proximity?",
+            pt ? "Que favorito combina com um dia de vento forte?" : "Which favorite fits a windy day?",
+            pt ? "Sugere ordem de visita para meio dia." : "Suggest a visit order for half a day.",
           ];
         case "mcp-guide":
           return [
-            "Como ligar este MCP no ChatGPT?",
-            "Dá-me exemplo de prompt usando dados de clima.",
-            "Mostra um exemplo para horários de barco/voo.",
-            "Como testar se o endpoint MCP está ativo?",
+            pt ? "Como ligar este MCP no ChatGPT?" : "How do I connect this MCP in ChatGPT?",
+            pt ? "Dá-me exemplo de prompt usando dados de clima." : "Give me a prompt example using weather data.",
+            pt ? "Mostra um exemplo para horários de barco/voo." : "Show an example for ferry/flight schedules.",
+            pt ? "Como testar se o endpoint MCP está ativo?" : "How can I test if the MCP endpoint is active?",
           ];
         default:
           return [
-            "O que devo fazer hoje no Maio?",
-            "Mostra praias com água mais calma.",
-            "Como está o tempo e o vento agora?",
-            "Há barcos ou voos esta semana?",
+            pt ? "O que devo fazer hoje no Maio?" : "What should I do in Maio today?",
+            pt ? "Mostra praias com água mais calma." : "Show beaches with calmer water.",
+            pt ? "Como está o tempo e o vento agora?" : "How are weather and wind right now?",
+            pt ? "Há barcos ou voos esta semana?" : "Are there ferries or flights this week?",
           ];
       }
     },
-    [context?.surface],
+    [context?.surface, lang],
   );
 
   useEffect(() => {
@@ -159,7 +198,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
       {open ? (
         <>
           <button
-            aria-label="Close chat overlay"
+            aria-label={copy[lang].closeOverlay}
             className="pointer-events-auto fixed inset-0 bg-[#111111]/12 backdrop-blur-[2px]"
             onClick={() => setOpen(false)}
             type="button"
@@ -169,7 +208,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
             <header className="flex items-center justify-between border-b border-[rgba(17,17,17,0.08)] px-4 py-4 sm:px-5">
               <div>
                 <p className="text-base font-semibold">Maioazul AI</p>
-                <p className="text-sm text-[#111111]/52">Assistente</p>
+                <p className="text-sm text-[#111111]/52">{copy[lang].assistant}</p>
               </div>
               <div className="flex items-center gap-1">
                 <button
@@ -215,7 +254,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                     )}
                     {message.id !== "welcome" ? (
                       <p className={message.role === "user" ? "mt-1 text-right text-[12px] text-white/80" : "mt-1 text-[12px] text-[#111111]/46"}>
-                        {formatMessageTime(message.createdAt)}
+                        {formatMessageTime(message.createdAt, lang)}
                       </p>
                     ) : null}
                   </div>
@@ -233,17 +272,17 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                           >
                             <div className="flex items-center justify-between">
                               <p className="text-sm font-semibold text-[#111111]">
-                                {card.location} Weather
+                                {card.location} {copy[lang].weather}
                               </p>
                               <span className="inline-flex items-center gap-1 text-xs text-[#111111]/62">
                                 <CloudSun className="h-3.5 w-3.5" />
-                                {weatherLabelFromCode(card.weatherCode)}
+                                {weatherLabelFromCode(card.weatherCode, lang)}
                               </span>
                             </div>
                             <div className="mt-2 grid grid-cols-3 gap-2">
                               <div className="rounded-xl bg-[#f6f6f3] px-2 py-2 text-xs text-[#111111]/76">
                                 <span className="inline-flex items-center gap-1">
-                                  <Thermometer className="h-3.5 w-3.5" /> Temp
+                                  <Thermometer className="h-3.5 w-3.5" /> {copy[lang].temp}
                                 </span>
                                 <p className="mt-1 text-sm font-semibold text-[#111111]">
                                   {card.temperature !== undefined ? `${card.temperature.toFixed(1)}°C` : "—"}
@@ -251,7 +290,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                               </div>
                               <div className="rounded-xl bg-[#f6f6f3] px-2 py-2 text-xs text-[#111111]/76">
                                 <span className="inline-flex items-center gap-1">
-                                  <Droplets className="h-3.5 w-3.5" /> Humidity
+                                  <Droplets className="h-3.5 w-3.5" /> {copy[lang].humidity}
                                 </span>
                                 <p className="mt-1 text-sm font-semibold text-[#111111]">
                                   {card.humidity !== undefined ? `${Math.round(card.humidity)}%` : "—"}
@@ -259,7 +298,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                               </div>
                               <div className="rounded-xl bg-[#f6f6f3] px-2 py-2 text-xs text-[#111111]/76">
                                 <span className="inline-flex items-center gap-1">
-                                  <CloudRain className="h-3.5 w-3.5" /> Rain
+                                  <CloudRain className="h-3.5 w-3.5" /> {copy[lang].rain}
                                 </span>
                                 <p className="mt-1 text-sm font-semibold text-[#111111]">
                                   {card.precipitation !== undefined ? `${card.precipitation.toFixed(1)} mm` : "—"}
@@ -268,7 +307,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                             </div>
                             {card.updatedAt ? (
                               <p className="mt-2 text-[11px] text-[#111111]/46">
-                                Updated: {new Date(card.updatedAt).toLocaleString()}
+                                {copy[lang].updated}: {new Date(card.updatedAt).toLocaleString()}
                               </p>
                             ) : null}
                           </div>
@@ -285,11 +324,11 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                           >
                             <div className="flex items-center justify-between">
                               <p className="text-sm font-semibold text-[#111111]">
-                                {card.location} Surf
+                                {card.location} {copy[lang].surf}
                               </p>
                               <span className="inline-flex items-center gap-1 text-xs text-[#111111]/62">
                                 <Waves className="h-3.5 w-3.5" />
-                                Outlook
+                                {copy[lang].outlook}
                               </span>
                             </div>
                             <div className="mt-2 grid grid-cols-3 gap-2">
@@ -381,11 +420,11 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                   className="min-h-[56px] w-full resize-none bg-transparent px-1 py-1 text-sm text-[#111111] outline-none placeholder:text-[#111111]/40"
                   onChange={(event) => setInput(event.target.value)}
                   onKeyDown={handleTextareaKeyDown}
-                  placeholder="Faça uma pergunta..."
+                  placeholder={copy[lang].promptPlaceholder}
                   value={input}
                 />
                 <div className="flex items-center justify-between gap-2 px-1 pb-1">
-                  <p className="text-xs text-[#111111]/52">enter para enviar</p>
+                  <p className="text-xs text-[#111111]/52">{copy[lang].enterToSend}</p>
                   <button
                     className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#1E78FF] text-white transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
                     disabled={loading || !input.trim()}
@@ -396,7 +435,9 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
                 </div>
               </div>
               {error ? <p className="mt-2 text-xs text-red-600">{error}</p> : null}
-              <p className="hidden mt-2 text-center text-xs text-[#111111]/46">Powered by Maioazul MCP</p>
+              <p className="hidden mt-2 text-center text-xs text-[#111111]/46">
+                {lang === "pt" ? "Desenvolvido por Maioazul MCP" : "Powered by Maioazul MCP"}
+              </p>
             </form>
           </section>
         </>
@@ -404,7 +445,7 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
 
       {!open ? (
         <button
-          aria-label="Open chat assistant"
+          aria-label={copy[lang].openAssistant}
           className="pointer-events-auto fixed right-4 inline-flex h-12 items-center gap-2 rounded-full bg-black px-4 text-sm font-medium text-white shadow-lg transition hover:bg-black/90 sm:bottom-6 sm:right-6"
           style={{
             bottom: hasBottomNav
@@ -414,8 +455,8 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
           onClick={() => setOpen(true)}
           type="button"
         >
-          <MessageCircle className="h-4 w-4" />
-         Chat
+         <MessageCircle className="h-4 w-4" />
+         {copy[lang].chat}
         </button>
       ) : null}
     </div>

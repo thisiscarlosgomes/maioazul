@@ -379,7 +379,14 @@ export default function PlacePage() {
   const nearby = getNearbyPlaces(place, allPlaces);
   const pick = (value?: { pt?: string; en?: string }) =>
     value?.[lang] || value?.en || value?.pt || "";
-  const descriptionText = (place.description?.en || "").replace(/\s+/g, " ").trim();
+  const descriptionText = (
+    place.description?.[lang] ||
+    place.description?.en ||
+    place.description?.pt ||
+    ""
+  )
+    .replace(/\s+/g, " ")
+    .trim();
   const canPlayVoice = Boolean(descriptionText) && hasVoiceForId(place.id, voiceManifest);
   const isVoiceForPlace = voiceState.placeId === place.id;
   const tagLabel = (value: string) =>
@@ -392,7 +399,7 @@ export default function PlacePage() {
   const handleVoicePlay = async () => {
     if (!canPlayVoice) return;
     const text = `${place.name?.en || pick(place.name)}. ${descriptionText}`;
-    await playVoice({ text, title: pick(place.name), lang: "en", placeId: place.id });
+    await playVoice({ text, title: pick(place.name), lang, placeId: place.id });
   };
 
   const handleVoicePauseToggle = () => {

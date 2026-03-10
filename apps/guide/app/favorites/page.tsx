@@ -123,15 +123,15 @@ export default function FavoritesPage() {
           href="https://maioazul.com"
           target="_blank"
           rel="noreferrer"
-          className="mt-4 inline-flex items-center rounded-lg border px-3 py-2 text-xs font-medium text-foreground transition hover:bg-muted"
+          className="hidden mt-4 inline-flex items-center rounded-lg border px-3 py-2 text-xs font-medium text-foreground transition hover:bg-muted"
         >
           {copy[lang].developmentBy} maiozul.com
         </a>
 
-        <div className="hidden mt-5 text-[11px] font-semibold uppercase tracking-wide text-foreground/70">
+        <div className="mt-5 text-[11px] font-semibold uppercase tracking-wide text-foreground/70">
           {copy[lang].credits}
         </div>
-        <div className="hidden mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 uppercase">
+        <div className="mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1 uppercase">
           <span>FMB</span>
           <span>·</span>
           <span>sdtibm</span>
@@ -139,6 +139,8 @@ export default function FavoritesPage() {
           <span>C&#226;mara Municipal do Maio</span>
           <span>·</span>
           <span>Governo de Cabo Verde</span>
+          <span>·</span>
+          <span>UE</span>
         </div>
       </div>
       </div>

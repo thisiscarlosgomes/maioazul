@@ -1,0 +1,325 @@
+[
+  {
+    "slug": "food",
+    "title": {
+      "en": "Food",
+      "pt": "Comer"
+    },
+    "places": [
+      {
+        "id": "food-001",
+        "title": "Sete Sois Sete Luas",
+        "description": {
+          "en": "A charming place to discover authentic Maio food and genuine local taste.",
+          "pt": "Um lugar encantador para descobrir a comida autêntica do Maio e o sabor local."
+        },
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773137292/sete_ge2b1t.jpg"
+      },
+      {
+        "id": "food-002",
+        "title": "Big Game Restaurant - Pizzeria",
+        "description": {
+          "en": "A casual dining spot where Italian cuisine meets Cape Verdean tradition.",
+          "pt": "Um espaço descontraído onde a cozinha italiana encontra a tradição cabo-verdiana."
+        },
+        "location": "Cidade do Porto Inglês",
+        "phone": "597 73 05",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773135401/biggame_lup1bb.avif"
+      },
+      {
+        "id": "food-003",
+        "title": "Bar restaurante Vasuza",
+        "description": {
+          "en": "A top choice for seafood lovers, offering fresh fish, mariscos, and flavorful local dishes.",
+          "pt": "Uma ótima escolha para amantes de marisco, com peixe fresco, mariscos e pratos locais cheios de sabor."
+        },
+        "location": "Calheta",
+        "phone": "9791096",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773136389/123484805851_537681939345849_550676790780552479_n_nu6mbj.jpg"
+      },
+      {
+        "id": "food-004",
+        "title": "Bar Bons Amigos",
+        "description": {
+          "en": "A popular sports bar and friendly gathering place, best known for its outstanding fried moray eel.",
+          "pt": "Um bar desportivo popular e ponto de encontro acolhedor, conhecido sobretudo pela excelente moreia frita."
+        },
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773136515/1232533023731_1319638646182146_8164201092511629407_n_xqspcf.jpg"
+      },
+      {
+        "id": "food-005",
+        "title": "Nha Terra",
+        "description": {
+          "en": "A seafront restaurant near Bitxe Rotcha focused on authentic Cape Verdean flavors.",
+          "pt": "Um restaurante à beira-mar junto a Bitxe Rotcha, focado em sabores autênticos cabo-verdianos."
+        },
+        "location": "Cidade do Porto Inglês",
+        "phone": "970 63 91",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773137293/terra_mgwcp1.jpg",
+        "source_url": "https://www.tripadvisor.com/Restaurant_Review-g2422862-d23967577-Reviews-Nha_Terra-Vila_do_Maio_Maio.html"
+      },
+      {
+        "id": "food-006",
+        "title": "Enzo Caffe Pizza",
+        "description": {
+          "en": "A market-side cafe and pizzeria with an Italian touch in Vila do Maio.",
+          "pt": "Um café e pizzaria junto ao mercado, com toque italiano na Vila do Maio."
+        },
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773138109/caption_tz6igm.jpg",
+        "source_url": "https://www.tripadvisor.com.br/Restaurant_Review-g2422862-d12320062-Reviews-Enzo_Caffe_Pizza-Vila_do_Maio_Maio.html"
+      }
+    ]
+  },
+  {
+    "slug": "blue-sports",
+    "title": {
+      "en": "Blue Sports",
+      "pt": "Desportos Azuis"
+    },
+    "places": [
+      {
+        "id": "blue-ondaazul-maio",
+        "title": "onda azul | surf school",
+        "description": {
+          "en": "Surf lessons and ocean coaching for all levels, with local guidance and safe progression in Maio waves.",
+          "pt": "Aulas de surf e acompanhamento no mar para todos os níveis, com orientação local e progressão segura nas ondas do Maio."
+        },
+        "location": "Praia do Morro",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773093178/499690905_17865420003391558_9051296291543258259_n_fhxlg7.jpg",
+        "instagram_url": "https://www.instagram.com/ondaazul.maio"
+      },
+      {
+        "id": "blue-maioazul-jetski",
+        "title": "Jet Ski",
+        "description": {
+          "en": "Guided jet ski rides along Maio’s coast, combining speed, scenic views, and beach access points.",
+          "pt": "Passeios guiados de jet ski pela costa do Maio, combinando velocidade, paisagens e acesso a praias."
+        },
+        "location": "Praia de Bitche Rotcha",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770565396/maje_qkpbmi.jpg",
+        "instagram_url": "https://www.instagram.com/maio__azul/"
+      },
+      {
+        "id": "blue-beach-volley-camp",
+        "title": "Beach Volley Camp",
+        "description": {
+          "en": "Beach volleyball sessions and camps by the sea, ideal for active groups and skill development.",
+          "pt": "Sessões e camp de vólei de praia à beira-mar, ideais para grupos ativos e evolução técnica."
+        },
+        "location": "Praia de Bitche Rotcha",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770466647/maioazul/camp/volley.jpg",
+        "instagram_url": "https://www.instagram.com/maio__azul/"
+      },
+      {
+        "id": "blue-rental-quad-big-game",
+        "title": "Rental Quad (Big Game)",
+        "description": {
+          "en": "Quad rentals for independent island routes across dunes, villages, and coastal viewpoints.",
+          "pt": "Aluguer de quad para rotas independentes pela ilha, passando por dunas, vilas e miradouros costeiros."
+        },
+        "location": "Maio",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773135464/quad-C5uOImk5R97SK24U_fvwybn.avif",
+        "email": "biggamemaio@gmail.com"
+      },
+      {
+        "id": "blue-sport-fishing-big-game",
+        "title": "Sport Fishing (Big Game)",
+        "description": {
+          "en": "Sport fishing outings with local know-how, targeting offshore species in Maio waters.",
+          "pt": "Saídas de pesca desportiva com conhecimento local, focadas em espécies de alto-mar nas águas do Maio."
+        },
+        "location": "Maio",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773135464/pesca-e-noleggio-quad-isola-di-maio-3jlaY7bANPxgfKg4_q8ribz.avif",
+        "email": "biggamemaio@gmail.com"
+      }
+    ]
+  },
+  {
+    "slug": "stay",
+    "title": {
+      "en": "Stay",
+      "pt": "Estadia"
+    },
+    "places": [
+      {
+        "id": "stay-1450862670874846436",
+        "title": "Home in Calheta · ★4.67 · 6 bedrooms · 8 beds · 6 baths",
+        "location": "Calheta",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093202/experiences/stay/stay-1450862670874846436-01.jpg",
+        "source_url": "https://www.airbnb.com/rooms/1450862670874846436?check_in=2026-03-20&check_out=2026-03-27&search_mode=regular_search&category_tag=Tag%3A8678&photo_id=2226944384&source_impression_id=p3_1773089864_P37VyNpHHQN50flS&previous_page_section_name=1000&federated_search_id=4c42a37c-b49a-4531-9932-af1d4a8725b4",
+        "airbnb_room_id": "1450862670874846436",
+        "images": [
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093202/experiences/stay/stay-1450862670874846436-01.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093203/experiences/stay/stay-1450862670874846436-02.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093205/experiences/stay/stay-1450862670874846436-03.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093206/experiences/stay/stay-1450862670874846436-04.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093208/experiences/stay/stay-1450862670874846436-05.jpg"
+        ],
+        "description": {
+          "en": "Relax with the whole family at this peaceful place to stay.",
+          "pt": "Relax with the whole family at this peaceful place to stay."
+        }
+      },
+      {
+        "id": "stay-828328980271118241",
+        "title": "Home in Vila do Maio · ★4.96 · 2 bedrooms · 2 beds · 1 bath",
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093209/experiences/stay/stay-828328980271118241-01.jpg",
+        "source_url": "https://www.airbnb.com/rooms/828328980271118241?check_in=2026-03-20&check_out=2026-03-27&search_mode=regular_search&source_impression_id=p3_1773089864_P3vIjnNFZZzsVynH&previous_page_section_name=1000&federated_search_id=4c42a37c-b49a-4531-9932-af1d4a8725b4",
+        "airbnb_room_id": "828328980271118241",
+        "images": [
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093209/experiences/stay/stay-828328980271118241-01.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093210/experiences/stay/stay-828328980271118241-02.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093211/experiences/stay/stay-828328980271118241-03.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093212/experiences/stay/stay-828328980271118241-04.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093214/experiences/stay/stay-828328980271118241-05.jpg"
+        ],
+        "description": {
+          "en": "This cosy house is a perfect place to stay and relax away from home with whole family/friends. At this peaceful place you can find the beautiful sandy beach of Ponta Preta which is 5min walking distance. The house is located in a very quiet area, which makes perfect to rest/relax. Please feel home away from home. The space The main bedroom and second bedroom sleep up to 4 guests. For the additional guests, we prepare a comfortable floor mattress (single) with clean linens and pillows which is set up on request. We take a maximum of 1 additional guest for an extra fees.",
+          "pt": "This cosy house is a perfect place to stay and relax away from home with whole family/friends. At this peaceful place you can find the beautiful sandy beach of Ponta Preta which is 5min walking distance. The house is located in a very quiet area, which makes perfect to rest/relax. Please feel home away from home. The space The main bedroom and second bedroom sleep up to 4 guests. For the additional guests, we prepare a comfortable floor mattress (single) with clean linens and pillows which is set up on request. We take a maximum of 1 additional guest for an extra fees."
+        }
+      },
+      {
+        "id": "stay-1387221782381804838",
+        "title": "Rental unit in Vila do Maio · 2 bedrooms · 2 beds · 1 bath",
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093215/experiences/stay/stay-1387221782381804838-01.jpg",
+        "source_url": "https://www.airbnb.com/rooms/1387221782381804838?check_in=2026-03-20&check_out=2026-03-27&search_mode=regular_search&source_impression_id=p3_1773089864_P3VGGj0qJHwaLw9u&previous_page_section_name=1000&federated_search_id=4c42a37c-b49a-4531-9932-af1d4a8725b4",
+        "airbnb_room_id": "1387221782381804838",
+        "images": [
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093215/experiences/stay/stay-1387221782381804838-01.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093219/experiences/stay/stay-1387221782381804838-02.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093221/experiences/stay/stay-1387221782381804838-03.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093224/experiences/stay/stay-1387221782381804838-04.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093226/experiences/stay/stay-1387221782381804838-05.jpg"
+        ],
+        "description": {
+          "en": "Your family will be close to everything when you stay at this centrally-located place.",
+          "pt": "Your family will be close to everything when you stay at this centrally-located place."
+        }
+      },
+      {
+        "id": "stay-17652368",
+        "title": "Home in Morro · ★4.96 · 2 bedrooms · 4 beds · 1 bath",
+        "location": "Morro",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093227/experiences/stay/stay-17652368-01.jpg",
+        "images": [
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093227/experiences/stay/stay-17652368-01.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093228/experiences/stay/stay-17652368-02.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093229/experiences/stay/stay-17652368-03.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093230/experiences/stay/stay-17652368-04.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093232/experiences/stay/stay-17652368-05.jpg"
+        ],
+        "source_url": "https://www.airbnb.com/rooms/17652368?check_in=2026-03-20&check_out=2026-03-27&search_mode=regular_search&source_impression_id=p3_1773092202_P3u9hh9AcY4QMBJi&previous_page_section_name=1000&federated_search_id=fcb7c47d-2592-4f92-8171-62c3bff3da78&modal=PHOTO_TOUR_SCROLLABLE",
+        "airbnb_room_id": "17652368",
+        "description": {
+          "en": "Fully equipped modern house with garden, swimming pool, Wi-Fi, bicycles on the edge of the Riviera with views of Mount Batalha and the ocean (900 m away). Quiet place and starting point for hikes. Shared taxis within 200 m. Morro is a \"farming\" village with cows, donkeys, goats and pigs. Three restaurants nearby, village convenience store. The house is cleaned regularly, towels available. Free bike loan based on availability. Free airport or port pickup. The space Independent, comfortable accommodation with lots of activities nearby (beach, fishing, biking, hiking, swimming pool, 4*4, quads...). Solar energy... electric bikes available at low prices. Guest access each home is totally yours and not shared.",
+          "pt": "Fully equipped modern house with garden, swimming pool, Wi-Fi, bicycles on the edge of the Riviera with views of Mount Batalha and the ocean (900 m away). Quiet place and starting point for hikes. Shared taxis within 200 m. Morro is a \"farming\" village with cows, donkeys, goats and pigs. Three restaurants nearby, village convenience store. The house is cleaned regularly, towels available. Free bike loan based on availability. Free airport or port pickup. The space Independent, comfortable accommodation with lots of activities nearby (beach, fishing, biking, hiking, swimming pool, 4*4, quads...). Solar energy... electric bikes available at low prices. Guest access each home is totally yours and not shared."
+        }
+      },
+      {
+        "id": "stay-905054318013066046",
+        "title": "Guesthouse in Vila do Maio · 2 bedrooms · 3 beds · 2 baths",
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093233/experiences/stay/stay-905054318013066046-01.jpg",
+        "images": [
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093233/experiences/stay/stay-905054318013066046-01.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093235/experiences/stay/stay-905054318013066046-02.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093236/experiences/stay/stay-905054318013066046-03.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093236/experiences/stay/stay-905054318013066046-04.jpg",
+          "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1773093238/experiences/stay/stay-905054318013066046-05.jpg"
+        ],
+        "source_url": "https://www.airbnb.com/rooms/905054318013066046?source_impression_id=p3_1773092268_P3d8rK4cbICd7Jgs",
+        "airbnb_room_id": "905054318013066046",
+        "description": {
+          "en": "Guests can enjoy a wonderful view of the beach, with access to a small private beach to watch the sunset, which is wonderful. All apartments include air-conditioning, free Wi-Fi in all areas of the apartment and parking. This apartment is perfect for families, groups of friends or couples looking for a comfortable and practical stay on Ilha do Maio. Book now and enjoy a memorable stay!",
+          "pt": "Guests can enjoy a wonderful view of the beach, with access to a small private beach to watch the sunset, which is wonderful. All apartments include air-conditioning, free Wi-Fi in all areas of the apartment and parking. This apartment is perfect for families, groups of friends or couples looking for a comfortable and practical stay on Ilha do Maio. Book now and enjoy a memorable stay!"
+        }
+      },
+      {
+        "id": "stay-big-game-maio",
+        "title": "Hotel Big Game Maio",
+        "description": {
+          "en": "A small hotel in Vila do Maio, steps from the beach and close to the town center.",
+          "pt": "Um pequeno hotel na Vila do Maio, a poucos passos da praia e perto do centro."
+        },
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773135401/biggame_lup1bb.avif",
+        "source_url": "https://www.tripadvisor.com/Hotel_Review-g2422862-d7066913-Reviews-Hotel_Big_Gamer_Maio-Vila_do_Maio_Maio.html"
+      },
+      {
+        "id": "stay-casa-evora",
+        "title": "Casa Evora",
+        "description": {
+          "en": "A welcoming guesthouse option in Vila do Maio with central access to town services.",
+          "pt": "Uma opção acolhedora de hospedagem na Vila do Maio, com acesso central aos serviços da vila."
+        },
+        "location": "Cidade do Porto Inglês",
+        "phone": "",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773137939/hotel-casa-evora-luxu_b1qbbn.jpg",
+        "source_url": "https://www.tripadvisor.com/Hotel_Review-g2422862-d15355950-Reviews-Casa_Evora-Vila_do_Maio_Maio.html"
+      }
+    ]
+  },
+  {
+    "slug": "guia",
+    "title": {
+      "en": "Tour Guide",
+      "pt": "Guia turístico"
+    },
+    "places": [
+      {
+        "id": "trek-001",
+        "title": "Mountain Tour",
+        "description": {
+          "en": "A guided mountain experience with panoramic viewpoints and local trail insights.",
+          "pt": "Uma experiência guiada de montanha com miradouros panorâmicos e conhecimento local dos trilhos."
+        },
+        "location": "",
+        "phone": "9717235",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773096597/WhatsApp_Image_2026-03-10_at_06.48.29_xr0npj.jpg",
+        "instagram_url": "https://www.instagram.com/odjo_del_mar?igsh=MXBvNjA3a3F6cGplOA=="
+      },
+      {
+        "id": "guia-001",
+        "title": "J & Tour",
+        "description": {
+          "en": "Local guide services for nature routes, beach activities, and personalized island experiences.",
+          "pt": "Serviços de guia local para rotas de natureza, atividades de praia e experiências personalizadas pela ilha."
+        },
+        "location": "",
+        "phone": "9708809",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773094556/1afafcd9b06a-4545-4119-bbe4-00eb35e9f09c_vzswnp.jpg"
+      },
+      {
+        "id": "guia-002",
+        "title": "Porto Inglês Tour",
+        "description": {
+          "en": "Cultural and practical guided tours from Porto Inglês, tailored to your travel pace.",
+          "pt": "Tours guiados culturais e práticos a partir de Porto Inglês, ajustados ao seu ritmo de viagem."
+        },
+        "location": "",
+        "phone": "957 71 57",
+        "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773096223/1232487510144_122102376212822456_8674878425658049036_n_kjzyxu.jpg",
+        "facebook_url": "https://www.facebook.com/profile.php?id=61574673696863"
+      }
+    ]
+  }
+]

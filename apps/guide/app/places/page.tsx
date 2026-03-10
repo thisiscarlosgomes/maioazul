@@ -220,7 +220,7 @@ export default function PlacesIndexPage() {
       },
       {
         id: "quiet_villages",
-        label: { pt: "Vilarejos tranquilos", en: "Quiet villages" },
+        label: { pt: "Povoações", en: "Quiet villages" },
         Icon: MapPin,
       },
       {
@@ -230,7 +230,7 @@ export default function PlacesIndexPage() {
       },
       {
         id: "quick_two_hours",
-        label: { pt: "2 horas rápidas", en: "Quick 2 hours" },
+        label: { pt: "2 horas", en: "Quick 2 hours" },
         Icon: Compass,
       },
     ],

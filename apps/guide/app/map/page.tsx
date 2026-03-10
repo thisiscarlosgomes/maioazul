@@ -2796,6 +2796,14 @@ export default function MapPage() {
     }, [isFullscreen]);
 
     useEffect(() => {
+        window.dispatchEvent(
+            new CustomEvent("maio-nav-visibility", {
+                detail: { hidden: isFullscreen, hideHeader: isFullscreen },
+            })
+        );
+    }, [isFullscreen]);
+
+    useEffect(() => {
         if (typeof document === "undefined") return;
         if (isFullscreen) {
             const previous = document.body.style.overflow;
@@ -2842,7 +2850,7 @@ export default function MapPage() {
 
             {!isFullscreen && (
                 <div className="maio-map-header fixed inset-x-0 top-0 z-40 bg-background/90 backdrop-blur">
-                    <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+                    <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
                         <div>
                             <img
                                 src="/visitmaio.svg"
@@ -2856,24 +2864,26 @@ export default function MapPage() {
                                 <button
                                     type="button"
                                     onClick={() => setLang("pt")}
+                                    aria-label="Português"
                                     aria-pressed={lang === "pt"}
                                     className={`px-3 py-2 text-xs font-medium transition ${lang === "pt"
                                         ? "bg-foreground text-background"
                                         : "text-muted-foreground hover:text-foreground"
                                         }`}
                                 >
-                                    PT
+                                    <span aria-hidden="true" className="text-base leading-none">🇵🇹</span>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setLang("en")}
+                                    aria-label="English"
                                     aria-pressed={lang === "en"}
                                     className={`px-3 py-2 text-xs font-medium transition ${lang === "en"
                                         ? "bg-foreground text-background"
                                         : "text-muted-foreground hover:text-foreground"
                                         }`}
                                 >
-                                    EN
+                                    <span aria-hidden="true" className="text-base leading-none">🇬🇧</span>
                                 </button>
                             </div>
                         </div>
@@ -2882,7 +2892,7 @@ export default function MapPage() {
                 </div>
             )}
 
-            <div className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-10 flex flex-col gap-8">
+            <div className="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-10 flex flex-col gap-8">
 
 
                 <div className="flex flex-col gap-5 overflow-hidden">
@@ -3821,7 +3831,7 @@ export default function MapPage() {
                                                     Array.from({ length: 4 }).map((_, index) => (
                                                         <div
                                                             key={`story-skeleton-${index}`}
-                                                            className="relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%] rounded-2xl border border-black dark:border-white bg-background p-3 shadow-sm"
+                                                            className="relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[320px] lg:max-w-[320px] rounded-2xl border border-black dark:border-white bg-background p-3 shadow-sm"
                                                         >
                                                             <div className="h-32 w-full rounded-2xl bg-muted animate-pulse" />
                                                             <div className="mt-3 h-4 w-3/5 rounded-full bg-muted animate-pulse" />
@@ -3834,7 +3844,7 @@ export default function MapPage() {
                                                     chapters.map((chapter, index) => (
                                                         <div
                                                             key={chapter.id}
-                                                            className={`relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%] min-h-[300px] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition flex flex-col ${activeChapterId === chapter.id
+                                                            className={`relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[320px] lg:max-w-[320px] min-h-[300px] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition flex flex-col ${activeChapterId === chapter.id
                                                                 ? "border-black dark:border-white shadow-lg ring-1 ring-black/10 dark:ring-white/15"
                                                                 : "border-black/20 dark:border-white/30"
                                                                 }`}

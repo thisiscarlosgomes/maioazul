@@ -3,17 +3,31 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLang } from "@/lib/lang";
 import SecondaryPageHeader from "@/components/SecondaryPageHeader";
+import Link from "next/link";
 
 export default function ExperiencesPage() {
   const [lang] = useLang();
   const [activities, setActivities] = useState<
     Array<{
       id: string;
-      title: string;
+      title: string | { en?: string; pt?: string };
       subtitle: { en: string; pt: string };
       image: string;
     }>
   >([]);
+
+  const activityTitleById = useMemo(
+    () => ({
+      food: { en: "Food", pt: "Comer" },
+      "blue-sports": { en: "Blue Sports", pt: "Desportos Azuis" },
+      stay: { en: "Stay", pt: "Estadia" },
+      guia: { en: "Tour Guide", pt: "Guia turístico" },
+    }),
+    []
+  );
+
+  const pickLocalized = (value: string | { en?: string; pt?: string }) =>
+    typeof value === "string" ? value : value[lang] || value.en || value.pt || "";
 
   const copy = useMemo(
     () => ({
@@ -92,31 +106,24 @@ export default function ExperiencesPage() {
       image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633850/tuna_oyjqjz.png",
     },
     {
-      id: "trekking",
-      title: "Trekking",
+      id: "stay",
+      title: "Stay",
       subtitle: {
-        en: "Slow walks through dunes and trails.",
-        pt: "Caminhadas lentas entre dunas e trilhos.",
+        en: "Places to stay with comfort and local character.",
+        pt: "Lugares para ficar com conforto e caráter local.",
       },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634013/penoso_2_zrdjrz.jpg",
+      image:
+        "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773089189/12323f0a48bf-cdf2-4eeb-8e48-7c6e4cbb6351_vchbng.avif",
     },
     {
-      id: "fishing",
-      title: "Fishing",
+      id: "guia",
+      title: "Guia turístico",
       subtitle: {
-        en: "Cast a line where locals do.",
-        pt: "Pesque onde os locais pescam.",
+        en: "Local guidance to explore Maio with context.",
+        pt: "Guia local para explorar o Maio com contexto.",
       },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/fish_rih7bp.png",
-    },
-    {
-      id: "beach",
-      title: "Beach",
-      subtitle: {
-        en: "Quiet shores made for unhurried days.",
-        pt: "Praias calmas para dias sem pressa.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634116/morro1_olke19.jpg",
+      image:
+        "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1600&auto=format&fit=crop",
     },
     {
       id: "blue-sports",
@@ -127,15 +134,6 @@ export default function ExperiencesPage() {
       },
       image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/surf_qfgyc1.png",
     },
-    {
-      id: "routes-4x4",
-      title: "4x4 Routes",
-      subtitle: {
-        en: "Wander the island at your own pace.",
-        pt: "Passeie pela ilha ao seu ritmo.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/4_lpqfzn.png",
-    },
   ];
 
   useEffect(() => {
@@ -143,7 +141,14 @@ export default function ExperiencesPage() {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data) && data.length) {
-          setActivities(data);
+          const order = ["food", "stay", "guia", "blue-sports"];
+          const orderIndex = new Map(order.map((id, idx) => [id, idx]));
+          const sorted = [...data].sort((a, b) => {
+            const ai = orderIndex.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+            const bi = orderIndex.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+            return ai - bi;
+          });
+          setActivities(sorted);
           return;
         }
         setActivities(fallbackActivities);
@@ -158,49 +163,49 @@ export default function ExperiencesPage() {
         backHref="/map"
       />
       <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
-      <div className="w-full">
-        <div className="mt-1">
-          <div className="text-sm font-semibold">{copy[lang].aboutTitle}</div>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            {copy[lang].aboutBody}
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            {copy[lang].aboutBody2}
-          </p>
+        <div className="w-full">
+          <div className="mt-1">
+            <div className="text-sm font-semibold">{copy[lang].aboutTitle}</div>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+              {copy[lang].aboutBody}  {copy[lang].aboutBody2}
+            </p>
+
+          </div>
+
+
+
+
         </div>
 
-
-
-
-      </div>
-
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {activities.map((activity) => (
-          <div
-            key={activity.id}
-            className="relative overflow-hidden rounded-2xl border border-border shadow-sm"
-          >
-            <img
-              src={activity.image}
-              alt={activity.title}
-              className="h-44 w-full object-cover sm:h-52"
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-4">
-              <div className="text-lg font-semibold text-white">
-                {activity.title}
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {activities.map((activity) => (
+            <Link
+              key={activity.id}
+              href={`/experiences/${activity.id}`}
+              className="relative overflow-hidden rounded-2xl border border-border shadow-sm transition hover:shadow-md"
+            >
+              <img
+                src={activity.image}
+                alt={pickLocalized(activity.title)}
+                className="h-44 w-full object-cover sm:h-52"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-4">
+                <div className="text-lg font-semibold text-white">
+                  {activityTitleById[activity.id as keyof typeof activityTitleById]?.[lang] ||
+                    pickLocalized(activity.title)}
+                </div>
+                <div className="mt-1 text-xs text-white/80">
+                  {activity.subtitle[lang]}
+                </div>
               </div>
-              <div className="mt-1 text-xs text-white/80">
-                {activity.subtitle[lang]}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
 
-      {/* <div className="mt-6">
+        {/* <div className="mt-6">
         <div className="text-sm font-semibold">{copy[lang].mustKnowTitle}</div>
         <div className="mt-3 flex flex-wrap gap-1">
           {copy[lang].mustKnows.map((item) => (
@@ -214,7 +219,7 @@ export default function ExperiencesPage() {
         </div>
       </div> */}
 
-      {/* <div className="mt-10">
+        {/* <div className="mt-10">
         <a
           href="/contact"
           className="hidden inline-flex w-full items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-black/90 active:scale-[0.98]"
