@@ -32,6 +32,17 @@ export const toolSchemas = {
       id: z.string().min(1).max(120),
     })
     .strict(),
+  get_experiences: z
+    .object({
+      slug: z.string().min(1).max(80).optional(),
+      limit: z.number().int().min(1).max(50).default(12),
+    })
+    .strict(),
+  get_experience_detail: z
+    .object({
+      slug: z.string().min(1).max(80),
+    })
+    .strict(),
   get_maio_weather: z.object({}).strict(),
   get_maio_wind: z.object({}).strict(),
   get_maio_surf: z.object({}).strict(),
@@ -91,6 +102,32 @@ export const nativeToolDefinitions: Record<
         id: { type: "string", minLength: 1, maxLength: 120 },
       },
       required: ["id"],
+      additionalProperties: false,
+    },
+  },
+  get_experiences: {
+    title: "Get Experiences",
+    description:
+      "Returns experience categories and/or their entries. Optionally filter by slug.",
+    parameters: {
+      type: "object",
+      properties: {
+        slug: { type: ["string", "null"] },
+        limit: { type: "integer", minimum: 1, maximum: 50 },
+      },
+      required: [],
+      additionalProperties: false,
+    },
+  },
+  get_experience_detail: {
+    title: "Get Experience Detail",
+    description: "Returns one experience group with all places/services by slug.",
+    parameters: {
+      type: "object",
+      properties: {
+        slug: { type: "string", minLength: 1, maxLength: 80 },
+      },
+      required: ["slug"],
       additionalProperties: false,
     },
   },
@@ -317,6 +354,24 @@ export async function executeGuideTool(request: Request, name: GuideToolName, ra
     case "get_place_detail": {
       const detailArgs = args as z.infer<typeof toolSchemas.get_place_detail>;
       return fetchJson(request, `/api/places/${encodeURIComponent(detailArgs.id)}`);
+    }
+
+    case "get_experiences": {
+      const experienceArgs = args as z.infer<typeof toolSchemas.get_experiences>;
+      if (experienceArgs.slug) {
+        return fetchJson(request, `/api/experiences/${encodeURIComponent(experienceArgs.slug)}`);
+      }
+      const payload = await fetchJson(request, "/api/experiences");
+      const list = asArray<Record<string, unknown>>(payload);
+      return {
+        total: list.length,
+        items: list.slice(0, experienceArgs.limit),
+      };
+    }
+
+    case "get_experience_detail": {
+      const detailArgs = args as z.infer<typeof toolSchemas.get_experience_detail>;
+      return fetchJson(request, `/api/experiences/${encodeURIComponent(detailArgs.slug)}`);
     }
 
     case "get_maio_weather":

@@ -46,7 +46,7 @@ export default function ExperienceBySlugPage() {
         openOnInstagram: "Instagram",
         openOnFacebook: "Facebook",
         email: "Email",
-        empty: "No places yet. Add entries in experience_places_by_slug.json.",
+        empty: "No places yet.",
       },
       pt: {
         fallbackTitle: "Experiência",
@@ -58,7 +58,7 @@ export default function ExperienceBySlugPage() {
         openOnInstagram: "Instagram",
         openOnFacebook: "Facebook",
         email: "Email",
-        empty: "Ainda sem lugares. Adicione entradas em experience_places_by_slug.json.",
+        empty: "Ainda sem lugares.",
       },
     }),
     []
@@ -73,15 +73,14 @@ export default function ExperienceBySlugPage() {
   };
 
   useEffect(() => {
-    fetch("/data/experience_places_by_slug.json")
+    fetch(`/api/experiences/${encodeURIComponent(slug)}`)
       .then((res) => res.json())
       .then((data) => {
-        if (!Array.isArray(data)) {
+        if (data?.error) {
           setGroup(null);
           return;
         }
-        const match = data.find((item) => item?.slug === slug) || null;
-        setGroup(match);
+        setGroup(data);
       })
       .catch(() => setGroup(null))
       .finally(() => setLoaded(true));
