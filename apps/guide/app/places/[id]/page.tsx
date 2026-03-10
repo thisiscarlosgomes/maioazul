@@ -380,7 +380,6 @@ export default function PlacePage() {
   const pick = (value?: { pt?: string; en?: string }) =>
     value?.[lang] || value?.en || value?.pt || "";
   const descriptionText = (
-    place.description?.[lang] ||
     place.description?.en ||
     place.description?.pt ||
     ""
@@ -399,7 +398,12 @@ export default function PlacePage() {
   const handleVoicePlay = async () => {
     if (!canPlayVoice) return;
     const text = `${place.name?.en || pick(place.name)}. ${descriptionText}`;
-    await playVoice({ text, title: pick(place.name), lang, placeId: place.id });
+    await playVoice({
+      text,
+      title: place.name?.en || pick(place.name),
+      lang: "en",
+      placeId: place.id,
+    });
   };
 
   const handleVoicePauseToggle = () => {
