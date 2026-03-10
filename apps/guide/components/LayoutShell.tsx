@@ -368,7 +368,10 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     const hasOpenVaul = () => {
       const drawerOpen = document.querySelector('[data-vaul-drawer][data-state="open"]');
       const overlayOpen = document.querySelector('[data-vaul-overlay][data-state="open"]');
-      return Boolean(drawerOpen || overlayOpen);
+      const dialogOpen = document.querySelector(
+        '[role="dialog"][data-state="open"], [data-slot="dialog-content"][data-state="open"]'
+      );
+      return Boolean(drawerOpen || overlayOpen || dialogOpen);
     };
 
     const sync = () => setIsAnyVaulOpen(hasOpenVaul());

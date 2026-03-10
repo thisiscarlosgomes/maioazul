@@ -141,6 +141,8 @@ export default function FavoritesPage() {
           <span>Governo de Cabo Verde</span>
           <span>·</span>
           <span>UE</span>
+          <span>·</span>
+          <span>Dados Publicos</span>
         </div>
       </div>
       </div>

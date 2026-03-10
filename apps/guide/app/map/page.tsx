@@ -25,6 +25,7 @@ import { Drawer } from "vaul";
 import { hasVoiceForId, playVoice, stopVoice, useVoiceManifest, useVoiceState } from "@/lib/voice";
 import { useLang } from "@/lib/lang";
 import Link from "next/link";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
 
 import { PlacesDrawer } from "@/components/PlacesDrawer";
 import { fetchJsonOfflineFirst } from "@/lib/offline";
@@ -2867,7 +2868,7 @@ export default function MapPage() {
                                     aria-label="Português"
                                     aria-pressed={lang === "pt"}
                                     className={`px-3 py-2 text-xs font-medium transition ${lang === "pt"
-                                        ? "bg-foreground text-background"
+                                        ? "bg-muted text-foreground"
                                         : "text-muted-foreground hover:text-foreground"
                                         }`}
                                 >
@@ -2879,7 +2880,7 @@ export default function MapPage() {
                                     aria-label="English"
                                     aria-pressed={lang === "en"}
                                     className={`px-3 py-2 text-xs font-medium transition ${lang === "en"
-                                        ? "bg-foreground text-background"
+                                        ? "bg-muted text-foreground"
                                         : "text-muted-foreground hover:text-foreground"
                                         }`}
                                 >
@@ -3900,111 +3901,99 @@ export default function MapPage() {
                                 </Drawer.Portal>
                             </Drawer.Root>
 
-                            <Drawer.Root open={currencyOpen} onOpenChange={setCurrencyOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-12 shadow-xl">
-                                        <Drawer.Title className="text-base font-semibold text-foreground">
-                                            {copy[lang].currencyConverterTitle}
-                                        </Drawer.Title>
-                                        <div className="mt-4">
-                                            <CurrencyConverterPanel />
-                                        </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                            <ResponsiveDialog
+                                open={currencyOpen}
+                                onOpenChange={setCurrencyOpen}
+                                title={copy[lang].currencyConverterTitle}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-12 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <CurrencyConverterPanel />
+                            </ResponsiveDialog>
 
-                            <Drawer.Root open={esimOpen} onOpenChange={setEsimOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl  bg-background p-4 pt-6 pb-10 shadow-xl">
-                                        <Drawer.Title className="text-base font-semibold text-foreground">
-                                            {copy[lang].esimTitle}
-                                        </Drawer.Title>
-                                        <div className="mt-4">
-                                            <EsimCheckoutPanel />
-                                        </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                            <ResponsiveDialog
+                                open={esimOpen}
+                                onOpenChange={setEsimOpen}
+                                title={copy[lang].esimTitle}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-10 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <EsimCheckoutPanel />
+                            </ResponsiveDialog>
 
-                            <Drawer.Root open={surfOpen} onOpenChange={setSurfOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl  bg-background p-4 pt-6 pb-10 shadow-xl">
-                                        <Drawer.Title className="text-base font-semibold text-foreground">
-                                            {copy[lang].surfDrawerTitle}
-                                        </Drawer.Title>
-                                        <div className="mt-1 text-xs text-muted-foreground">
-                                            {copy[lang].surfConditionsHint}
-                                        </div>
-                                        <div className="mt-4 rounded-2xl border border-border">
-                                            <div className="grid grid-cols-4 gap-2 border-b border-border px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                                                <div>{copy[lang].surfColTime}</div>
-                                                <div>{copy[lang].surfColSurf}</div>
-                                                <div>{copy[lang].surfColSwell}</div>
-                                                <div>{copy[lang].surfColWind}</div>
-                                            </div>
-                                            {surfLoading && (
-                                                <div className="space-y-2 px-3 py-3">
-                                                    {Array.from({ length: 3 }).map((_, idx) => (
-                                                        <div
-                                                            key={`surf-row-skeleton-${idx}`}
-                                                            className="grid grid-cols-4 gap-2"
-                                                        >
-                                                            <Skeleton className="h-4 w-14 rounded-full" />
-                                                            <Skeleton className="h-4 w-20 rounded-full" />
-                                                            <Skeleton className="h-4 w-24 rounded-full" />
-                                                            <Skeleton className="h-4 w-20 rounded-full" />
-                                                        </div>
-                                                    ))}
+                            <ResponsiveDialog
+                                open={surfOpen}
+                                onOpenChange={setSurfOpen}
+                                title={copy[lang].surfDrawerTitle}
+                                description={copy[lang].surfConditionsHint}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-10 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <div className="rounded-2xl border border-border">
+                                    <div className="grid grid-cols-4 gap-2 border-b border-border px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                                        <div>{copy[lang].surfColTime}</div>
+                                        <div>{copy[lang].surfColSurf}</div>
+                                        <div>{copy[lang].surfColSwell}</div>
+                                        <div>{copy[lang].surfColWind}</div>
+                                    </div>
+                                    {surfLoading && (
+                                        <div className="space-y-2 px-3 py-3">
+                                            {Array.from({ length: 3 }).map((_, idx) => (
+                                                <div
+                                                    key={`surf-row-skeleton-${idx}`}
+                                                    className="grid grid-cols-4 gap-2"
+                                                >
+                                                    <Skeleton className="h-4 w-14 rounded-full" />
+                                                    <Skeleton className="h-4 w-20 rounded-full" />
+                                                    <Skeleton className="h-4 w-24 rounded-full" />
+                                                    <Skeleton className="h-4 w-20 rounded-full" />
                                                 </div>
-                                            )}
-                                            {!surfLoading && surfData?.points?.length
-                                                ? surfData.points.map((point) => {
-                                                      const quality = surfQualityScore(point);
-                                                      return (
-                                                      <div
-                                                          key={`${point.label}-${point.wind_kph}-${point.swell_m}`}
-                                                          className="grid grid-cols-4 gap-2 border-b border-border px-3 py-3 text-sm last:border-b-0 items-center justify-center"
-                                                      >
-                                                          <div className="inline-flex items-center gap-2 font-semibold text-foreground">
-                                                              <SurfQualityBar score={quality} />
-                                                              <span>{point.label}</span>
-                                                          </div>
-                                                          <div className="text-foreground font-semibold text-md">
-                                                              {point.surf_min_m.toFixed(1)}-{point.surf_max_m.toFixed(1)}m
-                                                          </div>
-                                                          <div className="text-foreground">
-                                                              {point.swell_m.toFixed(1)}m · {point.swell_period_s}s
-                                                          </div>
-                                                          <div className="text-foreground">
-                                                              {point.wind_kph} ({point.wind_gust_kph}) kph
-                                                          </div>
-                                                      </div>
-                                                  );
-                                                })
-                                                : null}
-                                            {!surfLoading && (surfError || !surfData?.points?.length) && (
-                                                <div className="px-3 py-3 text-sm text-muted-foreground">
-                                                    <div>{copy[lang].surfUnavailable}</div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setSurfData(null);
-                                                            setSurfError(false);
-                                                            loadSurf();
-                                                        }}
-                                                        className="mt-2 inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:bg-accent"
-                                                    >
-                                                        {copy[lang].retry}
-                                                    </button>
-                                                </div>
-                                            )}
+                                            ))}
                                         </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                                    )}
+                                    {!surfLoading && surfData?.points?.length
+                                        ? surfData.points.map((point) => {
+                                              const quality = surfQualityScore(point);
+                                              return (
+                                              <div
+                                                  key={`${point.label}-${point.wind_kph}-${point.swell_m}`}
+                                                  className="grid grid-cols-4 gap-2 border-b border-border px-3 py-3 text-sm last:border-b-0 items-center justify-center"
+                                              >
+                                                  <div className="inline-flex items-center gap-2 font-semibold text-foreground">
+                                                      <SurfQualityBar score={quality} />
+                                                      <span>{point.label}</span>
+                                                  </div>
+                                                  <div className="text-foreground font-semibold text-md">
+                                                      {point.surf_min_m.toFixed(1)}-{point.surf_max_m.toFixed(1)}m
+                                                  </div>
+                                                  <div className="text-foreground">
+                                                      {point.swell_m.toFixed(1)}m · {point.swell_period_s}s
+                                                  </div>
+                                                  <div className="text-foreground">
+                                                      {point.wind_kph} ({point.wind_gust_kph}) kph
+                                                  </div>
+                                              </div>
+                                          );
+                                        })
+                                        : null}
+                                    {!surfLoading && (surfError || !surfData?.points?.length) && (
+                                        <div className="px-3 py-3 text-sm text-muted-foreground">
+                                            <div>{copy[lang].surfUnavailable}</div>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setSurfData(null);
+                                                    setSurfError(false);
+                                                    loadSurf();
+                                                }}
+                                                className="mt-2 inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:bg-accent"
+                                            >
+                                                {copy[lang].retry}
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </ResponsiveDialog>
 
                             <div className="absolute top-4 right-3 z-30 flex flex-col items-end gap-2">
                                 {isFullscreen && (
