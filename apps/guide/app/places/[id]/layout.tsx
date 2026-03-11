@@ -63,14 +63,15 @@ export async function generateMetadata({
   };
 }
 
-export default function PlaceLayout({
+export default async function PlaceLayout({
   params,
   children,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
   children: React.ReactNode;
 }) {
-  const place = getPlace(params.id);
+  const { id } = await params;
+  const place = getPlace(id);
   const name = place?.name?.en || place?.name?.pt || "Place";
   const description =
     place?.description?.en ||
@@ -83,7 +84,7 @@ export default function PlaceLayout({
     "@graph": [
       {
         "@type": "TouristAttraction",
-        "@id": `https://www.visit-maio.com/places/${params.id}#place`,
+        "@id": `https://www.visit-maio.com/places/${id}#place`,
         name,
         description,
         image: place?.image_url || "https://www.visit-maio.com/cover.jpg",
@@ -100,7 +101,7 @@ export default function PlaceLayout({
                 latitude: place.coordinates[1],
               }
             : undefined,
-        url: `https://www.visit-maio.com/places/${params.id}`,
+        url: `https://www.visit-maio.com/places/${id}`,
       },
       {
         "@type": "BreadcrumbList",
@@ -121,7 +122,7 @@ export default function PlaceLayout({
             "@type": "ListItem",
             position: 3,
             name,
-            item: `https://www.visit-maio.com/places/${params.id}`,
+            item: `https://www.visit-maio.com/places/${id}`,
           },
         ],
       },

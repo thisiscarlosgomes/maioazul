@@ -85,14 +85,15 @@ export async function generateMetadata({
   };
 }
 
-export default function ExperienceBySlugLayout({
+export default async function ExperienceBySlugLayout({
   params,
   children,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
   children: React.ReactNode;
 }) {
-  const group = getGroup(params.slug);
+  const { slug } = await params;
+  const group = getGroup(slug);
   const title = group?.title?.en || group?.title?.pt || "Experience";
   const listItems =
     group?.places?.map((place, index) => {
@@ -113,13 +114,13 @@ export default function ExperienceBySlugLayout({
     "@graph": [
       {
         "@type": "WebPage",
-        "@id": `https://www.visit-maio.com/experiences/${params.slug}#webpage`,
+        "@id": `https://www.visit-maio.com/experiences/${slug}#webpage`,
         name: `${title} · Visit Maio`,
-        url: `https://www.visit-maio.com/experiences/${params.slug}`,
+        url: `https://www.visit-maio.com/experiences/${slug}`,
       },
       {
         "@type": "ItemList",
-        "@id": `https://www.visit-maio.com/experiences/${params.slug}#list`,
+        "@id": `https://www.visit-maio.com/experiences/${slug}#list`,
         name: `${title} places`,
         numberOfItems: listItems.length,
         itemListElement: listItems,
@@ -143,7 +144,7 @@ export default function ExperienceBySlugLayout({
             "@type": "ListItem",
             position: 3,
             name: title,
-            item: `https://www.visit-maio.com/experiences/${params.slug}`,
+            item: `https://www.visit-maio.com/experiences/${slug}`,
           },
         ],
       },
