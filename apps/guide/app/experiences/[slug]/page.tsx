@@ -38,7 +38,13 @@ export default function ExperienceBySlugPage() {
     () => ({
       en: {
         fallbackTitle: "Experience",
-        subtitle: "Places to explore in this experience. Tap phone to book.",
+        subtitleBySlug: {
+          food: "Taste local Maio flavors across these selected food spots.",
+          stay: "Find curated places to stay across Maio.",
+          "blue-sports": "Explore ocean and beach activities available on Maio.",
+          guia: "Connect with local guidance to explore Maio with context.",
+        },
+        subtitleFallback: "Places to explore in this experience.",
         location: "Location",
         bookByPhone: "Book",
         openOnAirbnb: "Book",
@@ -50,7 +56,13 @@ export default function ExperienceBySlugPage() {
       },
       pt: {
         fallbackTitle: "Experiência",
-        subtitle: "Lugares para explorar nesta experiência. Toque no telefone para reservar.",
+        subtitleBySlug: {
+          food: "Prove sabores locais do Maio nestes espaços selecionados.",
+          stay: "Encontre estadias selecionadas para ficar no Maio.",
+          "blue-sports": "Explore atividades de mar e praia disponíveis no Maio.",
+          guia: "Ligue-se a orientação local para explorar o Maio com contexto.",
+        },
+        subtitleFallback: "Lugares para explorar nesta experiência.",
         location: "Localização",
         bookByPhone: "Reservar",
         openOnAirbnb: "Reservar",
@@ -122,11 +134,11 @@ export default function ExperienceBySlugPage() {
     copy[lang].fallbackTitle;
   const hideContactAndBook = slug === "food";
   const hideLocationMetadata = slug === "stay";
-  const subtitle = hideContactAndBook
-    ? lang === "pt"
-      ? "Lugares para explorar nesta experiência."
-      : "Places to explore in this experience."
-    : copy[lang].subtitle;
+  const descriptionClampClass =
+    slug === "food" || slug === "blue-sports" ? "line-clamp-3" : "line-clamp-2";
+  const subtitle =
+    copy[lang].subtitleBySlug[slug as keyof typeof copy.en.subtitleBySlug] ||
+    copy[lang].subtitleFallback;
 
   return (
     <>
@@ -228,7 +240,7 @@ export default function ExperienceBySlugPage() {
                   {getDisplayTitle(item)}
                 </h2>
                 {pickLocalized(item.description)?.trim() ? (
-                  <p className="text-sm text-muted-foreground line-clamp-2">
+                  <p className={`text-sm text-muted-foreground ${descriptionClampClass}`}>
                     {pickLocalized(item.description)}
                   </p>
                 ) : null}
