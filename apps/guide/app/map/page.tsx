@@ -3546,16 +3546,16 @@ export default function MapPage() {
                             />
 
                             <div className="absolute top-4 left-3 right-16 sm:right-20 lg:right-3 z-30 flex items-center gap-2">
-                                {isFullscreen && (
-                                    <button
-                                        type="button"
-                                        onClick={() => setFiltersOpen((o) => !o)}
-                                        aria-label={copy[lang].filters}
-                                        className="h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center"
-                                    >
-                                        <SlidersHorizontal className="h-4 w-4" />
-                                    </button>
-                                )}
+                                <button
+                                    type="button"
+                                    onClick={() => setFiltersOpen((o) => !o)}
+                                    aria-label={copy[lang].filters}
+                                    className={`h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent items-center justify-center ${
+                                        isFullscreen ? "inline-flex" : "hidden lg:inline-flex"
+                                    }`}
+                                >
+                                    <SlidersHorizontal className="h-4 w-4" />
+                                </button>
 
                                 <div className="relative flex-1">
                                     <input
@@ -3788,102 +3788,90 @@ export default function MapPage() {
                                 </div>
                             )}
 
-                            <Drawer.Root open={filtersOpen} onOpenChange={setFiltersOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-40 bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content
-                                        className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border border-border bg-background p-5 pt-7 pb-10 shadow-xl"
-                                        style={
-                                            {
-                                                "--initial-transform": "calc(100% + 12px)",
-                                                paddingBottom:
-                                                    "calc(3.25rem + env(safe-area-inset-bottom))",
-                                            } as React.CSSProperties
+                            <ResponsiveDialog
+                                open={filtersOpen}
+                                onOpenChange={setFiltersOpen}
+                                title={lang === "pt" ? "Filtros do mapa" : "Map filters"}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-5 pt-7 pb-10 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({
+                                                ...l,
+                                                protectedAreas: !l.protectedAreas,
+                                            }))
                                         }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.protectedAreas ? "border-green-400" : "opacity-50"
+                                            }`}
                                     >
-                                        <Drawer.Title className="sr-only">
-                                            {lang === "pt" ? "Filtros do mapa" : "Map filters"}
-                                        </Drawer.Title>
-                                        <div className="mx-auto h-1 w-10 rounded-full bg-muted-foreground/30" />
-                                        <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({
-                                                        ...l,
-                                                        protectedAreas: !l.protectedAreas,
-                                                    }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.protectedAreas ? "border-green-400" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].protectedAreas}
-                                            </button>
+                                        {copy[lang].protectedAreas}
+                                    </button>
 
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({ ...l, beaches: !l.beaches }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.beaches ? " border-yellow-400" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].beaches}
-                                            </button>
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({ ...l, beaches: !l.beaches }))
+                                        }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.beaches ? " border-yellow-400" : "opacity-50"
+                                            }`}
+                                    >
+                                        {copy[lang].beaches}
+                                    </button>
 
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({ ...l, settlements: !l.settlements }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.settlements ? "border-purple-400" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].settlements}
-                                            </button>
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({ ...l, settlements: !l.settlements }))
+                                        }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.settlements ? "border-purple-400" : "opacity-50"
+                                            }`}
+                                    >
+                                        {copy[lang].settlements}
+                                    </button>
 
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({ ...l, trilhas: !l.trilhas }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.trilhas ? "border-orange-500" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].trails}
-                                            </button>
-                                        </div>
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({ ...l, trilhas: !l.trilhas }))
+                                        }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.trilhas ? "border-orange-500" : "opacity-50"
+                                            }`}
+                                    >
+                                        {copy[lang].trails}
+                                    </button>
+                                </div>
 
-                                        <div className="mt-5 text-sm font-medium text-muted-foreground">
-                                            {copy[lang].mapView}
-                                        </div>
-                                        <div className="mt-2 grid w-full grid-cols-2 gap-2">
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    setBaseMap("normal");
-                                                    setFiltersOpen(false);
-                                                }}
-                                                className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "normal"
-                                                    ? "bg-foreground text-background border-foreground"
-                                                    : "text-muted-foreground hover:text-foreground"
-                                                    }`}
-                                            >
-                                                {lang === "pt" ? "Normal" : "Normal"}
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    setBaseMap("satellite");
-                                                    setFiltersOpen(false);
-                                                }}
-                                                className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "satellite"
-                                                    ? "bg-foreground text-background border-foreground"
-                                                    : "text-muted-foreground hover:text-foreground"
-                                                    }`}
-                                            >
-                                                {lang === "pt" ? "Satélite" : "Satellite"}
-                                            </button>
-                                        </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                                <div className="mt-5 text-sm font-medium text-muted-foreground">
+                                    {copy[lang].mapView}
+                                </div>
+                                <div className="mt-2 grid w-full grid-cols-2 gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setBaseMap("normal");
+                                            setFiltersOpen(false);
+                                        }}
+                                        className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "normal"
+                                            ? "bg-foreground text-background border-foreground"
+                                            : "text-muted-foreground hover:text-foreground"
+                                            }`}
+                                    >
+                                        {lang === "pt" ? "Normal" : "Normal"}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setBaseMap("satellite");
+                                            setFiltersOpen(false);
+                                        }}
+                                        className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "satellite"
+                                            ? "bg-foreground text-background border-foreground"
+                                            : "text-muted-foreground hover:text-foreground"
+                                            }`}
+                                    >
+                                        {lang === "pt" ? "Satélite" : "Satellite"}
+                                    </button>
+                                </div>
+                            </ResponsiveDialog>
 
                             <Drawer.Root open={exploreOpen} onOpenChange={setExploreOpen}>
                                 <Drawer.Portal>
