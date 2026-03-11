@@ -8,9 +8,9 @@ const STORAGE_KEY = "maio-lang";
 const EVENT_NAME = "maio-lang-change";
 
 const readStoredLang = (): Lang => {
-  if (typeof window === "undefined") return "en";
+  if (typeof window === "undefined") return "pt";
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === "pt" || stored === "en" ? stored : "en";
+  return stored === "pt" || stored === "en" ? stored : "pt";
 };
 
 const writeStoredLang = (lang: Lang) => {

@@ -132,7 +132,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="bg-background">
+    <html lang="pt" className="bg-background">
 
       <head>
         {/* Preload local font */}

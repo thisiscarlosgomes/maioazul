@@ -2852,13 +2852,13 @@ export default function MapPage() {
             {!isFullscreen && (
                 <div className="maio-map-header fixed inset-x-0 top-0 z-40 bg-background/90 backdrop-blur">
                     <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-                        <div>
+                        <Link href="/" aria-label={lang === "pt" ? "Página inicial" : "Home"}>
                             <img
                                 src="/visitmaio.svg"
                                 alt="Visit Maio"
                                 className="h-5 w-auto"
                             />
-                        </div>
+                        </Link>
 
                         <div className="flex items-center gap-2">
                             {weatherAqiBadge && (
