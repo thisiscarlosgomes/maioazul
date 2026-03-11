@@ -3661,77 +3661,71 @@ export default function MapPage() {
                                 </div>
                             )}
 
-                            <Drawer.Root
+                            <ResponsiveDialog
                                 open={Boolean(selectedMapItem)}
                                 onOpenChange={(open) => {
                                     if (!open) clearSelections();
                                 }}
+                                title={selectedMapItem?.name || (lang === "pt" ? "Detalhes do local" : "Place details")}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-8 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
                             >
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl border border-border bg-background p-4 pt-6 pb-8 shadow-xl">
-                                        <Drawer.Title className="sr-only">
-                                            {selectedMapItem?.name || (lang === "pt" ? "Detalhes do local" : "Place details")}
-                                        </Drawer.Title>
-                                        {selectedMapItem && (
-                                            <div className="space-y-3">
-                                                <div className="mx-auto h-1 w-10 rounded-full bg-muted-foreground/30" />
-                                                <div className="relative h-44 overflow-hidden rounded-2xl">
-                                                    <img
-                                                        src={
-                                                            selectedMapItem.image ||
-                                                            selectedMapItem.image_url ||
-                                                            getDefaultImageForPlace(selectedMapItem)
-                                                        }
-                                                        alt={selectedMapItem.name}
-                                                        className="h-full w-full object-cover"
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                    />
+                                {selectedMapItem && (
+                                    <div className="space-y-3">
+                                        <div className="relative h-44 overflow-hidden rounded-2xl">
+                                            <img
+                                                src={
+                                                    selectedMapItem.image ||
+                                                    selectedMapItem.image_url ||
+                                                    getDefaultImageForPlace(selectedMapItem)
+                                                }
+                                                alt={selectedMapItem.name}
+                                                className="h-full w-full object-cover"
+                                                loading="lazy"
+                                                decoding="async"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={clearSelections}
+                                                aria-label={copy[lang].close}
+                                                className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                        <div className="px-1">
+                                            <div className="text-base font-semibold text-foreground">
+                                                {selectedMapItem.name}
+                                            </div>
+                                            {getVoiceSummary(selectedMapItem) && (
+                                                <div className="mt-1 text-sm text-muted-foreground">
+                                                    {getShortText(getVoiceSummary(selectedMapItem), 220)}
+                                                </div>
+                                            )}
+                                            <div className="mt-3 flex items-center gap-2">
+                                                {selectedMapItem.id && (
+                                                    <Link
+                                                        href={`/places/${selectedMapItem.id}`}
+                                                        prefetch
+                                                        className="inline-flex items-center justify-center rounded-full border border-border bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wide text-foreground shadow-sm hover:bg-accent"
+                                                    >
+                                                        {lang === "pt" ? "Abrir" : "Open"}
+                                                    </Link>
+                                                )}
+                                                {canPlayVoice(selectedMapItem) && (
                                                     <button
                                                         type="button"
-                                                        onClick={clearSelections}
-                                                        aria-label={copy[lang].close}
-                                                        className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur"
+                                                        onClick={() => handleStoryPlay(selectedMapItem)}
+                                                        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background shadow-sm hover:bg-accent"
                                                     >
-                                                        <X className="h-4 w-4" />
+                                                        <Volume2 className="h-4 w-4" />
                                                     </button>
-                                                </div>
-                                                <div className="px-1">
-                                                    <div className="text-base font-semibold text-foreground">
-                                                        {selectedMapItem.name}
-                                                    </div>
-                                                    {getVoiceSummary(selectedMapItem) && (
-                                                        <div className="mt-1 text-sm text-muted-foreground">
-                                                            {getShortText(getVoiceSummary(selectedMapItem), 220)}
-                                                        </div>
-                                                    )}
-                                                    <div className="mt-3 flex items-center gap-2">
-                                                        {selectedMapItem.id && (
-                                                            <Link
-                                                                href={`/places/${selectedMapItem.id}`}
-                                                                prefetch
-                                                                className="inline-flex items-center justify-center rounded-full border border-border bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wide text-foreground shadow-sm hover:bg-accent"
-                                                            >
-                                                                {lang === "pt" ? "Abrir" : "Open"}
-                                                            </Link>
-                                                        )}
-                                                        {canPlayVoice(selectedMapItem) && (
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleStoryPlay(selectedMapItem)}
-                                                                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background shadow-sm hover:bg-accent"
-                                                            >
-                                                                <Volume2 className="h-4 w-4" />
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                </div>
+                                                )}
                                             </div>
-                                        )}
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                                        </div>
+                                    </div>
+                                )}
+                            </ResponsiveDialog>
 
                             {debugEnabled && debugPanelOpen && (
                                 <div className="absolute bottom-4 left-3 z-30 w-[92%] max-w-sm rounded-2xl border border-border bg-background/95 backdrop-blur shadow-lg p-3">

@@ -10,7 +10,28 @@ type MainSiteHeaderProps = {
   inverted?: boolean;
 };
 
+type WeatherSnapshot = {
+  temperature?: number;
+  weather_code?: number;
+};
+
+type AirSnapshot = {
+  aqi?: number;
+  pm2_5?: number;
+};
+
+type WeatherCachePayload = {
+  weather: WeatherSnapshot | null;
+  air: AirSnapshot | null;
+  ts: number;
+};
+
+const WEATHER_CACHE_KEY = "maio-header-weather-cache-v1";
+const WEATHER_CACHE_TTL_MS = 10 * 60 * 1000;
+let weatherCacheMemory: WeatherCachePayload | null = null;
+
 const navItems = [
+  { href: "/map", key: "explore" },
   { href: "/experiences", key: "experiences" },
   { href: "/manifest", key: "manifest" },
 ] as const;
@@ -44,14 +65,38 @@ function pm25ToUsAqi(pm25: number) {
   return 500;
 }
 
+function readWeatherCache(): WeatherCachePayload | null {
+  if (weatherCacheMemory) return weatherCacheMemory;
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(WEATHER_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as WeatherCachePayload;
+    if (!parsed || typeof parsed.ts !== "number") return null;
+    weatherCacheMemory = parsed;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function writeWeatherCache(payload: WeatherCachePayload) {
+  weatherCacheMemory = payload;
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify(payload));
+  } catch {}
+}
+
 export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps) {
   const pathname = usePathname();
   const [lang, setLang] = useLang();
-  const [weather, setWeather] = useState<any>(null);
-  const [air, setAir] = useState<any>(null);
+  const [weather, setWeather] = useState<WeatherSnapshot | null>(() => readWeatherCache()?.weather ?? null);
+  const [air, setAir] = useState<AirSnapshot | null>(() => readWeatherCache()?.air ?? null);
 
   const copy = {
     en: {
+      explore: "Explore",
       attractions: "Attractions",
       experiences: "Experiences",
       manifest: "Tourist Manifest",
@@ -60,6 +105,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
       en: "English",
     },
     pt: {
+      explore: "Explorar",
       attractions: "Atrações",
       experiences: "Experiências",
       manifest: "Manifesto Turístico",
@@ -89,13 +135,40 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const cached = readWeatherCache();
+    const now = Date.now();
+    const isFresh = Boolean(cached && now - cached.ts < WEATHER_CACHE_TTL_MS);
+
+    if (cached?.weather || cached?.air) {
+      setWeather(cached.weather);
+      setAir(cached.air);
+    }
+
+    if (isFresh) return;
+
     const run = () => {
       fetchJsonOfflineFirst<any>("/api/maio/weather")
-        .then(setWeather)
+        .then((nextWeather) => {
+          setWeather(nextWeather);
+          const previous = readWeatherCache();
+          writeWeatherCache({
+            weather: nextWeather ?? null,
+            air: previous?.air ?? null,
+            ts: Date.now(),
+          });
+        })
         .catch(() => {});
 
       fetchJsonOfflineFirst<any>("/api/maio/air")
-        .then(setAir)
+        .then((nextAir) => {
+          setAir(nextAir);
+          const previous = readWeatherCache();
+          writeWeatherCache({
+            weather: previous?.weather ?? null,
+            air: nextAir ?? null,
+            ts: Date.now(),
+          });
+        })
         .catch(() => {});
     };
     const idle = (window as any).requestIdleCallback;
