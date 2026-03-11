@@ -135,7 +135,9 @@ export default function ExperienceBySlugPage() {
   const hideContactAndBook = slug === "food";
   const hideLocationMetadata = slug === "stay";
   const descriptionClampClass =
-    slug === "food" || slug === "blue-sports" ? "line-clamp-3" : "line-clamp-2";
+    slug === "food" || slug === "blue-sports" || slug === "guia"
+      ? "line-clamp-3"
+      : "line-clamp-2";
   const subtitle =
     copy[lang].subtitleBySlug[slug as keyof typeof copy.en.subtitleBySlug] ||
     copy[lang].subtitleFallback;
@@ -250,7 +252,7 @@ export default function ExperienceBySlugPage() {
                     {pickLocalized(item.location)}
                   </div>
                 ) : null}
-                {!hideContactAndBook && item.phone ? (
+                {item.phone ? (
                   <a
                     href={`tel:${item.phone.replace(/\s+/g, "")}`}
                     className="inline-flex rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent"
