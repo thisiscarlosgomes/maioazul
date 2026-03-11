@@ -33,7 +33,7 @@ export default function ExperiencesPage() {
     () => ({
       en: {
         title: "Experiences in Maio",
-        aboutTitle: "Maio, at its own pace",
+        aboutTitle: "Maio Curated",
         aboutBody:
           "Maio is a calm island where time moves slowly. The beauty is in the simple rhythm of days, open horizons, and a community that welcomes visitors who travel with care.",
         aboutBody2:
@@ -63,7 +63,7 @@ export default function ExperiencesPage() {
       },
       pt: {
         title: "Experiências em Maio",
-        aboutTitle: "Maio, ao seu ritmo",
+        aboutTitle: "Maio Curated",
         aboutBody:
           "Maio é uma ilha calma onde o tempo abranda. A beleza está no ritmo simples dos dias, nos horizontes abertos e na comunidade que recebe quem viaja com cuidado.",
         aboutBody2:

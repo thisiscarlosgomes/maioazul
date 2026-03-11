@@ -72,6 +72,12 @@ export default function ExperienceBySlugPage() {
     return value[lang] || value.en || value.pt || "";
   };
 
+  const getDisplayTitle = (item: Place) => {
+    const rawTitle = pickLocalized(item.title);
+    if (slug !== "stay") return rawTitle;
+    return rawTitle.split(" · ")[0]?.trim() || rawTitle;
+  };
+
   useEffect(() => {
     fetch(`/api/experiences/${encodeURIComponent(slug)}`)
       .then((res) => res.json())
@@ -114,12 +120,19 @@ export default function ExperienceBySlugPage() {
     group?.title?.en ||
     group?.title?.pt ||
     copy[lang].fallbackTitle;
+  const hideContactAndBook = slug === "food";
+  const hideLocationMetadata = slug === "stay";
+  const subtitle = hideContactAndBook
+    ? lang === "pt"
+      ? "Lugares para explorar nesta experiência."
+      : "Places to explore in this experience."
+    : copy[lang].subtitle;
 
   return (
     <>
       <SecondaryPageHeader title={pageTitle} backHref="/experiences" />
       <div className="mx-auto max-w-5xl px-4 pb-12 pt-6">
-        <p className="text-sm text-muted-foreground">{copy[lang].subtitle}</p>
+        <p className="text-sm text-muted-foreground">{subtitle}</p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {group?.places?.map((item) => (
@@ -140,7 +153,7 @@ export default function ExperienceBySlugPage() {
                 );
                 const currentImage = images[currentIndex] || "";
                 const hasMultiple = images.length > 1;
-                const placeTitle = pickLocalized(item.title);
+                const placeTitle = getDisplayTitle(item);
 
                 return (
                   <div className="group relative">
@@ -212,20 +225,20 @@ export default function ExperienceBySlugPage() {
               })()}
               <div className="space-y-2 p-4">
                 <h2 className="text-base font-semibold text-foreground">
-                  {pickLocalized(item.title)}
+                  {getDisplayTitle(item)}
                 </h2>
                 {pickLocalized(item.description)?.trim() ? (
                   <p className="text-sm text-muted-foreground line-clamp-2">
                     {pickLocalized(item.description)}
                   </p>
                 ) : null}
-                {pickLocalized(item.location)?.trim() ? (
+                {!hideLocationMetadata && pickLocalized(item.location)?.trim() ? (
                   <div className="text-sm text-muted-foreground">
                     <span className="font-medium text-foreground">{copy[lang].location}: </span>
                     {pickLocalized(item.location)}
                   </div>
                 ) : null}
-                {item.phone ? (
+                {!hideContactAndBook && item.phone ? (
                   <a
                     href={`tel:${item.phone.replace(/\s+/g, "")}`}
                     className="inline-flex rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent"
@@ -233,7 +246,7 @@ export default function ExperienceBySlugPage() {
                     {copy[lang].bookByPhone}: {item.phone}
                   </a>
                 ) : null}
-                {item.instagram_url ? (
+                {!hideContactAndBook && item.instagram_url ? (
                   <a
                     href={item.instagram_url}
                     target="_blank"
@@ -243,7 +256,7 @@ export default function ExperienceBySlugPage() {
                     {copy[lang].openOnInstagram}
                   </a>
                 ) : null}
-                {item.facebook_url ? (
+                {!hideContactAndBook && item.facebook_url ? (
                   <a
                     href={item.facebook_url}
                     target="_blank"
@@ -253,7 +266,7 @@ export default function ExperienceBySlugPage() {
                     {copy[lang].openOnFacebook}
                   </a>
                 ) : null}
-                {item.email ? (
+                {!hideContactAndBook && item.email ? (
                   <a
                     href={`mailto:${item.email}`}
                     className={`${item.phone || item.instagram_url || item.facebook_url ? "ml-2 " : ""}inline-flex rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent`}
@@ -261,7 +274,8 @@ export default function ExperienceBySlugPage() {
                     {copy[lang].email}
                   </a>
                 ) : null}
-                {!item.phone &&
+                {!hideContactAndBook &&
+                !item.phone &&
                 !item.instagram_url &&
                 !item.facebook_url &&
                 !item.email &&
@@ -275,7 +289,8 @@ export default function ExperienceBySlugPage() {
                     {copy[lang].openOnAirbnb}
                   </a>
                 ) : null}
-                {!item.phone &&
+                {!hideContactAndBook &&
+                !item.phone &&
                 !item.instagram_url &&
                 !item.facebook_url &&
                 !item.email &&
