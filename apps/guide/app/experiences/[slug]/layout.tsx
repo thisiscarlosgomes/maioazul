@@ -86,9 +86,77 @@ export async function generateMetadata({
 }
 
 export default function ExperienceBySlugLayout({
+  params,
   children,
 }: {
+  params: { slug: string };
   children: React.ReactNode;
 }) {
-  return children;
+  const group = getGroup(params.slug);
+  const title = group?.title?.en || group?.title?.pt || "Experience";
+  const listItems =
+    group?.places?.map((place, index) => {
+      const description = place.description;
+      const value =
+        typeof description === "string"
+          ? description
+          : description?.en || description?.pt || undefined;
+      return {
+        "@type": "ListItem",
+        position: index + 1,
+        name: value ? shorten(value, 70) : `Place ${index + 1}`,
+      };
+    }) || [];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `https://www.visit-maio.com/experiences/${params.slug}#webpage`,
+        name: `${title} · Visit Maio`,
+        url: `https://www.visit-maio.com/experiences/${params.slug}`,
+      },
+      {
+        "@type": "ItemList",
+        "@id": `https://www.visit-maio.com/experiences/${params.slug}#list`,
+        name: `${title} places`,
+        numberOfItems: listItems.length,
+        itemListElement: listItems,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: "https://www.visit-maio.com/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Experiences",
+            item: "https://www.visit-maio.com/experiences",
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: title,
+            item: `https://www.visit-maio.com/experiences/${params.slug}`,
+          },
+        ],
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

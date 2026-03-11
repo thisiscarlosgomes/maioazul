@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/places/images"],
+        disallow: ["/api/", "/places/images", "/mcp-guide"],
       },
     ],
     sitemap: "https://www.visit-maio.com/sitemap.xml",

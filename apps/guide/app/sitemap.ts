@@ -61,12 +61,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.5,
     },
-    {
-      url: `${SITE_URL}/mcp-guide`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.4,
-    },
   ];
 
   const placesPath = path.join(process.cwd(), "public", "data", "maio_places_with_coords.json");

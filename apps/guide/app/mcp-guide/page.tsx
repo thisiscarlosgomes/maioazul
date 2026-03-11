@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   description:
     "Connect the Visit Maio MCP endpoint to ChatGPT, Claude, Cursor, and other MCP-compatible clients.",
   alternates: { canonical: "/mcp-guide" },
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: "Visit Maio MCP Guide",
     description: "Instructions to connect Visit Maio MCP over streamable HTTP.",

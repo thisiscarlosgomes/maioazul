@@ -142,7 +142,7 @@ export default function FavoritesPage() {
           <span>·</span>
           <span>UE</span>
           <span>·</span>
-          <span>Dados Publicos</span>
+          <span>Dados Públicos</span>
         </div>
       </div>
       </div>
