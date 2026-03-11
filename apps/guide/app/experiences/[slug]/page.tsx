@@ -5,6 +5,10 @@ import { useParams, useRouter } from "next/navigation";
 import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 import { useLang } from "@/lib/lang";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  getCachedExperienceGroup,
+  setCachedExperienceGroup,
+} from "@/lib/experiences-cache";
 
 type Place = {
   id: string;
@@ -30,8 +34,10 @@ export default function ExperienceBySlugPage() {
   const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
   const [lang] = useLang();
-  const [group, setGroup] = useState<ExperienceGroup | null>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [group, setGroup] = useState<ExperienceGroup | null>(() =>
+    getCachedExperienceGroup<ExperienceGroup>(slug) || null
+  );
+  const [loaded, setLoaded] = useState(() => Boolean(getCachedExperienceGroup(slug)));
   const [imageIndexByPlace, setImageIndexByPlace] = useState<Record<string, number>>({});
 
   const copy = useMemo(
@@ -91,17 +97,33 @@ export default function ExperienceBySlugPage() {
   };
 
   useEffect(() => {
-    fetch(`/api/experiences/${encodeURIComponent(slug)}`)
+    const cached = getCachedExperienceGroup<ExperienceGroup>(slug);
+    if (cached) {
+      setGroup(cached);
+      setLoaded(true);
+    }
+    let cancelled = false;
+    fetch(`/api/experiences/${encodeURIComponent(slug)}`, { cache: "force-cache" })
       .then((res) => res.json())
       .then((data) => {
+        if (cancelled) return;
         if (data?.error) {
           setGroup(null);
           return;
         }
+        setCachedExperienceGroup(slug, data);
         setGroup(data);
       })
-      .catch(() => setGroup(null))
-      .finally(() => setLoaded(true));
+      .catch(() => {
+        if (cancelled) return;
+        setGroup(null);
+      })
+      .finally(() => {
+        if (!cancelled) setLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   useEffect(() => {

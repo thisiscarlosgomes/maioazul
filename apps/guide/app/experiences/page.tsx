@@ -4,9 +4,60 @@ import { useEffect, useMemo, useState } from "react";
 import { useLang } from "@/lib/lang";
 import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 import Link from "next/link";
+import {
+  getCachedExperienceImages,
+  setCachedExperienceImages,
+} from "@/lib/experiences-cache";
+
+const FALLBACK_ACTIVITIES = [
+  {
+    id: "food",
+    title: "Food",
+    subtitle: {
+      en: "Taste the island’s freshest catch.",
+      pt: "Saboreie o peixe mais fresco da ilha.",
+    },
+    image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633850/tuna_oyjqjz.png",
+  },
+  {
+    id: "stay",
+    title: "Stay",
+    subtitle: {
+      en: "Places to stay with comfort and local character.",
+      pt: "Lugares para ficar com conforto e caráter local.",
+    },
+    image:
+      "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773089189/12323f0a48bf-cdf2-4eeb-8e48-7c6e4cbb6351_vchbng.avif",
+  },
+  {
+    id: "guia",
+    title: "Guia turístico",
+    subtitle: {
+      en: "Local guidance to explore Maio with context.",
+      pt: "Guia local para explorar o Maio com contexto.",
+    },
+    image:
+      "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1600&auto=format&fit=crop",
+  },
+  {
+    id: "blue-sports",
+    title: "Blue Sports",
+    subtitle: {
+      en: "Surf, Jet ski, SUP, or dive in clear waters.",
+      pt: "Surf, Jet ski, SUP ou mergulho em águas claras.",
+    },
+    image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/surf_qfgyc1.png",
+  },
+];
 
 export default function ExperiencesPage() {
   const [lang] = useLang();
+  const cachedImages = getCachedExperienceImages<{
+    id: string;
+    title: string | { en?: string; pt?: string };
+    subtitle: { en: string; pt: string };
+    image: string;
+  }>();
   const [activities, setActivities] = useState<
     Array<{
       id: string;
@@ -14,7 +65,7 @@ export default function ExperiencesPage() {
       subtitle: { en: string; pt: string };
       image: string;
     }>
-  >([]);
+  >(cachedImages && cachedImages.length > 0 ? cachedImages : FALLBACK_ACTIVITIES);
 
   const activityTitleById = useMemo(
     () => ({
@@ -95,65 +146,47 @@ export default function ExperiencesPage() {
     []
   );
 
-  const fallbackActivities = [
-    {
-      id: "food",
-      title: "Food",
-      subtitle: {
-        en: "Taste the island’s freshest catch.",
-        pt: "Saboreie o peixe mais fresco da ilha.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633850/tuna_oyjqjz.png",
-    },
-    {
-      id: "stay",
-      title: "Stay",
-      subtitle: {
-        en: "Places to stay with comfort and local character.",
-        pt: "Lugares para ficar com conforto e caráter local.",
-      },
-      image:
-        "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773089189/12323f0a48bf-cdf2-4eeb-8e48-7c6e4cbb6351_vchbng.avif",
-    },
-    {
-      id: "guia",
-      title: "Guia turístico",
-      subtitle: {
-        en: "Local guidance to explore Maio with context.",
-        pt: "Guia local para explorar o Maio com contexto.",
-      },
-      image:
-        "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1600&auto=format&fit=crop",
-    },
-    {
-      id: "blue-sports",
-      title: "Blue Sports",
-      subtitle: {
-        en: "Surf, Jet ski, SUP, or dive in clear waters.",
-        pt: "Surf, Jet ski, SUP ou mergulho em águas claras.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/surf_qfgyc1.png",
-    },
-  ];
-
   useEffect(() => {
-    fetch("/api/experience-images")
+    let cancelled = false;
+    fetch("/api/experience-images", { cache: "force-cache" })
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data) && data.length) {
+        if (cancelled) return;
+        if (Array.isArray(data) && data.length > 0) {
           const order = ["food", "stay", "guia", "blue-sports"];
           const orderIndex = new Map(order.map((id, idx) => [id, idx]));
-          const sorted = [...data].sort((a, b) => {
+          const sorted = [...data]
+            .map((item) => {
+              const fallback = FALLBACK_ACTIVITIES.find((f) => f.id === item?.id);
+              return {
+                id: item?.id || fallback?.id || "",
+                title: item?.title || fallback?.title || "",
+                subtitle: item?.subtitle || fallback?.subtitle || { en: "", pt: "" },
+                image: item?.image || fallback?.image || "",
+              };
+            })
+            .filter((item) => item.id && item.image)
+            .sort((a, b) => {
             const ai = orderIndex.get(a.id) ?? Number.MAX_SAFE_INTEGER;
             const bi = orderIndex.get(b.id) ?? Number.MAX_SAFE_INTEGER;
             return ai - bi;
           });
-          setActivities(sorted);
+          if (sorted.length > 0) {
+            setCachedExperienceImages(sorted);
+            setActivities(sorted);
+          }
           return;
         }
-        setActivities(fallbackActivities);
+        if (cancelled) return;
+        setActivities(FALLBACK_ACTIVITIES);
       })
-      .catch(() => setActivities(fallbackActivities));
+      .catch(() => {
+        if (cancelled) return;
+        setActivities(FALLBACK_ACTIVITIES);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (

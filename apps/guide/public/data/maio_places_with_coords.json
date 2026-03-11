@@ -3254,5 +3254,34 @@
       "community",
       "responsible tourism"
     ]
+  },
+  {
+    "id": "cadjetinha-vila-beach",
+    "name": {
+      "pt": "Praia de Cadjetinha",
+      "en": "Cadjetinha Beach"
+    },
+    "location": {
+      "pt": "Vila do Maio",
+      "en": "Vila do Maio"
+    },
+    "category": "beach",
+    "tags": [
+      "beach"
+    ],
+    "tags_en": [
+      "beach"
+    ],
+    "description": {
+      "pt": "Uma praia pequena e acolhedora no centro da Vila do Maio, ideal para encontros tranquilos ao fim de semana, mergulhos rápidos e finais de tarde com amigos.",
+      "en": "A small, cozy beach in the center of Vila do Maio, ideal for relaxed weekend gatherings, quick swims, and sunset time with friends."
+    },
+    "image_url": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1771156402/cadj_u4nbda.jpg",
+    "source": "Visit Maio",
+    "coordinates": [
+      -23.211995838461537,
+      15.135716392307693
+    ],
+    "osm_id": "way/524180439"
   }
 ]

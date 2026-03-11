@@ -1478,7 +1478,7 @@ export default function MapPage() {
         ["praia da bitxe rotcha", "praia de bitche rotcha"],
         ["praia da salina", "praias da salina e bancona"],
         ["praia de boca ribeira", "praias de prainha e boca ribeira", "prainha and boca ribeira beaches"],
-        ["praia de cadjetinha", "praia da cadjetinha de morrinho", "cadjetinha beach of morrinho"],
+        ["praia da cadjetinha de morrinho", "cadjetinha beach of morrinho"],
         ["praia de porto cais", "praia e refugio pesqueiro de porto cais", "beach and port of porto cais"],
         ["praia de prainha", "praias de prainha e boca ribeira", "prainha and boca ribeira beaches"],
         ["praia de santo antonio", "praia e dunas de santo antonio"],
