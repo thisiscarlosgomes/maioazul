@@ -311,7 +311,7 @@ export default function MapPage() {
                 boatsSection: "Barcos",
                 flightsSection: "Voos",
                 todayInMaio: "Hoje no Maio",
-                todayHint: "Maio é ensolarado quase todo o ano; o vento decide o melhor roteiro.",
+                todayHint: "Temos sol quase todo o ano; o vento decide o melhor roteiro.",
                 morning: "Manhã",
                 midday: "Meio-dia",
                 lateDay: "Fim de tarde",
@@ -1033,7 +1033,11 @@ export default function MapPage() {
         },
     } as const;
 
-    const nextScheduledDate = (days: Array<keyof typeof FLIGHT_SCHEDULE.RAI_MMO>) => {
+    const nextScheduledDate = (
+        days: Array<keyof typeof FLIGHT_SCHEDULE.RAI_MMO>,
+        baseDate?: Date | null,
+        includeBase = true
+    ) => {
         const dayMap: Record<string, number> = {
             Sun: 0,
             Mon: 1,
@@ -1044,8 +1048,22 @@ export default function MapPage() {
             Sat: 6,
         };
         const targets = new Set(days.map((d) => dayMap[d]));
-        const { year, month, day } = getCvTodayKey();
-        const base = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+        const base = baseDate
+            ? new Date(
+                  Date.UTC(
+                      baseDate.getUTCFullYear(),
+                      baseDate.getUTCMonth(),
+                      baseDate.getUTCDate(),
+                      12,
+                      0,
+                      0
+                  )
+              )
+            : (() => {
+                  const { year, month, day } = getCvTodayKey();
+                  return new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+              })();
+        if (!includeBase) base.setUTCDate(base.getUTCDate() + 1);
         for (let i = 0; i < 21; i++) {
             const d = new Date(base);
             d.setUTCDate(d.getUTCDate() + i);
@@ -1077,7 +1095,12 @@ export default function MapPage() {
         };
     };
 
-    const getNextFlightFromApi = (items: any[], from: "RAI" | "MMO", to: "RAI" | "MMO") => {
+    const getNextFlightFromApi = (
+        items: any[],
+        from: "RAI" | "MMO",
+        to: "RAI" | "MMO",
+        baseDate?: Date | null
+    ) => {
         if (!Array.isArray(items) || items.length === 0) return null;
         const dayMap: Record<string, number> = {
             Sun: 0,
@@ -1088,9 +1111,25 @@ export default function MapPage() {
             Fri: 5,
             Sat: 6,
         };
-        const { year, month, day } = getCvTodayKey();
-        const base = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
-        const baseKey = year * 10000 + month * 100 + day;
+        const base = baseDate
+            ? new Date(
+                  Date.UTC(
+                      baseDate.getUTCFullYear(),
+                      baseDate.getUTCMonth(),
+                      baseDate.getUTCDate(),
+                      12,
+                      0,
+                      0
+                  )
+              )
+            : (() => {
+                  const { year, month, day } = getCvTodayKey();
+                  return new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+              })();
+        const baseKey =
+            base.getUTCFullYear() * 10000 +
+            (base.getUTCMonth() + 1) * 100 +
+            base.getUTCDate();
 
         const candidates = items
             .map((item) => {
@@ -1144,6 +1183,33 @@ export default function MapPage() {
     const getFallbackFlight = (from: "RAI" | "MMO", to: "RAI" | "MMO") => {
         const schedule = from === "RAI" ? FLIGHT_SCHEDULE.RAI_MMO : FLIGHT_SCHEDULE.MMO_RAI;
         const dateObj = nextScheduledDate(Object.keys(schedule) as Array<keyof typeof schedule>);
+        const dayCode = new Intl.DateTimeFormat("en-US", {
+            weekday: "short",
+            timeZone: "Atlantic/Cape_Verde",
+        }).format(dateObj) as keyof typeof schedule;
+        const slot = schedule[dayCode] || schedule.Tue;
+        return {
+            from,
+            to,
+            departure: slot.departure,
+            arrival: slot.arrival,
+            dateObj,
+            status: lang === "pt" ? "Agendado" : "Scheduled",
+            source: "Fixed schedule",
+        };
+    };
+
+    const getFallbackFlightAfter = (
+        from: "RAI" | "MMO",
+        to: "RAI" | "MMO",
+        afterDate?: Date | null
+    ) => {
+        const schedule = from === "RAI" ? FLIGHT_SCHEDULE.RAI_MMO : FLIGHT_SCHEDULE.MMO_RAI;
+        const dateObj = nextScheduledDate(
+            Object.keys(schedule) as Array<keyof typeof schedule>,
+            afterDate || null,
+            false
+        );
         const dayCode = new Intl.DateTimeFormat("en-US", {
             weekday: "short",
             timeZone: "Atlantic/Cape_Verde",
@@ -3090,7 +3156,7 @@ export default function MapPage() {
                         </div>
 
                         <div className="mt-5 rounded-2xl border border-border bg-background p-6 shadow-sm maio-fade-up">
-                            <div className="mb-6 flex items-center justify-between">
+                            <div className="mb-2 flex items-center justify-between">
                                 <div>
                                     <div className="text-base font-semibold">
                                         {copy[lang].todayInMaio}
@@ -3326,6 +3392,54 @@ export default function MapPage() {
                                                 todayMmo ||
                                                 getNextFlightFromApi(flightSchedules.mmo_rai, "MMO", "RAI") ||
                                                 getFallbackFlight("MMO", "RAI");
+                                            const nextRaiBaseDate = nextRai?.date
+                                                ? parseCvDate(nextRai.date)
+                                                : nextRai?.dateObj || null;
+                                            const nextMmoBaseDate = nextMmo?.date
+                                                ? parseCvDate(nextMmo.date)
+                                                : nextMmo?.dateObj || null;
+                                            const followingRai =
+                                                getNextFlightFromApi(
+                                                    flightSchedules.rai_mmo,
+                                                    "RAI",
+                                                    "MMO",
+                                                    nextRaiBaseDate
+                                                        ? new Date(
+                                                              Date.UTC(
+                                                                  nextRaiBaseDate.getUTCFullYear(),
+                                                                  nextRaiBaseDate.getUTCMonth(),
+                                                                  nextRaiBaseDate.getUTCDate() + 1,
+                                                                  12,
+                                                                  0,
+                                                                  0
+                                                              )
+                                                          )
+                                                        : null
+                                                ) || getFallbackFlightAfter("RAI", "MMO", nextRaiBaseDate);
+                                            const followingMmo =
+                                                getNextFlightFromApi(
+                                                    flightSchedules.mmo_rai,
+                                                    "MMO",
+                                                    "RAI",
+                                                    nextMmoBaseDate
+                                                        ? new Date(
+                                                              Date.UTC(
+                                                                  nextMmoBaseDate.getUTCFullYear(),
+                                                                  nextMmoBaseDate.getUTCMonth(),
+                                                                  nextMmoBaseDate.getUTCDate() + 1,
+                                                                  12,
+                                                                  0,
+                                                                  0
+                                                              )
+                                                          )
+                                                        : null
+                                                ) || getFallbackFlightAfter("MMO", "RAI", nextMmoBaseDate);
+                                            const followingRaiDateLabel = followingRai?.date
+                                                ? formatCvDate(followingRai.date)
+                                                : formatCvDateObj(followingRai?.dateObj);
+                                            const followingMmoDateLabel = followingMmo?.date
+                                                ? formatCvDate(followingMmo.date)
+                                                : formatCvDateObj(followingMmo?.dateObj);
 
                                             const renderCard = (item: any, from: "RAI" | "MMO", to: "RAI" | "MMO") => {
                                                 const dateLabel = item?.date
@@ -3395,16 +3509,13 @@ export default function MapPage() {
                                             return (
                                                 <div className="grid gap-4 sm:grid-cols-1">
                                                     {renderCard(nextRai, "RAI", "MMO")}
+                                                    <div className="capitalize text-xs text-muted-foreground">
+                                                        {lang === "pt" ? "Próximos voos disponíveis:" : "Next available flights:"}{" "}
+                                                        {`${followingRaiDateLabel}`}
+                                                    </div>
                                                 </div>
                                             );
                                         })()}
-                                    {!flightsLoading && (
-                                        <div className="mt-2 text-xs text-muted-foreground">
-                                            {lang === "pt"
-                                                ? "Horário baseado em dados públicos."
-                                                : "Schedule based on public data."}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
@@ -3438,7 +3549,7 @@ export default function MapPage() {
                                                     <div
                                                         key={`${day.date}-${index}`}
                                                         className={`min-w-[76px] sm:min-w-0 rounded-2xl px-3 py-3 text-center ${index === 0
-                                                                ? "bg-black/5 text-foreground dark:bg-white/10"
+                                                                ? "bg-blue-500/10 border border-blue-500/50 text-foreground dark:bg-white/10"
                                                                 : "bg-muted/40 text-foreground"
                                                             }`}
                                                     >
