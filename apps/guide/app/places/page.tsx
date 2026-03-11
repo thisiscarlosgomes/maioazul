@@ -263,6 +263,14 @@ export default function PlacesIndexPage() {
   }, []);
 
   useEffect(() => {
+    if (!activeCategory) return;
+    // Category deep-links from landing should open deterministic results.
+    // Clear persisted/intent-driven filters that would otherwise intersect.
+    setActiveIntent(null);
+    setActiveTag(null);
+  }, [activeCategory]);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
     if (!activeIntent) {
       window.localStorage.removeItem("maio-places-intent");
@@ -454,9 +462,10 @@ export default function PlacesIndexPage() {
   };
 
   const filteredPlaces = useMemo(() => {
+    const effectiveIntent = activeCategory ? null : activeIntent;
     const normalized = query.trim().toLowerCase();
     const hasActiveFilter =
-      Boolean(normalized) || Boolean(activeTag) || Boolean(activeIntent) || Boolean(activeCategory);
+      Boolean(normalized) || Boolean(activeTag) || Boolean(effectiveIntent) || Boolean(activeCategory);
     const portoIngles = places.find((place) => place.id === "cidade-porto-ingles");
     const portoLat = Array.isArray(portoIngles?.coordinates)
       ? portoIngles.coordinates[1]
@@ -493,7 +502,7 @@ export default function PlacesIndexPage() {
           });
 
     const withIntent =
-      !activeIntent
+      !effectiveIntent
         ? withTags
         : withTags.filter((place) => {
             const sourceTags =
@@ -501,7 +510,7 @@ export default function PlacesIndexPage() {
                 ? place.tags_en
                 : place.tags || [];
             const tags = sourceTags.map((tag) => tag.toLowerCase());
-            const keys = intentFilters[activeIntent] || [activeIntent];
+            const keys = intentFilters[effectiveIntent] || [effectiveIntent];
             return tags.some((tag) => keys.some((key) => tag.includes(key)));
           });
 
@@ -526,8 +535,8 @@ export default function PlacesIndexPage() {
         tags.some((tag) => keys.some((key) => tag.includes(key)));
       let score = 0;
 
-      if (activeIntent) {
-        const keys = intentFilters[activeIntent] || [];
+      if (effectiveIntent) {
+        const keys = intentFilters[effectiveIntent] || [];
         if (hasTag(keys)) score += 6;
       }
 
