@@ -11,7 +11,6 @@ type MainSiteHeaderProps = {
 };
 
 const navItems = [
-  { href: "/places", key: "attractions" },
   { href: "/experiences", key: "experiences" },
   { href: "/manifest", key: "manifest" },
 ] as const;

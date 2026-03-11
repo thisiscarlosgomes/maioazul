@@ -171,7 +171,7 @@ export default function HomePage() {
 
           <div className="rounded-xl p-4 text-center">
             <div className="flex items-center justify-center gap-2">
-              <Gauge className="h-4 w-4 text-muted-foreground" />
+              <Gauge className="hidden h-4 w-4 text-muted-foreground sm:block" />
               <div className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {copy[lang].stat2Value}
               </div>
@@ -182,7 +182,7 @@ export default function HomePage() {
 
           <div className="rounded-xl p-4 text-center">
             <div className="flex items-center justify-center gap-2">
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <Users className="hidden h-4 w-4 text-muted-foreground sm:block" />
               <div className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {copy[lang].stat1Value}
               </div>
@@ -192,7 +192,7 @@ export default function HomePage() {
 
           <div className="rounded-xl p-4 text-center">
             <div className="flex items-center justify-center gap-2">
-              <BedDouble className="h-4 w-4 text-muted-foreground" />
+              <BedDouble className="hidden h-4 w-4 text-muted-foreground sm:block" />
               <div className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {copy[lang].stat3Value}
               </div>
@@ -202,7 +202,7 @@ export default function HomePage() {
 
           <div className="hidden rounded-xl p-4 text-center">
             <div className="flex items-center justify-center gap-2">
-              <Mountain className="h-4 w-4 text-muted-foreground" />
+              <Mountain className="hidden h-4 w-4 text-muted-foreground sm:block" />
               <div className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {copy[lang].stat4Value}
               </div>
@@ -212,7 +212,7 @@ export default function HomePage() {
 
           <div className="hidden  rounded-xl p-4 text-center">
             <div className="flex items-center justify-center gap-2">
-              <Gauge className="h-4 w-4 text-muted-foreground" />
+              <Gauge className="hidden h-4 w-4 text-muted-foreground sm:block" />
               <div className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {copy[lang].stat5Value}
               </div>
@@ -222,7 +222,7 @@ export default function HomePage() {
 
           <div className="hidden  rounded-xl p-4 text-center">
             <div className="flex items-center justify-center gap-2">
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <TrendingUp className="hidden h-4 w-4 text-muted-foreground sm:block" />
               <div className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {copy[lang].stat6Value}
               </div>
