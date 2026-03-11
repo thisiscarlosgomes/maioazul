@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Drawer } from "vaul";
 import { useRef } from "react";
 import GuideChatWidget from "@/components/chat/GuideChatWidget";
+import SiteFooter from "@/components/SiteFooter";
 
 const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
 
@@ -40,9 +41,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   const [hideNav, setHideNav] = useState(false);
   const [isAnyVaulOpen, setIsAnyVaulOpen] = useState(false);
   const showChatWidget =
-    pathname !== "/" &&
-    !(pathname?.startsWith("/map") && hideNav) &&
-    !isAnyVaulOpen;
+    !(pathname?.startsWith("/map") && hideNav) && !isAnyVaulOpen;
+  const showFooter = pathname === "/";
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav
@@ -537,7 +537,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       </Drawer.Root>
 
       <div
-        className={showNav ? "min-h-[100svh] pb-24" : "min-h-[100svh]"}
+        className={showNav ? "flex min-h-[100svh] flex-col pb-24" : "flex min-h-[100svh] flex-col"}
         style={
           showNav && !hideNav
             ? {
@@ -550,7 +550,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
               : undefined
         }
       >
-        {children}
+        <div className="flex-1">{children}</div>
+        {showFooter && <SiteFooter />}
       </div>
       {!hideNav && showVoicePill && (
         <div className="fixed inset-x-0 z-50" style={{ bottom: voicePillBottom }}>

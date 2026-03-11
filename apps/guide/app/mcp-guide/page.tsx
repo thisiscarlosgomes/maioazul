@@ -11,6 +11,12 @@ export const metadata: Metadata = {
     description: "Instructions to connect Visit Maio MCP over streamable HTTP.",
     url: "/mcp-guide",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Visit Maio MCP Guide",
+    description: "Instructions to connect Visit Maio MCP over streamable HTTP.",
+    images: ["https://www.visit-maio.com/cover.jpg"],
+  },
 };
 
 export default function Page() {

@@ -735,6 +735,12 @@ export default function PlacesIndexPage() {
                   loading="lazy"
                   decoding="async"
                 />
+                {place.tips?.length ? (
+                  <div className="absolute bottom-3 left-3 max-w-[85%] rounded-full border border-white/40 bg-black/45 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm line-clamp-1">
+                    Local Tip:{" "}
+                    {place.tips?.[0]?.[lang] || place.tips?.[0]?.en || place.tips?.[0]?.pt}
+                  </div>
+                ) : null}
                 <button
                   type="button"
                   aria-label={
@@ -770,13 +776,6 @@ export default function PlacesIndexPage() {
               <div className="mt-1 text-sm text-muted-foreground line-clamp-2">
                 {pick(place.description)}
               </div>
-              {place.tips?.length ? (
-                <div className="mt-2 text-xs text-muted-foreground line-clamp-2">
-                  {place.tips?.[0]?.[lang] ||
-                    place.tips?.[0]?.en ||
-                    place.tips?.[0]?.pt}
-                </div>
-              ) : null}
             </Link>
           ))}
       </div>

@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Favorites",
   description: "Your favorite places across Maio for quick access later.",
   alternates: { canonical: "/favorites" },
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: "Favorites · Visit Maio",
     description: "Your favorite places across Maio for quick access later.",

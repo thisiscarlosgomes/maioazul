@@ -2861,15 +2861,34 @@ export default function MapPage() {
                         </div>
 
                         <div className="flex items-center gap-2">
-                            <div className="inline-flex rounded-md border border-border bg-background/95 backdrop-blur overflow-hidden">
+                            {weatherAqiBadge && (
+                                <div className="w-[56px] rounded-lg border border-border bg-background/95 px-1.5 py-1 text-foreground shadow-sm backdrop-blur">
+                                    <div className="flex items-center justify-center gap-0.5 leading-none">
+                                        <span className="text-[10px]">{weatherAqiBadge.icon}</span>
+                                        <span className="text-[13px] font-semibold leading-none tracking-tight">
+                                            {weatherAqiBadge.temp != null ? `${weatherAqiBadge.temp}°` : "—"}
+                                        </span>
+                                    </div>
+                                    <div className="mt-0.5 flex items-center justify-center gap-0.5 leading-none">
+                                        <span className="text-[7px] font-medium uppercase tracking-wide text-muted-foreground">
+                                            AQI
+                                        </span>
+                                        <span className="text-[10px] font-semibold leading-none">
+                                            {weatherAqiBadge.aqi ?? "—"}
+                                        </span>
+                                        <span className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="inline-flex items-center rounded-2xl border border-border bg-background p-1">
                                 <button
                                     type="button"
                                     onClick={() => setLang("pt")}
                                     aria-label="Português"
-                                    aria-pressed={lang === "pt"}
-                                    className={`px-3 py-2 text-xs font-medium transition ${lang === "pt"
+                                    className={`rounded-xl px-3 py-1.5 text-lg leading-none transition ${lang === "pt"
                                         ? "bg-muted text-foreground"
-                                        : "text-muted-foreground hover:text-foreground"
+                                        : "text-muted-foreground hover:bg-muted/70"
                                         }`}
                                 >
                                     <span aria-hidden="true" className="text-base leading-none">🇵🇹</span>
@@ -2878,10 +2897,9 @@ export default function MapPage() {
                                     type="button"
                                     onClick={() => setLang("en")}
                                     aria-label="English"
-                                    aria-pressed={lang === "en"}
-                                    className={`px-3 py-2 text-xs font-medium transition ${lang === "en"
+                                    className={`rounded-xl px-3 py-1.5 text-lg leading-none transition ${lang === "en"
                                         ? "bg-muted text-foreground"
-                                        : "text-muted-foreground hover:text-foreground"
+                                        : "text-muted-foreground hover:bg-muted/70"
                                         }`}
                                 >
                                     <span aria-hidden="true" className="text-base leading-none">🇬🇧</span>
