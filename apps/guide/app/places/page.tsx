@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Bird,
   Compass,
@@ -49,7 +50,9 @@ export default function PlacesIndexPage() {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeIntent, setActiveIntent] = useState<string | null>(null);
+  const searchParams = useSearchParams();
   const { isFavorite, toggle } = useFavorites();
+  const activeCategory = searchParams.get("category")?.toLowerCase() || null;
 
   const copy = useMemo(
     () => ({
@@ -199,6 +202,22 @@ export default function PlacesIndexPage() {
       "village",
       "town",
     ],
+  };
+
+  const categoryFilters: Record<string, string[]> = {
+    heritage: ["historical_heritage", "religious_heritage"],
+    nature: [
+      "protected_area",
+      "wetland",
+      "ribeira",
+      "mountain",
+      "islet",
+      "forest_area",
+      "dunes",
+      "biosphere",
+    ],
+    beach: ["beach"],
+    culture: ["settlement", "economic_activity", "education_center"],
   };
 
   const intents = useMemo(
@@ -437,7 +456,7 @@ export default function PlacesIndexPage() {
   const filteredPlaces = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     const hasActiveFilter =
-      Boolean(normalized) || Boolean(activeTag) || Boolean(activeIntent);
+      Boolean(normalized) || Boolean(activeTag) || Boolean(activeIntent) || Boolean(activeCategory);
     const portoIngles = places.find((place) => place.id === "cidade-porto-ingles");
     const portoLat = Array.isArray(portoIngles?.coordinates)
       ? portoIngles.coordinates[1]
@@ -451,10 +470,19 @@ export default function PlacesIndexPage() {
           return haystack.includes(normalized);
         });
 
-    const withTags =
-      !activeTag
+    const withCategory =
+      !activeCategory || !categoryFilters[activeCategory]
         ? filtered
         : filtered.filter((place) => {
+            const category = (place.category || "").toLowerCase();
+            const allowed = categoryFilters[activeCategory];
+            return allowed.includes(category);
+          });
+
+    const withTags =
+      !activeTag
+        ? withCategory
+        : withCategory.filter((place) => {
             const sourceTags =
               lang === "en" && Array.isArray(place.tags_en) && place.tags_en.length
                 ? place.tags_en
@@ -622,7 +650,7 @@ export default function PlacesIndexPage() {
         const bLat = Array.isArray(b.coordinates) ? b.coordinates[1] : -999;
         return aLat - bLat;
       });
-  }, [places, query, activeTag, activeIntent, lang]);
+  }, [places, query, activeTag, activeIntent, activeCategory, lang]);
 
   return (
     <>

@@ -240,7 +240,7 @@ export default function HomePage() {
 
         <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-12">
           <Link
-            href="/places"
+            href="/places?category=culture"
             className="group block md:col-span-8"
           >
             <div className="overflow-hidden rounded-2xl">
@@ -256,7 +256,7 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/places"
+            href="/places?category=heritage"
             className="group block md:col-span-4"
           >
             <div className="overflow-hidden rounded-2xl">
@@ -272,7 +272,7 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/places"
+            href="/places?category=beach"
             className="group block md:col-span-5"
           >
             <div className="overflow-hidden rounded-2xl">
@@ -288,7 +288,7 @@ export default function HomePage() {
           </Link>
 
           <Link
-            href="/places"
+            href="/places?category=nature"
             className="group block md:col-span-7"
           >
             <div className="overflow-hidden rounded-2xl">
