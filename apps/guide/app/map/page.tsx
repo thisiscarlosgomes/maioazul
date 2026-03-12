@@ -671,7 +671,10 @@ export default function MapPage() {
         const raw =
             typeof place.description === "string"
                 ? place.description
-                : place.description?.en || "";
+                : place.description?.[lang] ||
+                  place.description?.en ||
+                  place.description?.pt ||
+                  "";
         const cleaned = typeof raw === "string" ? raw.replace(/\s+/g, " ").trim() : "";
         return cleaned;
     };
