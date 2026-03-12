@@ -10,6 +10,7 @@ const copy = {
     description:
       "Maioazul is an NGO that works toward the progressive construction of Maio Island’s socioeconomic autonomy. We develop initiatives aligned with the island’s reality, strengthening its collective capacity and creating conditions to retain and organize value within the territory.",
     partners: "Partners",
+    visitMaio: "Visit Maio",
     dataPortal: "Data Portal",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
@@ -21,6 +22,7 @@ const copy = {
     description:
       "A Maioazul é uma ONG que trabalha para a construção progressiva da autonomia socioeconómica da Ilha do Maio. Desenvolvemos iniciativas alinhadas com a realidade da ilha, reforçando a sua capacidade colectiva e criando condições para reter e organizar valor no território.",
     partners: "Parceiros",
+    visitMaio: "Visit Maio",
     dataPortal: "Portal de Dados",
     launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
@@ -110,10 +112,12 @@ export default function HomeClient() {
 
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <Link
-              href="/partners"
+              href="https://visitmaio.com"
+              target="_blank"
+              rel="noreferrer"
               className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
             >
-              {t.partners}
+              {t.visitMaio}
             </Link>
             <Link
               href="/dashboard"
@@ -136,6 +140,10 @@ export default function HomeClient() {
             >
               {t.facebook}
             </a>
+            <span className="opacity-40">·</span>
+            <Link href="/partners" className="hover:text-white transition">
+              {t.partners}
+            </Link>
             <span className="opacity-40">·</span>
             <a
               href="https://instagram.com/maio__azul"
