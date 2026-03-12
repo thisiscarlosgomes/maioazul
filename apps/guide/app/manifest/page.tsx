@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import MainSiteHeader from "@/components/MainSiteHeader";
 import { useLang } from "@/lib/lang";
+import { jsPDF } from "jspdf";
+import { Download } from "lucide-react";
 
 export default function ManifestPage() {
   const [lang] = useLang();
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const copy = {
     en: {
@@ -93,12 +97,168 @@ export default function ManifestPage() {
     },
   } as const;
 
+  const loadWatermark = async () => {
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const element = new Image();
+      element.onload = () => resolve(element);
+      element.onerror = () => reject(new Error("Unable to load watermark image"));
+      element.src = "/maioazul.png";
+    });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+    ctx.globalAlpha = 0.08;
+    ctx.drawImage(img, 0, 0);
+
+    return {
+      dataUrl: canvas.toDataURL("image/png"),
+      width: img.naturalWidth,
+      height: img.naturalHeight,
+    };
+  };
+
+  const addWatermarkToPage = (
+    pdf: jsPDF,
+    watermark: { dataUrl: string; width: number; height: number } | null
+  ) => {
+    if (!watermark) return;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const maxWidth = pageWidth * 0.7;
+    const renderedWidth = Math.min(maxWidth, watermark.width * 0.05);
+    const renderedHeight = (renderedWidth * watermark.height) / watermark.width;
+    const x = (pageWidth - renderedWidth) / 2;
+    const y = (pageHeight - renderedHeight) / 2;
+    pdf.addImage(watermark.dataUrl, "PNG", x, y, renderedWidth, renderedHeight, undefined, "FAST");
+  };
+
+  const addPageDecorations = (
+    pdf: jsPDF,
+    watermark: { dataUrl: string; width: number; height: number } | null
+  ) => {
+    addWatermarkToPage(pdf, watermark);
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const linkText = "visitmaio.com";
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(9);
+    pdf.setTextColor(14, 116, 144);
+    const textWidth = pdf.getTextWidth(linkText);
+    const x = (pageWidth - textWidth) / 2;
+    const y = pageHeight - 8;
+    pdf.textWithLink(linkText, x, y, { url: "https://visitmaio.com" });
+    pdf.setTextColor(0, 0, 0);
+  };
+
+  const addWrapped = (
+    pdf: jsPDF,
+    text: string,
+    x: number,
+    y: number,
+    maxWidth: number,
+    lineHeight: number
+  ) => {
+    const lines = pdf.splitTextToSize(text, maxWidth);
+    pdf.text(lines, x, y);
+    return y + lines.length * lineHeight;
+  };
+
+  const ensureSpace = (
+    pdf: jsPDF,
+    y: number,
+    needed: number,
+    marginTop: number,
+    marginBottom: number,
+    watermark: { dataUrl: string; width: number; height: number } | null
+  ) => {
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    if (y + needed > pageHeight - marginBottom) {
+      pdf.addPage();
+      addPageDecorations(pdf, watermark);
+      return marginTop;
+    }
+    return y;
+  };
+
+  const handleDownloadPdf = async () => {
+    if (isDownloading) return;
+    setIsDownloading(true);
+    try {
+      const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
+      const watermark = await loadWatermark().catch(() => null);
+      const marginX = 14;
+      const marginTop = 16;
+      const marginBottom = 16;
+      const contentWidth = pdf.internal.pageSize.getWidth() - marginX * 2;
+      let y = marginTop;
+      addPageDecorations(pdf, watermark);
+
+      const sections = [
+        { title: copy[lang].cityTitle, items: copy[lang].cityItems },
+        { title: copy[lang].nightTitle, items: copy[lang].nightItems },
+        { title: copy[lang].stayTitle, items: copy[lang].stayItems },
+        { title: copy[lang].sustainTitle, items: copy[lang].sustainItems },
+        { title: copy[lang].toursTitle, items: copy[lang].toursItems },
+      ];
+
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(16);
+      y = addWrapped(pdf, copy[lang].title, marginX, y, contentWidth, 7);
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(10);
+      y = addWrapped(pdf, copy[lang].intro, marginX, y + 1, contentWidth, 5);
+
+      y += 6;
+      for (const section of sections) {
+        y = ensureSpace(pdf, y, 24, marginTop, marginBottom, watermark);
+        pdf.setFont("helvetica", "bold");
+        pdf.setFontSize(12);
+        y = addWrapped(pdf, section.title, marginX, y, contentWidth, 5.5);
+        pdf.setFont("helvetica", "normal");
+        pdf.setFontSize(10);
+        for (const item of section.items) {
+          y = ensureSpace(pdf, y, 10, marginTop, marginBottom, watermark);
+          y = addWrapped(pdf, `- ${item}`, marginX + 2, y + 0.5, contentWidth - 2, 4.6);
+        }
+        y += 3;
+      }
+
+      y = ensureSpace(pdf, y, 16, marginTop, marginBottom, watermark);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(12);
+      y = addWrapped(pdf, copy[lang].commitmentTitle, marginX, y, contentWidth, 5.5);
+      pdf.setFont("helvetica", "normal");
+      pdf.setFontSize(10);
+      addWrapped(pdf, copy[lang].commitment, marginX, y + 0.5, contentWidth, 4.8);
+
+      pdf.save("manifesto-maio.pdf");
+    } catch (error) {
+      console.error("Failed to generate Manifest PDF", error);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
+
   return (
     <main className="bg-background text-foreground">
       <MainSiteHeader />
       <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-8">
         <h1 className="text-2xl font-semibold sm:text-2xl">{copy[lang].title}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">{copy[lang].intro}</p>
+        <div className="mt-4 w-full">
+          <button
+            type="button"
+            onClick={handleDownloadPdf}
+            disabled={isDownloading}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-4 text-sm font-semibold text-foreground transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            <Download className="h-4 w-4" />
+            <span>{isDownloading ? "A gerar manifesto..." : "Descarregar Manifesto"}</span>
+          </button>
+        </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
