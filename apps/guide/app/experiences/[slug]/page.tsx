@@ -158,7 +158,7 @@ export default function ExperienceBySlugPage() {
   const hideLocationMetadata = slug === "stay";
   const descriptionClampClass =
     slug === "food" || slug === "blue-sports" || slug === "guia"
-      ? "line-clamp-3"
+      ? "line-clamp-4"
       : "line-clamp-2";
   const subtitle =
     copy[lang].subtitleBySlug[slug as keyof typeof copy.en.subtitleBySlug] ||
