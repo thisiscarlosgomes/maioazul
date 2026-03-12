@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import SecondaryPageHeader from "@/components/SecondaryPageHeader";
+import MainSiteHeader from "@/components/MainSiteHeader";
 import { jsPDF } from "jspdf";
 import {
   ShieldCheck,
@@ -393,10 +393,7 @@ export default function BusinessGuidelinesPage() {
 
   return (
     <>
-      <SecondaryPageHeader
-        title="Guia para Negócios de Turismo"
-        backHref="/manifest"
-      />
+      <MainSiteHeader />
 
       <main className="mx-auto w-full max-w-5xl px-4 pb-12 pt-6">
         <h1 className="text-xl font-semibold sm:text-2xl">
@@ -426,7 +423,7 @@ export default function BusinessGuidelinesPage() {
                 className={`rounded-2xl p-5 shadow-sm ${card.tone} ${card.size}`}
               >
                 <p className="text-sm font-semibold opacity-90">{card.label}</p>
-                <p className="mt-3 text-xl font-semibold leading-tight">
+                <p className="mt-3 text-lg font-semibold leading-tight sm:text-xl">
                   {card.quote}
                 </p>
               </article>

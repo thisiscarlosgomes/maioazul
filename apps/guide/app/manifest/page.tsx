@@ -96,7 +96,7 @@ export default function ManifestPage() {
   return (
     <main className="bg-background text-foreground">
       <MainSiteHeader />
-      <section className="mx-auto w-full max-w-6xl px-4 pb-16 pt-8 sm:px-6">
+      <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-8">
         <h1 className="text-2xl font-semibold sm:text-2xl">{copy[lang].title}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">{copy[lang].intro}</p>
 

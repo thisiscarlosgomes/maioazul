@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { Menu } from "lucide-react";
+import { Drawer } from "vaul";
 import { useLang } from "@/lib/lang";
 import { fetchJsonOfflineFirst } from "@/lib/offline";
 
@@ -33,8 +35,8 @@ let weatherCacheMemory: WeatherCachePayload | null = null;
 const navItems = [
   { href: "/map", key: "explore" },
   { href: "/experiences", key: "experiences" },
-  { href: "/guia-local", key: "guiaLocal" },
   { href: "/manifest", key: "manifest" },
+  { href: "/guia-local", key: "guiaLocal" },
 ] as const;
 
 function weatherIcon(code: number) {
@@ -92,6 +94,7 @@ function writeWeatherCache(payload: WeatherCachePayload) {
 export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps) {
   const pathname = usePathname();
   const [lang, setLang] = useLang();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [weather, setWeather] = useState<WeatherSnapshot | null>(() => readWeatherCache()?.weather ?? null);
   const [air, setAir] = useState<AirSnapshot | null>(() => readWeatherCache()?.air ?? null);
 
@@ -100,21 +103,25 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
       explore: "Explore",
       attractions: "Attractions",
       experiences: "Experiences",
-      guiaLocal: "Guia Local",
+      guiaLocal: "Guia de Negócios",
       manifest: "Tourist Manifest",
       home: "Visit Maio",
       pt: "Portuguese",
       en: "English",
+      menu: "Menu",
+      openMenu: "Open menu",
     },
     pt: {
       explore: "Explorar",
       attractions: "Atrações",
       experiences: "Experiências",
-      guiaLocal: "Guia Local",
+      guiaLocal: "Guia de Negócios",
       manifest: "Manifesto Turístico",
       home: "Visit Maio",
       pt: "Português",
       en: "Inglês",
+      menu: "Menu",
+      openMenu: "Abrir menu",
     },
   } as const;
 
@@ -206,7 +213,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
           <img
             src="/visitmaio.svg"
             alt="Visit Maio"
-            className={`h-[1.4rem] w-auto ${inverted ? "brightness-0 invert" : ""}`}
+            className={`h-[1.2rem] w-auto sm:h-[1.4rem] ${inverted ? "brightness-0 invert" : ""}`}
           />
         </Link>
 
@@ -272,8 +279,47 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
               🇬🇧
             </button>
           </div>
+
+          <button
+            type="button"
+            aria-label={copy[lang].openMenu}
+            onClick={() => setMobileMenuOpen(true)}
+            className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl border md:hidden ${colors.border} ${colors.bg} ${colors.hover} ${colors.soft}`}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
         </div>
       </div>
+
+      <Drawer.Root open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <Drawer.Portal>
+          <Drawer.Overlay className="fixed inset-0 z-[70] bg-black/35 backdrop-blur-sm" />
+          <Drawer.Content className="fixed inset-x-0 bottom-0 z-[80] rounded-t-3xl border border-border bg-background p-4 pt-6 pb-8 shadow-xl">
+            <Drawer.Title className="text-base font-semibold text-foreground">
+              {copy[lang].menu}
+            </Drawer.Title>
+            <nav className="mt-4 flex flex-col gap-2">
+              {navItems.map((item) => {
+                const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+                return (
+                  <Link
+                    key={`mobile-${item.href}`}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`rounded-xl px-3 py-2 text-sm font-medium transition ${
+                      active
+                        ? "bg-accent text-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    }`}
+                  >
+                    {copy[lang][item.key]}
+                  </Link>
+                );
+              })}
+            </nav>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
     </header>
   );
 }

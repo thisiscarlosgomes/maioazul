@@ -10,8 +10,8 @@ const siteLinks = [
   { href: "/places", key: "places" },
   { href: "/places", key: "attractions" },
   { href: "/experiences", key: "experiences" },
-  { href: "/guia-local", key: "guiaLocal" },
   { href: "/manifest", key: "manifest" },
+  { href: "/guia-local", key: "guiaLocal" },
 ] as const;
 
 export default function SiteFooter() {
@@ -24,7 +24,7 @@ export default function SiteFooter() {
       places: "Places",
       attractions: "Attractions",
       experiences: "Experiences",
-      guiaLocal: "Guia Local",
+      guiaLocal: "Guia de Negócios",
       manifest: "Manifest",
       website: "maioazul.com",
       facebook: "Maio Azul on Facebook",
@@ -36,7 +36,7 @@ export default function SiteFooter() {
       places: "Lugares",
       attractions: "Atrações",
       experiences: "Experiências",
-      guiaLocal: "Guia Local",
+      guiaLocal: "Guia de Negócios",
       manifest: "Manifesto",
       website: "maioazul.com",
       facebook: "Maio Azul no Facebook",

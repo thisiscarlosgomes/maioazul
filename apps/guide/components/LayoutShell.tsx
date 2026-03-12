@@ -24,7 +24,7 @@ function shouldShowNav(pathname: string | null) {
 
 export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const allowIntroDrawer = pathname !== "/";
+  const allowIntroDrawer = Boolean(pathname?.startsWith("/map"));
   const showNav = shouldShowNav(pathname);
   const chatSurface =
     pathname?.startsWith("/mcp-guide") || pathname?.startsWith("/mpc-guide")

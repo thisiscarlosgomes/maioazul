@@ -63,6 +63,13 @@ export default function HomePage() {
       beach: "Beach",
       culture: "Culture",
       seeAll: "See all attractions",
+      funFactsTitle: "Did you know?",
+      funFacts: [
+        "Maio has the largest continuous forest area in Cabo Verde.",
+        "Maio is one of Cabo Verde’s most important islands for sea turtle nesting.",
+        "The entire island and surrounding marine area are part of a UNESCO Biosphere Reserve.",
+        "Maio is home to one of the world’s largest loggerhead turtle nesting colonies.",
+      ],
       culturalAttractionsTitle: "Cultural Attractions",
       culturalAttractionsSubtitle: "Povoações referenced under Cultural Attractions (Maio Island).",
       settlements: [
@@ -109,6 +116,13 @@ export default function HomePage() {
       beach: "Praia",
       culture: "Cultura",
       seeAll: "Ver todas as atrações",
+      funFactsTitle: "Sabia que?",
+      funFacts: [
+        "O Maio tem a maior área florestal contínua de Cabo Verde.",
+        "O Maio é uma das ilhas mais importantes de Cabo Verde para a desova de tartarugas marinhas.",
+        "Toda a ilha e a área marinha envolvente fazem parte de uma Reserva da Biosfera da UNESCO.",
+        "O Maio abriga uma das maiores colónias de desova de tartaruga-cabeçuda do mundo.",
+      ],
       culturalAttractionsTitle: "Atrações Culturais",
       culturalAttractionsSubtitle: "Povoações referidas em Atrações Culturais (Ilha do Maio).",
       settlements: [
@@ -311,6 +325,30 @@ export default function HomePage() {
           >
             {copy[lang].seeAll}
           </Link>
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6">
+        <div className="text-center">
+          <h3 className="text-2xl font-semibold sm:text-3xl">{copy[lang].funFactsTitle}</h3>
+        </div>
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {copy[lang].funFacts.map((fact, index) => (
+            <article
+              key={fact}
+              className={`rounded-xl border p-4 text-sm leading-relaxed text-foreground/90 ${
+                index % 4 === 0
+                  ? "border-emerald-200 bg-emerald-50"
+                  : index % 4 === 1
+                    ? "border-sky-200 bg-sky-50"
+                    : index % 4 === 2
+                      ? "border-violet-200 bg-violet-50"
+                      : "border-amber-200 bg-amber-50"
+              }`}
+            >
+              {fact}
+            </article>
+          ))}
         </div>
       </section>
 
