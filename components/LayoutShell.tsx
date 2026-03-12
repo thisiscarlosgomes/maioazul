@@ -77,7 +77,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!pathname || pathname === "/") return;
+    if (!pathname || pathname === "/" || pathname === "/partners" || pathname.startsWith("/partners/")) return;
     const hasSeenIntro = window.localStorage.getItem(PORTAL_INTRO_STORAGE_KEY) === "1";
     if (!hasSeenIntro) {
       queueMicrotask(() => {
