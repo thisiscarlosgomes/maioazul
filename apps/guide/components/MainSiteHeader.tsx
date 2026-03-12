@@ -33,6 +33,7 @@ let weatherCacheMemory: WeatherCachePayload | null = null;
 const navItems = [
   { href: "/map", key: "explore" },
   { href: "/experiences", key: "experiences" },
+  { href: "/guia-local", key: "guiaLocal" },
   { href: "/manifest", key: "manifest" },
 ] as const;
 
@@ -99,6 +100,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
       explore: "Explore",
       attractions: "Attractions",
       experiences: "Experiences",
+      guiaLocal: "Guia Local",
       manifest: "Tourist Manifest",
       home: "Visit Maio",
       pt: "Portuguese",
@@ -108,6 +110,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
       explore: "Explorar",
       attractions: "Atrações",
       experiences: "Experiências",
+      guiaLocal: "Guia Local",
       manifest: "Manifesto Turístico",
       home: "Visit Maio",
       pt: "Português",

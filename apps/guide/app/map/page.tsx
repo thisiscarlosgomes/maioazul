@@ -3532,7 +3532,7 @@ export default function MapPage() {
                                     {weather?.daily?.length ? (
                                         <div className="flex gap-1 overflow-x-auto pb-1 sm:grid sm:grid-cols-7 sm:gap-3 sm:overflow-visible">
                                             {weather.daily.slice(0, 7).map((day: any, index: number) => {
-                                                const date = new Date(day.date);
+                                                const date = parseCvDate(day.date) ?? new Date(day.date);
                                                 const dayLabel =
                                                     index === 0
                                                         ? copy[lang].today

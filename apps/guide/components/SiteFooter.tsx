@@ -10,6 +10,7 @@ const siteLinks = [
   { href: "/places", key: "places" },
   { href: "/places", key: "attractions" },
   { href: "/experiences", key: "experiences" },
+  { href: "/guia-local", key: "guiaLocal" },
   { href: "/manifest", key: "manifest" },
 ] as const;
 
@@ -23,6 +24,7 @@ export default function SiteFooter() {
       places: "Places",
       attractions: "Attractions",
       experiences: "Experiences",
+      guiaLocal: "Guia Local",
       manifest: "Manifest",
       website: "maioazul.com",
       facebook: "Maio Azul on Facebook",
@@ -34,6 +36,7 @@ export default function SiteFooter() {
       places: "Lugares",
       attractions: "Atrações",
       experiences: "Experiências",
+      guiaLocal: "Guia Local",
       manifest: "Manifesto",
       website: "maioazul.com",
       facebook: "Maio Azul no Facebook",
@@ -47,7 +50,7 @@ export default function SiteFooter() {
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
           {siteLinks.map((item) => (
             <Link
-              key={item.href}
+              key={`${item.href}-${item.key}`}
               href={item.href}
               className="text-sm text-muted-foreground transition hover:text-foreground"
             >

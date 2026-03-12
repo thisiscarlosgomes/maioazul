@@ -42,7 +42,10 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   const [isAnyVaulOpen, setIsAnyVaulOpen] = useState(false);
   const showChatWidget =
     !(pathname?.startsWith("/map") && hideNav) && !isAnyVaulOpen;
-  const showFooter = pathname === "/";
+  const showFooter =
+    pathname === "/" ||
+    pathname === "/manifest" ||
+    pathname === "/guia-local";
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav
