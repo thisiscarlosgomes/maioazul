@@ -12,7 +12,7 @@ export type ManualFeedItem = {
 export const MANUAL_FEED_UPDATES: ManualFeedItem[] = [
   {
     id: "manual-2026-03-13-estatisticas-dos-transportes",
-    title: "Estatísticas dos transportes",
+    title: "Estatísticas dos transportes 2025",
     detail: "Atualização manual",
     source: "manual",
     updatedAt: "2026-03-13T09:00:00+08:00",
