@@ -163,6 +163,38 @@ export default function ExperienceBySlugPage() {
   const subtitle =
     copy[lang].subtitleBySlug[slug as keyof typeof copy.en.subtitleBySlug] ||
     copy[lang].subtitleFallback;
+  const orderedPlaces = useMemo(() => {
+    const places = Array.isArray(group?.places) ? [...group.places] : [];
+    if (slug !== "guia") return places;
+
+    const normalizedTitle = (place: Place) => {
+      const raw =
+        typeof place.title === "string"
+          ? place.title
+          : place.title?.en || place.title?.pt || "";
+      return raw.toLowerCase();
+    };
+
+    const priority = (place: Place) => {
+      const title = normalizedTitle(place);
+      if (title.includes("j & tour") || title.includes("j&tour")) return 0;
+      if (title.includes("porto inglês tour") || title.includes("porto ingles tour")) return 1;
+      return 2;
+    };
+
+    return places
+      .map((place) => {
+        const title = normalizedTitle(place);
+        if (
+          (title.includes("j & tour") || title.includes("j&tour")) &&
+          !place.source_url
+        ) {
+          return { ...place, source_url: "https://jtourscapeverde.com/" };
+        }
+        return place;
+      })
+      .sort((a, b) => priority(a) - priority(b));
+  }, [group?.places, slug]);
 
   return (
     <>
@@ -171,7 +203,7 @@ export default function ExperienceBySlugPage() {
         <p className="text-sm text-muted-foreground">{subtitle}</p>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {group?.places?.map((item) => (
+          {orderedPlaces.map((item) => (
             <article
               key={item.id}
               className="overflow-hidden rounded-2xl border border-border bg-background shadow-sm"
@@ -311,6 +343,7 @@ export default function ExperienceBySlugPage() {
                   </a>
                 ) : null}
                 {!hideContactAndBook &&
+                slug !== "guia" &&
                 !item.phone &&
                 !item.instagram_url &&
                 !item.facebook_url &&
@@ -337,6 +370,19 @@ export default function ExperienceBySlugPage() {
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent"
+                  >
+                    {copy[lang].openLink}
+                  </a>
+                ) : null}
+                {!hideContactAndBook &&
+                slug === "guia" &&
+                item.source_url &&
+                !item.source_url.includes("airbnb.com/rooms/") ? (
+                  <a
+                    href={item.source_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={`${item.phone || item.instagram_url || item.facebook_url || item.email ? "ml-2 " : ""}inline-flex rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent`}
                   >
                     {copy[lang].openLink}
                   </a>
