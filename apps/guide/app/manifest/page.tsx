@@ -256,7 +256,15 @@ export default function ManifestPage() {
             className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-4 text-sm font-semibold text-foreground transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Download className="h-4 w-4" />
-            <span>{isDownloading ? "A gerar manifesto..." : "Descarregar Manifesto"}</span>
+            <span>
+              {isDownloading
+                ? lang === "pt"
+                  ? "A gerar manifesto..."
+                  : "Generating manifest..."
+                : lang === "pt"
+                  ? "Descarregar Manifesto"
+                  : "Download Manifest"}
+            </span>
           </button>
         </div>
 

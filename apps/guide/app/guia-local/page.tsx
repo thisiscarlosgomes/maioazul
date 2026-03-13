@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import MainSiteHeader from "@/components/MainSiteHeader";
+import { useLang } from "@/lib/lang";
 import { jsPDF } from "jspdf";
 import {
   ShieldCheck,
@@ -229,6 +230,7 @@ const highlightCards = [
 ];
 
 export default function BusinessGuidelinesPage() {
+  const [lang] = useLang();
   const [isDownloading, setIsDownloading] = useState(false);
   const showDetailedSections = false;
 
@@ -411,7 +413,15 @@ export default function BusinessGuidelinesPage() {
             className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-4 text-sm font-semibold text-foreground transition hover:bg-accent disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Download className="h-4 w-4" />
-            <span>{isDownloading ? "A gerar guia..." : "Descarregar Guia"}</span>
+            <span>
+              {isDownloading
+                ? lang === "pt"
+                  ? "A gerar guia..."
+                  : "Generating guide..."
+                : lang === "pt"
+                  ? "Descarregar Guia"
+                  : "Download Guide"}
+            </span>
           </button>
         </div>
 
