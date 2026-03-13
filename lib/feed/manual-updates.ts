@@ -11,6 +11,15 @@ export type ManualFeedItem = {
 // Manual feed entries. Add new items here when updates are provided.
 export const MANUAL_FEED_UPDATES: ManualFeedItem[] = [
   {
+    id: "manual-2026-03-13-estatisticas-dos-transportes",
+    title: "Estatísticas dos transportes",
+    detail: "Atualização manual",
+    source: "manual",
+    updatedAt: "2026-03-13T09:00:00+08:00",
+    href: "/dashboard",
+    tone: "data",
+  },
+  {
     id: "manual-2026-03-06-receitas-dados-mais-recentes",
     title: "Dados mais recentes de receitas",
     detail: "Atualização manual",

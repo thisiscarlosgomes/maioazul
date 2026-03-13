@@ -41,7 +41,8 @@ function cacheTtlForUrl(apiUrl: string) {
     }
     if (
       path === "/api/transparencia/municipal/maio/orcamento" ||
-      path === "/api/transparencia/nacional/receitas/cv"
+      path === "/api/transparencia/nacional/receitas/cv" ||
+      path === "/api/transparencia/transportes/overview"
     ) {
       return 60 * 60 * 1000;
     }
@@ -118,6 +119,10 @@ export function buildOfflineUrl(apiUrl: string) {
 
     if (path === "/api/transparencia/turismo/dependency") {
       return `${OFFLINE_PREFIX}/transparencia/turismo/dependency-${year}-${ilha}.json`;
+    }
+
+    if (path === "/api/transparencia/transportes/overview") {
+      return `${OFFLINE_PREFIX}/transparencia/transportes/overview-${year}.json`;
     }
 
     const islandMatch = path.match(

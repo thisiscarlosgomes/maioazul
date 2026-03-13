@@ -1,0 +1,235 @@
+{
+  "dataset": "cabo_verde_transportes_2025",
+  "scope": "national",
+  "country": "Cabo Verde",
+  "as_of_year": 2025,
+  "as_of_date": "2025-12-31",
+  "sources": [
+    {
+      "id": "enapor_portos_2025",
+      "publisher": "ENAPOR",
+      "title": "Movimentação de navios e passageiros por portos (2025)"
+    },
+    {
+      "id": "aac_aeroportos_2025",
+      "publisher": "Agência de Aviação Civil",
+      "title": "Movimentação de passageiros nos aeroportos e aeródromos (2025)"
+    },
+    {
+      "id": "ine_transportes_2024_2025",
+      "publisher": "INE Cabo Verde",
+      "title": "Principais indicadores das estatísticas dos transportes (2024-2025)"
+    }
+  ],
+  "maritime": {
+    "ships_by_port_2025": [
+      { "port": "Porto Grande", "island": "São Vicente", "movements": 3070 },
+      { "port": "Porto Novo", "island": "Santo Antão", "movements": 1590 },
+      { "port": "Praia", "island": "Santiago", "movements": 1110 },
+      { "port": "Palmeira", "island": "Sal", "movements": 538 },
+      { "port": "Vale dos Cavaleiros", "island": "Fogo", "movements": 521 },
+      { "port": "Tarrafal SN", "island": "São Nicolau", "movements": 462 },
+      { "port": "Sal-Rei", "island": "Boa Vista", "movements": 394 },
+      { "port": "Furna", "island": "Brava", "movements": 229 },
+      { "port": "Porto Inglês", "island": "Maio", "movements": 205 }
+    ],
+    "passengers_by_port_2025": [
+      { "port": "Porto Grande", "island": "São Vicente", "passengers": 580787 },
+      { "port": "Porto Novo", "island": "Santo Antão", "passengers": 505089 },
+      { "port": "Praia", "island": "Santiago", "passengers": 166974 },
+      { "port": "Vale dos Cavaleiros", "island": "Fogo", "passengers": 62382 },
+      { "port": "Tarrafal SN", "island": "São Nicolau", "passengers": 46496 },
+      { "port": "Palmeira", "island": "Sal", "passengers": 44579 },
+      { "port": "Sal-Rei", "island": "Boa Vista", "passengers": 43731 },
+      { "port": "Porto Inglês", "island": "Maio", "passengers": 42554 },
+      { "port": "Furna", "island": "Brava", "passengers": 25501 }
+    ]
+  },
+  "air": {
+    "aircraft_by_airport_2025": [
+      {
+        "airport": "AIAC - Sal",
+        "island": "Sal",
+        "domestic": 2951,
+        "international": 12924,
+        "total": 15875
+      },
+      {
+        "airport": "AIPNM - Praia",
+        "island": "Santiago",
+        "domestic": 5045,
+        "international": 4592,
+        "total": 9637
+      },
+      {
+        "airport": "AIAP - Boa Vista",
+        "island": "Boa Vista",
+        "domestic": 920,
+        "international": 4400,
+        "total": 5320
+      },
+      {
+        "airport": "AICE - São Vicente",
+        "island": "São Vicente",
+        "domestic": 3112,
+        "international": 1396,
+        "total": 4508
+      },
+      {
+        "airport": "AD - Fogo",
+        "island": "Fogo",
+        "domestic": 1340,
+        "international": null,
+        "total": 1340
+      },
+      {
+        "airport": "AD - São Nicolau",
+        "island": "São Nicolau",
+        "domestic": 484,
+        "international": null,
+        "total": 484
+      },
+      {
+        "airport": "AD - Maio",
+        "island": "Maio",
+        "domestic": 312,
+        "international": null,
+        "total": 312
+      }
+    ],
+    "aircraft_totals_2025": {
+      "domestic": 14164,
+      "international": 23312,
+      "total": 37476
+    },
+    "passengers_by_airport_2025": [
+      {
+        "airport": "AIAC - Sal",
+        "island": "Sal",
+        "embarked": 714234,
+        "disembarked": 713741,
+        "transit": 162665,
+        "total": 1590640
+      },
+      {
+        "airport": "AIPNM - Praia",
+        "island": "Santiago",
+        "embarked": 373829,
+        "disembarked": 361079,
+        "transit": 18921,
+        "total": 753829
+      },
+      {
+        "airport": "AIAP - Boa Vista",
+        "island": "Boa Vista",
+        "embarked": 296170,
+        "disembarked": 298087,
+        "transit": 75916,
+        "total": 670173
+      },
+      {
+        "airport": "AICE - São Vicente",
+        "island": "São Vicente",
+        "embarked": 174882,
+        "disembarked": 171978,
+        "transit": 7432,
+        "total": 354292
+      },
+      {
+        "airport": "AD - Fogo",
+        "island": "Fogo",
+        "embarked": 37522,
+        "disembarked": 37214,
+        "transit": 51,
+        "total": 74787
+      },
+      {
+        "airport": "AD - São Nicolau",
+        "island": "São Nicolau",
+        "embarked": 12311,
+        "disembarked": 13398,
+        "transit": null,
+        "total": 25709
+      },
+      {
+        "airport": "AD - Maio",
+        "island": "Maio",
+        "embarked": 8186,
+        "disembarked": 8629,
+        "transit": 3,
+        "total": 16818
+      }
+    ],
+    "totals_2025": {
+      "embarked": 1617134,
+      "disembarked": 1604126,
+      "transit": 264988,
+      "total": 3486248
+    }
+  },
+  "comparison_2024_2025": [
+    {
+      "mode": "Aéreo",
+      "metric": "Aeronaves",
+      "value_2024": 32403,
+      "value_2025": 37476,
+      "variation_pct": 15.7
+    },
+    {
+      "mode": "Aéreo",
+      "metric": "Passageiros",
+      "value_2024": 3009859,
+      "value_2025": 3486248,
+      "variation_pct": 15.8
+    },
+    {
+      "mode": "Aéreo",
+      "metric": "Cargas",
+      "value_2024": 1083530,
+      "value_2025": 1188356,
+      "variation_pct": 9.7
+    },
+    {
+      "mode": "Aéreo",
+      "metric": "Correios",
+      "value_2024": 431058,
+      "value_2025": 449801,
+      "variation_pct": 4.3
+    },
+    {
+      "mode": "Marítimo",
+      "metric": "Navios",
+      "value_2024": 8165,
+      "value_2025": 8119,
+      "variation_pct": -0.6
+    },
+    {
+      "mode": "Marítimo",
+      "metric": "Passageiros",
+      "value_2024": 1603233,
+      "value_2025": 1518093,
+      "variation_pct": -5.3
+    },
+    {
+      "mode": "Marítimo",
+      "metric": "Mercadorias",
+      "value_2024": 2986573,
+      "value_2025": 3081757,
+      "variation_pct": 3.2
+    },
+    {
+      "mode": "Marítimo",
+      "metric": "Contentores",
+      "value_2024": 91181,
+      "value_2025": 100637,
+      "variation_pct": 10.4
+    },
+    {
+      "mode": "Terrestre",
+      "metric": "Passageiros transportados",
+      "value_2024": 23632062,
+      "value_2025": 23183571,
+      "variation_pct": -1.9
+    }
+  ]
+}

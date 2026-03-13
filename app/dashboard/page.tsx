@@ -242,6 +242,72 @@ type SeasonalityApiRow = {
   seasonality_index?: number;
 };
 
+type TransportApiPortShipsRow = {
+  port?: string;
+  island?: string;
+  movements?: number;
+};
+
+type TransportApiPortPassengersRow = {
+  port?: string;
+  island?: string;
+  passengers?: number;
+};
+
+type TransportApiAirportPassengersRow = {
+  airport?: string;
+  island?: string;
+  embarked?: number;
+  disembarked?: number;
+  transit?: number | null;
+  total?: number;
+};
+
+type TransportApiAirportAircraftRow = {
+  airport?: string;
+  island?: string;
+  domestic?: number;
+  international?: number | null;
+  total?: number;
+};
+
+type TransportApiComparisonRow = {
+  mode?: string;
+  metric?: string;
+  value_2024?: number;
+  value_2025?: number;
+  variation_pct?: number | null;
+};
+
+type TransportApiResponse = {
+  as_of_year?: number;
+  maritime?: {
+    ships_by_port_2025?: TransportApiPortShipsRow[];
+    passengers_by_port_2025?: TransportApiPortPassengersRow[];
+  };
+  air?: {
+    aircraft_by_airport_2025?: TransportApiAirportAircraftRow[];
+    aircraft_totals_2025?: {
+      domestic?: number;
+      international?: number;
+      total?: number;
+    };
+    passengers_by_airport_2025?: TransportApiAirportPassengersRow[];
+    totals_2025?: {
+      embarked?: number;
+      disembarked?: number;
+      transit?: number;
+      total?: number;
+    };
+  };
+  comparison_2024_2025?: TransportApiComparisonRow[];
+  sources?: Array<{
+    id?: string;
+    publisher?: string;
+    title?: string;
+  }>;
+};
+
 type MaioEnergyApiResponse = {
   scope?: string;
   dataset?: string;
@@ -1544,6 +1610,214 @@ function SeasonalityIndex({
   );
 }
 
+function TransportOverviewSection({
+  year,
+  ilha,
+}: {
+  year: string;
+  ilha: string;
+}) {
+  const { data, loading, error } = useDashboardQuery<TransportApiResponse>({
+    depsKey: `transport-overview-${year}-${ilha}`,
+    queryFn: async () =>
+      fetchJsonOfflineFirst<TransportApiResponse>(
+        `/api/transparencia/transportes/overview?year=${year}`
+      ),
+  });
+
+  const rawShipsRows = (data?.maritime?.ships_by_port_2025 || []).slice();
+  const rawMaritimePassengerRows = (data?.maritime?.passengers_by_port_2025 || []).slice();
+  const rawAircraftRows = (data?.air?.aircraft_by_airport_2025 || []).slice();
+  const rawAirportRows = (data?.air?.passengers_by_airport_2025 || []).slice();
+
+  const shipsRankMap = new Map(
+    rawShipsRows
+      .slice()
+      .sort((a, b) => Number(b.movements ?? 0) - Number(a.movements ?? 0))
+      .map((row, index) => [String(row.port ?? ""), index + 1])
+  );
+
+  const maritimePassengerRankMap = new Map(
+    rawMaritimePassengerRows
+      .slice()
+      .sort((a, b) => Number(b.passengers ?? 0) - Number(a.passengers ?? 0))
+      .map((row, index) => [String(row.port ?? ""), index + 1])
+  );
+
+  const shipsRows = rawShipsRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.movements ?? 0) - Number(a.movements ?? 0));
+
+  const maritimePassengerRows = rawMaritimePassengerRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.passengers ?? 0) - Number(a.passengers ?? 0));
+
+  const airportRows = rawAirportRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
+
+  const aircraftRows = rawAircraftRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
+
+  const comparisonRows = (data?.comparison_2024_2025 || []).slice();
+
+  const totalShips = shipsRows.reduce((sum, row) => sum + Number(row.movements ?? 0), 0);
+  const totalMaritimePassengers = maritimePassengerRows.reduce(
+    (sum, row) => sum + Number(row.passengers ?? 0),
+    0
+  );
+  const totalAirPassengers =
+    ilha === ALL_ISLANDS_LABEL
+      ? Number(data?.air?.totals_2025?.total ?? 0)
+      : airportRows.reduce((sum, row) => sum + Number(row.total ?? 0), 0);
+  const totalAircraft =
+    ilha === ALL_ISLANDS_LABEL
+      ? Number(data?.air?.aircraft_totals_2025?.total ?? 0)
+      : aircraftRows.reduce((sum, row) => sum + Number(row.total ?? 0), 0);
+  const terrestrialPassengers2025 =
+    comparisonRows.find((row) => row.mode === "Terrestre")?.value_2025 ?? null;
+
+  const sourceLabel = (data?.sources || [])
+    .map((source) => source.publisher)
+    .filter((value): value is string => Boolean(value))
+    .join(" · ");
+
+  return (
+    <SectionBlock
+      title={`Transportes (${data?.as_of_year || 2025})`}
+      description="Movimentação por porto e aeroporto + comparação nacional 2024-2025."
+    >
+      <KpiGrid>
+        <KpiStat
+          label="Passageiros marítimos"
+          value={
+            loading ? " " : error ? "—" : formatNumber(totalMaritimePassengers)
+          }
+        />
+        <KpiStat
+          label="Passageiros aéreos"
+          value={loading ? " " : error ? "—" : formatNumber(totalAirPassengers)}
+        />
+        <KpiStat
+          label="Aeronaves"
+          value={loading ? " " : error ? "—" : formatNumber(totalAircraft)}
+        />
+        <KpiStat
+          label="Navios (portos)"
+          value={loading ? " " : error ? "—" : formatNumber(totalShips)}
+        />
+        {/* {ilha === ALL_ISLANDS_LABEL ? (
+          <KpiStat
+            label="Passageiros terrestres"
+            value={
+              loading
+                ? " "
+                : error
+                  ? "—"
+                  : terrestrialPassengers2025 == null
+                    ? "—"
+                    : formatNumber(Number(terrestrialPassengers2025))
+            }
+          />
+        ) : null} */}
+      </KpiGrid>
+
+      <div className="space-y-6 mt-6">
+        {ilha === ALL_ISLANDS_LABEL ? (
+          <>
+            <div className="space-y-2">
+              <h3 className="font-medium">Movimentação de navios por porto (2025)</h3>
+              <DataTable
+                rows={shipsRows.map((row) => ({
+                  ranking_cv: `${shipsRankMap.get(String(row.port ?? "")) ?? "—"}º`,
+                  porto: row.port,
+                  ilha: row.island,
+                  navios: formatNumber(Number(row.movements ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-medium">Movimentação de passageiros por porto (2025)</h3>
+              <DataTable
+                rows={maritimePassengerRows.map((row) => ({
+                  ranking_cv: `${maritimePassengerRankMap.get(String(row.port ?? "")) ?? "—"}º`,
+                  porto: row.port,
+                  ilha: row.island,
+                  passageiros: formatNumber(Number(row.passengers ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-medium">Movimentação de aeronaves por aeroporto (2025)</h3>
+              <DataTable
+                rows={aircraftRows.map((row) => ({
+                  aeroporto: row.airport,
+                  ilha: row.island,
+                  doméstico: formatNumber(Number(row.domestic ?? 0)),
+                  internacional:
+                    row.international == null
+                      ? "—"
+                      : formatNumber(Number(row.international ?? 0)),
+                  total: formatNumber(Number(row.total ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-medium">Passageiros em aeroportos e aeródromos (2025)</h3>
+              <DataTable
+                rows={airportRows.map((row) => ({
+                  aeroporto: row.airport,
+                  ilha: row.island,
+                  embarcados: formatNumber(Number(row.embarked ?? 0)),
+                  desembarcados: formatNumber(Number(row.disembarked ?? 0)),
+                  trânsito:
+                    row.transit == null ? "—" : formatNumber(Number(row.transit ?? 0)),
+                  total: formatNumber(Number(row.total ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+          </>
+        ) : null}
+
+        {ilha === ALL_ISLANDS_LABEL ? (
+          <div className="space-y-2">
+            <h3 className="font-medium">Principais indicadores dos transportes (2024-2025)</h3>
+            <DataTable
+              rows={comparisonRows.map((row) => ({
+                modo: row.mode,
+                indicador: row.metric,
+                ano_2024: formatNumber(Number(row.value_2024 ?? 0)),
+                ano_2025: formatNumber(Number(row.value_2025 ?? 0)),
+                variação: formatDeltaPercent(row.variation_pct ?? null),
+              }))}
+              loading={loading}
+              error={error}
+            />
+          </div>
+        ) : null}
+      </div>
+
+      {sourceLabel ? (
+        <p className="hidden text-sm text-muted-foreground">
+          Fonte: {sourceLabel}
+        </p>
+      ) : null}
+    </SectionBlock>
+  );
+}
+
 
 
 
@@ -1564,7 +1838,7 @@ export default function TourismPage() {
   const t = dictionary[locale];
 
   const [ilha, setIlha] = useState("Maio");
-  const [year, setYear] = useState("2026");
+  const [year, setYear] = useState("2025");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -1728,7 +2002,7 @@ export default function TourismPage() {
           <LocalGovernmentOverview t={t} year={year} />
         )}
 
-        {ilha === "Maio" && <MaioEnergyOverview />}
+        {ilha === "Maio" && year === "2026" && <MaioEnergyOverview />}
 
 
 
@@ -1847,6 +2121,7 @@ export default function TourismPage() {
                     }))
                   }
                 />
+                <TransportOverviewSection year={year} ilha={ilha} />
 
 
               </>
@@ -1858,6 +2133,8 @@ export default function TourismPage() {
                   ilha={ilha}
                   onData={setPopulationData}
                 />
+
+                <TransportOverviewSection year={year} ilha={ilha} />
 
                 <TourismOverview
                   ilha={ilha}

@@ -85,6 +85,12 @@ export const toolSchemas = {
       ilha: z.string().min(1).max(64).optional(),
     })
     .strict(),
+  get_transport_overview: z
+    .object({
+      year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
+      ilha: z.string().min(1).max(64).optional(),
+    })
+    .strict(),
   get_island_comparison_snapshot: z
     .object({
       year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
@@ -268,6 +274,31 @@ export const nativeToolDefinitions = {
           minLength: 1,
           maxLength: 64,
           description: "Optional island filter (e.g., Maio).",
+        },
+      },
+      required: ["year", "ilha"],
+      additionalProperties: false,
+    },
+  },
+  get_transport_overview: {
+    title: "Get Transport Overview",
+    description:
+      "Returns transportation indicators for Cabo Verde (maritime and air), including 2024-2025 comparison metrics and optional island filtering (e.g., Maio).",
+    parameters: {
+      type: "object",
+      properties: {
+        year: {
+          type: ["integer", "null"],
+          minimum: MIN_YEAR,
+          maximum: MAX_YEAR,
+          description: "Reference year. Transport dataset currently available for 2025.",
+        },
+        ilha: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 64,
+          description:
+            "Optional island filter (e.g., Maio). If omitted, returns national rows.",
         },
       },
       required: ["year", "ilha"],
@@ -730,6 +761,145 @@ async function getTourismQuarters(request: Request, rawArgs: unknown) {
 async function getTourismPopulation(request: Request, rawArgs: unknown) {
   const { year, ilha } = toolSchemas.get_tourism_population.parse(normalizeNulls(rawArgs ?? {}));
   return fetchJson(request, "/api/transparencia/turismo/population", { year, ilha });
+}
+
+async function getTransportOverview(request: Request, rawArgs: unknown) {
+  const { year, ilha } = toolSchemas.get_transport_overview.parse(normalizeNulls(rawArgs ?? {}));
+  const payload = (await fetchJson(
+    request,
+    "/api/transparencia/transportes/overview",
+    { year },
+  )) as {
+    as_of_year?: number;
+    dataset?: string;
+    air?: {
+      aircraft_by_airport_2025?: Array<{
+        airport?: string;
+        island?: string;
+        domestic?: number;
+        international?: number | null;
+        total?: number;
+      }>;
+      passengers_by_airport_2025?: Array<{
+        airport?: string;
+        island?: string;
+        embarked?: number;
+        disembarked?: number;
+        transit?: number | null;
+        total?: number;
+      }>;
+      aircraft_totals_2025?: {
+        domestic?: number;
+        international?: number;
+        total?: number;
+      };
+      totals_2025?: {
+        embarked?: number;
+        disembarked?: number;
+        transit?: number;
+        total?: number;
+      };
+    };
+    maritime?: {
+      ships_by_port_2025?: Array<{
+        port?: string;
+        island?: string;
+        movements?: number;
+      }>;
+      passengers_by_port_2025?: Array<{
+        port?: string;
+        island?: string;
+        passengers?: number;
+      }>;
+    };
+    comparison_2024_2025?: Array<{
+      mode?: string;
+      metric?: string;
+      value_2024?: number;
+      value_2025?: number;
+      variation_pct?: number | null;
+    }>;
+    sources?: Array<{
+      id?: string;
+      publisher?: string;
+      title?: string;
+    }>;
+  };
+
+  const islandFilter =
+    typeof ilha === "string" && ilha.trim() && ilha !== "Todas as Ilhas"
+      ? ilha.trim()
+      : null;
+
+  const shipsRows = Array.isArray(payload?.maritime?.ships_by_port_2025)
+    ? payload.maritime.ships_by_port_2025
+    : [];
+  const maritimePassengerRows = Array.isArray(payload?.maritime?.passengers_by_port_2025)
+    ? payload.maritime.passengers_by_port_2025
+    : [];
+  const aircraftRows = Array.isArray(payload?.air?.aircraft_by_airport_2025)
+    ? payload.air.aircraft_by_airport_2025
+    : [];
+  const airportPassengerRows = Array.isArray(payload?.air?.passengers_by_airport_2025)
+    ? payload.air.passengers_by_airport_2025
+    : [];
+
+  const filterByIsland = <T extends { island?: string }>(rows: T[]) =>
+    islandFilter ? rows.filter((row) => row.island === islandFilter) : rows;
+
+  const ships = filterByIsland(shipsRows);
+  const maritimePassengers = filterByIsland(maritimePassengerRows);
+  const aircraft = filterByIsland(aircraftRows);
+  const airportPassengers = filterByIsland(airportPassengerRows);
+
+  const shipsRankMap = new Map(
+    shipsRows
+      .slice()
+      .sort((a, b) => Number(b.movements ?? 0) - Number(a.movements ?? 0))
+      .map((row, index) => [String(row.port ?? ""), index + 1]),
+  );
+  const maritimePassengerRankMap = new Map(
+    maritimePassengerRows
+      .slice()
+      .sort((a, b) => Number(b.passengers ?? 0) - Number(a.passengers ?? 0))
+      .map((row, index) => [String(row.port ?? ""), index + 1]),
+  );
+
+  return {
+    dataset: payload?.dataset ?? "cabo_verde_transportes_2025",
+    year: payload?.as_of_year ?? year,
+    island_filter: islandFilter,
+    summary: {
+      ships_total:
+        ships.reduce((sum, row) => sum + Number(row.movements ?? 0), 0),
+      maritime_passengers_total:
+        maritimePassengers.reduce((sum, row) => sum + Number(row.passengers ?? 0), 0),
+      aircraft_total: islandFilter
+        ? aircraft.reduce((sum, row) => sum + Number(row.total ?? 0), 0)
+        : Number(payload?.air?.aircraft_totals_2025?.total ?? 0),
+      air_passengers_total: islandFilter
+        ? airportPassengers.reduce((sum, row) => sum + Number(row.total ?? 0), 0)
+        : Number(payload?.air?.totals_2025?.total ?? 0),
+    },
+    maritime: {
+      ships_by_port_2025: ships.map((row) => ({
+        ...row,
+        ranking_cv: shipsRankMap.get(String(row.port ?? "")) ?? null,
+      })),
+      passengers_by_port_2025: maritimePassengers.map((row) => ({
+        ...row,
+        ranking_cv: maritimePassengerRankMap.get(String(row.port ?? "")) ?? null,
+      })),
+    },
+    air: {
+      aircraft_by_airport_2025: aircraft,
+      passengers_by_airport_2025: airportPassengers,
+      aircraft_totals_2025: payload?.air?.aircraft_totals_2025 ?? null,
+      passenger_totals_2025: payload?.air?.totals_2025 ?? null,
+    },
+    comparison_2024_2025: islandFilter ? [] : payload?.comparison_2024_2025 ?? [],
+    sources: payload?.sources ?? [],
+  };
 }
 
 async function getIslandComparisonSnapshot(request: Request, rawArgs: unknown) {
@@ -1780,6 +1950,8 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getTourismQuarters(request, rawArgs);
     case "get_tourism_population":
       return getTourismPopulation(request, rawArgs);
+    case "get_transport_overview":
+      return getTransportOverview(request, rawArgs);
     case "get_island_comparison_snapshot":
       return getIslandComparisonSnapshot(request, rawArgs);
     case "get_maio_budget":

@@ -123,27 +123,46 @@ export default function RegisterPage() {
             <p className="mt-3 text-[rgba(17,17,17,0.68)]">
               Treino profissional, jogo diário e experiências locais.
             </p>
-            <div className="mt-6 rounded-[16px] border border-[rgba(17,17,17,0.12)] bg-[#f7f7f4] p-4 text-[rgba(17,17,17,0.75)]">
-              <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#111111]">
-                Pacote
-              </p>
-              <p className="mt-1 text-lg font-semibold text-[#111111]">
-                €180 / Participante
-              </p>
-
-              <ul className="mt-3 list-disc pl-5 text-sm">
-                <li>Viagem de barco ida e volta (Praia / Maio / Praia)</li>
-
-               <li>Alojamento incluído (4 noites)</li>
-              
-                <li>3 dias de treino, workshop e jogos</li>
-                
-                <li>Alimentação cunjunta no final do dia</li>
-                <li>Kit exclusiva do evento</li>
-              </ul>
-              <p className="pt-2 mt-4 text-xs font-semibold uppercase tracking-[0.06em] text-[#10069f]">
+            
+            <div className="mt-6 grid gap-4">
+              <div className="rounded-[16px] border border-[rgba(17,17,17,0.12)] bg-[#f7f7f4] p-4 text-[rgba(17,17,17,0.75)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#111111]">
+                  Pacote Completo
+                </p>
+                <p className="mt-1 text-lg font-semibold text-[#111111]">
+                  €180 / Participante 
+                </p>
+                 <p className="pt-2 text-xs font-semibold uppercase tracking-[0.06em] text-[#10069f]">
                 Vagas limitadas
               </p>
+
+                <ul className="mt-3 list-disc pl-5 text-sm">
+                  <li>Viagem de barco ida e volta (Praia / Maio / Praia)</li>
+                  <li>Alojamento incluído (3 noites)</li>
+                  <li>3 dias de treino, workshop e jogos</li>
+                  <li>Alimentação cunjunta no final do dia</li>
+                  <li>Kit exclusiva do evento</li>
+                </ul>
+              </div>
+
+              <div className="rounded-[16px] border border-[rgba(17,17,17,0.12)] bg-[#f7f7f4] p-4 text-[rgba(17,17,17,0.75)]">
+                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#111111]">
+                  Pacote Essencial
+                </p>
+                <p className="mt-1 text-lg font-semibold text-[#111111]">
+                  €90 / Participante
+                </p>
+
+                <ul className="mt-3 list-disc pl-5 text-sm">
+                  <li>3 dias de treino, workshop e jogos</li>
+                    <li>Alimentação cunjunta no final do dia</li>
+                  <li>Kit exclusiva do evento</li>
+                  <li>Transporte não incluído</li>
+                  <li>Alojamento não incluído</li>
+                </ul>
+              </div>
+
+             
             </div>
           </div>
 
