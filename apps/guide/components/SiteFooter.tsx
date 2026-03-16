@@ -8,7 +8,7 @@ const siteLinks = [
   { href: "/", key: "home" },
   { href: "/places", key: "attractions" },
   { href: "/experiences", key: "experiences" },
-  { href: "/immigration-visas", key: "immigrationVisas" },
+  { href: "/visa", key: "immigrationVisas" },
   { href: "/manifest", key: "manifest" },
   { href: "/guia-local", key: "guiaLocal" },
 ] as const;

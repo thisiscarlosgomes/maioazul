@@ -35,7 +35,7 @@ let weatherCacheMemory: WeatherCachePayload | null = null;
 const navItems = [
   { href: "/map", key: "explore" },
   { href: "/experiences", key: "experiences" },
-  { href: "/immigration-visas", key: "immigrationVisas" },
+  { href: "/visa", key: "immigrationVisas" },
   { href: "/manifest", key: "manifest" },
   { href: "/guia-local", key: "guiaLocal" },
 ] as const;

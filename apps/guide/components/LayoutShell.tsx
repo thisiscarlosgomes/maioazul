@@ -47,11 +47,11 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     pathname === "/" ||
     pathname === "/manifest" ||
     pathname === "/guia-local" ||
-    pathname === "/immigration-visas";
+    pathname === "/visa";
   const showMainSiteHeader =
     pathname === "/manifest" ||
     pathname === "/guia-local" ||
-    pathname === "/immigration-visas";
+    pathname === "/visa";
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav
