@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useLang } from "@/lib/lang";
 import { jsPDF } from "jspdf";
+import { PDFDocument } from "pdf-lib";
 import {
   ShieldCheck,
   BadgeCheck,
@@ -233,59 +234,17 @@ export default function BusinessGuidelinesPage() {
   const [isDownloading, setIsDownloading] = useState(false);
   const showDetailedSections = false;
 
-  const loadWatermark = async () => {
-    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-      const element = new Image();
-      element.onload = () => resolve(element);
-      element.onerror = () => reject(new Error("Unable to load watermark image"));
-      element.src = "/maioazul.png";
-    });
-
-    const canvas = document.createElement("canvas");
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return null;
-    ctx.globalAlpha = 0.08;
-    ctx.drawImage(img, 0, 0);
-
-    return {
-      dataUrl: canvas.toDataURL("image/png"),
-      width: img.naturalWidth,
-      height: img.naturalHeight,
-    };
-  };
-
-  const addWatermarkToPage = (
-    pdf: jsPDF,
-    watermark: { dataUrl: string; width: number; height: number } | null
-  ) => {
-    if (!watermark) return;
+  const addPageDecorations = (pdf: jsPDF) => {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const maxWidth = pageWidth * 0.7;
-    const renderedWidth = Math.min(maxWidth, watermark.width * 0.05);
-    const renderedHeight = (renderedWidth * watermark.height) / watermark.width;
-    const x = (pageWidth - renderedWidth) / 2;
-    const y = (pageHeight - renderedHeight) / 2;
-    pdf.addImage(watermark.dataUrl, "PNG", x, y, renderedWidth, renderedHeight, undefined, "FAST");
-  };
-
-  const addPageDecorations = (
-    pdf: jsPDF,
-    watermark: { dataUrl: string; width: number; height: number } | null
-  ) => {
-    addWatermarkToPage(pdf, watermark);
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const linkText = "visitmaio.com";
+    const footerText = "visitmaio.com | Para um futuro azul";
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(9);
-    pdf.setTextColor(14, 116, 144);
-    const textWidth = pdf.getTextWidth(linkText);
+    pdf.setTextColor(16, 6, 159);
+    const textWidth = pdf.getTextWidth(footerText);
     const x = (pageWidth - textWidth) / 2;
     const y = pageHeight - 8;
-    pdf.textWithLink(linkText, x, y, { url: "https://visitmaio.com" });
+    pdf.text(footerText, x, y);
     pdf.setTextColor(0, 0, 0);
   };
 
@@ -307,16 +266,136 @@ export default function BusinessGuidelinesPage() {
     y: number,
     needed: number,
     marginTop: number,
-    marginBottom: number,
-    watermark: { dataUrl: string; width: number; height: number } | null
+    marginBottom: number
   ) => {
     const pageHeight = pdf.internal.pageSize.getHeight();
     if (y + needed > pageHeight - marginBottom) {
       pdf.addPage();
-      addPageDecorations(pdf, watermark);
+      addPageDecorations(pdf);
       return marginTop;
     }
     return y;
+  };
+
+  const addHighlightCardsPage = (pdf: jsPDF) => {
+    const marginX = 10;
+    const gap = 4;
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    pdf.setFillColor(242, 242, 242);
+    pdf.rect(0, 0, pageWidth, pageHeight, "F");
+    const cardWidth = (pageWidth - marginX * 2 - gap * 2) / 3;
+    const topY = 12;
+    const topHeight = 80;
+    const bottomY = topY + topHeight + gap;
+    const bottomHeight = 105;
+    const radius = 7;
+
+    const cardPalette = [
+      [236, 72, 153], // pink-500
+      [245, 158, 11], // amber-500
+      [14, 165, 233], // sky-500
+      [139, 92, 246], // violet-500
+      [16, 185, 129], // emerald-500
+    ] as const;
+
+    const drawCard = (
+      x: number,
+      y: number,
+      w: number,
+      h: number,
+      color: readonly [number, number, number],
+      label: string,
+      quote: string
+    ) => {
+      pdf.setDrawColor(color[0], color[1], color[2]);
+      pdf.setFillColor(color[0], color[1], color[2]);
+      pdf.roundedRect(x, y, w, h, radius, radius, "FD");
+
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(8.5);
+      pdf.text(label, x + 4, y + 7);
+
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(12);
+      const quoteLines = pdf.splitTextToSize(quote, w - 8);
+      pdf.text(quoteLines, x + 4, y + 16);
+    };
+
+    drawCard(
+      marginX,
+      topY,
+      cardWidth,
+      topHeight,
+      cardPalette[0],
+      highlightCards[0].label,
+      highlightCards[0].quote
+    );
+    drawCard(
+      marginX + cardWidth + gap,
+      topY,
+      cardWidth,
+      topHeight,
+      cardPalette[1],
+      highlightCards[1].label,
+      highlightCards[1].quote
+    );
+    drawCard(
+      marginX + (cardWidth + gap) * 2,
+      topY,
+      cardWidth,
+      topHeight,
+      cardPalette[2],
+      highlightCards[2].label,
+      highlightCards[2].quote
+    );
+    drawCard(
+      marginX,
+      bottomY,
+      cardWidth,
+      bottomHeight,
+      cardPalette[3],
+      highlightCards[3].label,
+      highlightCards[3].quote
+    );
+    drawCard(
+      marginX + cardWidth + gap,
+      bottomY,
+      cardWidth * 2 + gap,
+      52,
+      cardPalette[4],
+      highlightCards[4].label,
+      highlightCards[4].quote
+    );
+
+    addPageDecorations(pdf);
+    pdf.setTextColor(0, 0, 0);
+  };
+
+  const prependCoverPage = async (bodyPdfBytes: ArrayBuffer) => {
+    const [coverBytes, bodyBytes] = await Promise.all([
+      fetch("/cover2.pdf").then((res) => {
+        if (!res.ok) throw new Error("Unable to load cover2.pdf");
+        return res.arrayBuffer();
+      }),
+      Promise.resolve(bodyPdfBytes),
+    ]);
+
+    const coverDoc = await PDFDocument.load(coverBytes);
+    const bodyDoc = await PDFDocument.load(bodyBytes);
+    const mergedDoc = await PDFDocument.create();
+
+    const coverPage = await mergedDoc.copyPages(coverDoc, [0]);
+    mergedDoc.addPage(coverPage[0]);
+
+    const bodyPages = await mergedDoc.copyPages(
+      bodyDoc,
+      bodyDoc.getPages().map((_, index) => index)
+    );
+    bodyPages.forEach((page) => mergedDoc.addPage(page));
+
+    return mergedDoc.save();
   };
 
   const handleDownloadPdf = async () => {
@@ -324,13 +403,16 @@ export default function BusinessGuidelinesPage() {
     setIsDownloading(true);
     try {
       const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
-      const watermark = await loadWatermark().catch(() => null);
       const marginX = 14;
       const marginTop = 16;
       const marginBottom = 16;
       const contentWidth = pdf.internal.pageSize.getWidth() - marginX * 2;
       let y = marginTop;
-      addPageDecorations(pdf, watermark);
+      addHighlightCardsPage(pdf);
+
+      pdf.addPage();
+      addPageDecorations(pdf);
+      y = marginTop;
 
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(16);
@@ -357,7 +439,7 @@ export default function BusinessGuidelinesPage() {
 
       y += 8;
       for (const section of sections) {
-        y = ensureSpace(pdf, y, 26, marginTop, marginBottom, watermark);
+        y = ensureSpace(pdf, y, 26, marginTop, marginBottom);
         pdf.setFont("helvetica", "bold");
         pdf.setFontSize(12);
         y = addWrapped(pdf, section.title, marginX, y, contentWidth, 5.5);
@@ -367,24 +449,33 @@ export default function BusinessGuidelinesPage() {
         y = addWrapped(pdf, section.body, marginX, y + 0.5, contentWidth, 4.8);
 
         for (const point of section.points) {
-          y = ensureSpace(pdf, y, 10, marginTop, marginBottom, watermark);
+          y = ensureSpace(pdf, y, 10, marginTop, marginBottom);
           y = addWrapped(pdf, `- ${point}`, marginX + 2, y + 0.5, contentWidth - 2, 4.6);
         }
         y += 6;
       }
 
-      y = ensureSpace(pdf, y, 20, marginTop, marginBottom, watermark);
+      y = ensureSpace(pdf, y, 20, marginTop, marginBottom);
       pdf.setFont("helvetica", "bold");
       pdf.setFontSize(12);
       y = addWrapped(pdf, "Checklist Operacional Diario", marginX, y, contentWidth, 5.5);
       pdf.setFont("helvetica", "normal");
       pdf.setFontSize(10);
       for (const item of checklist) {
-        y = ensureSpace(pdf, y, 10, marginTop, marginBottom, watermark);
+        y = ensureSpace(pdf, y, 10, marginTop, marginBottom);
         y = addWrapped(pdf, `- ${item}`, marginX + 2, y + 0.5, contentWidth - 2, 4.6);
       }
 
-      pdf.save("guia-local-maio.pdf");
+      const mergedBytes = await prependCoverPage(pdf.output("arraybuffer"));
+      const mergedCopy = new Uint8Array(mergedBytes.byteLength);
+      mergedCopy.set(mergedBytes);
+      const file = new Blob([mergedCopy], { type: "application/pdf" });
+      const url = URL.createObjectURL(file);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "guia-local-maio.pdf";
+      link.click();
+      URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Failed to generate Guia Local PDF", error);
     } finally {
@@ -396,7 +487,7 @@ export default function BusinessGuidelinesPage() {
     <>
       <main className="mx-auto w-full max-w-5xl px-4 pb-12 pt-6">
         <h1 className="text-xl font-semibold sm:text-2xl">
-          Boas Práticas para Negócios Locais de Turismo na ilha do Maio
+          Guia para Operadores Turísticos da Ilha do Maio
         </h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
           Este guia reúne boas práticas para negócios ligados ao turismo no Maio. Não substitui a legislação aplicável, nem constitui um documento legal oficial.
