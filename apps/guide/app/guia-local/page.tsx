@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import MainSiteHeader from "@/components/MainSiteHeader";
 import { useLang } from "@/lib/lang";
 import { jsPDF } from "jspdf";
 import {
@@ -395,8 +394,6 @@ export default function BusinessGuidelinesPage() {
 
   return (
     <>
-      <MainSiteHeader />
-
       <main className="mx-auto w-full max-w-5xl px-4 pb-12 pt-6">
         <h1 className="text-xl font-semibold sm:text-2xl">
           Boas Práticas para Negócios Locais de Turismo na ilha do Maio

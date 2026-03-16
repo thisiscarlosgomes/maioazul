@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { BedDouble, Gauge, Mountain, TrendingUp, Users } from "lucide-react";
+import { BedDouble, Gauge, Mountain, Play, TrendingUp, Users } from "lucide-react";
 import { useLang } from "@/lib/lang";
 import MainSiteHeader from "@/components/MainSiteHeader";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
 
 const attractionsCards = [
   {
@@ -30,6 +32,7 @@ const attractionsCards = [
 
 export default function HomePage() {
   const [lang] = useLang();
+  const [videoOpen, setVideoOpen] = useState(false);
 
   const copy = {
     en: {
@@ -38,6 +41,8 @@ export default function HomePage() {
       heroBody:
         "Discover Maio through quiet beaches, authentic village life, and landscapes shaped by nature, culture, and time. A place of living heritage and lasting possibility.",
       heroCta: "Explore Attractions",
+      watchCta: "Watch",
+      videoTitle: "Watch Maio",
       introTitle: "Maio, a heritage of peace, nature and possibility",
       introBody:
         "From the historic legacy of Porto Inglês and the island's salt pans to its long, empty beaches, quiet settlements and reforested interior, Maio offers a living cultural and natural landscape of remarkable authenticity.",
@@ -91,6 +96,8 @@ export default function HomePage() {
       heroBody:
         "Descubra o Maio através de praias tranquilas, vida autêntica de vila e paisagens moldadas pela natureza, cultura e tempo. Um lugar de património vivo e possibilidade duradoura.",
       heroCta: "Explorar Atrações",
+      watchCta: "Ver Video",
+      videoTitle: "Ver Maio",
       introTitle: "Maio, um património de paz, natureza e possibilidade",
       introBody:
         "Do legado histórico do Porto Inglês e das salinas da ilha às suas longas praias desertas, povoações tranquilas e interior reflorestado, Maio oferece uma paisagem cultural e natural viva de autenticidade notável.",
@@ -159,15 +166,47 @@ export default function HomePage() {
               {copy[lang].heroTitle}
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-base text-white/90 sm:text-lg">{copy[lang].heroBody}</p>
-            <Link
-              href="/map"
-              className="mx-auto mt-7 inline-flex rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
-            >
-              {copy[lang].heroCta}
-            </Link>
+            <div className="mx-auto mt-7 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/map"
+                className="inline-flex rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
+              >
+                {copy[lang].heroCta}
+              </Link>
+              <button
+                type="button"
+                onClick={() => setVideoOpen(true)}
+                className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-black/30 px-7 py-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/45"
+              >
+                <Play className="h-4 w-4" />
+                {copy[lang].watchCta}
+              </button>
+            </div>
           </div>
         </div>
       </section>
+      <ResponsiveDialog
+        open={videoOpen}
+        onOpenChange={setVideoOpen}
+        title=""
+        mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-black p-4 pt-6 pb-8 text-white shadow-xl"
+        desktopContentClassName="max-w-4xl overflow-hidden border-0 bg-black p-4 text-white"
+      >
+        {videoOpen ? (
+          <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
+            <iframe
+              className="h-full w-full"
+              src="https://www.youtube.com/embed/-fF0ZbOVYiI?autoplay=1&controls=0&disablekb=1&modestbranding=1&playsinline=1&rel=0"
+              title="Visit Maio Video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-16 bg-black" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-14 bg-black" />
+          </div>
+        ) : null}
+      </ResponsiveDialog>
 
       <section className="mx-auto w-full max-w-3xl px-4 pb-2 pt-16 text-center sm:px-6">
         <h2 className="text-2xl font-semibold sm:text-3xl">{copy[lang].introTitle}</h2>

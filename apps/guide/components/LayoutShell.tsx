@@ -12,6 +12,7 @@ import { Drawer } from "vaul";
 import { useRef } from "react";
 import GuideChatWidget from "@/components/chat/GuideChatWidget";
 import SiteFooter from "@/components/SiteFooter";
+import MainSiteHeader from "@/components/MainSiteHeader";
 
 const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
 
@@ -44,6 +45,10 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     !(pathname?.startsWith("/map") && hideNav) && !isAnyVaulOpen;
   const showFooter =
     pathname === "/" ||
+    pathname === "/manifest" ||
+    pathname === "/guia-local" ||
+    pathname === "/immigration-visas";
+  const showMainSiteHeader =
     pathname === "/manifest" ||
     pathname === "/guia-local" ||
     pathname === "/immigration-visas";
@@ -554,6 +559,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
               : undefined
         }
       >
+        {showMainSiteHeader && <MainSiteHeader />}
         <div className="flex-1">{children}</div>
         {showFooter && <SiteFooter />}
       </div>

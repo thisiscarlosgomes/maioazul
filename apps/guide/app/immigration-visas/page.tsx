@@ -1,6 +1,5 @@
 "use client";
 
-import MainSiteHeader from "@/components/MainSiteHeader";
 import { useLang } from "@/lib/lang";
 
 export default function ImmigrationVisasPage() {
@@ -22,8 +21,9 @@ export default function ImmigrationVisasPage() {
       sectionTitle: "Before You Travel",
       bullet1:
         "Check if your nationality is visa-exempt or requires prior visa authorization.",
-      bullet2:
-        "Confirm if EASE pre-registration is required for your itinerary and complete it in advance.",
+      bullet2Part1: "Confirm if",
+      bullet2LinkLabel: "EASE pre-registration",
+      bullet2Part2: "is required for your itinerary and complete it in advance.",
       bullet3:
         "Keep your travel documents ready (passport, accommodation details, onward ticket, and related proof when requested).",
       bullet4:
@@ -34,7 +34,7 @@ export default function ImmigrationVisasPage() {
       visaNoticeMiddle:
         "must obtain an entry visa, transit visa, or airport stopover visa prior to arrival in Cabo Verde. Without this prior authorization, entry, transit, or stopover may be refused. For this process, contact the Cabo Verde Embassy closest to your place of residence.",
       visaNoticeListLabel: "see list",
-      cta: "Apply / Register on EASE",
+      cta: "Apply on EASE",
       helper:
         "Use the official EASE platform for immigration pre-registration and related entry processing.",
     },
@@ -53,8 +53,9 @@ export default function ImmigrationVisasPage() {
       sectionTitle: "Antes de Viajar",
       bullet1:
         "Verifique se a sua nacionalidade tem isenção de visto ou exige autorização prévia.",
-      bullet2:
-        "Confirme se o pré-registo na EASE é obrigatório para o seu trajeto e complete-o com antecedência.",
+      bullet2Part1: "Confirme se o",
+      bullet2LinkLabel: "pré-registo na EASE",
+      bullet2Part2: "é obrigatório para o seu trajeto e complete-o com antecedência.",
       bullet3:
         "Tenha os documentos de viagem organizados (passaporte, dados de alojamento, bilhete de saída e comprovativos quando solicitados).",
       bullet4:
@@ -65,7 +66,7 @@ export default function ImmigrationVisasPage() {
       visaNoticeMiddle:
         "passam a estar obrigados à obtenção de visto de entrada em território nacional e de trânsito ou de escala aeroportuária, prévia à sua chegada em Cabo Verde, sob pena de recusa de entrada, trânsito ou escala. Para o efeito, contacte a Embaixada de Cabo Verde mais próxima da sua residência.",
       visaNoticeListLabel: "ver lista",
-      cta: "Solicitar / Registar na EASE",
+      cta: "Registar na EASE",
       helper:
         "Use a plataforma oficial EASE para pré-registo de imigração e procedimentos de entrada.",
     },
@@ -73,8 +74,6 @@ export default function ImmigrationVisasPage() {
 
   return (
     <main className="bg-background text-foreground">
-      <MainSiteHeader />
-
       <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-8">
         <h1 className="text-2xl font-semibold sm:text-2xl">{copy[lang].title}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -101,9 +100,20 @@ export default function ImmigrationVisasPage() {
 
         <div className="mt-8 rounded-2xl border border-border bg-muted/20 p-5 sm:p-6">
           <h2 className="text-base font-semibold sm:text-lg">{copy[lang].sectionTitle}</h2>
-          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-muted-foreground sm:text-base">
+          <ul className="mt-4 list-disc space-y-2 pl-5 text-sm text-muted-foreground">
             <li>{copy[lang].bullet1}</li>
-            <li>{copy[lang].bullet2}</li>
+            <li>
+              {copy[lang].bullet2Part1}{" "}
+              <a
+                href="https://www.ease.gov.cv/"
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-sky-700 underline underline-offset-2"
+              >
+                {copy[lang].bullet2LinkLabel}
+              </a>{" "}
+              {copy[lang].bullet2Part2}
+            </li>
             <li>{copy[lang].bullet3}</li>
             <li>{copy[lang].bullet4}</li>
           </ul>
@@ -111,7 +121,7 @@ export default function ImmigrationVisasPage() {
 
         <section className="mt-8 rounded-2xl border border-sky-200 bg-sky-50 p-5 sm:p-6">
           <h2 className="text-base font-semibold sm:text-lg">{copy[lang].visaNoticeTitle}</h2>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
             {copy[lang].visaNoticePrefix}{" "}
             <a
               href="https://www.ease.gov.cv/assets/lista_de_paises.pdf"

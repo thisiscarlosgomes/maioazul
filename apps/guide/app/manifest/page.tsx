@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import MainSiteHeader from "@/components/MainSiteHeader";
 import { useLang } from "@/lib/lang";
 import { jsPDF } from "jspdf";
 import { Download } from "lucide-react";
@@ -244,7 +243,6 @@ export default function ManifestPage() {
 
   return (
     <main className="bg-background text-foreground">
-      <MainSiteHeader />
       <section className="mx-auto w-full max-w-5xl px-4 pb-16 pt-8">
         <h1 className="text-2xl font-semibold sm:text-2xl">{copy[lang].title}</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">{copy[lang].intro}</p>

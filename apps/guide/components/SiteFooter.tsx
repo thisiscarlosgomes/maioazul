@@ -6,8 +6,6 @@ import { useLang } from "@/lib/lang";
 
 const siteLinks = [
   { href: "/", key: "home" },
-  { href: "/map", key: "map" },
-  { href: "/places", key: "places" },
   { href: "/places", key: "attractions" },
   { href: "/experiences", key: "experiences" },
   { href: "/immigration-visas", key: "immigrationVisas" },
