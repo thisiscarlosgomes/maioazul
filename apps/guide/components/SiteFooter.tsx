@@ -10,6 +10,7 @@ const siteLinks = [
   { href: "/places", key: "places" },
   { href: "/places", key: "attractions" },
   { href: "/experiences", key: "experiences" },
+  { href: "/immigration-visas", key: "immigrationVisas" },
   { href: "/manifest", key: "manifest" },
   { href: "/guia-local", key: "guiaLocal" },
 ] as const;
@@ -24,6 +25,7 @@ export default function SiteFooter() {
       places: "Places",
       attractions: "Attractions",
       experiences: "Experiences",
+      immigrationVisas: "Immigration & Visas",
       guiaLocal: "Guia de Negócios",
       manifest: "Manifest",
       website: "maioazul.com",
@@ -36,6 +38,7 @@ export default function SiteFooter() {
       places: "Lugares",
       attractions: "Atrações",
       experiences: "Experiências",
+      immigrationVisas: "Imigração & Vistos",
       guiaLocal: "Guia de Negócios",
       manifest: "Manifesto",
       website: "maioazul.com",

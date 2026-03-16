@@ -45,7 +45,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   const showFooter =
     pathname === "/" ||
     pathname === "/manifest" ||
-    pathname === "/guia-local";
+    pathname === "/guia-local" ||
+    pathname === "/immigration-visas";
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav

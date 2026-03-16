@@ -35,6 +35,7 @@ let weatherCacheMemory: WeatherCachePayload | null = null;
 const navItems = [
   { href: "/map", key: "explore" },
   { href: "/experiences", key: "experiences" },
+  { href: "/immigration-visas", key: "immigrationVisas" },
   { href: "/manifest", key: "manifest" },
   { href: "/guia-local", key: "guiaLocal" },
 ] as const;
@@ -103,6 +104,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
       explore: "Explore",
       attractions: "Attractions",
       experiences: "Experiences",
+      immigrationVisas: "Immigration & Visas",
       guiaLocal: "Guia de Negócios",
       manifest: "Tourist Manifest",
       home: "Visit Maio",
@@ -115,6 +117,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
       explore: "Explorar",
       attractions: "Atrações",
       experiences: "Experiências",
+      immigrationVisas: "Imigração & Vistos",
       guiaLocal: "Guia de Negócios",
       manifest: "Manifesto Turístico",
       home: "Visit Maio",
@@ -218,20 +221,22 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {navItems.map((item) => {
-            const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`text-sm font-medium transition ${
-                  active ? colors.text : colors.soft
-                } ${inverted ? "hover:text-white" : "hover:text-foreground"}`}
-              >
-                {copy[lang][item.key]}
-              </Link>
-            );
-          })}
+          {navItems
+            .filter((item) => item.key !== "experiences" && item.key !== "guiaLocal")
+            .map((item) => {
+              const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`text-sm font-medium transition ${
+                    active ? colors.text : colors.soft
+                  } ${inverted ? "hover:text-white" : "hover:text-foreground"}`}
+                >
+                  {copy[lang][item.key]}
+                </Link>
+              );
+            })}
         </nav>
 
         <div className="flex items-center gap-2">
@@ -299,7 +304,9 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
               {copy[lang].menu}
             </Drawer.Title>
             <nav className="mt-4 flex flex-col gap-2">
-              {navItems.map((item) => {
+              {navItems
+                .filter((item) => item.key !== "guiaLocal")
+                .map((item) => {
                 const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
                   <Link
