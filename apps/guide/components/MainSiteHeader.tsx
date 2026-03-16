@@ -37,7 +37,7 @@ const navItems = [
   { href: "/experiences", key: "experiences" },
   { href: "/visa", key: "immigrationVisas" },
   { href: "/manifest", key: "manifest" },
-  { href: "/guia-local", key: "guiaLocal" },
+  { href: "/guia", key: "guiaLocal" },
 ] as const;
 
 function weatherIcon(code: number) {

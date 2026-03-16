@@ -9,6 +9,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: repoRoot,
   },
+  async redirects() {
+    return [
+      {
+        source: "/guia-local",
+        destination: "/guia",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

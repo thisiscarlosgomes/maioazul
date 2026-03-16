@@ -10,7 +10,7 @@ const siteLinks = [
   { href: "/experiences", key: "experiences" },
   { href: "/visa", key: "immigrationVisas" },
   { href: "/manifest", key: "manifest" },
-  { href: "/guia-local", key: "guiaLocal" },
+  { href: "/guia", key: "guiaLocal" },
 ] as const;
 
 export default function SiteFooter() {
