@@ -39,6 +39,9 @@ type LegalCorpus = {
 const MIN_YEAR = 2024;
 const MAX_YEAR = 2035;
 const AVAILABLE_BUDGET_YEARS = [2025, 2026] as const;
+const PAYMENT_DATA_MIN_YEAR = 2019;
+const PAYMENT_DATA_MAX_YEAR = 2023;
+const PAYMENT_DATA_YEARS = ["2019", "2020", "2021", "2022", "2023"] as const;
 const LEGAL_CHUNKS_ENV_PATH = process.env.LEGAL_CODE_CHUNKS_PATH;
 let legalCorpusCache: { cacheKey: string; corpus: LegalCorpus } | null = null;
 
@@ -89,6 +92,28 @@ export const toolSchemas = {
     .object({
       year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
       ilha: z.string().min(1).max(64).optional(),
+    })
+    .strict(),
+  get_payment_system_data: z
+    .object({
+      section: z
+        .enum([
+          "all",
+          "banking_structure_by_island",
+          "atm_terminals_by_island",
+          "pos_terminals_by_island",
+          "atm_population_coverage_by_municipality",
+        ])
+        .default("all"),
+      ilha: z.string().min(1).max(64).optional(),
+      year: z
+        .number()
+        .int()
+        .min(PAYMENT_DATA_MIN_YEAR)
+        .max(PAYMENT_DATA_MAX_YEAR)
+        .default(PAYMENT_DATA_MAX_YEAR),
+      limit: z.number().int().min(1).max(200).default(50),
+      include_totals: z.boolean().default(true),
     })
     .strict(),
   get_island_comparison_snapshot: z
@@ -302,6 +327,52 @@ export const nativeToolDefinitions = {
         },
       },
       required: ["year", "ilha"],
+      additionalProperties: false,
+    },
+  },
+  get_payment_system_data: {
+    title: "Get Payment System Data",
+    description:
+      "Returns payment-system indicators for Cabo Verde (2019-2023): banking structure by island, ATM terminals, POS terminals, and ATM population coverage by municipality, with optional island filtering.",
+    parameters: {
+      type: "object",
+      properties: {
+        section: {
+          type: "string",
+          enum: [
+            "all",
+            "banking_structure_by_island",
+            "atm_terminals_by_island",
+            "pos_terminals_by_island",
+            "atm_population_coverage_by_municipality",
+          ],
+          description: "Dataset section to return.",
+        },
+        ilha: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 64,
+          description:
+            "Optional island filter (e.g., Maio). For municipality coverage, this matches municipality name when provided.",
+        },
+        year: {
+          type: "integer",
+          minimum: PAYMENT_DATA_MIN_YEAR,
+          maximum: PAYMENT_DATA_MAX_YEAR,
+          description: "Reference year used for sorting and top-line summaries.",
+        },
+        limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 200,
+          description: "Maximum number of rows returned per section.",
+        },
+        include_totals: {
+          type: "boolean",
+          description: "Whether to keep total rows when available.",
+        },
+      },
+      required: ["section", "ilha", "year", "limit", "include_totals"],
       additionalProperties: false,
     },
   },
@@ -899,6 +970,91 @@ async function getTransportOverview(request: Request, rawArgs: unknown) {
     },
     comparison_2024_2025: islandFilter ? [] : payload?.comparison_2024_2025 ?? [],
     sources: payload?.sources ?? [],
+  };
+}
+
+async function getPaymentSystemData(request: Request, rawArgs: unknown) {
+  const { section, ilha, year, limit, include_totals } = toolSchemas.get_payment_system_data.parse(
+    normalizeNulls(rawArgs ?? {}),
+  );
+
+  const payload = (await fetchJson(request, "/api/finance/datasets", {
+    dataset: "payment_system_2019_2023",
+  })) as {
+    source?: {
+      publisher?: string;
+      title?: string;
+      unit?: string;
+    };
+    banking_structure_by_island?: Array<{ name?: string; values?: Record<string, number | null> }>;
+    atm_terminals_by_island?: Array<{ name?: string; values?: Record<string, number | null> }>;
+    pos_terminals_by_island?: Array<{ name?: string; values?: Record<string, number | null> }>;
+    atm_population_coverage_by_municipality?: Array<{ name?: string; values?: Record<string, number | null> }>;
+  };
+
+  const islandFilter =
+    typeof ilha === "string" && ilha.trim() && ilha !== "Todas as Ilhas"
+      ? ilha.trim()
+      : null;
+
+  type PaymentRow = { name?: string; values?: Record<string, number | null> };
+  const toSectionRows = (rows: PaymentRow[]) => {
+    const withName = rows.filter((row) => Boolean(row.name));
+    const totalRows = withName.filter((row) => normalizeSearchText(String(row.name)) === "total");
+    const baseRows = withName.filter((row) => normalizeSearchText(String(row.name)) !== "total");
+    const filteredRows = islandFilter
+      ? baseRows.filter(
+          (row) => normalizeSearchText(String(row.name)) === normalizeSearchText(islandFilter),
+        )
+      : baseRows;
+    const selected = [...filteredRows]
+      .sort(
+        (a, b) =>
+          Number(b.values?.[String(year)] ?? Number.NEGATIVE_INFINITY) -
+          Number(a.values?.[String(year)] ?? Number.NEGATIVE_INFINITY),
+      )
+      .slice(0, limit);
+    const merged = include_totals ? [...selected, ...totalRows] : selected;
+
+    return merged.map((row) => ({
+      name: String(row.name),
+      values: Object.fromEntries(
+        PAYMENT_DATA_YEARS.map((paymentYear) => [paymentYear, row.values?.[paymentYear] ?? null]),
+      ),
+      year_value: row.values?.[String(year)] ?? null,
+    }));
+  };
+
+  const bankingRows = toSectionRows(payload?.banking_structure_by_island ?? []);
+  const atmRows = toSectionRows(payload?.atm_terminals_by_island ?? []);
+  const posRows = toSectionRows(payload?.pos_terminals_by_island ?? []);
+  const coverageRows = toSectionRows(payload?.atm_population_coverage_by_municipality ?? []);
+
+  const sectionMap = {
+    banking_structure_by_island: bankingRows,
+    atm_terminals_by_island: atmRows,
+    pos_terminals_by_island: posRows,
+    atm_population_coverage_by_municipality: coverageRows,
+  } as const;
+
+  const allSections =
+    section === "all"
+      ? sectionMap
+      : {
+          [section]: sectionMap[section],
+        };
+
+  return {
+    dataset: "payment_system_2019_2023",
+    year,
+    island_filter: islandFilter,
+    section,
+    limits: {
+      requested_limit: limit,
+      include_totals,
+    },
+    source: payload?.source ?? null,
+    sections: allSections,
   };
 }
 
@@ -1952,6 +2108,8 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getTourismPopulation(request, rawArgs);
     case "get_transport_overview":
       return getTransportOverview(request, rawArgs);
+    case "get_payment_system_data":
+      return getPaymentSystemData(request, rawArgs);
     case "get_island_comparison_snapshot":
       return getIslandComparisonSnapshot(request, rawArgs);
     case "get_maio_budget":

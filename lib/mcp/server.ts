@@ -132,6 +132,7 @@ function createMcpServer(request: Request): McpServer {
   registerTool(server, request, "get_tourism_quarters");
   registerTool(server, request, "get_tourism_population");
   registerTool(server, request, "get_transport_overview");
+  registerTool(server, request, "get_payment_system_data");
   registerTool(server, request, "get_island_comparison_snapshot");
   registerTool(server, request, "search_codigo_postura");
   registerTool(server, request, "get_codigo_postura_article");
