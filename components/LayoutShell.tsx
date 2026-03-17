@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
 import AppHeader from "@/components/AppHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { Pause, Play } from "lucide-react";
 import { pauseVoice, resumeVoice, stopVoice, useVoiceState } from "@/lib/voice";
 import { useLang } from "@/lib/lang";
@@ -29,6 +30,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const showNav = shouldShowNav(pathname);
   const showAppHeader = Boolean(pathname && pathname !== "/" && pathname !== "/partners");
+  const showSiteFooter = showAppHeader;
   const [showPortalIntro, setShowPortalIntro] = useState(false);
   const [hideNav, setHideNav] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
@@ -135,6 +137,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       >
         {children}
       </div>
+      {showSiteFooter && <SiteFooter />}
       <Dialog
         open={showPortalIntro}
         onOpenChange={(nextOpen) => {

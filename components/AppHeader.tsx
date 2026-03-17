@@ -9,12 +9,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import FeedbackDialog from "@/components/FeedbackDialog";
 
 const links: Array<{ href: string; label: string; hidden?: boolean }> = [
-  { href: "/", label: "Home" },
   { href: "/dashboard", label: "Indicadores" },
+  { href: "/finance", label: "Finanças" },
   { href: "/orcamento", label: "Orçamento" },
   { href: "/documentos", label: "Documentos", hidden: true },
   { href: "/chat", label: "Chat" },
-  { href: "/feed", label: "Feed" },
 ];
 
 export default function AppHeader() {
@@ -90,7 +89,7 @@ export default function AppHeader() {
                     }}
                     className="inline-flex rounded-xl border border-border bg-background px-3 py-2 text-sm text-muted-foreground transition hover:text-foreground"
                   >
-                    Deixar feedback
+                    Feedback
                   </button>
                   <button
                     type="button"
@@ -156,7 +155,7 @@ export default function AppHeader() {
             onClick={() => setFeedbackOpen(true)}
             className="hidden rounded-md border border-border bg-background px-3 py-1.5 text-sm text-muted-foreground transition hover:text-foreground md:inline-flex"
           >
-            Deixar feedback
+            Feedback
           </button>
           <button
             type="button"

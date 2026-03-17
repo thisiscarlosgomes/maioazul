@@ -30,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/directory",
     "/admin",
     "/dashboard",
+    "/finance",
     "/orcamento",
     "/documentos",
     "/chat",
