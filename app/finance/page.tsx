@@ -870,11 +870,11 @@ function PaymentSystemSection({ ilha }: { ilha: string }) {
 export default function FinancePage() {
   const [year, setYear] = useState("2025");
   const [ilha, setIlha] = useState("Maio");
-  const [remessasOriginsView, setRemessasOriginsView] = useState<"chart" | "list">("list");
-  const [remessasDestinationView, setRemessasDestinationView] = useState<"chart" | "list">("list");
-  const [ideSectorView, setIdeSectorView] = useState<"chart" | "list">("list");
-  const [ideDestinationView, setIdeDestinationView] = useState<"chart" | "list">("list");
-  const [ideCountryMaioView, setIdeCountryMaioView] = useState<"chart" | "list">("list");
+  const [remessasOriginsView, setRemessasOriginsView] = useState<"chart" | "list">("chart");
+  const [remessasDestinationView, setRemessasDestinationView] = useState<"chart" | "list">("chart");
+  const [ideSectorView, setIdeSectorView] = useState<"chart" | "list">("chart");
+  const [ideDestinationView, setIdeDestinationView] = useState<"chart" | "list">("chart");
+  const [ideCountryMaioView, setIdeCountryMaioView] = useState<"chart" | "list">("chart");
 
   const { data, loading, error } = useDashboardQuery<ExternalSectorDataset>({
     depsKey: "external-sector-bcv-2025-v3",
