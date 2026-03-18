@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 const VISITOR_ID_KEY = "maio_visitor_id";
 
@@ -18,17 +18,14 @@ function getVisitorId() {
 
 export default function VisitorTracker() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     const visitorId = getVisitorId();
     if (!visitorId || !pathname) return;
 
-    const query = searchParams?.toString();
-    const path = query ? `${pathname}?${query}` : pathname;
     const payload = JSON.stringify({
       visitorId,
-      path,
+      path: pathname,
       referrer: typeof document !== "undefined" ? document.referrer || null : null,
       ts: new Date().toISOString(),
     });
@@ -47,7 +44,7 @@ export default function VisitorTracker() {
     }).catch(() => {
       // No-op: tracking should never break user flow.
     });
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }
