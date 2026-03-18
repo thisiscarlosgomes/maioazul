@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "./theme-provider";
 import LayoutShell from "@/components/LayoutShell";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
@@ -183,6 +184,7 @@ export default function RootLayout({
           <LayoutShell>{children}</LayoutShell>
         </ThemeProvider>
         <ServiceWorkerRegister />
+        <Analytics />
       </body>
 
     </html>
