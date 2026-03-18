@@ -1211,6 +1211,8 @@ async function getExternalSectorFinanceData(request: Request, rawArgs: unknown) 
       year_value: row.annual?.[selectedYear] ?? null,
     }));
 
+  const remessasByOriginScoped = islandFilter ? [] : remessasByOrigin;
+
   const remessasDestRaw = (payload?.remessasEmigrantes?.destino_concelhos_annual ?? [])
     .filter((row) => Boolean(row?.name))
     .filter((row) =>
@@ -1329,8 +1331,15 @@ async function getExternalSectorFinanceData(request: Request, rawArgs: unknown) 
   const sections = {
     remessas: {
       totals: payload?.remessasEmigrantes?.totals ?? null,
-      by_origin: remessasByOrigin,
+      by_origin: remessasByOriginScoped,
       by_destination: remessasByDestination,
+      metadata: {
+        by_origin_scope: "national_only",
+        by_origin_available_for_island: !islandFilter,
+        note: islandFilter
+          ? "A origem por país está disponível apenas para o total nacional de Cabo Verde."
+          : null,
+      },
     },
     ide: {
       totals: payload?.ideCaboVerde?.totals ?? null,
