@@ -19,6 +19,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
+import DashboardChatWidget from "@/components/DashboardChatWidget";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useDashboardQuery } from "@/lib/hooks/useDashboardQuery";
 import { fetchJsonOfflineFirst } from "@/lib/offline";
@@ -1600,6 +1601,7 @@ export default function FinancePage() {
           </>
         )}
       </div>
+      <DashboardChatWidget />
     </div>
   );
 }

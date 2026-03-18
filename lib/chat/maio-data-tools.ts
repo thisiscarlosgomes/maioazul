@@ -42,6 +42,8 @@ const AVAILABLE_BUDGET_YEARS = [2025, 2026] as const;
 const PAYMENT_DATA_MIN_YEAR = 2019;
 const PAYMENT_DATA_MAX_YEAR = 2023;
 const PAYMENT_DATA_YEARS = ["2019", "2020", "2021", "2022", "2023"] as const;
+const EXTERNAL_FINANCE_MIN_YEAR = 2023;
+const EXTERNAL_FINANCE_MAX_YEAR = 2025;
 const LEGAL_CHUNKS_ENV_PATH = process.env.LEGAL_CODE_CHUNKS_PATH;
 let legalCorpusCache: { cacheKey: string; corpus: LegalCorpus } | null = null;
 
@@ -114,6 +116,22 @@ export const toolSchemas = {
         .default(PAYMENT_DATA_MAX_YEAR),
       limit: z.number().int().min(1).max(200).default(50),
       include_totals: z.boolean().default(true),
+    })
+    .strict(),
+  get_external_sector_finance_data: z
+    .object({
+      section: z
+        .enum(["all", "remessas", "ide", "ide_sector"])
+        .default("all"),
+      ilha: z.string().min(1).max(64).optional(),
+      year: z
+        .number()
+        .int()
+        .min(EXTERNAL_FINANCE_MIN_YEAR)
+        .max(EXTERNAL_FINANCE_MAX_YEAR)
+        .default(EXTERNAL_FINANCE_MAX_YEAR),
+      include_zero_values: z.boolean().default(false),
+      limit: z.number().int().min(1).max(200).default(50),
     })
     .strict(),
   get_island_comparison_snapshot: z
@@ -373,6 +391,46 @@ export const nativeToolDefinitions = {
         },
       },
       required: ["section", "ilha", "year", "limit", "include_totals"],
+      additionalProperties: false,
+    },
+  },
+  get_external_sector_finance_data: {
+    title: "Get External Sector Finance Data",
+    description:
+      "Returns external-sector finance indicators from Banco de Cabo Verde (remessas de emigrantes and IDE), with optional island filtering and sector breakdown.",
+    parameters: {
+      type: "object",
+      properties: {
+        section: {
+          type: "string",
+          enum: ["all", "remessas", "ide", "ide_sector"],
+          description: "Dataset section to return.",
+        },
+        ilha: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 64,
+          description:
+            "Optional island filter (e.g., Maio). Use 'Todas as Ilhas' or omit for national view.",
+        },
+        year: {
+          type: "integer",
+          minimum: EXTERNAL_FINANCE_MIN_YEAR,
+          maximum: EXTERNAL_FINANCE_MAX_YEAR,
+          description: "Reference year used for sorting and headline fields.",
+        },
+        include_zero_values: {
+          type: "boolean",
+          description: "Whether rows with all-zero annual metrics should be kept.",
+        },
+        limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 200,
+          description: "Maximum number of rows returned per list section.",
+        },
+      },
+      required: ["section", "ilha", "year", "include_zero_values", "limit"],
       additionalProperties: false,
     },
   },
@@ -1055,6 +1113,251 @@ async function getPaymentSystemData(request: Request, rawArgs: unknown) {
     },
     source: payload?.source ?? null,
     sections: allSections,
+  };
+}
+
+async function getExternalSectorFinanceData(request: Request, rawArgs: unknown) {
+  const { section, ilha, year, include_zero_values, limit } =
+    toolSchemas.get_external_sector_finance_data.parse(normalizeNulls(rawArgs ?? {}));
+
+  const payload = (await fetchJson(request, "/api/finance/datasets", {
+    dataset: "external_sector_bcv_2025",
+  })) as {
+    source?: {
+      publisher?: string;
+      title?: string;
+      unit?: string;
+      note?: string;
+    };
+    remessasEmigrantes?: {
+      totals?: {
+        annual?: Record<string, number>;
+        monthly_2025?: Record<string, number>;
+      };
+      paises_origem_annual?: Array<{
+        name?: string;
+        annual?: Record<string, number>;
+      }>;
+      destino_concelhos_annual?: Array<{
+        name?: string;
+        annual?: Record<string, number>;
+        monthly_2025?: Record<string, number>;
+      }>;
+    };
+    ideCaboVerde?: {
+      totals?: {
+        annual?: Record<string, number>;
+        quarterly_2024?: Record<string, number>;
+        quarterly_2025?: Record<string, number>;
+      };
+      by_country?: Array<{
+        name?: string;
+        annual?: Record<string, number>;
+        quarterly_2025?: Record<string, number>;
+        destination_breakdown_by_island?: Record<string, Record<string, number>>;
+      }>;
+      by_destination_island?: Array<{
+        name?: string;
+        annual?: Record<string, number>;
+        quarterly_2025?: Record<string, number>;
+      }>;
+      sector_by_destination?: Array<{
+        island?: string;
+        sectors?: Array<{
+          sector?: string;
+          annual?: Record<string, number>;
+          children?: Array<{
+            sector?: string;
+            annual?: Record<string, number>;
+          }>;
+        }>;
+      }>;
+    };
+  };
+
+  const islandFilter =
+    typeof ilha === "string" && ilha.trim() && ilha !== "Todas as Ilhas"
+      ? ilha.trim()
+      : null;
+  const selectedYear = String(year);
+
+  const hasAnyAnnualValue = (annual?: Record<string, number>) =>
+    Boolean(
+      annual &&
+        ((annual["2023"] ?? 0) !== 0 ||
+          (annual["2024"] ?? 0) !== 0 ||
+          (annual["2025"] ?? 0) !== 0),
+    );
+
+  const keepRowByAnnual = (annual?: Record<string, number>) =>
+    include_zero_values ? true : hasAnyAnnualValue(annual);
+
+  const remessasByOrigin = (payload?.remessasEmigrantes?.paises_origem_annual ?? [])
+    .filter((row) => Boolean(row?.name))
+    .filter((row) => keepRowByAnnual(row.annual))
+    .sort(
+      (a, b) =>
+        Number(b.annual?.[selectedYear] ?? Number.NEGATIVE_INFINITY) -
+        Number(a.annual?.[selectedYear] ?? Number.NEGATIVE_INFINITY),
+    )
+    .slice(0, limit)
+    .map((row) => ({
+      name: String(row.name),
+      annual: {
+        "2023": row.annual?.["2023"] ?? null,
+        "2024": row.annual?.["2024"] ?? null,
+        "2025": row.annual?.["2025"] ?? null,
+      },
+      year_value: row.annual?.[selectedYear] ?? null,
+    }));
+
+  const remessasDestRaw = (payload?.remessasEmigrantes?.destino_concelhos_annual ?? [])
+    .filter((row) => Boolean(row?.name))
+    .filter((row) =>
+      islandFilter
+        ? normalizeSearchText(String(row.name)) === normalizeSearchText(islandFilter)
+        : true,
+    )
+    .filter((row) => keepRowByAnnual(row.annual))
+    .sort(
+      (a, b) =>
+        Number(b.annual?.[selectedYear] ?? Number.NEGATIVE_INFINITY) -
+        Number(a.annual?.[selectedYear] ?? Number.NEGATIVE_INFINITY),
+    )
+    .slice(0, limit);
+
+  const remessasByDestination = remessasDestRaw.map((row) => ({
+    name: String(row.name),
+    annual: {
+      "2023": row.annual?.["2023"] ?? null,
+      "2024": row.annual?.["2024"] ?? null,
+      "2025": row.annual?.["2025"] ?? null,
+    },
+    monthly_2025: row.monthly_2025 ?? null,
+    year_value: row.annual?.[selectedYear] ?? null,
+  }));
+
+  const ideByCountry = (payload?.ideCaboVerde?.by_country ?? [])
+    .filter((row) => Boolean(row?.name))
+    .map((row) => {
+      const annual = row.annual ?? {};
+      const islandAnnual = islandFilter
+        ? row.destination_breakdown_by_island?.[islandFilter] ?? {}
+        : annual;
+      return {
+        name: String(row.name),
+        annual: {
+          "2023": islandAnnual?.["2023"] ?? 0,
+          "2024": islandAnnual?.["2024"] ?? 0,
+          "2025": islandAnnual?.["2025"] ?? 0,
+        },
+        quarterly_2025: row.quarterly_2025 ?? null,
+        destination_breakdown_by_island: row.destination_breakdown_by_island ?? null,
+        year_value: islandAnnual?.[selectedYear] ?? null,
+      };
+    })
+    .filter((row) => keepRowByAnnual(row.annual))
+    .sort(
+      (a, b) =>
+        Number(b.year_value ?? Number.NEGATIVE_INFINITY) -
+        Number(a.year_value ?? Number.NEGATIVE_INFINITY),
+    )
+    .slice(0, limit);
+
+  const ideByDestination = (payload?.ideCaboVerde?.by_destination_island ?? [])
+    .filter((row) => Boolean(row?.name))
+    .filter((row) =>
+      islandFilter
+        ? normalizeSearchText(String(row.name)) === normalizeSearchText(islandFilter)
+        : true,
+    )
+    .filter((row) => keepRowByAnnual(row.annual))
+    .sort(
+      (a, b) =>
+        Number(b.annual?.[selectedYear] ?? Number.NEGATIVE_INFINITY) -
+        Number(a.annual?.[selectedYear] ?? Number.NEGATIVE_INFINITY),
+    )
+    .slice(0, limit)
+    .map((row) => ({
+      name: String(row.name),
+      annual: {
+        "2023": row.annual?.["2023"] ?? null,
+        "2024": row.annual?.["2024"] ?? null,
+        "2025": row.annual?.["2025"] ?? null,
+      },
+      quarterly_2025: row.quarterly_2025 ?? null,
+      year_value: row.annual?.[selectedYear] ?? null,
+    }));
+
+  const sectorRowsRaw = (payload?.ideCaboVerde?.sector_by_destination ?? [])
+    .filter((entry) => Boolean(entry?.island))
+    .filter((entry) =>
+      islandFilter
+        ? normalizeSearchText(String(entry.island)) === normalizeSearchText(islandFilter)
+        : true,
+    );
+
+  const sectorRows = sectorRowsRaw
+    .flatMap((entry) =>
+      (entry.sectors ?? []).map((sector) => ({
+        island: String(entry.island),
+        sector: String(sector.sector ?? ""),
+        annual: {
+          "2023": sector.annual?.["2023"] ?? 0,
+          "2024": sector.annual?.["2024"] ?? 0,
+          "2025": sector.annual?.["2025"] ?? 0,
+        },
+        children: (sector.children ?? []).map((child) => ({
+          sector: String(child.sector ?? ""),
+          annual: {
+            "2023": child.annual?.["2023"] ?? 0,
+            "2024": child.annual?.["2024"] ?? 0,
+            "2025": child.annual?.["2025"] ?? 0,
+          },
+        })),
+        year_value: sector.annual?.[selectedYear] ?? null,
+      })),
+    )
+    .filter((row) => keepRowByAnnual(row.annual))
+    .sort(
+      (a, b) =>
+        Number(b.year_value ?? Number.NEGATIVE_INFINITY) -
+        Number(a.year_value ?? Number.NEGATIVE_INFINITY),
+    )
+    .slice(0, limit);
+
+  const sections = {
+    remessas: {
+      totals: payload?.remessasEmigrantes?.totals ?? null,
+      by_origin: remessasByOrigin,
+      by_destination: remessasByDestination,
+    },
+    ide: {
+      totals: payload?.ideCaboVerde?.totals ?? null,
+      by_country: ideByCountry,
+      by_destination_island: ideByDestination,
+    },
+    ide_sector: {
+      rows: sectorRows,
+    },
+  } as const;
+
+  return {
+    dataset: "external_sector_bcv_2025",
+    year,
+    island_filter: islandFilter,
+    section,
+    limits: {
+      requested_limit: limit,
+      include_zero_values,
+    },
+    source: payload?.source ?? null,
+    sections:
+      section === "all"
+        ? sections
+        : {
+            [section]: sections[section],
+          },
   };
 }
 
@@ -2044,6 +2347,8 @@ async function getCodigoPosturaArticle(_request: Request, rawArgs: unknown) {
 }
 
 async function getCodigoPosturaStats(_request: Request, _rawArgs: unknown) {
+  void _request;
+  void _rawArgs;
   const { paths, chunks } = loadLegalCorpus();
   const docs = new Map<
     string,
@@ -2110,6 +2415,8 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getTransportOverview(request, rawArgs);
     case "get_payment_system_data":
       return getPaymentSystemData(request, rawArgs);
+    case "get_external_sector_finance_data":
+      return getExternalSectorFinanceData(request, rawArgs);
     case "get_island_comparison_snapshot":
       return getIslandComparisonSnapshot(request, rawArgs);
     case "get_maio_budget":
