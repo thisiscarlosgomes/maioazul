@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "./theme-provider";
 import LayoutShell from "@/components/LayoutShell";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import VisitorTracker from "@/components/VisitorTracker";
 
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -183,6 +184,7 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="light">
           <LayoutShell>{children}</LayoutShell>
         </ThemeProvider>
+        <VisitorTracker />
         <ServiceWorkerRegister />
         <Analytics />
       </body>
