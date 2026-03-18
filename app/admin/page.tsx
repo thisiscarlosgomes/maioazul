@@ -56,6 +56,27 @@ type FeedbackResponse = {
   entries?: FeedbackEntry[];
 };
 
+type VisitorStatsResponse = {
+  ok: boolean;
+  global?: {
+    total_pageviews?: number;
+    pageviews_7d?: number;
+    unique_visitors_total?: number;
+    unique_visitors_7d?: number;
+    last_visit_at?: string | null;
+  } | null;
+  recentDaily?: Array<{
+    date?: string;
+    pageviews?: number;
+    unique_visitors?: number;
+  }>;
+  topPages?: Array<{
+    path?: string;
+    pageviews?: number;
+    unique_visitors?: number;
+  }>;
+};
+
 const formatNumber = (value: number) =>
   new Intl.NumberFormat("pt-PT").format(value);
 
@@ -102,6 +123,7 @@ function LoadingGrid() {
 
 export default function AdminPage() {
   const [data, setData] = useState<ChatUsageStatsResponse | null>(null);
+  const [visitorData, setVisitorData] = useState<VisitorStatsResponse | null>(null);
   const [feedbackEntries, setFeedbackEntries] = useState<FeedbackEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -110,19 +132,23 @@ export default function AdminPage() {
 
     async function load() {
       try {
-        const [statsRes, feedbackRes] = await Promise.all([
+        const [statsRes, feedbackRes, visitorRes] = await Promise.all([
           fetch("/api/chat/stats", { cache: "no-store" }),
           fetch("/api/feedback?limit=100", { cache: "no-store" }),
+          fetch("/api/visitors/stats", { cache: "no-store" }),
         ]);
         const payload = (await statsRes.json()) as ChatUsageStatsResponse;
         const feedbackPayload = (await feedbackRes.json()) as FeedbackResponse;
+        const visitorPayload = (await visitorRes.json()) as VisitorStatsResponse;
         if (!cancelled) {
           setData(payload);
           setFeedbackEntries(feedbackPayload.entries ?? []);
+          setVisitorData(visitorPayload);
         }
       } catch {
         if (!cancelled) {
           setData({ ok: false, global: null, recentDaily: [] });
+          setVisitorData({ ok: false, global: null, recentDaily: [], topPages: [] });
           setFeedbackEntries([]);
         }
       } finally {
@@ -141,6 +167,9 @@ export default function AdminPage() {
 
   const global = data?.global;
   const recentDaily = data?.recentDaily ?? [];
+  const visitorsGlobal = visitorData?.global;
+  const visitorsRecentDaily = visitorData?.recentDaily ?? [];
+  const topPages = visitorData?.topPages ?? [];
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -225,6 +254,118 @@ export default function AdminPage() {
                     <TableRow>
                       <TableCell colSpan={4} className="text-center text-muted-foreground">
                         Sem atividade registada ainda.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+
+        <SectionBlock
+          title="Visitantes"
+          description="Tráfego agregado do site com visitantes únicos e pageviews."
+        >
+          {loading ? (
+            <LoadingGrid />
+          ) : (
+            <KpiGrid>
+              <KpiStat
+                label="Visitantes únicos (total)"
+                value={formatNumber(visitorsGlobal?.unique_visitors_total ?? 0)}
+              />
+              <KpiStat
+                label="Visitantes únicos (7d)"
+                value={formatNumber(visitorsGlobal?.unique_visitors_7d ?? 0)}
+              />
+              <KpiStat
+                label="Pageviews (total)"
+                value={formatNumber(visitorsGlobal?.total_pageviews ?? 0)}
+              />
+              <KpiStat
+                label="Pageviews (7d)"
+                value={formatNumber(visitorsGlobal?.pageviews_7d ?? 0)}
+              />
+              <KpiStat
+                label="Última visita"
+                value={formatShortDateTime(visitorsGlobal?.last_visit_at)}
+              />
+            </KpiGrid>
+          )}
+        </SectionBlock>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Visitantes por dia (7 dias)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead className="text-right">Visitantes únicos</TableHead>
+                    <TableHead className="text-right">Pageviews</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {visitorsRecentDaily.length ? (
+                    visitorsRecentDaily.map((row) => (
+                      <TableRow key={row.date}>
+                        <TableCell>{row.date ?? "—"}</TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(row.unique_visitors ?? 0)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(row.pageviews ?? 0)}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={3} className="text-center text-muted-foreground">
+                        Sem visitas registadas ainda.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Páginas mais visitadas (7 dias)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Página</TableHead>
+                    <TableHead className="text-right">Visitantes únicos</TableHead>
+                    <TableHead className="text-right">Pageviews</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {topPages.length ? (
+                    topPages.map((row, index) => (
+                      <TableRow key={`${row.path ?? "unknown"}-${index}`}>
+                        <TableCell>{row.path || "—"}</TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(row.unique_visitors ?? 0)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatNumber(row.pageviews ?? 0)}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={3} className="text-center text-muted-foreground">
+                        Sem dados suficientes ainda.
                       </TableCell>
                     </TableRow>
                   )}
