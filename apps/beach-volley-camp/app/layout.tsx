@@ -1,6 +1,7 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
 
 const siteUrl = "https://mbv.maioazul.com";
 const defaultTitle = "Maio Beach Volley Camp";
@@ -102,7 +103,10 @@ export default function RootLayout({
         />
         <meta name="theme-color" content="#ffffff" />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
