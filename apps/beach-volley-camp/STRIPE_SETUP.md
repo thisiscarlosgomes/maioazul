@@ -6,7 +6,7 @@ Required environment variables:
 
 - `STRIPE_SECRET_KEY`: Stripe secret API key.
 - `STRIPE_WEBHOOK_SECRET`: webhook signing secret from Stripe CLI/dashboard.
-- `NEXT_PUBLIC_BASE_URL`: public app URL used for success/cancel redirects.
+- `NEXT_PUBLIC_SITE_URL`: public app URL used for success/cancel redirects.
 - `MONGODB_URI`: already required by the app.
 - `MONGODB_DB`: optional, defaults to `maioazul`.
 
