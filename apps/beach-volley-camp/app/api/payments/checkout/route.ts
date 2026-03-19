@@ -13,8 +13,9 @@ export async function POST(request: NextRequest) {
     const packageId = String(body?.packageId || "").trim();
     const name = String(body?.name || "").trim();
     const email = String(body?.email || "").trim();
+    const phone = String(body?.phone || "").trim();
 
-    if (!isCampPackageId(packageId) || !name || !email) {
+    if (!isCampPackageId(packageId) || !name || !email || !phone) {
       return NextResponse.json(
         { error: "Missing or invalid payment details." },
         { status: 400 }
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     const selectedPackage = CAMP_PACKAGES[packageId];
-    const siteUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
     const stripe = getStripeClient();
     const session = await stripe.checkout.sessions.create({
@@ -46,6 +47,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         participantName: name,
         participantEmail: email,
+        participantPhone: phone,
         packageId: selectedPackage.id,
       },
     });
@@ -60,6 +62,7 @@ export async function POST(request: NextRequest) {
       participant: {
         name,
         email,
+        phone,
       },
       package: {
         id: selectedPackage.id,

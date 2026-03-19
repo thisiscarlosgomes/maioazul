@@ -45,6 +45,7 @@ export default function RegisterPage() {
     const payload = {
       name: String(formData.get("pay_name") || "").trim(),
       email: String(formData.get("pay_email") || "").trim(),
+      phone: String(formData.get("pay_phone") || "").trim(),
       packageId: String(formData.get("package_id") || "").trim(),
     };
 
@@ -218,6 +219,13 @@ export default function RegisterPage() {
                 type="email"
                 name="pay_email"
                 placeholder="Email para recibo"
+                required
+              />
+              <input
+                className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                type="tel"
+                name="pay_phone"
+                placeholder="Telefone (WhatsApp)"
                 required
               />
               <input type="hidden" name="package_id" value={selectedPackage} />
