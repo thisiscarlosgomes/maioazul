@@ -40,6 +40,7 @@ type CampCopy = {
   maioP1: string;
   maioStrong: string;
   maioRest: string;
+  maioLearnMore: string;
   footerAbout: string;
   footerProgram: string;
   footerJoin: string;
@@ -98,6 +99,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     maioStrong: "segurança, espaço e proximidade",
     maioRest:
       ". Um lugar onde estar já é, por si só, uma experiência transformadora.",
+    maioLearnMore: "Visit Maio",
     footerAbout: "Sobre",
     footerProgram: "Programa",
     footerJoin: "Participe",
@@ -179,6 +181,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
       "Maio Island is one of Cabo Verde's best-kept secrets. Open beaches, a calm rhythm, and an authentic connection between nature, community, and time.",
     maioStrong: "safety, space, and closeness",
     maioRest: ". A place where simply being there is already transformative.",
+    maioLearnMore: "Visit Maio",
     footerAbout: "About",
     footerProgram: "Program",
     footerJoin: "Join",
@@ -261,6 +264,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     maioStrong: "securite, espace et proximite",
     maioRest:
       ". Un lieu ou etre present est deja, en soi, une experience transformatrice.",
+    maioLearnMore: "Visit Maio",
     footerAbout: "A propos",
     footerProgram: "Programme",
     footerJoin: "Participer",
@@ -363,7 +367,7 @@ export default function CampPage() {
             <a href="#sobre" aria-label="Maioazul Beach Volley Camp" className="inline-flex">
               <img className="h-[19px] w-auto" src="/mb.svg" alt="Maioazul" />
             </a>
-            <nav className="hidden items-center gap-4 text-sm font-semibold text-white/85 md:flex">
+            <nav className="hidden items-center gap-6 text-sm font-semibold text-white/85 md:flex">
               <a className="transition hover:text-[#CEEC58]" href="#estrutura">
                 {t.navProgram}
               </a>
@@ -564,7 +568,7 @@ export default function CampPage() {
 
           <div className="mt-8 flex justify-center">
             <a
-              className="inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-7 py-3 text-sm font-semibold text-[#111111]"
+              className="inline-flex w-full items-center justify-center rounded-full bg-[#CEEC58] px-7 py-3 text-sm font-semibold text-[#111111] sm:w-auto"
               href={registerHref}
             >
               {t.openRegistrationCta}
@@ -635,6 +639,17 @@ export default function CampPage() {
             alt={t.altMaio}
             className="mx-auto mt-6 h-100 w-full rounded-[28px] object-cover sm:h-100"
           />
+          <a
+            href="https://visitmaio.com"
+            target="_blank"
+            rel="noreferrer"
+            aria-label={t.maioLearnMore || "Learn more"}
+            className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-[#111111] px-6 py-4 text-sm font-semibold transition hover:opacity-90 sm:w-auto sm:min-w-[170px]"
+          >
+            <span className="whitespace-nowrap leading-none text-white">
+              {t.maioLearnMore || "Visit Maio"}
+            </span>
+          </a>
         </div>
       </section>
 
