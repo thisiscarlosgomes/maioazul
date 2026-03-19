@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { Facebook, Instagram, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { CAMP_PACKAGES, type CampPackageId } from "@/lib/payments/config";
 
 export default function RegisterPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [studentStatus, setStudentStatus] = useState<null | "success" | "error">(null);
+  const [paymentStatus, setPaymentStatus] = useState<null | "loading" | "error">(null);
+  const [selectedPackage, setSelectedPackage] = useState<CampPackageId>("completo");
 
   async function handleStudentSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,6 +36,36 @@ export default function RegisterPage() {
     }
   }
 
+  async function handlePaymentSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPaymentStatus("loading");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      name: String(formData.get("pay_name") || "").trim(),
+      email: String(formData.get("pay_email") || "").trim(),
+      packageId: String(formData.get("package_id") || "").trim(),
+    };
+
+    try {
+      const res = await fetch("/api/payments/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Failed to create checkout session.");
+
+      const data = (await res.json()) as { url?: string };
+      if (!data.url) throw new Error("Missing checkout URL.");
+
+      window.location.href = data.url;
+    } catch {
+      setPaymentStatus("error");
+    }
+  }
+
   return (
     <div className="bg-white text-[#111111]">
       <section className="relative flex min-h-[50vh] items-center justify-center overflow-hidden text-center text-white">
@@ -44,33 +78,33 @@ export default function RegisterPage() {
 
         <header className="absolute inset-x-0 top-0 z-50">
           <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-7 pb-2 pt-7">
-            <a href="/" aria-label="Maioazul Beach Volley Camp" className="inline-flex">
+            <Link href="/" aria-label="Maioazul Beach Volley Camp" className="inline-flex">
               <img
                 className="h-[19px] w-auto"
                 src="/mb.svg"
                 alt="Maioazul"
               />
-            </a>
+            </Link>
             <nav className="hidden items-center gap-6 text-sm font-semibold text-white/85 md:flex">
               {/* <a className="transition hover:text-[#CEEC58]" href="#sobre-detalhe">
                 Sobre
               </a> */}
-              <a className="transition hover:text-[#CEEC58]" href="/">
+              <Link className="transition hover:text-[#CEEC58]" href="/">
                 Programa
-              </a>
+              </Link>
 
-              <a className="transition hover:text-[#CEEC58]" href="/">
+              <Link className="transition hover:text-[#CEEC58]" href="/">
                 Coach
-              </a>
+              </Link>
               <a className="transition hover:text-[#CEEC58]" href="https://maioazul.com/partners">
                 Parcerias
               </a>
-              <a
+              <Link
                 className="inline-flex items-center justify-center rounded-full border border-white/40 bg-white/15 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white hover:!text-[#111111]"
                 href="/register"
               >
                 Participe
-              </a>
+              </Link>
             </nav>
             <button
               type="button"
@@ -89,13 +123,13 @@ export default function RegisterPage() {
             <div className="rounded-[18px] border border-[rgba(17,17,17,0.12)] bg-white p-4 text-[#111111] shadow-[0_20px_40px_rgba(17,17,17,0.12)]">
               <nav className="flex flex-col gap-4 text-sm font-semibold">
 
-                <a className="transition hover:text-[#111111]" href="/">
+                <Link className="transition hover:text-[#111111]" href="/">
                   Programa
-                </a>
+                </Link>
 
-                <a className="transition hover:text-[#111111]" href="/">
+                <Link className="transition hover:text-[#111111]" href="/">
                   Coach
-                </a>
+                </Link>
                 <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
                   Parcerias
                 </a>
@@ -167,6 +201,56 @@ export default function RegisterPage() {
           </div>
 
           <div className="rounded-[18px] border border-[rgba(17,17,17,0.12)] bg-white p-6">
+            <h3 className="text-xl font-semibold text-[#111111]">Pay</h3>
+            <p className="mt-2 text-[rgba(17,17,17,0.68)]">
+              Escolhe o pacote e faz o pagamento seguro por Stripe.
+            </p>
+            <form className="mt-4 grid gap-3" onSubmit={handlePaymentSubmit}>
+              <input
+                className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                type="text"
+                name="pay_name"
+                placeholder="Nome completo"
+                required
+              />
+              <input
+                className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                type="email"
+                name="pay_email"
+                placeholder="Email para recibo"
+                required
+              />
+              <input type="hidden" name="package_id" value={selectedPackage} />
+              <div className="grid gap-3 sm:grid-cols-2">
+                {Object.values(CAMP_PACKAGES).map((campPackage) => (
+                  <button
+                    key={campPackage.id}
+                    type="button"
+                    onClick={() => setSelectedPackage(campPackage.id)}
+                    className={`rounded-[12px] border p-3 text-left transition ${selectedPackage === campPackage.id
+                        ? "border-[#111111] bg-[#f7f7f4]"
+                        : "border-[rgba(17,17,17,0.12)] bg-white"
+                      }`}
+                  >
+                    <p className="text-sm font-semibold text-[#111111]">{campPackage.name}</p>
+                    <p className="mt-1 text-sm text-[rgba(17,17,17,0.72)]">€{campPackage.amountCents / 100}</p>
+                  </button>
+                ))}
+              </div>
+              <button
+                className="inline-flex items-center justify-center rounded-full bg-[#111111] px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+                type="submit"
+                disabled={paymentStatus === "loading"}
+              >
+                {paymentStatus === "loading" ? "A redirecionar..." : "Pagar com Stripe"}
+              </button>
+              {paymentStatus === "error" ? (
+                <p className="text-sm text-red-600">Não foi possível iniciar o pagamento. Tenta novamente.</p>
+              ) : null}
+            </form>
+
+            <div className="my-6 border-t border-[rgba(17,17,17,0.12)]" />
+
             <h3 className="text-xl font-semibold text-[#111111]">Quero Participar</h3>
             <p className="mt-2 text-[rgba(17,17,17,0.68)]">
               Envia os teus dados e recebe as próximas instruções.
@@ -234,12 +318,12 @@ export default function RegisterPage() {
           </div>
         </div>
         <div className="hidden items-center gap-4 text-sm font-semibold text-[#111111]/70 md:flex">
-          <a className="transition hover:text-[#111111]" href="/">
+          <Link className="transition hover:text-[#111111]" href="/">
             Sobre
-          </a>
-          <a className="transition hover:text-[#111111]" href="/">
+          </Link>
+          <Link className="transition hover:text-[#111111]" href="/">
             Programa
-          </a>
+          </Link>
 
           <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
             Parcerias
