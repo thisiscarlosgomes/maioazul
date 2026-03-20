@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 export const revalidate = 0;
@@ -23,7 +24,10 @@ type TopPageRow = {
   unique_visitors: number;
 };
 
-export async function GET() {
+export async function GET(request: Request) {
+  if (!isAdminAuthenticatedRequest(request)) {
+    return unauthorizedAdminResponse();
+  }
   try {
     const { default: clientPromise } = await import("@/lib/mongodb");
     const client = await clientPromise;
@@ -122,4 +126,3 @@ export async function GET() {
     );
   }
 }
-

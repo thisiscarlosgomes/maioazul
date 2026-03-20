@@ -1,5 +1,6 @@
 import path from "path";
 import { promises as fs } from "fs";
+import { spawn } from "child_process";
 import { MongoClient } from "mongodb";
 
 const root = process.cwd();
@@ -92,6 +93,27 @@ function normalizePayload(payload) {
   };
 }
 
+async function maybeGenerateMetricBlogs() {
+  if (process.env.AUTO_GENERATE_METRIC_BLOGS !== "1") return;
+
+  await new Promise((resolve, reject) => {
+    const child = spawn(
+      "node",
+      [path.join(root, "scripts", "generate-metric-blog-posts.mjs"), "--max-posts=3"],
+      {
+        stdio: "inherit",
+        env: process.env,
+      }
+    );
+
+    child.on("error", reject);
+    child.on("close", (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`Metric blog generation failed with code ${code}`));
+    });
+  });
+}
+
 async function run() {
   const raw = await fs.readFile(inputPath, "utf8");
   const parsed = JSON.parse(raw);
@@ -144,10 +166,11 @@ async function run() {
       2
     )
   );
+
+  await maybeGenerateMetricBlogs();
 }
 
 run().catch((err) => {
   console.error(err);
   process.exit(1);
 });
-

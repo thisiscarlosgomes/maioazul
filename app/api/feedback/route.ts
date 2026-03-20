@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
+import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 export const revalidate = 0;
@@ -106,6 +107,9 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+  if (!isAdminAuthenticatedRequest(request)) {
+    return unauthorizedAdminResponse();
+  }
   try {
     if (!process.env.MONGODB_URI) {
       return NextResponse.json({ ok: true, entries: [] }, { status: 200 });

@@ -28,6 +28,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { buildIslandTldr } from "@/lib/tldr";
 import { TldrDrawer } from "@/components/TldrDrawer";
+import { BlogStoriesSection } from "@/components/blog/BlogStoriesSection";
 
 import { TourismAccommodationTable } from "@/components/TourismAccommodationTable";
 import { TourismStructuralBaseline } from "@/components/TourismStructuralBaseline";
@@ -1966,6 +1967,8 @@ export default function TourismPage() {
             </Select>
           </div>
         </div>
+
+        <BlogStoriesSection />
 
         {/* =========================
             YEAR = 2024 · BASELINE

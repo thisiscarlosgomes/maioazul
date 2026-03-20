@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 export const revalidate = 0;
@@ -25,7 +26,10 @@ type ChatUserDoc = {
   lastSeenAt?: Date | string;
 };
 
-export async function GET() {
+export async function GET(request: Request) {
+  if (!isAdminAuthenticatedRequest(request)) {
+    return unauthorizedAdminResponse();
+  }
   try {
     const { default: clientPromise } = await import("@/lib/mongodb");
     const client = await clientPromise;

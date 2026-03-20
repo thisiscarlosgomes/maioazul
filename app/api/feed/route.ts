@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { MANUAL_FEED_UPDATES } from "@/lib/feed/manual-updates";
+import { listBlogPosts } from "@/lib/blog/repository";
 
 export const revalidate = 300;
 
@@ -26,7 +27,18 @@ export async function GET(req: Request) {
   const limit = normalizeLimit(new URL(req.url).searchParams.get("limit"));
 
   try {
-    const items: FeedItem[] = [...MANUAL_FEED_UPDATES]
+    const publishedPosts = await listBlogPosts({ status: "published", limit });
+    const blogItems: FeedItem[] = publishedPosts.map((post) => ({
+      id: `blog-${post.id}`,
+      title: post.title,
+      detail: post.summary,
+      source: "ai_blog",
+      updatedAt: post.publishedAt ?? post.updatedAt,
+      href: `/blog/${post.slug}`,
+      tone: "data",
+    }));
+
+    const items: FeedItem[] = [...MANUAL_FEED_UPDATES, ...blogItems]
       .map((item) => ({
         ...item,
         detail: item.detail ?? "",

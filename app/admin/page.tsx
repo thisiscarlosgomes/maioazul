@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 
 import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -54,6 +55,31 @@ type FeedbackEntry = {
 type FeedbackResponse = {
   ok: boolean;
   entries?: FeedbackEntry[];
+};
+
+type BlogPost = {
+  id: string;
+  slug: string;
+  title: string;
+  summary: string;
+  status: "draft" | "approved" | "published";
+  year: number | null;
+  sourceDataset: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string | null;
+};
+
+type BlogAdminResponse = {
+  ok: boolean;
+  items?: BlogPost[];
+};
+
+type AdminAuthSessionResponse = {
+  ok: boolean;
+  configured?: boolean;
+  authenticated?: boolean;
+  error?: string;
 };
 
 type VisitorStatsResponse = {
@@ -125,44 +151,74 @@ export default function AdminPage() {
   const [data, setData] = useState<ChatUsageStatsResponse | null>(null);
   const [visitorData, setVisitorData] = useState<VisitorStatsResponse | null>(null);
   const [feedbackEntries, setFeedbackEntries] = useState<FeedbackEntry[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [blogActionId, setBlogActionId] = useState<string | null>(null);
+  const [generatingBlogs, setGeneratingBlogs] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authConfigured, setAuthConfigured] = useState(true);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let cancelled = false;
+  const loadAdminData = async () => {
+    try {
+      setLoading(true);
+      const [statsRes, feedbackRes, visitorRes, blogRes] = await Promise.all([
+        fetch("/api/chat/stats", { cache: "no-store" }),
+        fetch("/api/feedback?limit=100", { cache: "no-store" }),
+        fetch("/api/visitors/stats", { cache: "no-store" }),
+        fetch("/api/blog/admin", { cache: "no-store" }),
+      ]);
 
-    async function load() {
+      if ([statsRes, feedbackRes, visitorRes, blogRes].some((res) => res.status === 401)) {
+        setAuthenticated(false);
+        setAuthError("Sessão expirada. Inicie sessão novamente.");
+        return;
+      }
+
+      const payload = (await statsRes.json()) as ChatUsageStatsResponse;
+      const feedbackPayload = (await feedbackRes.json()) as FeedbackResponse;
+      const visitorPayload = (await visitorRes.json()) as VisitorStatsResponse;
+      const blogPayload = (await blogRes.json()) as BlogAdminResponse;
+      setData(payload);
+      setFeedbackEntries(feedbackPayload.entries ?? []);
+      setVisitorData(visitorPayload);
+      setBlogPosts(blogPayload.items ?? []);
+    } catch {
+      setData({ ok: false, global: null, recentDaily: [] });
+      setVisitorData({ ok: false, global: null, recentDaily: [], topPages: [] });
+      setFeedbackEntries([]);
+      setBlogPosts([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    async function checkSession() {
       try {
-        const [statsRes, feedbackRes, visitorRes] = await Promise.all([
-          fetch("/api/chat/stats", { cache: "no-store" }),
-          fetch("/api/feedback?limit=100", { cache: "no-store" }),
-          fetch("/api/visitors/stats", { cache: "no-store" }),
-        ]);
-        const payload = (await statsRes.json()) as ChatUsageStatsResponse;
-        const feedbackPayload = (await feedbackRes.json()) as FeedbackResponse;
-        const visitorPayload = (await visitorRes.json()) as VisitorStatsResponse;
-        if (!cancelled) {
-          setData(payload);
-          setFeedbackEntries(feedbackPayload.entries ?? []);
-          setVisitorData(visitorPayload);
-        }
-      } catch {
-        if (!cancelled) {
-          setData({ ok: false, global: null, recentDaily: [] });
-          setVisitorData({ ok: false, global: null, recentDaily: [], topPages: [] });
-          setFeedbackEntries([]);
-        }
-      } finally {
-        if (!cancelled) {
+        const res = await fetch("/api/admin/auth", { cache: "no-store" });
+        const payload = (await res.json()) as AdminAuthSessionResponse;
+        const isConfigured = Boolean(payload.configured);
+        const isAuthenticated = Boolean(payload.authenticated);
+        setAuthConfigured(isConfigured);
+        setAuthenticated(isAuthenticated);
+        setAuthChecked(true);
+        if (isConfigured && isAuthenticated) {
+          await loadAdminData();
+        } else {
           setLoading(false);
         }
+      } catch {
+        setAuthConfigured(false);
+        setAuthenticated(false);
+        setAuthChecked(true);
+        setLoading(false);
       }
     }
 
-    load();
-
-    return () => {
-      cancelled = true;
-    };
+    void checkSession();
   }, []);
 
   const global = data?.global;
@@ -170,6 +226,113 @@ export default function AdminPage() {
   const visitorsGlobal = visitorData?.global;
   const visitorsRecentDaily = visitorData?.recentDaily ?? [];
   const topPages = visitorData?.topPages ?? [];
+
+  const runBlogAction = async (id: string, action: "approve" | "publish" | "move_to_draft") => {
+    try {
+      setBlogActionId(id);
+      const res = await fetch("/api/blog/admin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, action }),
+      });
+      if (!res.ok) return;
+      const refresh = await fetch("/api/blog/admin", { cache: "no-store" });
+      const payload = (await refresh.json()) as BlogAdminResponse;
+      setBlogPosts(payload.items ?? []);
+    } finally {
+      setBlogActionId(null);
+    }
+  };
+
+  const generateDrafts = async () => {
+    try {
+      setGeneratingBlogs(true);
+      const res = await fetch("/api/blog/admin/generate", { method: "POST" });
+      if (!res.ok) return;
+      const refresh = await fetch("/api/blog/admin", { cache: "no-store" });
+      const payload = (await refresh.json()) as BlogAdminResponse;
+      setBlogPosts(payload.items ?? []);
+    } finally {
+      setGeneratingBlogs(false);
+    }
+  };
+
+  const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setAuthError(null);
+    try {
+      const res = await fetch("/api/admin/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+      const payload = (await res.json()) as AdminAuthSessionResponse;
+      if (!res.ok || !payload.ok) {
+        setAuthError(payload.error ?? "Password inválida.");
+        return;
+      }
+      setAuthenticated(true);
+      setPassword("");
+      await loadAdminData();
+    } catch {
+      setAuthError("Não foi possível autenticar.");
+    }
+  };
+
+  const handleLogout = async () => {
+    await fetch("/api/admin/auth", { method: "DELETE" });
+    setAuthenticated(false);
+    setData(null);
+    setVisitorData(null);
+    setFeedbackEntries([]);
+    setBlogPosts([]);
+  };
+
+  if (!authChecked || loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="w-full max-w-sm rounded-xl border border-border bg-card p-5">
+          <p className="text-sm text-muted-foreground">A carregar painel de administração...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!authConfigured) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <div className="w-full max-w-md space-y-2 rounded-xl border border-border bg-card p-5">
+          <h1 className="text-base font-semibold">Admin bloqueado</h1>
+          <p className="text-sm text-muted-foreground">
+            Configure `ADMIN_PASSWORD` (e opcionalmente `ADMIN_SESSION_SECRET`) no ambiente.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-6">
+        <form onSubmit={handleLogin} className="w-full max-w-sm space-y-3 rounded-xl border border-border bg-card p-5">
+          <h1 className="text-base font-semibold">Admin Login</h1>
+          <p className="text-sm text-muted-foreground">Introduza a password de administração.</p>
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500/60"
+            placeholder="Password"
+            required
+          />
+          {authError ? <p className="text-sm text-red-500">{authError}</p> : null}
+          <Button type="submit" className="w-full">
+            Entrar
+          </Button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
@@ -193,6 +356,9 @@ export default function AdminPage() {
                   </p>
                 </div>
               </div>
+              <Button variant="outline" onClick={handleLogout}>
+                Sair
+              </Button>
             </div>
           </div>
         </div>
@@ -366,6 +532,87 @@ export default function AdminPage() {
                     <TableRow>
                       <TableCell colSpan={3} className="text-center text-muted-foreground">
                         Sem dados suficientes ainda.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between gap-3">
+              <CardTitle>Artigos gerados por IA</CardTitle>
+              <Button size="sm" disabled={generatingBlogs} onClick={generateDrafts}>
+                {generatingBlogs ? "A gerar..." : "Gerar drafts"}
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="rounded-lg border border-border overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Data</TableHead>
+                    <TableHead>Título</TableHead>
+                    <TableHead>Estado</TableHead>
+                    <TableHead>Ano</TableHead>
+                    <TableHead>Origem</TableHead>
+                    <TableHead className="text-right">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {blogPosts.length ? (
+                    blogPosts.map((post) => (
+                      <TableRow key={post.id}>
+                        <TableCell>{formatShortDateTime(post.updatedAt)}</TableCell>
+                        <TableCell className="min-w-[280px]">
+                          <div className="font-medium">{post.title}</div>
+                          <div className="text-xs text-muted-foreground">{post.slug}</div>
+                        </TableCell>
+                        <TableCell>{post.status}</TableCell>
+                        <TableCell>{post.year ?? "—"}</TableCell>
+                        <TableCell>{post.sourceDataset}</TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            {post.status !== "approved" ? (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                disabled={blogActionId === post.id}
+                                onClick={() => runBlogAction(post.id, "approve")}
+                              >
+                                Aprovar
+                              </Button>
+                            ) : null}
+                            {post.status !== "published" ? (
+                              <Button
+                                size="sm"
+                                disabled={blogActionId === post.id}
+                                onClick={() => runBlogAction(post.id, "publish")}
+                              >
+                                Publicar
+                              </Button>
+                            ) : (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                disabled={blogActionId === post.id}
+                                onClick={() => runBlogAction(post.id, "move_to_draft")}
+                              >
+                                Voltar a draft
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center text-muted-foreground">
+                        Sem artigos gerados ainda.
                       </TableCell>
                     </TableRow>
                   )}
