@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { getBlogPostBySlug } from "@/lib/blog/repository";
 
-type Params = { params: { slug: string } };
+type Params = { params: Promise<{ slug: string }> };
 
 export async function GET(_req: Request, { params }: Params) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
     if (!slug || !slug.trim()) {
       return NextResponse.json({ ok: false, error: "Missing slug" }, { status: 400 });
     }

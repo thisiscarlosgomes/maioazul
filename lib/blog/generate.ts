@@ -180,7 +180,10 @@ export async function generateMetricBlogDrafts(options?: GenerateOptions) {
     });
     const prevValue = toNumber(previous?.value);
     const deltaAbs = prevValue == null ? null : candidate.value - prevValue;
-    const deltaPct = prevValue && prevValue !== 0 ? (deltaAbs / prevValue) * 100 : null;
+    const deltaPct =
+      prevValue != null && prevValue !== 0 && deltaAbs != null
+        ? (deltaAbs / prevValue) * 100
+        : null;
 
     const facts: MetricFact[] = [
       {
@@ -283,4 +286,3 @@ export async function generateMetricBlogDrafts(options?: GenerateOptions) {
     skipped,
   };
 }
-
