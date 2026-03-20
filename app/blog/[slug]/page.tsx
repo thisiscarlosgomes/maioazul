@@ -100,9 +100,6 @@ export default async function BlogDetailPage({ params }: Params) {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-4xl space-y-7 px-6 pb-20 pt-10 md:pt-14">
-        <Link className="hidden inline-block text-sm text-muted-foreground hover:text-foreground" href="/blog">
-          Voltar aos destaques
-        </Link>
         <header className="space-y-5">
           <h1 className="text-center text-3xl font-semibold leading-tight md:text-4xl">
             {post.title}
@@ -110,13 +107,13 @@ export default async function BlogDetailPage({ params }: Params) {
           <p className="mx-auto max-w-2xl text-center text-base text-muted-foreground md:text-xl md:leading-tight">
             {post.summary}
           </p>
-          <div className="flex flex-col items-start justify-between gap-3 pb-5 pt-2 text-muted-foreground md:flex-row md:items-center">
+          <div className="flex flex-col items-start justify-between gap-3 py-2 text-muted-foreground md:flex-row md:items-center">
             <p className="text-sm md:leading-none md:tracking-tight">
               By Maioazul AI - {formatDate(post.publishedAt ?? post.updatedAt)}
             </p>
             <BlogArticleActions shareUrl={shareUrl} title={post.title} />
           </div>
-          
+
           {post.heroImageUrl ? (
             <img
               src={post.heroImageUrl}
