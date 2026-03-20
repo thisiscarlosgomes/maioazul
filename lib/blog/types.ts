@@ -13,6 +13,8 @@ export type MetricBlogPost = {
   title: string;
   summary: string;
   bodyMd: string;
+  heroImageUrl: string | null;
+  heroImageAlt: string | null;
   metricKeys: string[];
   year: number | null;
   sourceDataset: string;
@@ -22,4 +24,3 @@ export type MetricBlogPost = {
   updatedAt: string;
   publishedAt: string | null;
 };
-

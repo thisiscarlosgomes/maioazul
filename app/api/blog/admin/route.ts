@@ -1,14 +1,23 @@
 import { NextResponse } from "next/server";
 import {
   deleteBlogPost,
+  getBlogPostById,
   listBlogPosts,
   updateBlogPostContent,
+  updateBlogPostImage,
   updateBlogPostStatus,
 } from "@/lib/blog/repository";
 import type { BlogPostStatus } from "@/lib/blog/types";
 import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
+import { generateBlogHeroImage } from "@/lib/blog/images";
 
-type BlogAdminAction = "approve" | "publish" | "move_to_draft" | "discard" | "update";
+type BlogAdminAction =
+  | "approve"
+  | "publish"
+  | "move_to_draft"
+  | "discard"
+  | "update"
+  | "generate_image";
 
 function toTargetStatus(action: BlogAdminAction): BlogPostStatus {
   if (action === "approve") return "approved";
@@ -46,7 +55,8 @@ export async function POST(req: Request) {
       action !== "publish" &&
       action !== "move_to_draft" &&
       action !== "discard" &&
-      action !== "update"
+      action !== "update" &&
+      action !== "generate_image"
     ) {
       return NextResponse.json({ ok: false, error: "Invalid action" }, { status: 400 });
     }
@@ -63,16 +73,43 @@ export async function POST(req: Request) {
     const updated =
       action === "discard"
         ? await deleteBlogPost(id)
+        : action === "generate_image"
+        ? (() => {
+            return Promise.resolve().then(async () => {
+              const post = await getBlogPostById(id);
+              if (!post) return false;
+              const image = await generateBlogHeroImage({
+                title: post.title,
+                summary: post.summary,
+                bodyMd: post.bodyMd,
+                slugSeed: post.slug,
+                promptOverride:
+                  typeof body?.imagePrompt === "string" ? body.imagePrompt.trim() : undefined,
+              });
+              if (!image?.url) return false;
+              return updateBlogPostImage(id, {
+                heroImageUrl: image.url,
+                heroImageAlt: image.alt ?? post.title,
+              });
+            });
+          })()
         : action === "update"
         ? await updateBlogPostContent(id, {
             title: String(body?.title ?? "").trim(),
             summary: String(body?.summary ?? "").trim(),
             bodyMd: String(body?.bodyMd ?? "").trim(),
+            heroImageUrl:
+              typeof body?.heroImageUrl === "string" ? body.heroImageUrl.trim() : null,
+            heroImageAlt:
+              typeof body?.heroImageAlt === "string" ? body.heroImageAlt.trim() : null,
           })
         : await updateBlogPostStatus(id, toTargetStatus(action));
 
     if (!updated) {
-      return NextResponse.json({ ok: false, error: "Not found or unchanged" }, { status: 404 });
+      return NextResponse.json(
+        { ok: false, error: action === "generate_image" ? "Failed to generate image" : "Not found or unchanged" },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({ ok: true });

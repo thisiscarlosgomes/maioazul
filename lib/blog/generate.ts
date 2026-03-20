@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import type { Collection, Document } from "mongodb";
 import clientPromise from "@/lib/mongodb";
+import { generateBlogHeroImage } from "@/lib/blog/images";
 
 type GenerateOptions = {
   lookbackHours?: number;
@@ -383,11 +384,20 @@ export async function generateMetricBlogDrafts(options?: GenerateOptions) {
     }
 
     try {
+      const heroImage = await generateBlogHeroImage({
+        title,
+        summary,
+        bodyMd,
+        slugSeed: slug,
+      }).catch(() => null);
+
       await blogCol.insertOne({
         slug,
         title,
         summary,
         bodyMd,
+        heroImageUrl: heroImage?.url ?? null,
+        heroImageAlt: heroImage?.alt ?? title,
         metricKeys: [candidate.key],
         year: candidate.year,
         sourceDataset: "maio_core_metrics",
@@ -512,6 +522,12 @@ export async function generateBlogDraftsFromInstruction(options: {
 
     const slug = await makeUniqueSlug(blogCol, item.title);
     const now = new Date();
+    const heroImage = await generateBlogHeroImage({
+      title: item.title,
+      summary: item.summary,
+      bodyMd: item.body_md,
+      slugSeed: slug,
+    }).catch(() => null);
 
     try {
       await blogCol.insertOne({
@@ -519,6 +535,8 @@ export async function generateBlogDraftsFromInstruction(options: {
         title: item.title,
         summary: item.summary,
         bodyMd: item.body_md,
+        heroImageUrl: heroImage?.url ?? null,
+        heroImageAlt: heroImage?.alt ?? item.title,
         metricKeys: selectedMetricKeys,
         year,
         sourceDataset: "maio_core_metrics:prompt",

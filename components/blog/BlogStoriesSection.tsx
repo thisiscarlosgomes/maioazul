@@ -9,6 +9,8 @@ type BlogPost = {
   slug: string;
   title: string;
   summary: string;
+  heroImageUrl?: string | null;
+  heroImageAlt?: string | null;
   publishedAt: string | null;
   updatedAt: string;
 };
@@ -79,6 +81,17 @@ export function BlogStoriesSection() {
               href={`/blog/${post.slug}`}
               className="rounded-xl border border-border bg-card p-4 transition hover:-translate-y-0.5 hover:border-emerald-500/50"
             >
+              {post.heroImageUrl ? (
+                <img
+                  src={post.heroImageUrl}
+                  alt={post.heroImageAlt || post.title}
+                  className="mb-3 h-36 w-full rounded-lg border border-border object-cover"
+                />
+              ) : (
+                <div className="mb-3 flex h-36 items-center justify-center rounded-lg border border-dashed border-border bg-background text-xs text-muted-foreground">
+                  Sem imagem
+                </div>
+              )}
               <p className="text-xs text-muted-foreground">{formatDate(post.publishedAt ?? post.updatedAt)}</p>
               <h3 className="mt-2 line-clamp-2 font-medium">{post.title}</h3>
               <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{post.summary}</p>

@@ -15,6 +15,8 @@ type BlogPostDoc = {
   title?: string;
   summary?: string;
   bodyMd?: string;
+  heroImageUrl?: string | null;
+  heroImageAlt?: string | null;
   metricKeys?: string[];
   year?: number | null;
   sourceDataset?: string;
@@ -39,6 +41,8 @@ function mapBlogPost(doc: BlogPostDoc): MetricBlogPost {
     title: String(doc.title ?? ""),
     summary: String(doc.summary ?? ""),
     bodyMd: String(doc.bodyMd ?? ""),
+    heroImageUrl: doc.heroImageUrl ? String(doc.heroImageUrl) : null,
+    heroImageAlt: doc.heroImageAlt ? String(doc.heroImageAlt) : null,
     metricKeys: Array.isArray(doc.metricKeys) ? doc.metricKeys.map(String) : [],
     year: typeof doc.year === "number" ? doc.year : null,
     sourceDataset: String(doc.sourceDataset ?? "maio_core_metrics"),
@@ -107,6 +111,23 @@ export async function getBlogPostBySlug(slug: string) {
   return doc ? mapBlogPost(doc) : null;
 }
 
+export async function getBlogPostById(id: string) {
+  await ensureBlogPostIndexes();
+  const client = await clientPromise;
+  const db = getDb(client);
+  const col = db.collection<BlogPostDoc>(BLOG_POSTS_COLLECTION);
+
+  let objectId: ObjectId;
+  try {
+    objectId = new ObjectId(id);
+  } catch {
+    return null;
+  }
+
+  const doc = await col.findOne({ _id: objectId });
+  return doc ? mapBlogPost(doc) : null;
+}
+
 export async function updateBlogPostStatus(id: string, status: BlogPostStatus) {
   await ensureBlogPostIndexes();
   const client = await clientPromise;
@@ -155,7 +176,13 @@ export async function deleteBlogPost(id: string) {
 
 export async function updateBlogPostContent(
   id: string,
-  payload: { title: string; summary: string; bodyMd: string }
+  payload: {
+    title: string;
+    summary: string;
+    bodyMd: string;
+    heroImageUrl?: string | null;
+    heroImageAlt?: string | null;
+  }
 ) {
   await ensureBlogPostIndexes();
   const client = await clientPromise;
@@ -176,6 +203,38 @@ export async function updateBlogPostContent(
         title: payload.title,
         summary: payload.summary,
         bodyMd: payload.bodyMd,
+        heroImageUrl: payload.heroImageUrl ?? null,
+        heroImageAlt: payload.heroImageAlt ?? null,
+        updatedAt: new Date(),
+      },
+    }
+  );
+
+  return result.modifiedCount > 0;
+}
+
+export async function updateBlogPostImage(
+  id: string,
+  payload: { heroImageUrl: string | null; heroImageAlt: string | null }
+) {
+  await ensureBlogPostIndexes();
+  const client = await clientPromise;
+  const db = getDb(client);
+  const col = db.collection(BLOG_POSTS_COLLECTION);
+
+  let objectId: ObjectId;
+  try {
+    objectId = new ObjectId(id);
+  } catch {
+    return false;
+  }
+
+  const result = await col.updateOne(
+    { _id: objectId },
+    {
+      $set: {
+        heroImageUrl: payload.heroImageUrl ?? null,
+        heroImageAlt: payload.heroImageAlt ?? null,
         updatedAt: new Date(),
       },
     }
