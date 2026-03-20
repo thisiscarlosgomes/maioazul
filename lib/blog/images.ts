@@ -92,7 +92,6 @@ export async function generateBlogHeroImage(args: {
     prompt: imagePrompt,
     size: "1536x1024",
     quality: "high",
-    response_format: hasCloudinary ? "b64_json" : "url",
   });
 
   const imageData = imageResponse.data?.[0];
@@ -124,6 +123,13 @@ export async function generateBlogHeroImage(args: {
   if (sourceUrl) {
     return {
       url: sourceUrl,
+      alt: args.title,
+    };
+  }
+
+  if (b64) {
+    return {
+      url: `data:image/png;base64,${b64}`,
       alt: args.title,
     };
   }
