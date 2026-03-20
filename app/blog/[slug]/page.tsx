@@ -61,56 +61,56 @@ export default async function BlogDetailPage({ params }: Params) {
   const shareUrl = `${siteUrl.replace(/\/+$/, "")}/blog/${post.slug}`;
   const markdownComponents = {
     p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
-      <p className="mb-5 text-base leading-relaxed text-white/88 md:text-[1.05rem]" {...props} />
+      <p className="mb-5 text-base leading-relaxed text-muted-foreground md:text-[1.05rem]" {...props} />
     ),
     h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h1 className="mb-4 mt-9 text-3xl font-semibold text-white md:text-4xl" {...props} />
+      <h1 className="mb-4 mt-9 text-3xl font-semibold text-foreground md:text-4xl" {...props} />
     ),
     h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h2 className="mb-3 mt-8 text-2xl font-semibold text-white md:text-3xl" {...props} />
+      <h2 className="mb-3 mt-8 text-2xl font-semibold text-foreground md:text-3xl" {...props} />
     ),
     h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h3 className="mb-2 mt-7 text-xl font-semibold text-white md:text-2xl" {...props} />
+      <h3 className="mb-2 mt-7 text-xl font-semibold text-foreground md:text-2xl" {...props} />
     ),
     ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
-      <ul className="mb-6 list-disc space-y-2 pl-7 text-white/88" {...props} />
+      <ul className="mb-6 list-disc space-y-2 pl-7 text-muted-foreground" {...props} />
     ),
     ol: (props: React.HTMLAttributes<HTMLOListElement>) => (
-      <ol className="mb-6 list-decimal space-y-2 pl-7 text-white/88" {...props} />
+      <ol className="mb-6 list-decimal space-y-2 pl-7 text-muted-foreground" {...props} />
     ),
     li: (props: React.HTMLAttributes<HTMLLIElement>) => <li className="leading-relaxed" {...props} />,
     strong: (props: React.HTMLAttributes<HTMLElement>) => (
-      <strong className="font-semibold text-white" {...props} />
+      <strong className="font-semibold text-foreground" {...props} />
     ),
     blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
-      <blockquote className="mb-6 border-l-2 border-white/25 pl-4 italic text-white/80" {...props} />
+      <blockquote className="mb-6 border-l-2 border-border pl-4 italic text-muted-foreground" {...props} />
     ),
     a: (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
-      <a className="underline decoration-white/50 underline-offset-2 hover:decoration-white" {...props} />
+      <a className="underline decoration-muted-foreground/60 underline-offset-2 hover:text-foreground" {...props} />
     ),
-    hr: () => <hr className="my-10 border-white/15" />,
+    hr: () => <hr className="my-10 border-border" />,
     code: (props: React.HTMLAttributes<HTMLElement>) => (
-      <code className="rounded bg-white/10 px-1.5 py-0.5 text-[0.95em] text-white" {...props} />
+      <code className="rounded bg-muted px-1.5 py-0.5 text-[0.95em] text-foreground" {...props} />
     ),
     pre: (props: React.HTMLAttributes<HTMLPreElement>) => (
-      <pre className="mb-6 overflow-x-auto rounded-xl bg-black/30 p-4 text-sm" {...props} />
+      <pre className="mb-6 overflow-x-auto rounded-xl bg-muted p-4 text-sm text-foreground" {...props} />
     ),
   };
 
   return (
-    <main className="min-h-screen bg-[#0a0b10] text-white">
+    <main className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-4xl space-y-7 px-6 pb-20 pt-10 md:pt-14">
-        <Link className="hidden inline-block text-sm text-white/60 hover:text-white" href="/blog">
+        <Link className="hidden inline-block text-sm text-muted-foreground hover:text-foreground" href="/blog">
           Voltar aos destaques
         </Link>
         <header className="space-y-5">
           <h1 className="text-center text-3xl font-semibold leading-tight md:text-4xl">
             {post.title}
           </h1>
-          <p className="mx-auto max-w-2xl text-center text-base text-white/85 md:text-xl md:leading-tight">
+          <p className="mx-auto max-w-2xl text-center text-base text-muted-foreground md:text-xl md:leading-tight">
             {post.summary}
           </p>
-          <div className="flex flex-col items-start justify-between gap-3 pb-5 pt-2 text-white/75 md:flex-row md:items-center">
+          <div className="flex flex-col items-start justify-between gap-3 pb-5 pt-2 text-muted-foreground md:flex-row md:items-center">
             <p className="text-sm md:leading-none md:tracking-tight">
               By Maioazul AI - {formatDate(post.publishedAt ?? post.updatedAt)}
             </p>
@@ -121,7 +121,7 @@ export default async function BlogDetailPage({ params }: Params) {
             <img
               src={post.heroImageUrl}
               alt={post.heroImageAlt || post.title}
-              className="h-[20rem] w-full rounded-3xl border border-white/10 object-cover md:h-[20rem]"
+              className="h-[20rem] w-full rounded-3xl border border-border object-cover md:h-[20rem]"
             />
           ) : null}
         </header>
@@ -134,7 +134,7 @@ export default async function BlogDetailPage({ params }: Params) {
           </div>
         </div>
 
-        <footer className="rounded-xl border border-white/10 bg-white/[0.02] p-4 text-xs text-white/50">
+        <footer className="rounded-xl border border-border bg-card p-4 text-xs text-muted-foreground">
           Fonte de dados: {post.sourceDataset}. Este conteúdo foi gerado por IA com base em métricas
           do dashboard e pode ser ajustado por revisão editorial.
         </footer>

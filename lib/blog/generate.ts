@@ -107,6 +107,8 @@ function buildPrompt(args: {
     "Regras obrigatórias:",
     "- Não inventar números nem contexto fora dos factos fornecidos.",
     "- Tom humano, claro, frases curtas e concretas.",
+    "- Artigo curto: no máximo 4 parágrafos no total.",
+    "- No máximo 2 secções com subtítulos (##).",
     "- Incluir: o que mudou, porque importa, e o que observar nos próximos meses.",
     "- Se não houver comparação histórica, diz explicitamente que é um ponto de referência inicial.",
     "- Evitar jargão estatístico.",
@@ -118,6 +120,43 @@ function buildPrompt(args: {
     `Ano de referência: ${year}`,
     `Factos: ${JSON.stringify(facts)}`,
   ].join("\n");
+}
+
+function enforceShortArticleBody(bodyMd: string) {
+  const source = String(bodyMd || "").trim();
+  if (!source) return source;
+
+  const blocks = source
+    .split(/\n\s*\n/g)
+    .map((block) => block.trim())
+    .filter(Boolean);
+
+  let sections = 0;
+  let paragraphs = 0;
+  const out: string[] = [];
+
+  for (const block of blocks) {
+    const firstLine = block.split("\n")[0]?.trim() ?? "";
+    const isHeading = /^##\s+/.test(firstLine);
+    const isTitle = /^#\s+/.test(firstLine);
+
+    if (isTitle) {
+      continue;
+    }
+
+    if (isHeading) {
+      if (sections >= 2) continue;
+      sections += 1;
+      out.push(block);
+      continue;
+    }
+
+    if (paragraphs >= 4) continue;
+    paragraphs += 1;
+    out.push(block);
+  }
+
+  return out.join("\n\n").trim();
 }
 
 function getDashboardBaseUrl() {
@@ -790,6 +829,8 @@ function buildInstructionPrompt(args: {
     "- Não inventar números nem factos fora dos dados disponíveis.",
     "- Produzir entre 1 e o máximo pedido de artigos.",
     "- Cada artigo deve ter título curto, resumo objetivo e corpo em markdown.",
+    "- Cada artigo deve ter no máximo 4 parágrafos no total.",
+    "- Cada artigo deve ter no máximo 2 secções (usar subtítulos ## quando fizer sentido).",
     "- Se o pedido for amplo, escolhe os ângulos mais relevantes.",
     "Responde APENAS com JSON válido no formato:",
     '{ "posts": [{ "title": string, "summary": string, "body_md": string, "metric_keys": string[], "year": number|null }] }',
@@ -1017,7 +1058,7 @@ export async function generateMetricBlogDrafts(options?: GenerateOptions) {
 
     const title = payload.title.trim();
     const summary = payload.summary.trim();
-    const bodyMd = payload.body_md.trim();
+    const bodyMd = enforceShortArticleBody(payload.body_md);
     if (!title || !summary || !bodyMd) {
       skipped += 1;
       continue;
@@ -1180,10 +1221,11 @@ export async function generateBlogDraftsFromInstruction(options: {
 
     const slug = await makeUniqueSlug(blogCol, item.title);
     const now = new Date();
+    const shortBodyMd = enforceShortArticleBody(item.body_md);
     const heroImage = await generateBlogHeroImage({
       title: item.title,
       summary: item.summary,
-      bodyMd: item.body_md,
+      bodyMd: shortBodyMd,
       slugSeed: slug,
     }).catch(() => null);
 
@@ -1192,7 +1234,7 @@ export async function generateBlogDraftsFromInstruction(options: {
         slug,
         title: item.title,
         summary: item.summary,
-        bodyMd: item.body_md,
+        bodyMd: shortBodyMd,
         heroImageUrl: heroImage?.url ?? null,
         heroImageAlt: heroImage?.alt ?? item.title,
         metricKeys: selectedMetricKeys,
