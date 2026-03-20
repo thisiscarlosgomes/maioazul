@@ -58,7 +58,7 @@ export function BlogStoriesSection() {
 
   return (
     <SectionBlock
-      title="Histórias dos Indicadores"
+      title="Destaques dos Indicadores"
       description="Leituras em linguagem simples sobre métricas novas do dashboard."
     >
       {loading ? (
@@ -87,10 +87,9 @@ export function BlogStoriesSection() {
         </div>
       ) : (
         <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
-          Ainda não há histórias publicadas.
+          Ainda não há destaques publicados.
         </div>
       )}
     </SectionBlock>
   );
 }
-

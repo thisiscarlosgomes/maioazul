@@ -60,7 +60,7 @@ export default async function BlogDetailPage({ params }: Params) {
     <main className="min-h-screen bg-background">
       <article className="mx-auto max-w-3xl space-y-5 px-6 pb-16 pt-8">
         <Link className="text-sm text-muted-foreground hover:text-foreground" href="/blog">
-          Voltar às histórias
+          Voltar aos destaques
         </Link>
         <header className="space-y-2">
           <p className="text-xs text-muted-foreground">

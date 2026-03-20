@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateMetricBlogDrafts } from "@/lib/blog/generate";
-import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
+import { isAdminAuthenticatedRequest } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
 
@@ -19,11 +19,9 @@ function isAuthorized(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    if (!isAdminAuthenticatedRequest(request)) {
-      return unauthorizedAdminResponse();
-    }
-
-    if (!isAuthorized(request)) {
+    const isAdminSession = isAdminAuthenticatedRequest(request);
+    const hasCronSecret = isAuthorized(request);
+    if (!isAdminSession && !hasCronSecret) {
       return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
     }
 
