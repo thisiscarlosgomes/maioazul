@@ -1,6 +1,7 @@
 "use client";
 
 import { type FormEvent, useEffect, useState } from "react";
+import Link from "next/link";
 
 import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
@@ -636,6 +637,9 @@ export default function AdminPage() {
                         <TableCell>{post.sourceDataset}</TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
+                            <Button size="sm" variant="outline" asChild>
+                              <Link href={`/admin/blog/${post.slug}`}>Preview</Link>
+                            </Button>
                             {post.status !== "approved" ? (
                               <Button
                                 size="sm"

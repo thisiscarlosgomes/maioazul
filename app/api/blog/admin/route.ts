@@ -1,9 +1,14 @@
 import { NextResponse } from "next/server";
-import { deleteBlogPost, listBlogPosts, updateBlogPostStatus } from "@/lib/blog/repository";
+import {
+  deleteBlogPost,
+  listBlogPosts,
+  updateBlogPostContent,
+  updateBlogPostStatus,
+} from "@/lib/blog/repository";
 import type { BlogPostStatus } from "@/lib/blog/types";
 import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
 
-type BlogAdminAction = "approve" | "publish" | "move_to_draft" | "discard";
+type BlogAdminAction = "approve" | "publish" | "move_to_draft" | "discard" | "update";
 
 function toTargetStatus(action: BlogAdminAction): BlogPostStatus {
   if (action === "approve") return "approved";
@@ -40,14 +45,30 @@ export async function POST(req: Request) {
       action !== "approve" &&
       action !== "publish" &&
       action !== "move_to_draft" &&
-      action !== "discard"
+      action !== "discard" &&
+      action !== "update"
     ) {
       return NextResponse.json({ ok: false, error: "Invalid action" }, { status: 400 });
+    }
+
+    if (action === "update") {
+      const title = String(body?.title ?? "").trim();
+      const summary = String(body?.summary ?? "").trim();
+      const bodyMd = String(body?.bodyMd ?? "").trim();
+      if (!title || !summary || !bodyMd) {
+        return NextResponse.json({ ok: false, error: "Missing content fields" }, { status: 400 });
+      }
     }
 
     const updated =
       action === "discard"
         ? await deleteBlogPost(id)
+        : action === "update"
+        ? await updateBlogPostContent(id, {
+            title: String(body?.title ?? "").trim(),
+            summary: String(body?.summary ?? "").trim(),
+            bodyMd: String(body?.bodyMd ?? "").trim(),
+          })
         : await updateBlogPostStatus(id, toTargetStatus(action));
 
     if (!updated) {

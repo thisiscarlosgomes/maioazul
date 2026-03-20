@@ -152,3 +152,34 @@ export async function deleteBlogPost(id: string) {
   const result = await col.deleteOne({ _id: objectId });
   return result.deletedCount > 0;
 }
+
+export async function updateBlogPostContent(
+  id: string,
+  payload: { title: string; summary: string; bodyMd: string }
+) {
+  await ensureBlogPostIndexes();
+  const client = await clientPromise;
+  const db = getDb(client);
+  const col = db.collection(BLOG_POSTS_COLLECTION);
+
+  let objectId: ObjectId;
+  try {
+    objectId = new ObjectId(id);
+  } catch {
+    return false;
+  }
+
+  const result = await col.updateOne(
+    { _id: objectId },
+    {
+      $set: {
+        title: payload.title,
+        summary: payload.summary,
+        bodyMd: payload.bodyMd,
+        updatedAt: new Date(),
+      },
+    }
+  );
+
+  return result.modifiedCount > 0;
+}
