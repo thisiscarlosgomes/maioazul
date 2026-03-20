@@ -34,11 +34,11 @@ export default async function BlogPage() {
   }
 
   return (
-    <main className="min-h-screen text-white">
+    <main className="min-h-screen text-foreground">
       <section className="mx-auto max-w-6xl space-y-6 px-6 pb-16 pt-2">
         <div className="pt-6">
           <h1 className="text-lg font-semibold">Destaques dos Indicadores</h1>
-          <p className="hidden text-sm text-white/65 sm:block">
+          <p className="hidden text-sm text-muted-foreground sm:block">
             Conteúdo gerado por IA com revisão editorial e base em dados oficiais.
           </p>
         </div>
@@ -49,21 +49,23 @@ export default async function BlogPage() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="rounded-[1.6rem] bg-white/[0.04] p-5 transition hover:-translate-y-0.5 hover:border-white/30"
+                className="rounded-[1.6rem] border border-border bg-card p-5 transition hover:-translate-y-0.5 hover:border-foreground/30"
               >
-                <p className="text-xs text-white/60">
+                <p className="text-xs text-muted-foreground">
                   {formatDate(post.publishedAt ?? post.updatedAt)}
                 </p>
-                <h2 className="hidden mt-3 line-clamp-2 text-lg font-medium leading-tight">{post.title}</h2>
-                <p className="mt-1 line-clamp-2 text-sm text-white/70">{post.summary}</p>
+                <h2 className="mt-3 line-clamp-2 text-lg font-medium leading-tight text-foreground">
+                  {post.title}
+                </h2>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>
                 {post.heroImageUrl ? (
                   <img
                     src={post.heroImageUrl}
                     alt={post.heroImageAlt || post.title}
-                    className="mt-6 h-40 w-full rounded-3xl border border-white/10 object-cover"
+                    className="mt-6 h-40 w-full rounded-3xl border border-border object-cover"
                   />
                 ) : (
-                  <div className="mt-6 flex h-40 w-full items-center justify-center rounded-3xl border border-dashed border-white/15 bg-black/20 text-sm text-white/45">
+                  <div className="mt-6 flex h-40 w-full items-center justify-center rounded-3xl border border-dashed border-border bg-muted/30 text-sm text-muted-foreground">
                     Sem imagem
                   </div>
                 )}
@@ -71,7 +73,7 @@ export default async function BlogPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm text-white/65">
+          <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
             Ainda não há artigos publicados.
           </div>
         )}
