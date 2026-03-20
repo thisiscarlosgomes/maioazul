@@ -61,16 +61,16 @@ export default async function BlogDetailPage({ params }: Params) {
   const shareUrl = `${siteUrl.replace(/\/+$/, "")}/blog/${post.slug}`;
   const markdownComponents = {
     p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
-      <p className="mb-6 leading-relaxed text-white/88" {...props} />
+      <p className="mb-5 text-base leading-relaxed text-white/88 md:text-[1.05rem]" {...props} />
     ),
     h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h1 className="mb-4 mt-10 text-4xl font-semibold text-white" {...props} />
+      <h1 className="mb-4 mt-9 text-3xl font-semibold text-white md:text-4xl" {...props} />
     ),
     h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h2 className="mb-3 mt-9 text-3xl font-semibold text-white" {...props} />
+      <h2 className="mb-3 mt-8 text-2xl font-semibold text-white md:text-3xl" {...props} />
     ),
     h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h3 className="mb-2 mt-8 text-2xl font-semibold text-white" {...props} />
+      <h3 className="mb-2 mt-7 text-xl font-semibold text-white md:text-2xl" {...props} />
     ),
     ul: (props: React.HTMLAttributes<HTMLUListElement>) => (
       <ul className="mb-6 list-disc space-y-2 pl-7 text-white/88" {...props} />
@@ -104,14 +104,14 @@ export default async function BlogDetailPage({ params }: Params) {
           Voltar aos destaques
         </Link>
         <header className="space-y-5">
-          <h1 className="text-center text-4xl font-semibold leading-tight md:text-6xl">
+          <h1 className="text-center text-3xl font-semibold leading-tight md:text-5xl">
             {post.title}
           </h1>
-          <p className="mx-auto max-w-2xl text-center text-lg text-white/85 md:text-3xl md:leading-tight">
+          <p className="mx-auto max-w-2xl text-center text-base text-white/85 md:text-2xl md:leading-tight">
             {post.summary}
           </p>
           <div className="flex flex-col items-start justify-between gap-3 border-b border-white/10 pb-5 pt-2 text-white/75 md:flex-row md:items-center">
-            <p className="text-sm md:text-[1.75rem] md:leading-none md:tracking-tight">
+            <p className="text-sm md:text-lg md:leading-none md:tracking-tight">
               By MaioAzul - {formatDate(post.publishedAt ?? post.updatedAt)}
             </p>
             <BlogArticleActions shareUrl={shareUrl} title={post.title} />
@@ -128,7 +128,7 @@ export default async function BlogDetailPage({ params }: Params) {
           ) : null}
         </header>
 
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 md:p-8">
+        <div className="p-0 md:p-0">
           <div className="max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
               {post.bodyMd}

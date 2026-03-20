@@ -131,13 +131,23 @@ export default function AdminBlogEditor({ post }: AdminBlogEditorProps) {
           imagePrompt: imagePrompt.trim() || undefined,
         }),
       });
-      const payload = (await res.json().catch(() => ({}))) as { error?: string };
+      const payload = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        heroImageUrl?: string;
+        heroImageAlt?: string;
+      };
       if (!res.ok) {
         setMessage(payload.error ?? "Falha ao gerar imagem.");
         return;
       }
-      setMessage("Imagem gerada. Grave para confirmar no artigo.");
-      window.location.reload();
+      if (payload.heroImageUrl) {
+        setHeroImageUrl(payload.heroImageUrl);
+      }
+      if (payload.heroImageAlt) {
+        setHeroImageAlt(payload.heroImageAlt);
+      }
+      setLastSavedAt(new Date().toISOString());
+      setMessage("Imagem gerada e guardada.");
     } catch {
       setMessage("Erro inesperado ao gerar imagem.");
     } finally {

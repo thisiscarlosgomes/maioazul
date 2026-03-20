@@ -34,10 +34,10 @@ export default async function BlogPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0a0b10] text-white">
+    <main className="min-h-screen text-white">
       <section className="mx-auto max-w-6xl space-y-6 px-6 pb-16 pt-2">
         <div className="pt-6">
-          <h1 className="text-2xl font-semibold">Destaques dos Indicadores</h1>
+          <h1 className="text-lg font-semibold">Destaques dos Indicadores</h1>
           <p className="hidden text-sm text-white/65 sm:block">
             Conteúdo gerado por IA com revisão editorial e base em dados oficiais.
           </p>
@@ -49,13 +49,13 @@ export default async function BlogPage() {
               <Link
                 key={post.id}
                 href={`/blog/${post.slug}`}
-                className="rounded-[1.6rem] border border-white/10 bg-white/[0.04] p-5 transition hover:-translate-y-0.5 hover:border-white/30"
+                className="rounded-[1.6rem] bg-white/[0.04] p-5 transition hover:-translate-y-0.5 hover:border-white/30"
               >
-                <p className="text-sm text-white/60">
+                <p className="text-xs text-white/60">
                   By MaioAzul - {formatDate(post.publishedAt ?? post.updatedAt)}
                 </p>
-                <h2 className="mt-3 line-clamp-2 text-3xl font-medium leading-tight">{post.title}</h2>
-                <p className="mt-3 line-clamp-3 text-xl leading-snug text-white/70">{post.summary}</p>
+                <h2 className="mt-3 line-clamp-2 text-lg font-medium leading-tight">{post.title}</h2>
+                <p className="mt-3 line-clamp-2 text-sm leading-snug text-white/70">{post.summary}</p>
                 {post.heroImageUrl ? (
                   <img
                     src={post.heroImageUrl}

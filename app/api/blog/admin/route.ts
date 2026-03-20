@@ -11,6 +11,10 @@ import type { BlogPostStatus } from "@/lib/blog/types";
 import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
 import { generateBlogHeroImage } from "@/lib/blog/images";
 
+export const runtime = "nodejs";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 type BlogAdminAction =
   | "approve"
   | "publish"
@@ -70,29 +74,40 @@ export async function POST(req: Request) {
       }
     }
 
+    if (action === "generate_image") {
+      const post = await getBlogPostById(id);
+      if (!post) {
+        return NextResponse.json({ ok: false, error: "Not found or unchanged" }, { status: 404 });
+      }
+      const image = await generateBlogHeroImage({
+        title: post.title,
+        summary: post.summary,
+        bodyMd: post.bodyMd,
+        slugSeed: post.slug,
+        promptOverride:
+          typeof body?.imagePrompt === "string" ? body.imagePrompt.trim() : undefined,
+      });
+      if (!image?.url) {
+        return NextResponse.json({ ok: false, error: "Failed to generate image" }, { status: 404 });
+      }
+
+      const saved = await updateBlogPostImage(id, {
+        heroImageUrl: image.url,
+        heroImageAlt: image.alt ?? post.title,
+      });
+      if (!saved) {
+        return NextResponse.json({ ok: false, error: "Failed to save image" }, { status: 500 });
+      }
+      return NextResponse.json({
+        ok: true,
+        heroImageUrl: image.url,
+        heroImageAlt: image.alt ?? post.title,
+      });
+    }
+
     const updated =
       action === "discard"
         ? await deleteBlogPost(id)
-        : action === "generate_image"
-        ? (() => {
-            return Promise.resolve().then(async () => {
-              const post = await getBlogPostById(id);
-              if (!post) return false;
-              const image = await generateBlogHeroImage({
-                title: post.title,
-                summary: post.summary,
-                bodyMd: post.bodyMd,
-                slugSeed: post.slug,
-                promptOverride:
-                  typeof body?.imagePrompt === "string" ? body.imagePrompt.trim() : undefined,
-              });
-              if (!image?.url) return false;
-              return updateBlogPostImage(id, {
-                heroImageUrl: image.url,
-                heroImageAlt: image.alt ?? post.title,
-              });
-            });
-          })()
         : action === "update"
         ? await updateBlogPostContent(id, {
             title: String(body?.title ?? "").trim(),
@@ -107,7 +122,7 @@ export async function POST(req: Request) {
 
     if (!updated) {
       return NextResponse.json(
-        { ok: false, error: action === "generate_image" ? "Failed to generate image" : "Not found or unchanged" },
+        { ok: false, error: "Not found or unchanged" },
         { status: 404 }
       );
     }

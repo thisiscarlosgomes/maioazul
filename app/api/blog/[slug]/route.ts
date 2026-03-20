@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { getBlogPostBySlug } from "@/lib/blog/repository";
 
+export const runtime = "nodejs";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 type Params = { params: Promise<{ slug: string }> };
 
 export async function GET(_req: Request, { params }: Params) {

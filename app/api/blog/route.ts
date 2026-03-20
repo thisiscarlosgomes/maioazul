@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { listBlogPosts } from "@/lib/blog/repository";
 import type { BlogPostStatus } from "@/lib/blog/types";
 
+export const runtime = "nodejs";
+export const revalidate = 0;
+export const dynamic = "force-dynamic";
+
 const DEFAULT_LIMIT = 12;
 const MAX_LIMIT = 60;
 
@@ -44,4 +48,3 @@ export async function GET(req: Request) {
     );
   }
 }
-
