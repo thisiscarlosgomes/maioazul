@@ -52,18 +52,18 @@ export default async function BlogPage() {
                 className="rounded-[1.6rem] bg-white/[0.04] p-5 transition hover:-translate-y-0.5 hover:border-white/30"
               >
                 <p className="text-xs text-white/60">
-                  By MaioAzul - {formatDate(post.publishedAt ?? post.updatedAt)}
+                  {formatDate(post.publishedAt ?? post.updatedAt)}
                 </p>
-                <h2 className="mt-3 line-clamp-2 text-lg font-medium leading-tight">{post.title}</h2>
-                <p className="mt-3 line-clamp-2 text-sm leading-snug text-white/70">{post.summary}</p>
+                <h2 className="hidden mt-3 line-clamp-2 text-lg font-medium leading-tight">{post.title}</h2>
+                <p className="mt-1 line-clamp-2 text-sm text-white/70">{post.summary}</p>
                 {post.heroImageUrl ? (
                   <img
                     src={post.heroImageUrl}
                     alt={post.heroImageAlt || post.title}
-                    className="mt-6 h-64 w-full rounded-3xl border border-white/10 object-cover"
+                    className="mt-6 h-40 w-full rounded-3xl border border-white/10 object-cover"
                   />
                 ) : (
-                  <div className="mt-6 flex h-64 w-full items-center justify-center rounded-3xl border border-dashed border-white/15 bg-black/20 text-sm text-white/45">
+                  <div className="mt-6 flex h-40 w-full items-center justify-center rounded-3xl border border-dashed border-white/15 bg-black/20 text-sm text-white/45">
                     Sem imagem
                   </div>
                 )}

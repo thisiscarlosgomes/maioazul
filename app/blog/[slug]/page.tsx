@@ -99,31 +99,29 @@ export default async function BlogDetailPage({ params }: Params) {
 
   return (
     <main className="min-h-screen bg-[#0a0b10] text-white">
-      <article className="mx-auto max-w-5xl space-y-7 px-6 pb-20 pt-10 md:pt-14">
-        <Link className="inline-block text-sm text-white/60 hover:text-white" href="/blog">
+      <article className="mx-auto max-w-4xl space-y-7 px-6 pb-20 pt-10 md:pt-14">
+        <Link className="hidden inline-block text-sm text-white/60 hover:text-white" href="/blog">
           Voltar aos destaques
         </Link>
         <header className="space-y-5">
-          <h1 className="text-center text-3xl font-semibold leading-tight md:text-5xl">
+          <h1 className="text-center text-3xl font-semibold leading-tight md:text-4xl">
             {post.title}
           </h1>
-          <p className="mx-auto max-w-2xl text-center text-base text-white/85 md:text-2xl md:leading-tight">
+          <p className="mx-auto max-w-2xl text-center text-base text-white/85 md:text-xl md:leading-tight">
             {post.summary}
           </p>
-          <div className="flex flex-col items-start justify-between gap-3 border-b border-white/10 pb-5 pt-2 text-white/75 md:flex-row md:items-center">
-            <p className="text-sm md:text-lg md:leading-none md:tracking-tight">
-              By MaioAzul - {formatDate(post.publishedAt ?? post.updatedAt)}
+          <div className="flex flex-col items-start justify-between gap-3 pb-5 pt-2 text-white/75 md:flex-row md:items-center">
+            <p className="text-sm md:leading-none md:tracking-tight">
+              By Maioazul AI - {formatDate(post.publishedAt ?? post.updatedAt)}
             </p>
             <BlogArticleActions shareUrl={shareUrl} title={post.title} />
           </div>
-          <p className="text-xs text-white/45">
-            Publicado em {formatDate(post.publishedAt ?? post.updatedAt)}
-          </p>
+          
           {post.heroImageUrl ? (
             <img
               src={post.heroImageUrl}
               alt={post.heroImageAlt || post.title}
-              className="h-[28rem] w-full rounded-3xl border border-white/10 object-cover md:h-[34rem]"
+              className="h-[20rem] w-full rounded-3xl border border-white/10 object-cover md:h-[20rem]"
             />
           ) : null}
         </header>

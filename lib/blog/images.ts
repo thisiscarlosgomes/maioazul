@@ -23,7 +23,7 @@ function cloudinarySignature(params: Record<string, string>, apiSecret: string) 
 }
 
 async function uploadBase64ToCloudinary(args: {
-  base64Png: string;
+  source: string;
   publicId: string;
 }) {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME?.trim();
@@ -42,7 +42,7 @@ async function uploadBase64ToCloudinary(args: {
   const signature = cloudinarySignature(signParams, apiSecret);
 
   const form = new FormData();
-  form.append("file", `data:image/png;base64,${args.base64Png}`);
+  form.append("file", args.source);
   form.append("folder", signParams.folder);
   form.append("public_id", signParams.public_id);
   form.append("timestamp", signParams.timestamp);
@@ -71,10 +71,16 @@ export async function generateBlogHeroImage(args: {
   promptOverride?: string;
 }) {
   const apiKey = process.env.OPENAI_API_KEY?.trim();
-  if (!apiKey) return null;
+  if (!apiKey) {
+    throw new Error("Missing OPENAI_API_KEY");
+  }
 
   const client = new OpenAI({ apiKey });
   const imageModel = process.env.OPENAI_IMAGE_MODEL?.trim() || "gpt-image-1";
+  const hasCloudinary =
+    Boolean(process.env.CLOUDINARY_CLOUD_NAME?.trim()) &&
+    Boolean(process.env.CLOUDINARY_API_KEY?.trim()) &&
+    Boolean(process.env.CLOUDINARY_API_SECRET?.trim());
   const imagePrompt = normalizeImagePrompt(
     args.promptOverride?.trim()
       ? args.promptOverride.trim()
@@ -86,26 +92,41 @@ export async function generateBlogHeroImage(args: {
     prompt: imagePrompt,
     size: "1536x1024",
     quality: "high",
+    response_format: hasCloudinary ? "b64_json" : "url",
   });
 
   const imageData = imageResponse.data?.[0];
-  const b64 = imageData?.b64_json;
-  if (!b64) {
-    return null;
+  const b64 = imageData?.b64_json?.trim();
+  const sourceUrl = imageData?.url?.trim();
+
+  if (hasCloudinary) {
+    const publicId = `${args.slugSeed}-${Date.now()}`;
+    const uploadSource = b64 ? `data:image/png;base64,${b64}` : sourceUrl || "";
+    if (!uploadSource) {
+      throw new Error("Image API returned no usable image payload");
+    }
+
+    const uploadedUrl = await uploadBase64ToCloudinary({
+      source: uploadSource,
+      publicId,
+    });
+
+    if (!uploadedUrl) {
+      throw new Error("Cloudinary upload failed");
+    }
+
+    return {
+      url: uploadedUrl,
+      alt: args.title,
+    };
   }
 
-  const publicId = `${args.slugSeed}-${Date.now()}`;
-  const uploadedUrl = await uploadBase64ToCloudinary({
-    base64Png: b64,
-    publicId,
-  });
-
-  if (!uploadedUrl) {
-    return null;
+  if (sourceUrl) {
+    return {
+      url: sourceUrl,
+      alt: args.title,
+    };
   }
 
-  return {
-    url: uploadedUrl,
-    alt: args.title,
-  };
+  throw new Error("Image API returned no URL output");
 }

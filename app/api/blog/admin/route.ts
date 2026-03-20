@@ -79,16 +79,34 @@ export async function POST(req: Request) {
       if (!post) {
         return NextResponse.json({ ok: false, error: "Not found or unchanged" }, { status: 404 });
       }
-      const image = await generateBlogHeroImage({
-        title: post.title,
-        summary: post.summary,
-        bodyMd: post.bodyMd,
-        slugSeed: post.slug,
-        promptOverride:
-          typeof body?.imagePrompt === "string" ? body.imagePrompt.trim() : undefined,
-      });
+      let image:
+        | {
+            url: string;
+            alt: string;
+          }
+        | null = null;
+      try {
+        image = await generateBlogHeroImage({
+          title: post.title,
+          summary: post.summary,
+          bodyMd: post.bodyMd,
+          slugSeed: post.slug,
+          promptOverride:
+            typeof body?.imagePrompt === "string" ? body.imagePrompt.trim() : undefined,
+        });
+      } catch (error) {
+        const message =
+          error instanceof Error ? error.message : "Unknown image generation error";
+        return NextResponse.json(
+          {
+            ok: false,
+            error: `Failed to generate image: ${message}`,
+          },
+          { status: 500 }
+        );
+      }
       if (!image?.url) {
-        return NextResponse.json({ ok: false, error: "Failed to generate image" }, { status: 404 });
+        return NextResponse.json({ ok: false, error: "Failed to generate image" }, { status: 500 });
       }
 
       const saved = await updateBlogPostImage(id, {
