@@ -59,7 +59,7 @@ function mapBlogPost(doc: BlogPostDoc): MetricBlogPost {
 
 export async function ensureBlogPostIndexes() {
   const client = await clientPromise;
-  const db = client.db();
+  const db = client.db(process.env.MONGODB_DB || "maioazul");
   const col = db.collection(BLOG_POSTS_COLLECTION);
 
   await Promise.all([
@@ -76,7 +76,7 @@ export async function listBlogPosts(params?: {
 }) {
   await ensureBlogPostIndexes();
   const client = await clientPromise;
-  const db = client.db();
+  const db = client.db(process.env.MONGODB_DB || "maioazul");
   const col = db.collection<BlogPostDoc>(BLOG_POSTS_COLLECTION);
 
   const limit = Math.max(1, Math.min(100, Math.floor(params?.limit ?? 20)));
@@ -96,7 +96,7 @@ export async function listBlogPosts(params?: {
 export async function getBlogPostBySlug(slug: string) {
   await ensureBlogPostIndexes();
   const client = await clientPromise;
-  const db = client.db();
+  const db = client.db(process.env.MONGODB_DB || "maioazul");
   const col = db.collection<BlogPostDoc>(BLOG_POSTS_COLLECTION);
   const doc = await col.findOne({ slug });
   return doc ? mapBlogPost(doc) : null;
@@ -105,7 +105,7 @@ export async function getBlogPostBySlug(slug: string) {
 export async function updateBlogPostStatus(id: string, status: BlogPostStatus) {
   await ensureBlogPostIndexes();
   const client = await clientPromise;
-  const db = client.db();
+  const db = client.db(process.env.MONGODB_DB || "maioazul");
   const col = db.collection(BLOG_POSTS_COLLECTION);
 
   let objectId: ObjectId;
@@ -130,4 +130,3 @@ export async function updateBlogPostStatus(id: string, status: BlogPostStatus) {
 
   return result.modifiedCount > 0;
 }
-

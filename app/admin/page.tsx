@@ -154,6 +154,7 @@ export default function AdminPage() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [blogActionId, setBlogActionId] = useState<string | null>(null);
   const [generatingBlogs, setGeneratingBlogs] = useState(false);
+  const [blogDraftsMessage, setBlogDraftsMessage] = useState<string | null>(null);
   const [authChecked, setAuthChecked] = useState(false);
   const [authConfigured, setAuthConfigured] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
@@ -247,11 +248,25 @@ export default function AdminPage() {
   const generateDrafts = async () => {
     try {
       setGeneratingBlogs(true);
+      setBlogDraftsMessage(null);
       const res = await fetch("/api/blog/admin/generate", { method: "POST" });
-      if (!res.ok) return;
+      if (!res.ok) {
+        const payload = (await res.json().catch(() => ({}))) as { error?: string };
+        setBlogDraftsMessage(payload.error ?? "Falha ao gerar drafts.");
+        return;
+      }
+      const generationPayload = (await res.json().catch(() => ({}))) as {
+        created?: number;
+        candidateMetrics?: number;
+      };
       const refresh = await fetch("/api/blog/admin", { cache: "no-store" });
       const payload = (await refresh.json()) as BlogAdminResponse;
       setBlogPosts(payload.items ?? []);
+      setBlogDraftsMessage(
+        `Geração concluída: ${generationPayload.created ?? 0} drafts criados de ${generationPayload.candidateMetrics ?? 0} candidatos.`
+      );
+    } catch {
+      setBlogDraftsMessage("Erro inesperado ao gerar drafts.");
     } finally {
       setGeneratingBlogs(false);
     }
@@ -549,6 +564,9 @@ export default function AdminPage() {
                 {generatingBlogs ? "A gerar..." : "Gerar drafts"}
               </Button>
             </div>
+            {blogDraftsMessage ? (
+              <p className="text-xs text-muted-foreground mt-2">{blogDraftsMessage}</p>
+            ) : null}
           </CardHeader>
           <CardContent>
             <div className="rounded-lg border border-border overflow-x-auto">

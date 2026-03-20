@@ -114,7 +114,7 @@ export async function generateMetricBlogDrafts(options?: GenerateOptions) {
   }
 
   const client = await clientPromise;
-  const db = client.db();
+  const db = client.db(process.env.MONGODB_DB || "maioazul");
   const metricsCol = db.collection("maio_core_metrics");
   const blogCol = db.collection("metric_blog_posts");
   const openai = new OpenAI({ apiKey });
