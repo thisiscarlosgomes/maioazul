@@ -10,7 +10,7 @@ import FeedbackDialog from "@/components/FeedbackDialog";
 
 const links: Array<{ href: string; label: string; hidden?: boolean }> = [
   { href: "/dashboard", label: "Indicadores" },
-  { href: "/blog", label: "Destaques" },
+  { href: "/blog", label: "Destaques", hidden: true },
   { href: "/finance", label: "Finanças" },
   { href: "/orcamento", label: "Orçamento" },
   { href: "/documentos", label: "Documentos", hidden: true },

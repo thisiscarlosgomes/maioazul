@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-const links: Array<{ href: string; label: string }> = [
+const links: Array<{ href: string; label: string; hidden?: boolean }> = [
   { href: "/", label: "Home" },
   { href: "/dashboard", label: "Indicadores" },
-  { href: "/blog", label: "Destaques" },
+  { href: "/blog", label: "Destaques", hidden: true },
   { href: "/finance", label: "Financas" },
   { href: "/orcamento", label: "Orçamento" },
   { href: "/documentos", label: "Documentos" },
@@ -18,7 +18,7 @@ export default function SiteFooter() {
     <footer className="border-t border-border bg-background">
       <div className="mx-auto w-full max-w-6xl px-6 py-8">
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          {links.map((item) => (
+          {links.filter((item) => !item.hidden).map((item) => (
             <Link
               key={item.href}
               href={item.href}
