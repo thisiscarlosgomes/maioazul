@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getBlogPostBySlug } from "@/lib/blog/repository";
 
-type Params = { params: { slug: string } };
+type Params = { params: Promise<{ slug: string }> };
 export const dynamic = "force-dynamic";
 
 function formatDate(value: string | null | undefined) {
@@ -20,7 +20,7 @@ function formatDate(value: string | null | undefined) {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const { slug } = params;
+  const { slug } = await params;
   let post: Awaited<ReturnType<typeof getBlogPostBySlug>> = null;
   try {
     post = await getBlogPostBySlug(slug);
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function BlogDetailPage({ params }: Params) {
-  const { slug } = params;
+  const { slug } = await params;
   let post: Awaited<ReturnType<typeof getBlogPostBySlug>> = null;
   try {
     post = await getBlogPostBySlug(slug);
@@ -68,6 +68,13 @@ export default async function BlogDetailPage({ params }: Params) {
           </p>
           <h1 className="text-2xl font-semibold">{post.title}</h1>
           <p className="text-sm text-muted-foreground">{post.summary}</p>
+          {post.heroImageUrl ? (
+            <img
+              src={post.heroImageUrl}
+              alt={post.heroImageAlt || post.title}
+              className="mt-3 h-72 w-full rounded-xl border border-border object-cover"
+            />
+          ) : null}
         </header>
 
         <div className="rounded-xl border border-border bg-card p-5">
