@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateMetricBlogDrafts } from "@/lib/blog/generate";
+import { generateBlogDraftsFromInstruction, generateMetricBlogDrafts } from "@/lib/blog/generate";
 import { isAdminAuthenticatedRequest } from "@/lib/admin-auth";
 
 export const runtime = "nodejs";
@@ -26,9 +26,23 @@ export async function POST(request: Request) {
     }
 
     const url = new URL(request.url);
-    const lookbackHours = parseNumber(url.searchParams.get("lookbackHours"), 24 * 14);
-    const maxPosts = parseNumber(url.searchParams.get("maxPosts"), 6);
-    const result = await generateMetricBlogDrafts({ lookbackHours, maxPosts });
+    const rawBody = await request.text();
+    const body = rawBody ? (JSON.parse(rawBody) as { prompt?: unknown; maxPosts?: unknown }) : {};
+    const prompt = typeof body.prompt === "string" ? body.prompt.trim() : "";
+    const bodyMaxPosts =
+      typeof body.maxPosts === "number" && Number.isFinite(body.maxPosts)
+        ? body.maxPosts
+        : null;
+
+    const result = prompt
+      ? await generateBlogDraftsFromInstruction({
+          instruction: prompt,
+          maxPosts: Math.max(1, Math.min(10, Math.floor(bodyMaxPosts ?? 3))),
+        })
+      : await generateMetricBlogDrafts({
+          lookbackHours: parseNumber(url.searchParams.get("lookbackHours"), 24 * 14),
+          maxPosts: parseNumber(url.searchParams.get("maxPosts"), 6),
+        });
     return NextResponse.json({ ok: true, ...result });
   } catch (error) {
     console.error("[blog-admin-generate] failed", error);

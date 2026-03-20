@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { listBlogPosts, updateBlogPostStatus } from "@/lib/blog/repository";
+import { deleteBlogPost, listBlogPosts, updateBlogPostStatus } from "@/lib/blog/repository";
 import type { BlogPostStatus } from "@/lib/blog/types";
 import { isAdminAuthenticatedRequest, unauthorizedAdminResponse } from "@/lib/admin-auth";
 
-type BlogAdminAction = "approve" | "publish" | "move_to_draft";
+type BlogAdminAction = "approve" | "publish" | "move_to_draft" | "discard";
 
 function toTargetStatus(action: BlogAdminAction): BlogPostStatus {
   if (action === "approve") return "approved";
@@ -36,11 +36,20 @@ export async function POST(req: Request) {
     if (!id) {
       return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
     }
-    if (action !== "approve" && action !== "publish" && action !== "move_to_draft") {
+    if (
+      action !== "approve" &&
+      action !== "publish" &&
+      action !== "move_to_draft" &&
+      action !== "discard"
+    ) {
       return NextResponse.json({ ok: false, error: "Invalid action" }, { status: 400 });
     }
 
-    const updated = await updateBlogPostStatus(id, toTargetStatus(action));
+    const updated =
+      action === "discard"
+        ? await deleteBlogPost(id)
+        : await updateBlogPostStatus(id, toTargetStatus(action));
+
     if (!updated) {
       return NextResponse.json({ ok: false, error: "Not found or unchanged" }, { status: 404 });
     }

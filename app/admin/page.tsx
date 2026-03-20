@@ -6,6 +6,14 @@ import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -155,6 +163,9 @@ export default function AdminPage() {
   const [blogActionId, setBlogActionId] = useState<string | null>(null);
   const [generatingBlogs, setGeneratingBlogs] = useState(false);
   const [blogDraftsMessage, setBlogDraftsMessage] = useState<string | null>(null);
+  const [isGenerateDialogOpen, setIsGenerateDialogOpen] = useState(false);
+  const [blogPrompt, setBlogPrompt] = useState("");
+  const [blogPromptMaxPosts, setBlogPromptMaxPosts] = useState(3);
   const [authChecked, setAuthChecked] = useState(false);
   const [authConfigured, setAuthConfigured] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
@@ -228,7 +239,10 @@ export default function AdminPage() {
   const visitorsRecentDaily = visitorData?.recentDaily ?? [];
   const topPages = visitorData?.topPages ?? [];
 
-  const runBlogAction = async (id: string, action: "approve" | "publish" | "move_to_draft") => {
+  const runBlogAction = async (
+    id: string,
+    action: "approve" | "publish" | "move_to_draft" | "discard"
+  ) => {
     try {
       setBlogActionId(id);
       const res = await fetch("/api/blog/admin", {
@@ -245,11 +259,21 @@ export default function AdminPage() {
     }
   };
 
-  const generateDrafts = async () => {
+  const generateDrafts = async (prompt?: string, maxPosts?: number) => {
     try {
       setGeneratingBlogs(true);
       setBlogDraftsMessage(null);
-      const res = await fetch("/api/blog/admin/generate", { method: "POST" });
+      const res = await fetch("/api/blog/admin/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body:
+          prompt && prompt.trim()
+            ? JSON.stringify({
+                prompt: prompt.trim(),
+                maxPosts: Math.max(1, Math.min(10, Math.floor(maxPosts ?? 3))),
+              })
+            : undefined,
+      });
       if (!res.ok) {
         const payload = (await res.json().catch(() => ({}))) as { error?: string };
         setBlogDraftsMessage(payload.error ?? "Falha ao gerar drafts.");
@@ -258,18 +282,31 @@ export default function AdminPage() {
       const generationPayload = (await res.json().catch(() => ({}))) as {
         created?: number;
         candidateMetrics?: number;
+        generated?: number;
       };
       const refresh = await fetch("/api/blog/admin", { cache: "no-store" });
       const payload = (await refresh.json()) as BlogAdminResponse;
       setBlogPosts(payload.items ?? []);
       setBlogDraftsMessage(
-        `Geração concluída: ${generationPayload.created ?? 0} drafts criados de ${generationPayload.candidateMetrics ?? 0} candidatos.`
+        `Geração concluída: ${generationPayload.created ?? 0} drafts criados de ${
+          generationPayload.generated ?? generationPayload.candidateMetrics ?? 0
+        } pedidos.`
       );
     } catch {
       setBlogDraftsMessage("Erro inesperado ao gerar drafts.");
     } finally {
       setGeneratingBlogs(false);
     }
+  };
+
+  const submitPromptGeneration = async () => {
+    if (!blogPrompt.trim()) {
+      setBlogDraftsMessage("Descreva o que pretende gerar antes de continuar.");
+      return;
+    }
+    await generateDrafts(blogPrompt, blogPromptMaxPosts);
+    setIsGenerateDialogOpen(false);
+    setBlogPrompt("");
   };
 
   const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
@@ -560,8 +597,12 @@ export default function AdminPage() {
           <CardHeader>
             <div className="flex items-center justify-between gap-3">
               <CardTitle>Artigos gerados por IA</CardTitle>
-              <Button size="sm" disabled={generatingBlogs} onClick={generateDrafts}>
-                {generatingBlogs ? "A gerar..." : "Gerar drafts"}
+              <Button
+                size="sm"
+                disabled={generatingBlogs}
+                onClick={() => setIsGenerateDialogOpen(true)}
+              >
+                {generatingBlogs ? "A gerar..." : "Gerar com prompt"}
               </Button>
             </div>
             {blogDraftsMessage ? (
@@ -623,6 +664,14 @@ export default function AdminPage() {
                                 Voltar a draft
                               </Button>
                             )}
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              disabled={blogActionId === post.id}
+                              onClick={() => runBlogAction(post.id, "discard")}
+                            >
+                              Descartar
+                            </Button>
                           </div>
                         </TableCell>
                       </TableRow>
@@ -639,6 +688,51 @@ export default function AdminPage() {
             </div>
           </CardContent>
         </Card>
+
+        <Dialog open={isGenerateDialogOpen} onOpenChange={setIsGenerateDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Gerar drafts com prompt</DialogTitle>
+              <DialogDescription>
+                Descreva em linguagem natural os artigos que quer criar. Exemplo: "Cria 2
+                destaques sobre acesso a água e internet, com foco em impacto social."
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-3">
+              <textarea
+                value={blogPrompt}
+                onChange={(event) => setBlogPrompt(event.target.value)}
+                placeholder="Que tipo de conteúdos devo criar?"
+                className="w-full min-h-28 rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500/60"
+              />
+              <div className="space-y-1">
+                <label htmlFor="blog-max-posts" className="text-xs text-muted-foreground">
+                  Número máximo de drafts
+                </label>
+                <input
+                  id="blog-max-posts"
+                  type="number"
+                  min={1}
+                  max={10}
+                  value={blogPromptMaxPosts}
+                  onChange={(event) => {
+                    const parsed = Number(event.target.value);
+                    setBlogPromptMaxPosts(Number.isFinite(parsed) ? parsed : 3);
+                  }}
+                  className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500/60"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsGenerateDialogOpen(false)}>
+                Cancelar
+              </Button>
+              <Button disabled={generatingBlogs} onClick={submitPromptGeneration}>
+                {generatingBlogs ? "A gerar..." : "Gerar drafts"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         <Card>
           <CardHeader>
