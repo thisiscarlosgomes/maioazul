@@ -1523,7 +1523,7 @@ function TourismPressure({
                 layout="vertical"
                 margin={{ left: 8, right: 8, top: 4, bottom: 4 }}
               >
-                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+                <CartesianGrid horizontal={false} strokeDasharray="3 3" strokeOpacity={0.3} />
                 <XAxis type="number" tickLine={false} axisLine={false} />
                 <YAxis
                   type="category"
