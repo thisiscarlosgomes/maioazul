@@ -26,11 +26,11 @@ export default function BlogArticleActions({ shareUrl, title }: BlogArticleActio
   )}&text=${encodeURIComponent(title)}`;
 
   return (
-    <div className="flex items-center gap-4 text-sm text-white/70">
+    <div className="flex items-center gap-4 text-sm text-muted-foreground">
       <button
         type="button"
         onClick={handleCopy}
-        className="transition hover:text-white"
+        className="transition hover:text-foreground"
       >
         {copied ? "Copied" : "Copy Link"}
       </button>
@@ -39,7 +39,7 @@ export default function BlogArticleActions({ shareUrl, title }: BlogArticleActio
         target="_blank"
         rel="noreferrer"
         aria-label="Share on X"
-        className="transition hover:text-white"
+        className="transition hover:text-foreground"
       >
         <Twitter className="h-4 w-4" />
       </a>
@@ -48,11 +48,10 @@ export default function BlogArticleActions({ shareUrl, title }: BlogArticleActio
         target="_blank"
         rel="noreferrer"
         aria-label="Open article link"
-        className="transition hover:text-white"
+        className="transition hover:text-foreground"
       >
         <Globe className="h-4 w-4" />
       </a>
     </div>
   );
 }
-
