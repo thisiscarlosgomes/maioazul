@@ -14,6 +14,10 @@ function slugify(value: string) {
     .slice(0, 96);
 }
 
+function sanitizeSlug(value: string) {
+  return slugify(value);
+}
+
 function getDb(client: Awaited<typeof clientPromise>) {
   const dbName = process.env.MONGODB_DB?.trim();
   return dbName ? client.db(dbName) : client.db();
@@ -187,6 +191,7 @@ export async function deleteBlogPost(id: string) {
 export async function updateBlogPostContent(
   id: string,
   payload: {
+    slug?: string | null;
     title: string;
     summary: string;
     bodyMd: string;
@@ -206,10 +211,26 @@ export async function updateBlogPostContent(
     return false;
   }
 
+  const nextSlug =
+    typeof payload.slug === "string" && payload.slug.trim()
+      ? sanitizeSlug(payload.slug.trim())
+      : null;
+
+  if (nextSlug) {
+    const existing = await col.findOne(
+      { slug: nextSlug, _id: { $ne: objectId } },
+      { projection: { _id: 1 } }
+    );
+    if (existing) {
+      throw new Error("Slug already exists");
+    }
+  }
+
   const result = await col.updateOne(
     { _id: objectId },
     {
       $set: {
+        ...(nextSlug ? { slug: nextSlug } : {}),
         title: payload.title,
         summary: payload.summary,
         bodyMd: payload.bodyMd,
@@ -267,6 +288,14 @@ async function makeUniqueSlug(
   return `${base.slice(0, 70)}-${Date.now()}`;
 }
 
+async function slugExists(
+  col: Awaited<ReturnType<typeof getBlogPostsCollection>>,
+  slug: string
+) {
+  const existing = await col.findOne({ slug }, { projection: { _id: 1 } });
+  return Boolean(existing);
+}
+
 async function getBlogPostsCollection() {
   await ensureBlogPostIndexes();
   const client = await clientPromise;
@@ -278,6 +307,7 @@ export async function createBlogPost(payload: {
   title: string;
   summary: string;
   bodyMd: string;
+  slug?: string | null;
   year?: number | null;
   sourceDataset?: string;
   status?: BlogPostStatus;
@@ -286,7 +316,15 @@ export async function createBlogPost(payload: {
 }) {
   const col = await getBlogPostsCollection();
   const now = new Date();
-  const slug = await makeUniqueSlug(payload.title, col);
+  const requestedSlug =
+    typeof payload.slug === "string" && payload.slug.trim()
+      ? sanitizeSlug(payload.slug.trim())
+      : null;
+  const slug = requestedSlug || (await makeUniqueSlug(payload.title, col));
+
+  if (requestedSlug && (await slugExists(col, requestedSlug))) {
+    throw new Error("Slug already exists");
+  }
 
   const doc = {
     slug,

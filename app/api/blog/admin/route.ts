@@ -83,6 +83,7 @@ export async function POST(req: Request) {
         title: String(body?.title ?? "").trim(),
         summary: String(body?.summary ?? "").trim(),
         bodyMd: String(body?.bodyMd ?? "").trim(),
+        slug: typeof body?.slug === "string" ? body.slug.trim() : null,
         year:
           typeof body?.year === "number" && Number.isFinite(body.year)
             ? Math.floor(body.year)
@@ -155,6 +156,7 @@ export async function POST(req: Request) {
         ? await deleteBlogPost(id)
         : action === "update"
         ? await updateBlogPostContent(id, {
+            slug: typeof body?.slug === "string" ? body.slug.trim() : null,
             title: String(body?.title ?? "").trim(),
             summary: String(body?.summary ?? "").trim(),
             bodyMd: String(body?.bodyMd ?? "").trim(),
@@ -175,6 +177,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("[blog-admin] failed to update", error);
+    if (error instanceof Error && error.message === "Slug already exists") {
+      return NextResponse.json(
+        { ok: false, error: "Este path já está a ser usado por outro artigo." },
+        { status: 409 }
+      );
+    }
     return NextResponse.json({ ok: false, error: "Failed to update status" }, { status: 500 });
   }
 }

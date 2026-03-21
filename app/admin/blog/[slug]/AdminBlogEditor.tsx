@@ -35,6 +35,7 @@ function formatDate(value: string | null | undefined) {
 }
 
 export default function AdminBlogEditor({ post }: AdminBlogEditorProps) {
+  const [slug, setSlug] = useState(post.slug);
   const [title, setTitle] = useState(post.title);
   const [summary, setSummary] = useState(post.summary);
   const [bodyMd, setBodyMd] = useState(post.bodyMd);
@@ -46,7 +47,7 @@ export default function AdminBlogEditor({ post }: AdminBlogEditorProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [lastSavedAt, setLastSavedAt] = useState(post.updatedAt);
 
-  const publicUrl = useMemo(() => `/blog/${post.slug}`, [post.slug]);
+  const publicUrl = useMemo(() => `/blog/${slug || post.slug}`, [slug, post.slug]);
   const markdownComponents = useMemo(
     () => ({
       p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
@@ -97,6 +98,7 @@ export default function AdminBlogEditor({ post }: AdminBlogEditorProps) {
           title,
           summary,
           bodyMd,
+          slug,
           heroImageUrl: heroImageUrl.trim(),
           heroImageAlt: heroImageAlt.trim(),
         }),
@@ -185,6 +187,18 @@ export default function AdminBlogEditor({ post }: AdminBlogEditorProps) {
         <div className="grid gap-4 lg:grid-cols-2">
           <section className="space-y-3 rounded-xl border border-border bg-card p-4">
             <h2 className="text-sm font-semibold">Editor</h2>
+            <div className="space-y-1">
+              <label className="text-xs text-muted-foreground">Path</label>
+              <div className="flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm">
+                <span className="text-muted-foreground">blog/</span>
+                <input
+                  value={slug}
+                  onChange={(event) => setSlug(event.target.value)}
+                  className="w-full bg-transparent outline-none"
+                  placeholder="novo-path-do-artigo"
+                />
+              </div>
+            </div>
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">Título</label>
               <input

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 export default function AdminBlogCreate() {
   const router = useRouter();
   const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [summary, setSummary] = useState("");
   const [bodyMd, setBodyMd] = useState("");
   const [year, setYear] = useState<string>("");
@@ -68,6 +69,7 @@ export default function AdminBlogCreate() {
         body: JSON.stringify({
           action: "create",
           title: title.trim(),
+          slug: slug.trim(),
           summary: summary.trim(),
           bodyMd: bodyMd.trim(),
           year: Number.isFinite(parsedYear) ? Math.floor(parsedYear) : null,
@@ -123,6 +125,18 @@ export default function AdminBlogCreate() {
                 onChange={(event) => setTitle(event.target.value)}
                 className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-emerald-500/60"
               />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs text-muted-foreground">Path (opcional)</label>
+              <div className="flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm">
+                <span className="text-muted-foreground">blog/</span>
+                <input
+                  value={slug}
+                  onChange={(event) => setSlug(event.target.value)}
+                  className="w-full bg-transparent outline-none"
+                  placeholder="novo-path-do-artigo"
+                />
+              </div>
             </div>
             <div className="space-y-1">
               <label className="text-xs text-muted-foreground">Resumo</label>
