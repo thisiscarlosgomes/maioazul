@@ -24,6 +24,15 @@ import {
 } from "@/components/ui/tooltip";
 import { Drawer } from "vaul";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import { dictionary, type Locale } from "@/lib/i18n";
 import { buildIslandTldr } from "@/lib/tldr";
@@ -66,6 +75,18 @@ const RECEITAS_COMPOSITION_COLORS = [
   "#22C55E",
   "#14B8A6",
 ];
+
+const PRESSURE_MAP_COORDS: Record<string, { x: number; y: number }> = {
+  "santo-antao": { x: 10, y: 24 },
+  "sao-vicente": { x: 23, y: 28 },
+  "sao-nicolau": { x: 41, y: 32 },
+  sal: { x: 60, y: 26 },
+  "boa-vista": { x: 78, y: 22 },
+  maio: { x: 69, y: 47 },
+  santiago: { x: 48, y: 61 },
+  fogo: { x: 43, y: 78 },
+  brava: { x: 31, y: 84 },
+};
 
 type YearCapabilities = {
   hasBaseline2024: boolean;
@@ -1319,6 +1340,15 @@ function getPressureBand(value: number) {
     className: "bg-red-500/10 text-red-700 dark:text-red-400",
   };
 }
+
+function normalizeIslandKey(value: string | null | undefined) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 function PressurePill({ value }: { value: number }) {
   const band = getPressureBand(value);
 
@@ -1402,31 +1432,50 @@ function TourismPressure({
   });
 
   const rows = (data?.data || []).filter((r) => r.ilha !== "Todas as ilhas");
-
+  const dedupedRows = Array.from(
+    new Map(
+      rows
+        .filter((row) => row.ilha && row.pressure_index != null)
+        .map((row) => [String(row.ilha), row])
+    ).values()
+  );
 
   const filtered =
-    ilha === ALL_ISLANDS_LABEL ? rows : rows.filter((r) => r.ilha === ilha);
+    ilha === ALL_ISLANDS_LABEL
+      ? dedupedRows
+      : dedupedRows.filter((r) => r.ilha === ilha);
 
   useEffect(() => {
     if (ilha === ALL_ISLANDS_LABEL) return;
 
-    const row = rows.find((r) => r.ilha === ilha);
+    const row = dedupedRows.find((r) => r.ilha === ilha);
     if (row?.pressure_index == null) return;
 
     if (lastValueRef.current !== row.pressure_index) {
       lastValueRef.current = row.pressure_index;
       onValue?.(row.pressure_index);
     }
-  }, [ilha, rows]);
+  }, [ilha, dedupedRows]);
 
   const ordered =
     ilha === ALL_ISLANDS_LABEL
       ? [
-        ...rows.filter((r) => r.ilha === "Maio"),
-        ...rows.filter((r) => r.ilha !== "Maio"),
+        ...dedupedRows.filter((r) => r.ilha === "Maio"),
+        ...dedupedRows.filter((r) => r.ilha !== "Maio"),
       ]
       : filtered;
 
+  const chartRows = ordered
+    .filter((row) => row.ilha && row.pressure_index != null)
+    .map((row) => ({
+      ilha: String(row.ilha),
+      pressure: Number(row.pressure_index ?? 0),
+    }))
+    .sort((a, b) => b.pressure - a.pressure);
+  const mapRows = chartRows.filter(
+    (row) => PRESSURE_MAP_COORDS[normalizeIslandKey(row.ilha)]
+  );
+  const maxPressure = Math.max(1, ...chartRows.map((row) => row.pressure));
 
   return (
     <section className="space-y-2">
@@ -1439,6 +1488,66 @@ function TourismPressure({
           />
         </h2>
 
+      </div>
+
+      <div className="grid gap-3 lg:grid-cols-2">
+        <div className="h-[340px] rounded-lg border border-border bg-card p-3">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={chartRows}
+              layout="vertical"
+              margin={{ left: 8, right: 8, top: 4, bottom: 4 }}
+            >
+              <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+              <XAxis type="number" tickLine={false} axisLine={false} />
+              <YAxis
+                type="category"
+                dataKey="ilha"
+                width={92}
+                tickLine={false}
+                axisLine={false}
+                className="text-xs"
+              />
+              <RechartsTooltip
+                cursor={{ fill: "transparent" }}
+                formatter={(value) =>
+                  typeof value === "number" ? value.toFixed(2) : "—"
+                }
+              />
+              <Bar dataKey="pressure" radius={[0, 6, 6, 0]} fill="#0ea5e9" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+        <div className="flex h-[340px] flex-col rounded-lg border border-border bg-card p-3">
+          <div className="relative min-h-0 flex-1 overflow-hidden rounded-md border border-border bg-gradient-to-b from-sky-100 to-sky-200 dark:from-sky-950/50 dark:to-sky-900/40">
+            {mapRows.map((row) => {
+              const key = normalizeIslandKey(row.ilha);
+              const pos = PRESSURE_MAP_COORDS[key];
+              if (!pos) return null;
+              const size = 14 + Math.round((row.pressure / maxPressure) * 42);
+              return (
+                <div
+                  key={row.ilha}
+                  className="absolute"
+                  style={{
+                    left: `${pos.x}%`,
+                    top: `${pos.y}%`,
+                    transform: "translate(-50%, -50%)",
+                  }}
+                  title={`${row.ilha}: ${row.pressure.toFixed(2)}`}
+                >
+                  <div
+                    className="rounded-full border-2 border-sky-700/80 bg-sky-500/65"
+                    style={{ width: `${size}px`, height: `${size}px` }}
+                  />
+                  <span className="mt-1 block text-center text-[10px] font-medium text-foreground">
+                    {row.ilha}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       <DataTable

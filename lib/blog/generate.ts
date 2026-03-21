@@ -592,6 +592,22 @@ function getSeriesValueByName(
   return toNumber(row.values[year]);
 }
 
+function getAnnualValueByName(rows: unknown, name: string, year: string) {
+  if (!Array.isArray(rows)) return null;
+  const row = rows.find(
+    (item) =>
+      item &&
+      typeof item === "object" &&
+      String((item as { name?: unknown }).name ?? "").toLowerCase() === name.toLowerCase()
+  ) as
+    | {
+        annual?: Record<string, unknown>;
+      }
+    | undefined;
+  if (!row?.annual || typeof row.annual !== "object") return null;
+  return toNumber(row.annual[year]);
+}
+
 async function appendPaymentSystemMetrics(metricMap: Map<string, MetricCandidate>) {
   const payload = await fetchDashboardJson("/api/finance/datasets", {
     dataset: "payment_system_2019_2023",
@@ -645,24 +661,42 @@ async function appendExternalSectorMetrics(metricMap: Map<string, MetricCandidat
   const ideTotals = (payload.ideCaboVerde ?? {}) as {
     totals?: { annual?: Record<string, unknown> };
   };
-  const year = "2025";
+  const years = ["2023", "2024", "2025"];
 
-  upsertMetric(metricMap, {
-    key: "external_sector:2025:cv:remessas_total",
-    year: Number(year),
-    category: "Setor Externo",
-    metric: "Remessas de emigrantes (total nacional)",
-    value: remessasTotals.totals?.annual?.[year],
-    unit: "milhões CVE",
-  });
-  upsertMetric(metricMap, {
-    key: "external_sector:2025:cv:ide_total",
-    year: Number(year),
-    category: "Setor Externo",
-    metric: "IDE total (nacional)",
-    value: ideTotals.totals?.annual?.[year],
-    unit: "milhões CVE",
-  });
+  for (const year of years) {
+    upsertMetric(metricMap, {
+      key: `external_sector:${year}:cv:remessas_total`,
+      year: Number(year),
+      category: "Setor Externo",
+      metric: "Remessas de emigrantes (total nacional)",
+      value: remessasTotals.totals?.annual?.[year],
+      unit: "milhões CVE",
+    });
+    upsertMetric(metricMap, {
+      key: `external_sector:${year}:cv:ide_total`,
+      year: Number(year),
+      category: "Setor Externo",
+      metric: "IDE total (nacional)",
+      value: ideTotals.totals?.annual?.[year],
+      unit: "milhões CVE",
+    });
+    upsertMetric(metricMap, {
+      key: `external_sector:${year}:maio:remessas_recebidas`,
+      year: Number(year),
+      category: "Setor Externo",
+      metric: "Remessas recebidas no Maio",
+      value: getAnnualValueByName(payload.remessasEmigrantes?.destino_concelhos_annual, "Maio", year),
+      unit: "milhões CVE",
+    });
+    upsertMetric(metricMap, {
+      key: `external_sector:${year}:maio:ide_recebido`,
+      year: Number(year),
+      category: "Setor Externo",
+      metric: "IDE recebido no Maio",
+      value: getAnnualValueByName(payload.ideCaboVerde?.by_destination_island, "Maio", year),
+      unit: "milhões CVE",
+    });
+  }
 }
 
 async function appendLegalCodeMetrics(metricMap: Map<string, MetricCandidate>) {
