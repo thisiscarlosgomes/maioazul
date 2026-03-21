@@ -131,6 +131,7 @@ function createMcpServer(request: Request): McpServer {
   registerTool(server, request, "get_maio_energy_core");
   registerTool(server, request, "get_tourism_quarters");
   registerTool(server, request, "get_tourism_population");
+  registerTool(server, request, "get_tourism_dependency");
   registerTool(server, request, "get_transport_overview");
   registerTool(server, request, "get_payment_system_data");
   registerTool(server, request, "get_external_sector_finance_data");

@@ -90,6 +90,12 @@ export const toolSchemas = {
       ilha: z.string().min(1).max(64).optional(),
     })
     .strict(),
+  get_tourism_dependency: z
+    .object({
+      year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
+      ilha: z.string().min(1).max(64).optional(),
+    })
+    .strict(),
   get_transport_overview: z
     .object({
       year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025),
@@ -317,6 +323,29 @@ export const nativeToolDefinitions = {
           minLength: 1,
           maxLength: 64,
           description: "Optional island filter (e.g., Maio).",
+        },
+      },
+      required: ["year", "ilha"],
+      additionalProperties: false,
+    },
+  },
+  get_tourism_dependency: {
+    title: "Get Tourism Country Dependency",
+    description:
+      "Returns hóspedes by country of origin with shares for one island or, if no island is provided, aggregated results for all islands.",
+    parameters: {
+      type: "object",
+      properties: {
+        year: {
+          type: ["integer", "null"],
+          minimum: MIN_YEAR,
+          maximum: MAX_YEAR,
+          description: "Reference year.",
+        },
+        ilha: {
+          type: ["string", "null"],
+          description:
+            "Optional island name (for example Maio, Sal, Boa Vista). Leave null to aggregate all islands.",
         },
       },
       required: ["year", "ilha"],
@@ -890,6 +919,11 @@ async function getTourismQuarters(request: Request, rawArgs: unknown) {
 async function getTourismPopulation(request: Request, rawArgs: unknown) {
   const { year, ilha } = toolSchemas.get_tourism_population.parse(normalizeNulls(rawArgs ?? {}));
   return fetchJson(request, "/api/transparencia/turismo/population", { year, ilha });
+}
+
+async function getTourismDependency(request: Request, rawArgs: unknown) {
+  const { year, ilha } = toolSchemas.get_tourism_dependency.parse(normalizeNulls(rawArgs ?? {}));
+  return fetchJson(request, "/api/transparencia/turismo/dependency", { year, ilha });
 }
 
 async function getTransportOverview(request: Request, rawArgs: unknown) {
@@ -2420,6 +2454,8 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getTourismQuarters(request, rawArgs);
     case "get_tourism_population":
       return getTourismPopulation(request, rawArgs);
+    case "get_tourism_dependency":
+      return getTourismDependency(request, rawArgs);
     case "get_transport_overview":
       return getTransportOverview(request, rawArgs);
     case "get_payment_system_data":

@@ -704,38 +704,62 @@ function CountryDependency({
   year: string;
   t: DashboardDictionary;
 }) {
+  const isAllIslands = ilha === ALL_ISLANDS_LABEL;
   const { data, loading, error } = useDashboardQuery<CountryDependencyApiResponse>({
-    enabled: ilha !== ALL_ISLANDS_LABEL,
-    depsKey: `${ilha}-${year}`,
+    enabled: true,
+    depsKey: `${isAllIslands ? "all-islands" : ilha}-${year}`,
     queryFn: async () =>
       fetchJsonOfflineFirst<CountryDependencyApiResponse>(
-        `/api/transparencia/turismo/dependency?ilha=${ilha}&year=${year}`
+        isAllIslands
+          ? `/api/transparencia/turismo/dependency?year=${year}`
+          : `/api/transparencia/turismo/dependency?ilha=${ilha}&year=${year}`
       ),
   });
 
-  const rows =
-    data?.data?.[0]?.countries
-      ?.slice()
-      .sort((a, b) => (b.share ?? 0) - (a.share ?? 0))
-      .map((c) => ({
-        país: c.pais,
-        hóspedes: formatNumber(c.hospedes ?? 0),
-        percentagem: `${((c.share ?? 0) * 100).toFixed(1)}%`,
-      })) ?? [];
+  const rows = (() => {
+    if (!Array.isArray(data?.data)) return [];
+
+    if (isAllIslands) {
+      const byCountry = new Map<string, number>();
+      let totalHospedes = 0;
+
+      for (const islandRow of data.data) {
+        for (const country of islandRow.countries ?? []) {
+          const name = String(country.pais ?? "").trim();
+          const hospedes = Number(country.hospedes ?? 0);
+          if (!name || !Number.isFinite(hospedes) || hospedes <= 0) continue;
+          byCountry.set(name, (byCountry.get(name) ?? 0) + hospedes);
+          totalHospedes += hospedes;
+        }
+      }
+
+      return [...byCountry.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([pais, hospedes]) => ({
+          país: pais,
+          hóspedes: formatNumber(hospedes),
+          percentagem: `${(totalHospedes > 0 ? (hospedes / totalHospedes) * 100 : 0).toFixed(1)}%`,
+        }));
+    }
+
+    return (
+      data.data[0]?.countries
+        ?.slice()
+        .sort((a, b) => (b.share ?? 0) - (a.share ?? 0))
+        .map((c) => ({
+          país: c.pais,
+          hóspedes: formatNumber(c.hospedes ?? 0),
+          percentagem: `${((c.share ?? 0) * 100).toFixed(1)}%`,
+        })) ?? []
+    );
+  })();
 
   return (
     <section className="space-y-2">
       <div>
         <h2 className="font-semibold">{t.dependency}</h2>
       </div>
-
-      {ilha === ALL_ISLANDS_LABEL ? (
-        <p className="text-sm text-muted-foreground">
-          Selecione uma ilha para ver o detalhe por país.
-        </p>
-      ) : (
-        <DataTable rows={rows} loading={loading} error={error} />
-      )}
+      <DataTable rows={rows} loading={loading} error={error} />
     </section>
   );
 }
@@ -2218,6 +2242,7 @@ export default function TourismPage() {
                 />
                 <TourismHotelsTable />
 
+                <CountryDependency ilha={ilha} year={year} t={t} />
 
 
 
