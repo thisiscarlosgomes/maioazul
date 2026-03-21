@@ -655,11 +655,13 @@ async function appendExternalSectorMetrics(metricMap: Map<string, MetricCandidat
   });
   if (!payload) return;
 
-  const remessasTotals = (payload.remessasEmigrantes ?? {}) as {
+  const remessasData = (payload.remessasEmigrantes ?? {}) as {
     totals?: { annual?: Record<string, unknown> };
+    destino_concelhos_annual?: unknown;
   };
-  const ideTotals = (payload.ideCaboVerde ?? {}) as {
+  const ideData = (payload.ideCaboVerde ?? {}) as {
     totals?: { annual?: Record<string, unknown> };
+    by_destination_island?: unknown;
   };
   const years = ["2023", "2024", "2025"];
 
@@ -669,7 +671,7 @@ async function appendExternalSectorMetrics(metricMap: Map<string, MetricCandidat
       year: Number(year),
       category: "Setor Externo",
       metric: "Remessas de emigrantes (total nacional)",
-      value: remessasTotals.totals?.annual?.[year],
+      value: remessasData.totals?.annual?.[year],
       unit: "milhões CVE",
     });
     upsertMetric(metricMap, {
@@ -677,7 +679,7 @@ async function appendExternalSectorMetrics(metricMap: Map<string, MetricCandidat
       year: Number(year),
       category: "Setor Externo",
       metric: "IDE total (nacional)",
-      value: ideTotals.totals?.annual?.[year],
+      value: ideData.totals?.annual?.[year],
       unit: "milhões CVE",
     });
     upsertMetric(metricMap, {
@@ -685,7 +687,7 @@ async function appendExternalSectorMetrics(metricMap: Map<string, MetricCandidat
       year: Number(year),
       category: "Setor Externo",
       metric: "Remessas recebidas no Maio",
-      value: getAnnualValueByName(payload.remessasEmigrantes?.destino_concelhos_annual, "Maio", year),
+      value: getAnnualValueByName(remessasData.destino_concelhos_annual, "Maio", year),
       unit: "milhões CVE",
     });
     upsertMetric(metricMap, {
@@ -693,7 +695,7 @@ async function appendExternalSectorMetrics(metricMap: Map<string, MetricCandidat
       year: Number(year),
       category: "Setor Externo",
       metric: "IDE recebido no Maio",
-      value: getAnnualValueByName(payload.ideCaboVerde?.by_destination_island, "Maio", year),
+      value: getAnnualValueByName(ideData.by_destination_island, "Maio", year),
       unit: "milhões CVE",
     });
   }
