@@ -102,7 +102,7 @@ export async function listBlogPosts(params?: {
   const db = getDb(client);
   const col = db.collection<BlogPostDoc>(BLOG_POSTS_COLLECTION);
 
-  const limit = Math.max(1, Math.min(100, Math.floor(params?.limit ?? 20)));
+  const limit = Math.max(1, Math.min(1000, Math.floor(params?.limit ?? 20)));
   const status = params?.status ?? "published";
   const query =
     status === "all" ? {} : ({ status } as { status: BlogPostStatus });

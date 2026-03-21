@@ -37,10 +37,7 @@ export default async function BlogPage() {
     <main className="min-h-screen text-foreground">
       <section className="mx-auto max-w-6xl space-y-6 px-6 pb-16 pt-2">
         <div className="pt-6">
-          <h1 className="text-lg font-semibold">Destaques dos Indicadores</h1>
-          <p className="hidden text-sm text-muted-foreground sm:block">
-            Conteúdo gerado por IA com revisão editorial e base em dados oficiais.
-          </p>
+          <h1 className="text-lg font-semibold">Destaques</h1>
         </div>
 
         {posts.length ? (

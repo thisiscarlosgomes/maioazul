@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -33,13 +32,43 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     return {
       title: "Artigo não encontrado",
       description: "O artigo pedido não foi encontrado.",
+      robots: { index: false, follow: false },
     };
   }
+
+  if (post.status !== "published") {
+    return {
+      title: post.title,
+      description: post.summary,
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const siteUrl = process.env.NEXT_PUBLIC_BASE_URL?.trim() || "https://www.maioazul.com";
+  const normalizedSiteUrl = siteUrl.replace(/\/+$/, "");
+  const canonical = `${normalizedSiteUrl}/blog/${post.slug}`;
+  const imageUrl = post.heroImageUrl || `${normalizedSiteUrl}/og2.jpg`;
 
   return {
     title: post.title,
     description: post.summary,
-    alternates: { canonical: `/blog/${post.slug}` },
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      url: canonical,
+      title: post.title,
+      description: post.summary,
+      siteName: "MaioAzul",
+      images: [{ url: imageUrl, alt: post.heroImageAlt || post.title }],
+      publishedTime: post.publishedAt || undefined,
+      modifiedTime: post.updatedAt || undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.summary,
+      images: [imageUrl],
+    },
   };
 }
 
@@ -58,7 +87,34 @@ export default async function BlogDetailPage({ params }: Params) {
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_BASE_URL?.trim() || "https://www.maioazul.com";
-  const shareUrl = `${siteUrl.replace(/\/+$/, "")}/blog/${post.slug}`;
+  const normalizedSiteUrl = siteUrl.replace(/\/+$/, "");
+  const shareUrl = `${normalizedSiteUrl}/blog/${post.slug}`;
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.summary,
+    image: post.heroImageUrl ? [post.heroImageUrl] : [`${normalizedSiteUrl}/og2.jpg`],
+    datePublished: post.publishedAt || post.updatedAt,
+    dateModified: post.updatedAt,
+    inLanguage: "pt-PT",
+    author: {
+      "@type": "Organization",
+      name: "MaioAzul AI",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "MaioAzul",
+      logo: {
+        "@type": "ImageObject",
+        url: `${normalizedSiteUrl}/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": shareUrl,
+    },
+  };
   const markdownComponents = {
     p: (props: React.HTMLAttributes<HTMLParagraphElement>) => (
       <p className="mb-5 text-base leading-relaxed text-muted-foreground md:text-[1.05rem]" {...props} />
@@ -100,6 +156,10 @@ export default async function BlogDetailPage({ params }: Params) {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <article className="mx-auto max-w-4xl space-y-7 px-6 pb-20 pt-10 md:pt-14">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+        />
         <header className="space-y-5">
           <h1 className="text-center text-3xl font-semibold leading-tight md:text-4xl">
             {post.title}
