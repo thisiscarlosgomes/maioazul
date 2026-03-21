@@ -598,13 +598,18 @@ export default function AdminPage() {
           <CardHeader>
             <div className="flex items-center justify-between gap-3">
               <CardTitle>Artigos gerados por IA</CardTitle>
-              <Button
-                size="sm"
-                disabled={generatingBlogs}
-                onClick={() => setIsGenerateDialogOpen(true)}
-              >
-                {generatingBlogs ? "A gerar..." : "Gerar com prompt"}
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button size="sm" variant="outline" asChild>
+                  <Link href="/admin/blog/create">Criar manualmente</Link>
+                </Button>
+                <Button
+                  size="sm"
+                  disabled={generatingBlogs}
+                  onClick={() => setIsGenerateDialogOpen(true)}
+                >
+                  {generatingBlogs ? "A gerar..." : "Gerar com prompt"}
+                </Button>
+              </div>
             </div>
             {blogDraftsMessage ? (
               <p className="text-xs text-muted-foreground mt-2">{blogDraftsMessage}</p>
@@ -698,8 +703,8 @@ export default function AdminPage() {
             <DialogHeader>
               <DialogTitle>Gerar drafts com prompt</DialogTitle>
               <DialogDescription>
-                Descreva em linguagem natural os artigos que quer criar. Exemplo: "Cria 2
-                destaques sobre acesso a água e internet, com foco em impacto social."
+                Descreva em linguagem natural os artigos que quer criar. Exemplo: &quot;Cria 2
+                destaques sobre acesso a água e internet, com foco em impacto social.&quot;
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-3">

@@ -4,6 +4,16 @@ import type { BlogPostStatus, MetricBlogPost, MetricFact } from "@/lib/blog/type
 
 export const BLOG_POSTS_COLLECTION = "metric_blog_posts";
 
+function slugify(value: string) {
+  return String(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 96);
+}
+
 function getDb(client: Awaited<typeof clientPromise>) {
   const dbName = process.env.MONGODB_DB?.trim();
   return dbName ? client.db(dbName) : client.db();
@@ -241,4 +251,64 @@ export async function updateBlogPostImage(
   );
 
   return result.modifiedCount > 0;
+}
+
+async function makeUniqueSlug(
+  title: string,
+  col: Awaited<ReturnType<typeof getBlogPostsCollection>>
+) {
+  const base = slugify(title) || `artigo-${Date.now()}`;
+  let next = base;
+  for (let i = 0; i < 40; i += 1) {
+    const exists = await col.countDocuments({ slug: next }, { limit: 1 });
+    if (!exists) return next;
+    next = `${base.slice(0, 84)}-${i + 1}`;
+  }
+  return `${base.slice(0, 70)}-${Date.now()}`;
+}
+
+async function getBlogPostsCollection() {
+  await ensureBlogPostIndexes();
+  const client = await clientPromise;
+  const db = getDb(client);
+  return db.collection(BLOG_POSTS_COLLECTION);
+}
+
+export async function createBlogPost(payload: {
+  title: string;
+  summary: string;
+  bodyMd: string;
+  year?: number | null;
+  sourceDataset?: string;
+  status?: BlogPostStatus;
+  heroImageUrl?: string | null;
+  heroImageAlt?: string | null;
+}) {
+  const col = await getBlogPostsCollection();
+  const now = new Date();
+  const slug = await makeUniqueSlug(payload.title, col);
+
+  const doc = {
+    slug,
+    title: payload.title,
+    summary: payload.summary,
+    bodyMd: payload.bodyMd,
+    heroImageUrl: payload.heroImageUrl ?? null,
+    heroImageAlt: payload.heroImageAlt ?? null,
+    metricKeys: [] as string[],
+    year: typeof payload.year === "number" ? payload.year : null,
+    sourceDataset: payload.sourceDataset?.trim() || "manual_editor",
+    facts: [] as MetricFact[],
+    status: payload.status ?? "draft",
+    createdAt: now,
+    updatedAt: now,
+    publishedAt: payload.status === "published" ? now : null,
+  };
+
+  const res = await col.insertOne(doc);
+  if (!res.insertedId) return null;
+  return {
+    id: String(res.insertedId),
+    slug,
+  };
 }

@@ -1258,21 +1258,14 @@ export async function generateBlogDraftsFromInstruction(options: {
     const slug = await makeUniqueSlug(blogCol, item.title);
     const now = new Date();
     const shortBodyMd = enforceShortArticleBody(item.body_md);
-    const heroImage = await generateBlogHeroImage({
-      title: item.title,
-      summary: item.summary,
-      bodyMd: shortBodyMd,
-      slugSeed: slug,
-    }).catch(() => null);
-
     try {
       await blogCol.insertOne({
         slug,
         title: item.title,
         summary: item.summary,
         bodyMd: shortBodyMd,
-        heroImageUrl: heroImage?.url ?? null,
-        heroImageAlt: heroImage?.alt ?? item.title,
+        heroImageUrl: null,
+        heroImageAlt: null,
         metricKeys: selectedMetricKeys,
         year,
         sourceDataset: "dashboard_multi_source:prompt",

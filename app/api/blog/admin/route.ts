@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+  createBlogPost,
   deleteBlogPost,
   getBlogPostById,
   listBlogPosts,
@@ -21,6 +22,7 @@ type BlogAdminAction =
   | "move_to_draft"
   | "discard"
   | "update"
+  | "create"
   | "generate_image";
 
 function toTargetStatus(action: BlogAdminAction): BlogPostStatus {
@@ -51,27 +53,52 @@ export async function POST(req: Request) {
     const id = typeof body?.id === "string" ? body.id.trim() : "";
     const action = body?.action as BlogAdminAction;
 
-    if (!id) {
-      return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
-    }
     if (
       action !== "approve" &&
       action !== "publish" &&
       action !== "move_to_draft" &&
       action !== "discard" &&
       action !== "update" &&
+      action !== "create" &&
       action !== "generate_image"
     ) {
       return NextResponse.json({ ok: false, error: "Invalid action" }, { status: 400 });
     }
 
-    if (action === "update") {
+    if (action !== "create" && !id) {
+      return NextResponse.json({ ok: false, error: "Missing id" }, { status: 400 });
+    }
+
+    if (action === "update" || action === "create") {
       const title = String(body?.title ?? "").trim();
       const summary = String(body?.summary ?? "").trim();
       const bodyMd = String(body?.bodyMd ?? "").trim();
       if (!title || !summary || !bodyMd) {
         return NextResponse.json({ ok: false, error: "Missing content fields" }, { status: 400 });
       }
+    }
+
+    if (action === "create") {
+      const created = await createBlogPost({
+        title: String(body?.title ?? "").trim(),
+        summary: String(body?.summary ?? "").trim(),
+        bodyMd: String(body?.bodyMd ?? "").trim(),
+        year:
+          typeof body?.year === "number" && Number.isFinite(body.year)
+            ? Math.floor(body.year)
+            : null,
+        sourceDataset:
+          typeof body?.sourceDataset === "string" ? body.sourceDataset.trim() : "manual_editor",
+        status: "draft",
+        heroImageUrl:
+          typeof body?.heroImageUrl === "string" ? body.heroImageUrl.trim() : null,
+        heroImageAlt:
+          typeof body?.heroImageAlt === "string" ? body.heroImageAlt.trim() : null,
+      });
+      if (!created) {
+        return NextResponse.json({ ok: false, error: "Failed to create article" }, { status: 500 });
+      }
+      return NextResponse.json({ ok: true, id: created.id, slug: created.slug });
     }
 
     if (action === "generate_image") {
