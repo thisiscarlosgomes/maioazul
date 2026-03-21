@@ -1514,65 +1514,67 @@ function TourismPressure({
 
       </div>
 
-      <div className="grid gap-3 lg:grid-cols-2">
-        <div className="h-[340px] rounded-lg border border-border bg-card p-3">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={chartRows}
-              layout="vertical"
-              margin={{ left: 8, right: 8, top: 4, bottom: 4 }}
-            >
-              <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-              <XAxis type="number" tickLine={false} axisLine={false} />
-              <YAxis
-                type="category"
-                dataKey="ilha"
-                width={92}
-                tickLine={false}
-                axisLine={false}
-                className="text-xs"
-              />
-              <RechartsTooltip
-                cursor={{ fill: "transparent" }}
-                formatter={(value) =>
-                  typeof value === "number" ? value.toFixed(2) : "—"
-                }
-              />
-              <Bar dataKey="pressure" radius={[0, 6, 6, 0]} fill="#0ea5e9" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="flex h-[340px] flex-col rounded-lg border border-border bg-card p-3">
-          <div className="relative min-h-0 flex-1 overflow-hidden rounded-md border border-border bg-gradient-to-b from-sky-100 to-sky-200 dark:from-sky-950/50 dark:to-sky-900/40">
-            {mapRows.map((row) => {
-              const key = normalizeIslandKey(row.ilha);
-              const pos = PRESSURE_MAP_COORDS[key];
-              if (!pos) return null;
-              const size = 14 + Math.round((row.pressure / maxPressure) * 42);
-              return (
-                <div
-                  key={row.ilha}
-                  className="absolute"
-                  style={{
-                    left: `${pos.x}%`,
-                    top: `${pos.y}%`,
-                    transform: "translate(-50%, -50%)",
-                  }}
-                  title={`${row.ilha}: ${row.pressure.toFixed(2)}`}
-                >
+      {ilha === ALL_ISLANDS_LABEL ? (
+        <div className="grid gap-3 lg:grid-cols-2">
+          <div className="h-[340px] rounded-lg border border-border bg-card p-3">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartRows}
+                layout="vertical"
+                margin={{ left: 8, right: 8, top: 4, bottom: 4 }}
+              >
+                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+                <XAxis type="number" tickLine={false} axisLine={false} />
+                <YAxis
+                  type="category"
+                  dataKey="ilha"
+                  width={92}
+                  tickLine={false}
+                  axisLine={false}
+                  className="text-xs"
+                />
+                <RechartsTooltip
+                  cursor={{ fill: "transparent" }}
+                  formatter={(value) =>
+                    typeof value === "number" ? value.toFixed(2) : "—"
+                  }
+                />
+                <Bar dataKey="pressure" radius={[0, 6, 6, 0]} fill="#0ea5e9" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex h-[340px] flex-col rounded-lg border border-border bg-card p-3">
+            <div className="relative min-h-0 flex-1 overflow-hidden rounded-md border border-border bg-gradient-to-b from-sky-100 to-sky-200 dark:from-sky-950/50 dark:to-sky-900/40">
+              {mapRows.map((row) => {
+                const key = normalizeIslandKey(row.ilha);
+                const pos = PRESSURE_MAP_COORDS[key];
+                if (!pos) return null;
+                const size = 14 + Math.round((row.pressure / maxPressure) * 42);
+                return (
                   <div
-                    className="rounded-full border-2 border-sky-700/80 bg-sky-500/65"
-                    style={{ width: `${size}px`, height: `${size}px` }}
-                  />
-                  <span className="mt-1 block text-center text-[10px] font-medium text-foreground">
-                    {row.ilha}
-                  </span>
-                </div>
-              );
-            })}
+                    key={row.ilha}
+                    className="absolute"
+                    style={{
+                      left: `${pos.x}%`,
+                      top: `${pos.y}%`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                    title={`${row.ilha}: ${row.pressure.toFixed(2)}`}
+                  >
+                    <div
+                      className="rounded-full border-2 border-sky-700/80 bg-sky-500/65"
+                      style={{ width: `${size}px`, height: `${size}px` }}
+                    />
+                    <span className="mt-1 block text-center text-[10px] font-medium text-foreground">
+                      {row.ilha}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
 
       <DataTable
         rows={ordered.map((r) => {
