@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, HeartHandshake } from "lucide-react";
+import { ArrowRight, ChevronDown, HeartHandshake } from "lucide-react";
 
 const heroPoints = [
   "Por valor e orgulho local.",
@@ -181,6 +181,17 @@ export default function CampanhaAzulPage() {
                 })}
               </div>
             </div>
+
+            <div className="pointer-events-none absolute inset-x-0 bottom-24 sm:bottom-20 flex justify-center">
+              <motion.div
+                aria-hidden="true"
+                animate={{ y: [0, 8, 0], opacity: [0.55, 1, 0.55] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                className="text-white/90"
+              >
+                <ChevronDown className="h-6 w-6" />
+              </motion.div>
+            </div>
           </div>
         </div>
 
@@ -302,7 +313,7 @@ export default function CampanhaAzulPage() {
                 viewport={{ once: true, amount: 0.25 }}
                 variants={fadeUp}
                 transition={{ delay: index * 0.04, duration: 0.55 }}
-                className="grid items-center gap-5 border-t border-[#10069f]/30 py-8 first:border-t-0 md:grid-cols-[1fr,auto] md:gap-10"
+                className="grid items-center gap-5 border-t-2 border-[#10069f]/10 py-8 first:border-t-0 md:grid-cols-[1fr,auto] md:gap-10"
               >
                 <div>
                   <h3
@@ -378,7 +389,7 @@ export default function CampanhaAzulPage() {
         </div>
       </section>
 
-      <footer className="font-medium fixed inset-x-0 bottom-0 z-40 border-t border-[#10069f]/20 bg-white px-6 py-3 text-center text-xs text-[#10069f]/80 backdrop-blur sm:px-8 sm:text-sm">
+      <footer className="font-medium fixed inset-x-0 bottom-0 z-40  bg-white px-6 py-3 text-center text-xs text-[#10069f]/80 backdrop-blur sm:px-8 sm:text-sm">
         Uma agenda de ação coletiva para um Maio mais azul, mais dinâmico e mais sustentável.
       </footer>
 
