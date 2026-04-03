@@ -29,7 +29,12 @@ function shouldShowNav(pathname: string | null) {
 export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const showNav = shouldShowNav(pathname);
-  const showAppHeader = Boolean(pathname && pathname !== "/" && pathname !== "/partners");
+  const showAppHeader = Boolean(
+    pathname &&
+      pathname !== "/" &&
+      pathname !== "/partners" &&
+      pathname !== "/campanha-azul"
+  );
   const showSiteFooter = showAppHeader;
   const [showPortalIntro, setShowPortalIntro] = useState(false);
   const [hideNav, setHideNav] = useState(false);
@@ -79,7 +84,16 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!pathname || pathname === "/" || pathname === "/partners" || pathname.startsWith("/partners/")) return;
+    if (
+      !pathname ||
+      pathname === "/" ||
+      pathname === "/partners" ||
+      pathname.startsWith("/partners/") ||
+      pathname === "/campanha-azul" ||
+      pathname.startsWith("/campanha-azul/")
+    ) {
+      return;
+    }
     const hasSeenIntro = window.localStorage.getItem(PORTAL_INTRO_STORAGE_KEY) === "1";
     if (!hasSeenIntro) {
       queueMicrotask(() => {
