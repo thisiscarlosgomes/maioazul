@@ -881,11 +881,108 @@ async function fetchJson(request: Request, path: string, query?: Query): Promise
 
 async function getTourismOverview(request: Request, rawArgs: unknown) {
   const { year } = toolSchemas.get_tourism_overview.parse(normalizeNulls(rawArgs ?? {}));
+  if (year === 2024) {
+    const baseline = (await fetchJson(request, "/api/transparencia/turismo/2024/baseline")) as {
+      year?: number;
+      islands?: Array<{
+        ilha?: string;
+        hospedes?: number;
+        dormidas?: number;
+        avg_stay?: number;
+      }>;
+      national?: {
+        hospedes?: number;
+        dormidas?: number;
+      };
+      source?: string;
+      updatedAt?: string;
+    };
+
+    const focusIslands = ["Maio", "Sal", "Boa Vista"];
+    const islands = Array.isArray(baseline?.islands) ? baseline.islands : [];
+    const summary = islands.filter((row) => focusIslands.includes(String(row.ilha ?? "")));
+
+    return {
+      scope: "turismo",
+      dataset: "overview",
+      year: 2024,
+      islands: focusIslands,
+      by_quarter: [],
+      summary,
+      national: baseline?.national ?? null,
+      source: baseline?.source ?? "INE Cabo Verde · Turismo (Baseline)",
+      updatedAt: baseline?.updatedAt ?? null,
+      coverage_note:
+        "2024 usa baseline anual consolidado (sem detalhe trimestral por ilha no endpoint municipal).",
+    };
+  }
+
   return fetchJson(request, "/api/transparencia/municipal/maio/turism/overview", { year });
 }
 
 async function getTourismIndicators(request: Request, rawArgs: unknown) {
   const { ilha, year } = toolSchemas.get_tourism_indicators.parse(normalizeNulls(rawArgs ?? {}));
+  if (year === 2024) {
+    const [islandBaseline, populationPayload] = await Promise.all([
+      fetchJson(request, "/api/transparencia/turismo/2024/island", { ilha }) as Promise<{
+        year?: number;
+        ilha?: string;
+        hospedes?: number;
+        dormidas?: number;
+        avg_stay?: number | null;
+        source?: string;
+      }>,
+      fetchJson(request, "/api/transparencia/turismo/population", { year: 2024, ilha }) as Promise<{
+        year?: number;
+        fallback_year_used?: boolean;
+        data?: Array<{ ilha?: string; population?: number }>;
+      }>,
+    ]);
+
+    const populationRow = Array.isArray(populationPayload?.data) ? populationPayload.data[0] : undefined;
+    const population = Number(populationRow?.population ?? 0);
+    const dormidas = Number(islandBaseline?.dormidas ?? 0);
+    const pressure =
+      Number.isFinite(population) && population > 0
+        ? Number((dormidas / population).toFixed(2))
+        : null;
+
+    return {
+      scope: "turismo",
+      dataset: "indicators",
+      ilha,
+      year: 2024,
+      indicators: {
+        tourism_pressure_index: {
+          value: pressure,
+          unit: "nights_per_resident",
+        },
+        seasonality_index: {
+          value: null,
+          definition: "Q3 dormidas / Q1 dormidas",
+        },
+        local_retention_proxy: {
+          value: null,
+          unit: "ratio",
+        },
+      },
+      components: {
+        hospedes_total: Number(islandBaseline?.hospedes ?? 0),
+        dormidas_total: dormidas,
+        avg_stay: islandBaseline?.avg_stay ?? null,
+        population,
+      },
+      source: [
+        islandBaseline?.source ?? "INE Cabo Verde · Turismo",
+        "INE Cabo Verde · População",
+      ],
+      coverage_note:
+        "Para 2024, indicadores usam baseline anual por ilha; sazonalidade e retenção local não estão disponíveis neste caminho.",
+      population_fallback_year_used: Boolean(populationPayload?.fallback_year_used),
+      population_reference_year: populationPayload?.year ?? null,
+    };
+  }
+
   return fetchJson(request, "/api/transparencia/municipal/maio/turism/indicators", { ilha, year });
 }
 
@@ -913,6 +1010,30 @@ async function getMaioCoreMetrics(request: Request, rawArgs: unknown) {
 
 async function getTourismQuarters(request: Request, rawArgs: unknown) {
   const { year } = toolSchemas.get_tourism_quarters.parse(normalizeNulls(rawArgs ?? {}));
+  if (year === 2024) {
+    const payload = (await fetchJson(request, "/api/transparencia/turismo/2024/overview")) as {
+      year?: number;
+      quarterly?: Array<{
+        quarter?: number;
+        hospedes?: number;
+        dormidas?: number;
+      }>;
+      source?: string;
+      updatedAt?: string;
+    };
+
+    return {
+      scope: "turismo",
+      dataset: "quarters",
+      year: 2024,
+      islands: [],
+      quarters: Array.isArray(payload?.quarterly) ? payload.quarterly : [],
+      source: payload?.source ?? "INE Cabo Verde · Turismo",
+      updatedAt: payload?.updatedAt ?? null,
+      coverage_note: "Para 2024, este endpoint devolve agregado nacional por trimestre.",
+    };
+  }
+
   return fetchJson(request, "/api/transparencia/turismo/quarters", { year });
 }
 
