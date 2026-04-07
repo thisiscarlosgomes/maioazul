@@ -99,10 +99,10 @@ type YearCapabilities = {
 const YEAR_CAPABILITIES: Record<string, YearCapabilities> = {
   "2024": {
     hasBaseline2024: true,
-    hasLiveTourism: false,
+    hasLiveTourism: true,
     hasLocalGovernment: true,
     hasInsights: false,
-    note: "2024 apresenta baseline estrutural anual. Transferências municipais estão disponíveis como fecho anual; indicadores dinâmicos e leitura integrada só estão disponíveis a partir de 2025.",
+    note: "2024 apresenta baseline estrutural anual e indicadores de turismo disponíveis por ano. Alguns blocos podem ter cobertura parcial consoante a série publicada.",
   },
   "2025": {
     hasBaseline2024: false,
@@ -1105,9 +1105,11 @@ function ReceitasSection({
 
 function IslandPopulationSnapshot({
   ilha,
+  year,
   onData,
 }: {
   ilha: string;
+  year: string;
   onData?: (data: {
     population?: number;
     populationShareNational?: number;
@@ -1118,7 +1120,7 @@ function IslandPopulationSnapshot({
 
     fetchJsonOfflineFirst<{
       data?: TourismPopulationApiRow[];
-    }>(`/api/transparencia/turismo/population?year=2025`)
+    }>(`/api/transparencia/turismo/population?year=${year}`)
       .then((res) => {
         const row = res.data?.find(
           (r) => (r.ilha ?? "").toLowerCase() === ilha.toLowerCase()
@@ -1131,7 +1133,7 @@ function IslandPopulationSnapshot({
           populationShareNational: row.population_share_national,
         });
       });
-  }, [ilha, onData]);
+  }, [ilha, year, onData]);
 
   return null;
 }
@@ -1264,10 +1266,12 @@ function AllIslandsTourismTotals({ year }: { year: string }) {
 
 function TourismOverview({
   ilha,
+  year,
   t,
   onData,
 }: {
   ilha: string;
+  year: string;
   t: DashboardDictionary;
   onData?: (data: DerivedTourismOverviewData) => void;
 }) {
@@ -1277,7 +1281,7 @@ function TourismOverview({
     fetchJsonOfflineFirst<{
       islands?: TourismOverviewApiIsland[];
       total?: TourismOverviewApiResponse["total"];
-    }>(`/api/transparencia/turismo/overview`)
+    }>(`/api/transparencia/turismo/overview?year=${year}`)
       .then((res) => {
         setData(res);
 
@@ -1304,7 +1308,7 @@ function TourismOverview({
           }
         }
       });
-  }, [ilha]);
+  }, [ilha, year, onData]);
 
   if (!data?.islands) return null;
 
@@ -1437,10 +1441,12 @@ function InfoHelp({
 
 function TourismPressure({
   ilha,
+  year,
   t,
   onValue,
 }: {
   ilha: string;
+  year: string;
   t: DashboardDictionary;
   onValue?: (value: number) => void;
 }) {
@@ -1448,11 +1454,11 @@ function TourismPressure({
   const { data, loading, error } = useDashboardQuery<{
     data?: TourismPressureApiRow[];
   }>({
-    depsKey: "tourism-pressure",
+    depsKey: `tourism-pressure-${year}`,
     queryFn: async () =>
       fetchJsonOfflineFirst<{
         data?: TourismPressureApiRow[];
-      }>(`/api/transparencia/turismo/pressure`),
+      }>(`/api/transparencia/turismo/pressure?year=${year}`),
   });
 
   const rows = (data?.data || []).filter((r) => r.ilha !== "Todas as ilhas");
@@ -1668,10 +1674,12 @@ function SeasonalityPills({ value }: { value: number }) {
 
 function SeasonalityIndex({
   ilha,
+  year,
   t,
   onValue,
 }: {
   ilha: string;
+  year: string;
   t: DashboardDictionary;
   onValue?: (value: number) => void;
 }) {
@@ -1679,11 +1687,11 @@ function SeasonalityIndex({
   const { data, loading, error } = useDashboardQuery<{
     data?: SeasonalityApiRow[];
   }>({
-    depsKey: "tourism-seasonality",
+    depsKey: `tourism-seasonality-${year}`,
     queryFn: async () =>
       fetchJsonOfflineFirst<{
         data?: SeasonalityApiRow[];
-      }>(`/api/transparencia/turismo/seasonality`),
+      }>(`/api/transparencia/turismo/seasonality?year=${year}`),
   });
   const rows = data?.data || [];
 
@@ -2144,7 +2152,7 @@ export default function TourismPage() {
 
         {capabilities.hasBaseline2024 && (
           <>
-            {ilha === ALL_ISLANDS_LABEL && (
+            {ilha === ALL_ISLANDS_LABEL && !capabilities.hasLiveTourism && (
               <HospedesDormidasStackedChart year={year} />
             )}
 
@@ -2234,6 +2242,7 @@ export default function TourismPage() {
                 <HospedesDormidasStackedChart year={year} />
                 <TourismPressure
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(value) =>
                     setDerivedMetrics((m) => ({
@@ -2250,6 +2259,7 @@ export default function TourismPage() {
 
                 <SeasonalityIndex
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(value) =>
                     setDerivedMetrics((m) => ({
@@ -2268,6 +2278,7 @@ export default function TourismPage() {
               <>
                 <IslandPopulationSnapshot
                   ilha={ilha}
+                  year={year}
                   onData={setPopulationData}
                 />
 
@@ -2275,6 +2286,7 @@ export default function TourismPage() {
 
                 <TourismOverview
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onData={setTourismOverviewData}
                 />
@@ -2284,6 +2296,7 @@ export default function TourismPage() {
 
                 <TourismPressure
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(v) =>
                     setDerivedMetrics((m) => ({
@@ -2295,6 +2308,7 @@ export default function TourismPage() {
 
                 <SeasonalityIndex
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(v) =>
                     setDerivedMetrics((m) => ({
@@ -2332,7 +2346,12 @@ export default function TourismPage() {
         ) : null}
 
       </div>
-      <DashboardChatWidget />
+      <DashboardChatWidget
+        context={{
+          surface: "dashboard",
+          year,
+        }}
+      />
     </div>
   );
 }

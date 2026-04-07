@@ -380,6 +380,43 @@ function resolveContextBudgetYear(context: ChatContext | null) {
   return parsed === 2025 || parsed === 2026 ? parsed : 2026;
 }
 
+function resolveContextDataYear(context: ChatContext | null): number | null {
+  const parsed = Number(context?.year);
+  if (!Number.isFinite(parsed)) return null;
+  const year = Math.trunc(parsed);
+  if (year < 2024 || year > 2035) return null;
+  return year;
+}
+
+const TOOL_NAMES_WITH_CONTEXT_YEAR = new Set<MaioToolName>([
+  "get_tourism_overview",
+  "get_tourism_indicators",
+  "get_tourism_quarters",
+  "get_tourism_population",
+  "get_tourism_dependency",
+  "get_transport_overview",
+  "get_island_comparison_snapshot",
+]);
+
+function applyToolContextDefaults(
+  name: MaioToolName,
+  args: Record<string, unknown>,
+  context: ChatContext | null,
+) {
+  const nextArgs = { ...args };
+  const contextYear = resolveContextDataYear(context);
+  const hasYear =
+    nextArgs.year !== undefined &&
+    nextArgs.year !== null &&
+    `${nextArgs.year}`.trim() !== "";
+
+  if (!hasYear && contextYear && TOOL_NAMES_WITH_CONTEXT_YEAR.has(name)) {
+    nextArgs.year = contextYear;
+  }
+
+  return nextArgs;
+}
+
 type BudgetStaffingRow = {
   position_title?: string;
   monthly_total_cve?: number;
@@ -1202,7 +1239,12 @@ export async function POST(request: Request) {
 
       const outputs = await Promise.all(
         toolCalls.map(async (call) => {
-          const args = safeParseArguments(call.arguments);
+          const parsedArgs = safeParseArguments(call.arguments);
+          const args = applyToolContextDefaults(
+            call.name as MaioToolName,
+            parsedArgs,
+            context,
+          );
 
           try {
             const result = await executeMaioTool(request, call.name as MaioToolName, args);
