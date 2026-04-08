@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown, HeartHandshake } from "lucide-react";
 
@@ -8,7 +8,7 @@ const heroPoints = [
   "Por valor e orgulho local.",
   "Por uma economia mais dinamica.",
   "Por crescimento sustentável.",
-    "Por ecossistemas protegidos.",
+  "Por ecossistemas protegidos.",
   "Por um compromisso coletivo.",
   "Por um futuro azul.",
 ];
@@ -28,12 +28,12 @@ const maioPillars = [
   },
   {
     title: "Protect Maio",
-    body: "Participe em ações comunitárias de limpeza, proteção costeira e sensibilização ambiental.",
+    body: "Participe em ações comunitárias de valorização, proteção costeira e sensibilização ambiental.",
     image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770351495/places/unesco.jpg",
   },
   {
     title: "Promote Maio",
-    body: "Partilhe a campanha e as boas práticas para ampliar o impacto junto da comunidade e da diáspora.",
+    body: "Partilhe a campanha e as boas práticas para ampliar o impacto junto da comunidade e diáspora.",
     image: "https://res.cloudinary.com/dhxfkhewr/image/upload/f_auto,q_auto/v1770288664/places/rotcha.png",
   },
 ];
@@ -71,11 +71,57 @@ const partnerWays = [
   "Co-promoção da iniciativa",
 ];
 
+const calendarioAtividades = [
+  {
+
+   atividade: `Campanha Digital: "Visit Maio"`,
+    promotor: "VisitMaio",
+    data: "Maio - Setembro",
+    meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
+    linkLabel: "Website",
+    link: "https://www.visitmaio.com",
+  },
+  
+  {
+    atividade: "Programa de Valorização das Praias",
+    promotor: "Maioazul / Iaka",
+    data: "Maio - Setembro",
+    meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
+    linkLabel: "N/A",
+    link: "",
+  },
+  {
+    atividade: "Maio Beach Volley Camp",
+    promotor: "Maioazul",
+    data: "7 - 11 Agosto",
+    meses: ["Agosto"],
+    linkLabel: "Website",
+    link: "https://www.mbv.maioazul.com",
+  },
+  {
+   
+    atividade: "Jogos de Verão (Desportos Náuticos)",
+    promotor: "Maioazul / Iaka",
+    data: "7 - 29 Agosto",
+    meses: ["Agosto"],
+    linkLabel: "N/A",
+    link: "",
+  },
+  {
+    atividade: "Maio Digital: Blue Hackathon e Workshop",
+    promotor: "Maioazul",
+    data: "20 - 21 Agosto",
+    meses: ["Agosto"],
+    linkLabel: "N/A",
+    link: "",
+  },
+];
+
 const partnerLogos = [
   { src: "/logos/maioazulwhite.svg", alt: "Maio Azul" },
   { src: "/logos/visitmaio.svg", alt: "Visit Maio" },
   { src: "/logos/iaka.png", alt: "IAKA" },
-  // { src: "/logos/mill.svg", alt: "MILL" },
+  { src: "/logos/mill.svg", alt: "MILL" },
 ];
 
 const fadeUp = {
@@ -85,10 +131,43 @@ const fadeUp = {
 
 export default function CampanhaAzulPage() {
   const [activeHeroPoint, setActiveHeroPoint] = useState(0);
+  const [calendarMonthIndex, setCalendarMonthIndex] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
   const triggerRefs = useRef<Array<HTMLDivElement | null>>([]);
   const visibilityRatiosRef = useRef<Map<number, number>>(new Map());
+  const visaoSectionRef = useRef<HTMLElement | null>(null);
+  const calendarMonths = ["Todos", "Maio", "Junho", "Julho", "Agosto", "Setembro"];
+  const currentCalendarMonth = calendarMonths[calendarMonthIndex] ?? "Todos";
+  const previousCalendarMonth = calendarMonthIndex > 0 ? calendarMonths[calendarMonthIndex - 1] : "";
+  const nextCalendarMonth =
+    calendarMonthIndex < calendarMonths.length - 1 ? calendarMonths[calendarMonthIndex + 1] : "";
+  const filteredCalendarActivities = useMemo(
+    () =>
+      currentCalendarMonth === "Todos"
+        ? calendarioAtividades
+        : calendarioAtividades.filter((item) =>
+          item.meses.includes(currentCalendarMonth)
+        ),
+    [currentCalendarMonth]
+  );
 
   useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const syncViewport = () => setIsDesktop(mediaQuery.matches);
+    syncViewport();
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", syncViewport);
+      return () => mediaQuery.removeEventListener("change", syncViewport);
+    }
+
+    mediaQuery.addListener(syncViewport);
+    return () => mediaQuery.removeListener(syncViewport);
+  }, []);
+
+  useEffect(() => {
+    if (!isDesktop) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         let nextIndex = activeHeroPoint;
@@ -126,7 +205,14 @@ export default function CampanhaAzulPage() {
     });
 
     return () => observer.disconnect();
-  }, [activeHeroPoint]);
+  }, [activeHeroPoint, isDesktop]);
+
+  function handleScrollToVisao() {
+    visaoSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
   return (
     <div
@@ -146,10 +232,10 @@ export default function CampanhaAzulPage() {
       </div>
 
       <section className="relative">
-        <div className="sticky top-0 h-[100svh] overflow-hidden">
+        <div className="relative md:sticky md:top-0 md:h-[100svh] md:overflow-hidden">
           <div className="absolute inset-0 bg-[#10069f]" />
 
-          <div className="relative mx-auto flex h-full max-w-6xl flex-col px-6 py-16 sm:px-8 sm:py-16">
+          <div className="relative mx-auto flex max-w-6xl flex-col px-6 py-16 sm:px-8 sm:py-16 md:h-full">
             <div className="hidden flex items-center justify-between gap-4">
               <img src="/cz2.svg" alt="CZ" className="h-2 w-auto sm:h-4" />
               <img src="/maioazulwhite.svg" alt="Maioazul" className="h-5 w-auto sm:h-5 opacity-50" />
@@ -172,7 +258,12 @@ export default function CampanhaAzulPage() {
                   return (
                     <p
                       key={line}
-                      className={`text-[clamp(1.6rem,4.4vw,2.45rem)] font-medium !leading-[1.2] tracking-[-0.02em] transition-all duration-700 ease-out ${isActive ? "text-white opacity-100" : "text-white/45 opacity-55"
+                      className={`text-[clamp(1.6rem,4.4vw,2.45rem)] font-medium !leading-[1.2] tracking-[-0.02em] transition-all duration-700 ease-out ${
+                        isDesktop
+                          ? isActive
+                            ? "text-white opacity-100"
+                            : "text-white/45 opacity-55"
+                          : "text-white opacity-100"
                         }`}
                     >
                       {line}
@@ -182,20 +273,22 @@ export default function CampanhaAzulPage() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-24 sm:bottom-20 flex justify-center">
-              <motion.div
-                aria-hidden="true"
+            <div className="absolute inset-x-0 bottom-24 hidden justify-center sm:bottom-20 md:flex">
+              <motion.button
+                type="button"
+                onClick={handleScrollToVisao}
+                aria-label="Ir para a secção Visão"
                 animate={{ y: [0, 8, 0], opacity: [0.55, 1, 0.55] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="text-white/90"
+                className="cursor-pointer rounded-full p-1 text-white/90 transition hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
               >
                 <ChevronDown className="h-6 w-6" />
-              </motion.div>
+              </motion.button>
             </div>
           </div>
         </div>
 
-        <div className="pointer-events-none relative z-10">
+        <div className="pointer-events-none relative z-10 hidden md:block">
           {heroPoints.map((line, index) => (
             <div
               key={line}
@@ -209,7 +302,11 @@ export default function CampanhaAzulPage() {
         </div>
       </section>
 
-      <section className="relative border-y border-[#10069f]/15 bg-white py-14 text-[#10069f]">
+      <section
+        ref={visaoSectionRef}
+        id="visao"
+        className="relative border-y border-[#10069f]/15 bg-white py-14 text-[#10069f]"
+      >
         <div className="mx-auto grid max-w-6xl gap-8 px-6 sm:px-8 md:grid-cols-3">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} variants={fadeUp}>
             <p className="text-xs font-medium uppercase tracking-[0.14em] text-[#10069f]/75">Visão</p>
@@ -242,7 +339,7 @@ export default function CampanhaAzulPage() {
               Como participar
             </p>
             <h2 className="mt-4 text-[clamp(2rem,5vw,3rem)] font-medium leading-[1.02] tracking-[-0.03em]">
-               Como participar
+              Como participar
             </h2>
             <div className="mt-10 grid gap-8 sm:grid-cols-4 xl:grid-cols-4">
               {howToJoin.map((step, index) => (
@@ -253,7 +350,7 @@ export default function CampanhaAzulPage() {
                   <p className="text-5xl font-medium leading-none tracking-[-0.02em] text-white">
                     {index + 1}.
                   </p>
-                  <p className="mt-4 text-[clamp(1.15rem,1.45vw,1.8rem)] leading-[1.35] text-white/92">
+                  <p className="text-[clamp(1.15rem,1.45vw,1.8rem)] leading-[1.35] text-white/92">
                     {step}
                   </p>
                 </div>
@@ -265,7 +362,7 @@ export default function CampanhaAzulPage() {
 
       <section className="bg-[#10069f] py-4 sm:py-4">
         <div className="mx-auto max-w-6xl px-6 sm:px-8">
-          
+
           <h2 className="mt-3 text-[clamp(1.8rem,4.4vw,2.7rem)] font-medium leading-[1.05] tracking-[-0.03em]">
             Buy Maio. Proteger Maio. Valorizar Maio.
           </h2>
@@ -273,7 +370,7 @@ export default function CampanhaAzulPage() {
           <div className="mt-8 grid gap-6 sm:grid-cols-3 xl:grid-cols-3 pb-12">
             {maioPillars.map((item) => (
               <article key={item.title} className="border-t border-[#10069f]/25 pt-4">
-                 <img
+                <img
                   src={item.image}
                   alt={item.title}
                   className="mb-8 h-80 w-full object-cover"
@@ -284,7 +381,7 @@ export default function CampanhaAzulPage() {
                   {item.title}
                 </h3>
                 <p className="mt-2 text-base leading-relaxed ">{item.body}</p>
-               
+
               </article>
             ))}
           </div>
@@ -300,7 +397,7 @@ export default function CampanhaAzulPage() {
             variants={fadeUp}
           >
             <p className="text-sm font-medium uppercase tracking-[0.14em] text-[#10069f]/70">
-             Um Futuro Proativo
+              Um Futuro Proativo
             </p>
           </motion.div>
 
@@ -327,6 +424,86 @@ export default function CampanhaAzulPage() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#10069f] py-14 sm:py-18">
+        <div className="mx-auto max-w-6xl px-6 sm:px-8">
+          <p className="hidden text-sm font-medium uppercase tracking-[0.14em] text-white/80">
+            Calendário de Atividades
+          </p>
+          <h2 className="mt-3 text-[clamp(1.9rem,4.8vw,2.8rem)] font-medium leading-[1.06] tracking-[-0.02em]">
+            Calendário de Atividades
+          </h2>
+          <p className="mt-4 max-w-5xl text-white/80">
+            A Campanha Azul é um movimento aberto. Ao longo do ano, o calendário poderá integrar novos eventos e iniciativas, com o contributo de parceiros, comunidades e cidadãos.
+          </p>
+
+          <div className="mt-8 overflow-hidden border-2 border-white/20">
+            <div className="grid grid-cols-[auto_1fr_auto] items-center border-b border-[#10069f]/20 bg-white px-3 py-3 text-sm font-medium text-[#10069f] sm:px-4 sm:text-lg">
+              <button
+                type="button"
+                onClick={() => setCalendarMonthIndex((m) => Math.max(0, m - 1))}
+                disabled={!previousCalendarMonth}
+                className={`hover:cursor-pointer justify-self-start transition ${previousCalendarMonth ? "hover:opacity-75" : "cursor-not-allowed opacity-40"
+                  }`}
+              >
+                <span className="sm:hidden">◀</span>
+                <span className="hidden sm:inline">{previousCalendarMonth || "—"}</span>
+              </button>
+              <span className="justify-self-center text-center leading-tight">
+                <span className="sm:hidden">
+                  {currentCalendarMonth === "Todos" ? "Campanha Azul · 2026" : currentCalendarMonth}
+                </span>
+                <span className="hidden sm:inline">
+                  {currentCalendarMonth === "Todos" ? "Campanha Azul · 2026" : `${currentCalendarMonth} 2026`}
+                </span>
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setCalendarMonthIndex((m) => Math.min(calendarMonths.length - 1, m + 1))
+                }
+                disabled={!nextCalendarMonth}
+                className={`hidden hover:cursor-pointer justify-self-end transition ${nextCalendarMonth ? "hover:opacity-75" : "cursor-not-allowed opacity-40"
+                  }`}
+              >
+                <span className="sm:hidden">▶</span>
+                <span className="hidden sm:inline">{nextCalendarMonth || "—"}</span>
+              </button>
+            </div>
+
+            <div className="divide-y divide-white/15">
+              {filteredCalendarActivities.map((item) => (
+                <div key={`${item.atividade}-${item.data}`} className="px-4 py-4 sm:px-6">
+                  <div className="grid gap-4 md:grid-cols-[1fr_2.6fr_auto] md:items-center">
+                    <div>
+                      <div className="text-base font-medium text-white">{item.data}</div>
+                    </div>
+                    <div className="min-w-0">
+                      <div className="text-lg font-medium leading-tight text-white">{item.atividade}</div>
+                    </div>
+                    <div>
+                      {item.link ? (
+                        <a
+                          href={item.link}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex w-full min-w-[110px] items-center justify-center bg-[#3a2dff] px-4 py-2 text-sm font-medium text-white hover:bg-[#4d41ff] md:w-auto"
+                        >
+                          {item.linkLabel}
+                        </a>
+                      ) : (
+                        <span className="inline-flex w-full min-w-[110px] items-center justify-center border border-white/35 px-4 py-2 text-sm font-medium text-white/85 md:w-auto">
+                          N/A
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
