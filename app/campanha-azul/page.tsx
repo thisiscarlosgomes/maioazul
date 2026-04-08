@@ -81,11 +81,21 @@ const calendarioAtividades = [
     linkLabel: "Website",
     link: "https://www.visitmaio.com",
   },
+
+  {
+   
+    atividade: `Programa: "Buy Maio. For Maio"`,
+    promotor: "Maioazul / Iaka",
+    data: "Maio - Setembro",
+    meses: ["Junho"],
+    linkLabel: "N/A",
+    link: "",
+  },
   
   {
     atividade: "Programa de Valorização das Praias",
     promotor: "Maioazul / Iaka",
-    data: "Maio - Setembro",
+    data: "Maio - Julho",
     meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
     linkLabel: "N/A",
     link: "",
@@ -107,6 +117,8 @@ const calendarioAtividades = [
     linkLabel: "N/A",
     link: "",
   },
+
+   
   {
     atividade: "Maio Digital: Blue Hackathon e Workshop",
     promotor: "Maioazul",
