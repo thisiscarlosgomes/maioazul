@@ -24,7 +24,7 @@ const maioPillars = [
   {
     title: "Buy Maio",
     body: "Escolha produtos e serviços locais para reforçar os negócios e o valor que fica na ilha.",
-    image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1775230185/6b1cc473-d267-417b-95e6-0b55969532e4_zgbiv0.png",
+    image: "https://res.cloudinary.com/dhxfkhewr/image/upload/q_auto/f_auto/v1775758891/Frame_1000005777_gr06yp.jpg",
   },
   {
     title: "Protect Maio",
@@ -508,7 +508,7 @@ export default function CampanhaAzulPage() {
                         </a>
                       ) : (
                         <span className="inline-flex w-full min-w-[110px] items-center justify-center border border-white/35 px-4 py-2 text-sm font-medium text-white/85 md:w-auto">
-                          N/A
+                          Breve
                         </span>
                       )}
                     </div>
