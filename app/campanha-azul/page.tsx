@@ -376,7 +376,7 @@ export default function CampanhaAzulPage() {
         <div className="mx-auto max-w-6xl px-6 sm:px-8">
 
           <h2 className="mt-3 text-[clamp(1.8rem,4.4vw,2.7rem)] font-medium leading-[1.05] tracking-[-0.03em]">
-            Buy Maio. Proteger Maio. Valorizar Maio.
+            Escolhe Maio. Protege Maio. Valoriza Maio.
           </h2>
 
           <div className="mt-8 grid gap-6 sm:grid-cols-3 xl:grid-cols-3 pb-12">
@@ -527,7 +527,7 @@ export default function CampanhaAzulPage() {
               Oportunidade de parceria
             </p>
             <h2 className="mt-4 text-[clamp(2rem,5vw,3rem)] font-medium leading-[1] tracking-[-0.03em]">
-              Coorganizar, apoiar, patrocinar e amplificar
+              Coorganizar e amplificar
             </h2>
             <p className="mt-5 max-w-3xl text-white/75">
               Estamos a mobilizar parceiros públicos, privados, associativos e comunitários para
