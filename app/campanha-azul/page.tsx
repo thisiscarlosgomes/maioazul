@@ -133,7 +133,7 @@ const partnerLogos = [
   { src: "/logos/maioazulwhite.svg", alt: "Maio Azul" },
   { src: "/logos/visitmaio.svg", alt: "Visit Maio" },
   { src: "/logos/iaka.png", alt: "IAKA" },
-  { src: "/logos/mill.svg", alt: "MILL" },
+  { src: "/logos/mill2.png", alt: "MILL" },
 ];
 
 const fadeUp = {
@@ -236,7 +236,7 @@ export default function CampanhaAzulPage() {
         minHeight: "100vh",
       }}
     >
-      <div className="fixed inset-x-0 top-0 z-50 grid h-1 grid-cols-4">
+      <div className="absolute inset-x-0 top-0 z-50 grid h-1 grid-cols-4 md:fixed">
         <span className="bg-[#10069F]" />
         <span className="bg-[#2ED3FF]" />
         <span className="bg-[#FF6A3D]" />
@@ -247,7 +247,7 @@ export default function CampanhaAzulPage() {
         <div className="relative md:sticky md:top-0 md:h-[100svh] md:overflow-hidden">
           <div className="absolute inset-0 bg-[#10069f]" />
 
-          <div className="relative mx-auto flex max-w-6xl flex-col px-6 py-16 sm:px-8 sm:py-16 md:h-full">
+          <div className="relative mx-auto flex max-w-6xl flex-col px-6 pt-8 pb-12 sm:px-8 sm:py-16 md:h-full">
             <div className="hidden flex items-center justify-between gap-4">
               <img src="/cz2.svg" alt="CZ" className="h-2 w-auto sm:h-4" />
               <img src="/maioazulwhite.svg" alt="Maioazul" className="h-5 w-auto sm:h-5 opacity-50" />
@@ -571,7 +571,11 @@ export default function CampanhaAzulPage() {
                 key={logo.src}
                 src={logo.src}
                 alt={logo.alt}
-                className="h-4 w-auto object-contain opacity-90 sm:h-5"
+                className={`w-auto object-contain opacity-90 ${
+                  logo.src.includes("mill2")
+                    ? "h-8 sm:h-10"
+                    : "h-4 sm:h-5"
+                }`}
               />
             ))}
           </div>
