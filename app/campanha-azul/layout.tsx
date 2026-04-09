@@ -15,7 +15,7 @@ export const metadata: Metadata = {
       "Conheça a Campanha Azul 2026 e junte-se ao movimento por um Maio mais azul, dinâmico e sustentável.",
     images: [
       {
-        url: "https://www.maioazul.com/campanha-azul/opengraph-image",
+        url: "https://www.maioazul.com/og3.jpg",
         width: 1200,
         height: 630,
         alt: "Maio Campanha Azul",
