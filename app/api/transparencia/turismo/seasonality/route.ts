@@ -145,6 +145,7 @@ export async function GET(req: Request) {
       let q4 = q4Reported;
       let q4_source: "reported" | "derived_difference" | "estimated_national_share" | "missing" =
         q4Reported > 0 ? "reported" : "missing";
+      let usesEstimatedQuarters = false;
 
       // Island quarterly rows in 2025 can be partial; if they do not reconcile with annual totals,
       // allocate all quarters from annual totals using national quarter weights.
@@ -169,6 +170,7 @@ export async function GET(req: Request) {
           q3 = Math.round(annualDormidas * nationalShares.q3);
           q4 = Math.max(0, annualDormidas - q1 - q2 - q3);
           q4_source = "estimated_national_share";
+          usesEstimatedQuarters = true;
         }
       }
 
@@ -177,9 +179,17 @@ export async function GET(req: Request) {
 
       let seasonality_index: number | null = null;
       let missing_reason: string | null = null;
+      let seasonality_source: "reported" | "estimated_unavailable" | "missing" = "missing";
 
-      if (hasQ1 && hasQ3) {
+      if (usesEstimatedQuarters) {
+        // When quarters are estimated from national weights, Q3/Q1 is mechanically constant
+        // and should not be shown as an island-specific seasonality indicator.
+        seasonality_index = null;
+        missing_reason = "estimated_quarters";
+        seasonality_source = "estimated_unavailable";
+      } else if (hasQ1 && hasQ3) {
         seasonality_index = Number((q3 / q1).toFixed(2));
+        seasonality_source = "reported";
       } else if (!hasQ1 && hasQ3) {
         missing_reason = "missing_q1";
       } else if (hasQ1 && !hasQ3) {
@@ -196,6 +206,7 @@ export async function GET(req: Request) {
         q4_dormidas: q4,
         q4_source,
         seasonality_index,
+        seasonality_source,
         missing_reason,
       };
     });

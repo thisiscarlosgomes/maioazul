@@ -1682,8 +1682,28 @@ function getSeasonDominance(value: number) {
     className: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
   };
 }
+
+function getSeasonalityBalance(value: number) {
+  if (value < 1.3)
+    return {
+      label: "Equilibrada",
+      className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+    };
+
+  if (value < 3)
+    return {
+      label: "Moderadamente concentrada",
+      className: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
+    };
+
+  return {
+    label: "Desequilibrada",
+    className: "bg-red-500/10 text-red-700 dark:text-red-400",
+  };
+}
 function SeasonalityPills({ value }: { value: number }) {
   const dominance = getSeasonDominance(value);
+  const balance = getSeasonalityBalance(value);
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -1692,6 +1712,13 @@ function SeasonalityPills({ value }: { value: number }) {
         title="Qual estação concentra mais dormidas"
       >
         {dominance.label}
+      </span>
+
+      <span
+        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${balance.className}`}
+        title="Grau de concentração sazonal"
+      >
+        {balance.label}
       </span>
     </div>
   );
@@ -1769,7 +1796,7 @@ function SeasonalityIndex({
               value: (
                 <div className="flex items-center gap-2">
                   <span>{formatRatio(value)}</span>
-                  <SeasonalityPills value={value ?? 0} />
+                  {typeof value === "number" ? <SeasonalityPills value={value} /> : null}
                 </div>
               ),
               sortValue: value ?? null,
@@ -2166,13 +2193,13 @@ export default function TourismPage() {
           onMeta={setReceitasMeta}
         />
 
-        {/* {ilha === ALL_ISLANDS_LABEL &&
+        {ilha === ALL_ISLANDS_LABEL &&
           (capabilities.hasBaseline2024 || capabilities.hasLiveTourism) && (
           <>
             <AllIslandsTourismTotals year={year} />
             {capabilities.note && <CoverageNote note={capabilities.note} />}
           </>
-        )} */}
+        )}
 
         {ilha === "Maio" && capabilities.hasLocalGovernment && year !== "2025" && (
           <LocalGovernmentOverview t={t} year={year} />
