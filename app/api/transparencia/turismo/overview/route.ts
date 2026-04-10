@@ -14,6 +14,7 @@ export async function GET(req: Request) {
     const db = client.db();
 
     const raw = db.collection("turismo_raw");
+    const annualCountryIsland = db.collection("turismo_country_island_annual");
     const structural = db.collection("turismo_structural");
     const derived = db.collection("turismo_derived");
 
@@ -21,18 +22,51 @@ export async function GET(req: Request) {
        1. Aggregate raw flows
     ========================= */
 
-    const flows = await raw
-      .aggregate([
-        { $match: { year } },
-        {
-          $group: {
-            _id: "$ilha",
-            hospedes: { $sum: "$hospedes" },
-            dormidas: { $sum: "$dormidas" },
-          },
-        },
-      ])
-      .toArray();
+    const hasAnnualIslandDataset =
+      (await annualCountryIsland.countDocuments({
+        year,
+        granularity: "annual",
+      })) > 0;
+
+    const flows = hasAnnualIslandDataset
+      ? await annualCountryIsland
+          .aggregate([
+            {
+              $match: {
+                year,
+                granularity: "annual",
+                pais: { $in: ["Cabo Verde", "Estrangeiros"] },
+              },
+            },
+            {
+              $group: {
+                _id: "$ilha",
+                hospedes: { $sum: "$hospedes" },
+                dormidas: { $sum: "$dormidas" },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ])
+          .toArray()
+      : await raw
+          .aggregate([
+            {
+              $match: {
+                year,
+                tipo_estabelecimento: "Todos",
+                ilha: { $ne: "Todas as ilhas" },
+              },
+            },
+            {
+              $group: {
+                _id: "$ilha",
+                hospedes: { $sum: "$hospedes" },
+                dormidas: { $sum: "$dormidas" },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ])
+          .toArray();
 
     /* =========================
        2. Avg stay (derived)
@@ -81,16 +115,35 @@ export async function GET(req: Request) {
       hospedes: r.hospedes,
       dormidas: r.dormidas,
       avg_stay: Number(
-        (avgStayMap[r._id] ?? 0).toFixed(2)
+        (
+          avgStayMap[r._id] ??
+          (Number(r.hospedes ?? 0) > 0
+            ? Number(r.dormidas ?? 0) / Number(r.hospedes ?? 0)
+            : 0)
+        ).toFixed(2)
       ),
       occupancy_rate: Number(
         (occupancyMap[r._id] ?? 0).toFixed(1)
       ),
     }));
 
+    const national = islands.reduce(
+      (acc, row) => {
+        acc.hospedes += Number(row.hospedes ?? 0);
+        acc.dormidas += Number(row.dormidas ?? 0);
+        return acc;
+      },
+      { hospedes: 0, dormidas: 0 }
+    );
+
     return NextResponse.json({
       year,
       islands,
+      national,
+      total: national,
+      source_dataset: hasAnnualIslandDataset
+        ? "turismo_country_island_annual"
+        : "turismo_raw",
       updatedAt: new Date(),
       source: "INE Cabo Verde · Turismo",
     });

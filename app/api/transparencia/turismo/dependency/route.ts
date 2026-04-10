@@ -15,14 +15,26 @@ export async function GET(req: Request) {
     const client = await clientPromise;
     const db = client.db();
 
-    const col = db.collection("turismo_country_island");
+    const annualCol = db.collection("turismo_country_island_annual");
+    const legacyCol = db.collection("turismo_country_island");
 
-    const match: any = { year };
+    const match: Record<string, string | number> = { year };
     if (ilha) match.ilha = ilha;
 
-    const data = await col
+    const annualExists = await annualCol.countDocuments({
+      year,
+      granularity: "annual",
+    });
+
+    const sourceCollection = annualExists > 0 ? annualCol : legacyCol;
+    const sourceMatch =
+      annualExists > 0
+        ? { ...match, granularity: "annual" }
+        : match;
+
+    const data = await sourceCollection
       .aggregate([
-        { $match: match },
+        { $match: sourceMatch },
 
         // aggregate hóspedes per island + country
         {
@@ -58,7 +70,7 @@ export async function GET(req: Request) {
     const result = data.map((r) => ({
       ilha: r._id,
       total_hospedes: r.total,
-      countries: r.countries.map((c: any) => ({
+      countries: r.countries.map((c: { pais: string; hospedes: number }) => ({
         pais: c.pais,
         hospedes: c.hospedes,
         share:
@@ -73,6 +85,10 @@ export async function GET(req: Request) {
       metric: "country_dependency",
       unit: "share_of_hospedes",
       data: result,
+      source_dataset:
+        annualExists > 0
+          ? "turismo_country_island_annual"
+          : "turismo_country_island",
       updatedAt: new Date(),
     });
   } catch (err) {
@@ -83,4 +99,3 @@ export async function GET(req: Request) {
     );
   }
 }
-

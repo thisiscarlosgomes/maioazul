@@ -14,24 +14,39 @@ import {
 const formatNumber = (v: number) =>
   new Intl.NumberFormat("pt-PT").format(v);
 
+type TourismHotelIsland = {
+  ilha?: string;
+  totals?: {
+    establishments?: number;
+    staff?: number;
+    staff_per_establishment?: number;
+  };
+};
+
+type AccommodationRow = {
+  ilha: string;
+  estabelecimentos: string;
+  trabalhadores: string;
+  "trabalhadores / unidade": string;
+};
+
 export function TourismAccommodationTable({
   ilha,
+  year = "2025",
 }: {
   ilha: string;
+  year?: string;
 }) {
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<AccommodationRow[]>([]);
+  const [sourceYear, setSourceYear] = useState<string | null>(null);
+  const [fallbackYearUsed, setFallbackYearUsed] = useState(false);
 
   useEffect(() => {
     fetchJsonOfflineFirst<{
-      islands?: Array<{
-        ilha?: string;
-        totals?: {
-          establishments?: number;
-          staff?: number;
-          staff_per_establishment?: number;
-        };
-      }>;
-    }>("/api/transparencia/turismo/hoteis")
+      islands?: TourismHotelIsland[];
+      year?: number;
+      fallback_year_used?: boolean;
+    }>(`/api/transparencia/turismo/hoteis?year=${year}`)
       .then((res) => {
         const islands = res.islands || [];
 
@@ -39,23 +54,27 @@ export function TourismAccommodationTable({
           ilha === "Todas"
             ? islands
             : islands.filter(
-                (i: any) =>
-                  i.ilha.toLowerCase() === ilha.toLowerCase()
+                (i) =>
+                  (i.ilha ?? "").toLowerCase() === ilha.toLowerCase()
               );
 
         setRows(
-          filtered.map((i: any) => ({
-            ilha: i.ilha,
-            estabelecimentos: formatNumber(i.totals.establishments),
-            trabalhadores: formatNumber(i.totals.staff),
+          filtered.map((i) => ({
+            ilha: i.ilha ?? "—",
+            estabelecimentos: formatNumber(i.totals?.establishments ?? 0),
+            trabalhadores: formatNumber(i.totals?.staff ?? 0),
             "trabalhadores / unidade":
-              i.totals.staff_per_establishment > 0
-                ? i.totals.staff_per_establishment.toFixed(1)
+              (i.totals?.staff_per_establishment ?? 0) > 0
+                ? (i.totals?.staff_per_establishment ?? 0).toFixed(1)
                 : "—",
           }))
         );
+        setSourceYear(
+          typeof res.year === "number" ? String(res.year) : null
+        );
+        setFallbackYearUsed(Boolean(res.fallback_year_used));
       });
-  }, [ilha]);
+  }, [ilha, year]);
 
   if (!rows.length) return null;
 
@@ -66,7 +85,12 @@ export function TourismAccommodationTable({
           Estrutura de Alojamento Turístico
         </h2>
         <p className="text-sm text-muted-foreground">
-          Número de estabelecimentos e emprego direto no setor (dados 2024)
+          Número de estabelecimentos e emprego direto no setor
+          {sourceYear
+            ? fallbackYearUsed
+              ? ` (fallback ${sourceYear})`
+              : ` (${sourceYear})`
+            : ""}
         </p>
       </div>
 

@@ -109,7 +109,7 @@ const YEAR_CAPABILITIES: Record<string, YearCapabilities> = {
     hasLiveTourism: true,
     hasLocalGovernment: true,
     hasInsights: true,
-    note: "Para 2025, os indicadores de turismo ainda não incluem o Q4 (tanto em 'Todas as Ilhas' como nas visões por ilha).",
+    note: "Para 2025, o Q4 já está integrado no agregado nacional ('Todas as Ilhas'). A desagregação trimestral por ilha continua a ser complementada conforme publicação oficial.",
   },
   "2026": {
     hasBaseline2024: false,
@@ -259,7 +259,10 @@ type TourismPressureApiRow = {
 type SeasonalityApiRow = {
   ilha?: string;
   q1_dormidas?: number;
+  q2_dormidas?: number;
   q3_dormidas?: number;
+  q4_dormidas?: number;
+  q4_source?: string;
   seasonality_index?: number;
 };
 
@@ -370,6 +373,7 @@ type MaioEnergyApiResponse = {
 type DataTableObjectCell = {
   value: ReactNode;
   className?: string;
+  sortValue?: string | number | null;
 };
 
 type DataTablePrimitiveCell = string | number | null | undefined | ReactNode;
@@ -383,6 +387,38 @@ function isDataTableObjectCell(cell: unknown): cell is DataTableObjectCell {
     "value" in cell &&
     Object.prototype.hasOwnProperty.call(cell, "value")
   );
+}
+
+function toSortableValue(cell: DataTableCellValue): string | number | null {
+  const raw = isDataTableObjectCell(cell) ? cell.sortValue ?? cell.value : cell;
+
+  if (raw == null) return null;
+  if (typeof raw === "number") return Number.isFinite(raw) ? raw : null;
+  if (typeof raw === "string") {
+    const compact = raw.trim();
+    if (!compact) return null;
+
+    const cleaned = compact
+      .replace(/\s+/g, "")
+      .replace("%", "")
+      .replace(/[^\d,.\-]/g, "");
+
+    if (cleaned) {
+      let numericCandidate = cleaned;
+      if (numericCandidate.includes(".") && numericCandidate.includes(",")) {
+        numericCandidate = numericCandidate.replace(/\./g, "").replace(",", ".");
+      } else if (numericCandidate.includes(",")) {
+        numericCandidate = numericCandidate.replace(",", ".");
+      }
+
+      const maybeNumber = Number(numericCandidate);
+      if (Number.isFinite(maybeNumber)) return maybeNumber;
+    }
+
+    return compact.toLocaleLowerCase("pt-PT");
+  }
+
+  return null;
 }
 
 
@@ -766,16 +802,22 @@ function CountryDependency({
 
 
 function TourismHotelsTable({
+  year,
   highlightIsland,
 }: {
+  year: string;
   highlightIsland?: string;
 }) {
   const [rows, setRows] = useState<TourismHotelsDisplayRow[]>([]);
+  const [sourceYear, setSourceYear] = useState<string | null>(null);
+  const [fallbackYearUsed, setFallbackYearUsed] = useState(false);
 
   useEffect(() => {
     fetchJsonOfflineFirst<{
       islands?: TourismHotelsApiIsland[];
-    }>("/api/transparencia/turismo/hoteis")
+      year?: number;
+      fallback_year_used?: boolean;
+    }>(`/api/transparencia/turismo/hoteis?year=${year}`)
       .then((res) => {
         const data =
           res.islands?.map((i) => ({
@@ -789,8 +831,12 @@ function TourismHotelsTable({
           })) || [];
 
         setRows(data);
+        setSourceYear(
+          typeof res.year === "number" ? String(res.year) : null
+        );
+        setFallbackYearUsed(Boolean(res.fallback_year_used));
       });
-  }, [highlightIsland]);
+  }, [highlightIsland, year]);
 
   if (!rows.length) return null;
 
@@ -802,6 +848,11 @@ function TourismHotelsTable({
         </h2>
         <p className="text-sm text-muted-foreground">
           Número de estabelecimentos e emprego direto no turismo
+          {sourceYear
+            ? fallbackYearUsed
+              ? ` (fallback ${sourceYear})`
+              : ` (${sourceYear})`
+            : ""}
         </p>
       </div>
 
@@ -1591,12 +1642,15 @@ function TourismPressure({
             hospedes: formatNumber(r.hospedes ?? 0),
             dormidas: formatNumber(r.dormidas ?? 0),
             população: formatNumber(r.population ?? 0),
-            índice_pressão: (
-              <div className="flex items-center gap-2">
-                <span>{formatRatio(value)}</span>
-                <PressurePill value={value ?? 0} />
-              </div>
-            ),
+            índice_pressão: {
+              value: (
+                <div className="flex items-center gap-2">
+                  <span>{formatRatio(value)}</span>
+                  <PressurePill value={value ?? 0} />
+                </div>
+              ),
+              sortValue: value ?? null,
+            },
 
           };
         })}
@@ -1628,28 +1682,8 @@ function getSeasonDominance(value: number) {
     className: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
   };
 }
-
-function getSeasonalityBalance(value: number) {
-  if (value < 1.3)
-    return {
-      label: "Equilibrada",
-      className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
-    };
-
-  if (value < 3)
-    return {
-      label: "Moderadamente concentrada",
-      className: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
-    };
-
-  return {
-    label: "Desequilibrada",
-    className: "bg-red-500/10 text-red-700 dark:text-red-400",
-  };
-}
 function SeasonalityPills({ value }: { value: number }) {
   const dominance = getSeasonDominance(value);
-  const balance = getSeasonalityBalance(value);
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -1658,13 +1692,6 @@ function SeasonalityPills({ value }: { value: number }) {
         title="Qual estação concentra mais dormidas"
       >
         {dominance.label}
-      </span>
-
-      <span
-        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${balance.className}`}
-        title="Grau de concentração sazonal"
-      >
-        {balance.label}
       </span>
     </div>
   );
@@ -1722,7 +1749,7 @@ function SeasonalityIndex({
         <h2 className="flex items-center gap-2 font-semibold">
           {t.seasonality}
           <InfoHelp
-            title="Contraste Sazonal (Q3 / Q1)"
+            title="Contraste Sazonal"
             description="Mede quantas vezes o verão é mais ativo do que o inverno em termos de dormidas turísticas. Valores elevados indicam forte concentração da atividade no verão. Valores próximos de 1 indicam uma distribuição mais equilibrada ao longo do ano."
           />
         </h2>
@@ -1735,13 +1762,18 @@ function SeasonalityIndex({
           return {
             ilha: r.ilha,
             dormidas_Q1: formatNumber(r.q1_dormidas ?? 0),
+            dormidas_Q2: formatNumber(r.q2_dormidas ?? 0),
             dormidas_Q3: formatNumber(r.q3_dormidas ?? 0),
-            índice_sazonalidade: (
-              <div className="flex items-center gap-2">
-                <span>{formatRatio(value)}</span>
-                <SeasonalityPills value={value ?? 0} />
-              </div>
-            ),
+            dormidas_Q4: formatNumber(r.q4_dormidas ?? 0),
+            índice_sazonalidade: {
+              value: (
+                <div className="flex items-center gap-2">
+                  <span>{formatRatio(value)}</span>
+                  <SeasonalityPills value={value ?? 0} />
+                </div>
+              ),
+              sortValue: value ?? null,
+            },
           };
         })}
         loading={loading}
@@ -2134,13 +2166,13 @@ export default function TourismPage() {
           onMeta={setReceitasMeta}
         />
 
-        {ilha === ALL_ISLANDS_LABEL &&
+        {/* {ilha === ALL_ISLANDS_LABEL &&
           (capabilities.hasBaseline2024 || capabilities.hasLiveTourism) && (
           <>
             <AllIslandsTourismTotals year={year} />
             {capabilities.note && <CoverageNote note={capabilities.note} />}
           </>
-        )}
+        )} */}
 
         {ilha === "Maio" && capabilities.hasLocalGovernment && year !== "2025" && (
           <LocalGovernmentOverview t={t} year={year} />
@@ -2251,7 +2283,7 @@ export default function TourismPage() {
                     }))
                   }
                 />
-                <TourismHotelsTable />
+                <TourismHotelsTable year={year} />
 
                 <CountryDependency ilha={ilha} year={year} t={t} />
 
@@ -2388,6 +2420,55 @@ function DataTable({
   loading?: boolean;
   error?: string | null;
 }) {
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+
+  const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
+  const mobileHiddenColumns = new Set([
+    "índice_sazonalidade",
+    "indice_sazonalidade",
+    "índice_pressão",
+    "indice_pressao",
+    "variação_yoy",
+    "variacao_yoy",
+  ]);
+  const columnLabelMap: Record<string, string> = {
+    peso_no_total: "% total",
+  };
+
+  const sortedRows = useMemo(() => {
+    if (!sortColumn) return rows;
+
+    const result = [...rows];
+    result.sort((a, b) => {
+      const aValue = toSortableValue(a[sortColumn]);
+      const bValue = toSortableValue(b[sortColumn]);
+
+      if (aValue == null && bValue == null) return 0;
+      if (aValue == null) return 1;
+      if (bValue == null) return -1;
+
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+      }
+
+      const aText = String(aValue);
+      const bText = String(bValue);
+      const cmp = aText.localeCompare(bText, "pt-PT");
+      return sortDirection === "asc" ? cmp : -cmp;
+    });
+    return result;
+  }, [rows, sortColumn, sortDirection]);
+
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+      return;
+    }
+    setSortColumn(column);
+    setSortDirection("desc");
+  };
+
   if (loading) {
     return (
       <div className="rounded-lg border border-border overflow-hidden">
@@ -2433,19 +2514,6 @@ function DataTable({
     );
   }
 
-  const columns = Object.keys(rows[0]);
-  const mobileHiddenColumns = new Set([
-    "índice_sazonalidade",
-    "indice_sazonalidade",
-    "índice_pressão",
-    "indice_pressao",
-    "variação_yoy",
-    "variacao_yoy",
-  ]);
-  const columnLabelMap: Record<string, string> = {
-    peso_no_total: "% total",
-  };
-
   return (
     <div className="rounded-lg border border-border overflow-x-auto">
       <Table>
@@ -2456,14 +2524,23 @@ function DataTable({
                 key={k}
                 className={mobileHiddenColumns.has(k) ? "hidden md:table-cell" : undefined}
               >
-                {columnLabelMap[k] ?? k}
+                <button
+                  type="button"
+                  onClick={() => handleSort(k)}
+                  className="inline-flex items-center gap-1 hover:text-foreground"
+                >
+                  <span>{columnLabelMap[k] ?? k}</span>
+                  <span className="text-xs">
+                    {sortColumn === k ? (sortDirection === "asc" ? "↑" : "↓") : "↕"}
+                  </span>
+                </button>
               </TableHead>
             ))}
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {rows.map((row, i) => (
+          {sortedRows.map((row, i) => (
             <TableRow key={i}>
               {columns.map((key) => {
                 const cell = row[key];

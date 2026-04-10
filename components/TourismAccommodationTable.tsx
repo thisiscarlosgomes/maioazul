@@ -32,15 +32,21 @@ type AccommodationRow = {
 
 export function TourismAccommodationTable({
   ilha,
+  year = "2025",
 }: {
   ilha: string;
+  year?: string;
 }) {
   const [rows, setRows] = useState<AccommodationRow[]>([]);
+  const [sourceYear, setSourceYear] = useState<string | null>(null);
+  const [fallbackYearUsed, setFallbackYearUsed] = useState(false);
 
   useEffect(() => {
     fetchJsonOfflineFirst<{
       islands?: TourismHotelIsland[];
-    }>("/api/transparencia/turismo/hoteis")
+      year?: number;
+      fallback_year_used?: boolean;
+    }>(`/api/transparencia/turismo/hoteis?year=${year}`)
       .then((res) => {
         const islands = res.islands || [];
 
@@ -63,8 +69,12 @@ export function TourismAccommodationTable({
                 : "—",
           }))
         );
+        setSourceYear(
+          typeof res.year === "number" ? String(res.year) : null
+        );
+        setFallbackYearUsed(Boolean(res.fallback_year_used));
       });
-  }, [ilha]);
+  }, [ilha, year]);
 
   if (!rows.length) return null;
 
@@ -75,7 +85,12 @@ export function TourismAccommodationTable({
           Estrutura de Alojamento Turístico
         </h2>
         <p className="text-sm text-muted-foreground">
-          Número de estabelecimentos e emprego direto no setor (dados 2024)
+          Número de estabelecimentos e emprego direto no setor
+          {sourceYear
+            ? fallbackYearUsed
+              ? ` (fallback ${sourceYear})`
+              : ` (${sourceYear})`
+            : ""}
         </p>
       </div>
 

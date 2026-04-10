@@ -315,14 +315,17 @@ function createMcpAppServer(): McpServer {
     'get_tourism_overview',
     {
       title: 'Get Tourism Overview',
-      description: 'Fetches island tourism summary by quarter and totals for a year from municipal Maio tourism data.',
+      description: 'Fetches national and island tourism overview for a year using consolidated tourism endpoints.',
       inputSchema: {
         year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).optional().describe('Reference year. Defaults to 2025 in upstream API.'),
       },
     },
     async ({ year }) => {
       try {
-        const data = await fetchJson('/api/transparencia/municipal/maio/turism/overview', { year });
+        const data =
+          year === 2024
+            ? await fetchJson('/api/transparencia/turismo/2024/baseline')
+            : await fetchJson('/api/transparencia/turismo/overview', { year });
         return ok('get_tourism_overview', data);
       } catch (error) {
         return fail('get_tourism_overview', error);
@@ -335,15 +338,184 @@ function createMcpAppServer(): McpServer {
     {
       title: 'Get Tourism Indicators',
       description:
-        'Returns tourism pressure, seasonality, and local-retention proxy for an island/year using your existing indicators API.',
+        'Returns tourism pressure and seasonality indicators for an island/year using consolidated tourism endpoints.',
       inputSchema: {
-        ilha: z.enum(['Maio', 'Sal', 'Boa Vista']).default('Maio').describe('Island name used by the upstream API.'),
+        ilha: z
+          .enum(['Maio', 'Sal', 'Boa Vista', 'Santiago', 'São Vicente', 'Santo Antão', 'Fogo', 'São Nicolau', 'Brava'])
+          .default('Maio')
+          .describe('Island name used by the upstream API.'),
         year: z.number().int().min(MIN_YEAR).max(MAX_YEAR).default(2025).describe('Reference year.'),
       },
     },
     async ({ ilha, year }) => {
       try {
-        const data = await fetchJson('/api/transparencia/municipal/maio/turism/indicators', { ilha, year });
+        if (year === 2024) {
+          const [islandBaseline, populationPayload] = await Promise.all([
+            fetchJson('/api/transparencia/turismo/2024/island', { ilha }) as Promise<{
+              hospedes?: number;
+              dormidas?: number;
+              avg_stay?: number | null;
+              source?: string;
+            }>,
+            fetchJson('/api/transparencia/turismo/population', { year: 2024, ilha }) as Promise<{
+              year?: number;
+              fallback_year_used?: boolean;
+              data?: Array<{ ilha?: string; population?: number }>;
+            }>,
+          ]);
+
+          const populationRow = Array.isArray(populationPayload?.data) ? populationPayload.data[0] : undefined;
+          const population = Number(populationRow?.population ?? 0);
+          const dormidas = Number(islandBaseline?.dormidas ?? 0);
+          const pressure =
+            Number.isFinite(population) && population > 0
+              ? Number((dormidas / population).toFixed(2))
+              : null;
+
+          return ok('get_tourism_indicators', {
+            scope: 'turismo',
+            dataset: 'indicators',
+            ilha,
+            year: 2024,
+            indicators: {
+              tourism_pressure_index: {
+                value: pressure,
+                unit: 'nights_per_resident',
+              },
+              seasonality_index: {
+                value: null,
+                definition: 'Q3 dormidas / Q1 dormidas',
+              },
+              local_retention_proxy: {
+                value: null,
+                unit: 'ratio',
+              },
+            },
+            components: {
+              hospedes_total: Number(islandBaseline?.hospedes ?? 0),
+              dormidas_total: dormidas,
+              avg_stay: islandBaseline?.avg_stay ?? null,
+              population,
+            },
+            source: [
+              islandBaseline?.source ?? 'INE Cabo Verde · Turismo',
+              'INE Cabo Verde · População',
+            ],
+            coverage_note:
+              'Para 2024, indicadores usam baseline anual por ilha; sazonalidade e retenção local não estão disponíveis neste caminho.',
+            population_fallback_year_used: Boolean(populationPayload?.fallback_year_used),
+            population_reference_year: populationPayload?.year ?? null,
+          });
+        }
+
+        const [overviewPayload, pressurePayload, seasonalityPayload, populationPayload] = await Promise.all([
+          fetchJson('/api/transparencia/turismo/overview', { year }) as Promise<{
+            islands?: Array<{
+              ilha?: string;
+              hospedes?: number;
+              dormidas?: number;
+              avg_stay?: number | null;
+            }>;
+            source?: string;
+          }>,
+          fetchJson('/api/transparencia/turismo/pressure', { year }) as Promise<{
+            data?: Array<{
+              ilha?: string;
+              pressure_index?: number | null;
+              dormidas?: number;
+              hospedes?: number;
+            }>;
+            source?: string;
+          }>,
+          fetchJson('/api/transparencia/turismo/seasonality', { year }) as Promise<{
+            data?: Array<{
+              ilha?: string;
+              seasonality_index?: number | null;
+              q1_dormidas?: number;
+              q2_dormidas?: number;
+              q3_dormidas?: number;
+              q4_dormidas?: number;
+            }>;
+            definition?: string;
+          }>,
+          fetchJson('/api/transparencia/turismo/population', { year, ilha }) as Promise<{
+            year?: number;
+            fallback_year_used?: boolean;
+            data?: Array<{ ilha?: string; population?: number }>;
+            source?: string;
+          }>,
+        ]);
+
+        const overviewRow = Array.isArray(overviewPayload?.islands)
+          ? overviewPayload.islands.find((row) => row?.ilha === ilha)
+          : undefined;
+        const pressureRow = Array.isArray(pressurePayload?.data)
+          ? pressurePayload.data.find((row) => row?.ilha === ilha)
+          : undefined;
+        const seasonalityRow = Array.isArray(seasonalityPayload?.data)
+          ? seasonalityPayload.data.find((row) => row?.ilha === ilha)
+          : undefined;
+        const populationRow = Array.isArray(populationPayload?.data)
+          ? populationPayload.data.find((row) => row?.ilha === ilha)
+          : undefined;
+
+        const population = Number(populationRow?.population ?? 0);
+        const dormidasTotal = Number(
+          overviewRow?.dormidas ?? pressureRow?.dormidas ?? 0,
+        );
+        const hospedesTotal = Number(
+          overviewRow?.hospedes ?? pressureRow?.hospedes ?? 0,
+        );
+        const pressureValue =
+          typeof pressureRow?.pressure_index === 'number'
+            ? pressureRow.pressure_index
+            : population > 0
+              ? Number((dormidasTotal / population).toFixed(2))
+              : null;
+
+        const data = {
+          scope: 'turismo',
+          dataset: 'indicators',
+          ilha,
+          year,
+          indicators: {
+            tourism_pressure_index: {
+              value: pressureValue,
+              unit: 'nights_per_resident',
+            },
+            seasonality_index: {
+              value:
+                typeof seasonalityRow?.seasonality_index === 'number'
+                  ? seasonalityRow.seasonality_index
+                  : null,
+              definition: seasonalityPayload?.definition ?? 'Q3 dormidas / Q1 dormidas',
+            },
+            local_retention_proxy: {
+              value: null,
+              unit: 'ratio',
+            },
+          },
+          components: {
+            hospedes_total: hospedesTotal,
+            dormidas_total: dormidasTotal,
+            avg_stay: overviewRow?.avg_stay ?? null,
+            dormidas_q1: seasonalityRow?.q1_dormidas ?? null,
+            dormidas_q2: seasonalityRow?.q2_dormidas ?? null,
+            dormidas_q3: seasonalityRow?.q3_dormidas ?? null,
+            dormidas_q4: seasonalityRow?.q4_dormidas ?? null,
+            population,
+          },
+          source: [
+            overviewPayload?.source ?? 'INE Cabo Verde · Turismo',
+            pressurePayload?.source ?? 'INE Cabo Verde · Turismo + População',
+            populationPayload?.source ?? 'INE Cabo Verde',
+          ],
+          coverage_note:
+            'Indicadores calculados a partir dos endpoints nacionais consolidados (overview, pressure, seasonality, population).',
+          population_fallback_year_used: Boolean(populationPayload?.fallback_year_used),
+          population_reference_year: populationPayload?.year ?? year,
+        };
+
         return ok('get_tourism_indicators', data);
       } catch (error) {
         return fail('get_tourism_indicators', error);
