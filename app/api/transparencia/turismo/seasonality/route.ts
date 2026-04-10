@@ -16,7 +16,7 @@ export async function GET(req: Request) {
     const raw = db.collection("turismo_raw");
     const annualCountryIsland = db.collection("turismo_country_island_annual");
 
-    // Aggregate Q1, Q2, Q3 and Q4 dormidas per island
+    // Aggregate Q1, Q2, Q3 and Q4 dormidas per island from raw quarterly rows
     const rows = await raw
       .aggregate([
         {
@@ -108,27 +108,66 @@ export async function GET(req: Request) {
     const nationalQ3 = Number(nationalRow?.q3_dormidas ?? 0);
     const nationalQ4 = Number(nationalRow?.q4_dormidas ?? 0);
     const nationalAnnual = nationalQ1 + nationalQ2 + nationalQ3 + nationalQ4;
-    const nationalQ4Share = nationalAnnual > 0 ? nationalQ4 / nationalAnnual : 0;
+    const nationalShares =
+      nationalAnnual > 0
+        ? {
+            q1: nationalQ1 / nationalAnnual,
+            q2: nationalQ2 / nationalAnnual,
+            q3: nationalQ3 / nationalAnnual,
+            q4: nationalQ4 / nationalAnnual,
+          }
+        : null;
 
-    const data = rows.map((r) => {
-      const ilha = String(r._id);
-      const q1 = Number(r.q1_dormidas ?? 0);
-      const q2 = Number(r.q2_dormidas ?? 0);
-      const q3 = Number(r.q3_dormidas ?? 0);
-      const q4Reported = Number(r.q4_dormidas ?? 0);
+    const rowMap = new Map<string, {
+      q1_dormidas?: number;
+      q2_dormidas?: number;
+      q3_dormidas?: number;
+      q4_dormidas?: number;
+    }>(rows.map((r) => [String(r._id), r]));
+    const islands = new Set<string>([
+      ...Array.from(rowMap.keys()),
+      ...Array.from(annualMap.keys()),
+    ]);
+
+    const data = Array.from(islands)
+      .sort((a, b) => a.localeCompare(b))
+      .map((ilha) => {
+      const row = rowMap.get(ilha);
+      const q1Reported = Number(row?.q1_dormidas ?? 0);
+      const q2Reported = Number(row?.q2_dormidas ?? 0);
+      const q3Reported = Number(row?.q3_dormidas ?? 0);
+      const q4Reported = Number(row?.q4_dormidas ?? 0);
       const annualDormidas = annualMap.get(ilha) ?? null;
 
+      let q1 = q1Reported;
+      let q2 = q2Reported;
+      let q3 = q3Reported;
       let q4 = q4Reported;
       let q4_source: "reported" | "derived_difference" | "estimated_national_share" | "missing" =
         q4Reported > 0 ? "reported" : "missing";
 
-      if (q4Reported <= 0 && annualDormidas != null) {
-        const derivedByDifference = annualDormidas - (q1 + q2 + q3);
-        if (derivedByDifference >= 0) {
-          q4 = derivedByDifference;
-          q4_source = "derived_difference";
-        } else if (nationalQ4Share > 0) {
-          q4 = Math.round(annualDormidas * nationalQ4Share);
+      // Island quarterly rows in 2025 can be partial; if they do not reconcile with annual totals,
+      // allocate all quarters from annual totals using national quarter weights.
+      if (ilha !== "Todas as ilhas" && annualDormidas != null) {
+        const reportedSum = q1Reported + q2Reported + q3Reported + q4Reported;
+        const hasConsistentQuarterly =
+          reportedSum > 0 &&
+          annualDormidas > 0 &&
+          Math.abs(reportedSum - annualDormidas) / annualDormidas <= 0.02;
+
+        if (hasConsistentQuarterly) {
+          if (q4Reported <= 0) {
+            const derivedByDifference = annualDormidas - (q1 + q2 + q3);
+            if (derivedByDifference >= 0) {
+              q4 = derivedByDifference;
+              q4_source = "derived_difference";
+            }
+          }
+        } else if (nationalShares) {
+          q1 = Math.round(annualDormidas * nationalShares.q1);
+          q2 = Math.round(annualDormidas * nationalShares.q2);
+          q3 = Math.round(annualDormidas * nationalShares.q3);
+          q4 = Math.max(0, annualDormidas - q1 - q2 - q3);
           q4_source = "estimated_national_share";
         }
       }
