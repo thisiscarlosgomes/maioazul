@@ -193,7 +193,11 @@ type LocalGovernmentApiResponse = {
 const CMMAIO_TRANSFER_FALLBACK: Record<string, LocalGovernmentApiRow[]> = {
   "2024": [{ month: 12, valor_pago: 125537932 }],
   "2025": [{ month: 12, valor_pago: 107960558 }],
-  "2026": [{ month: 1, valor_pago: 9219167 }],
+  "2026": [
+    { month: 1, valor_pago: 9219167 },
+    { month: 2, valor_pago: 9219167 },
+    { month: 3, valor_pago: 11396945 },
+  ],
 };
 
 type CountryDependencyApiCountry = {
@@ -537,32 +541,59 @@ function LocalGovernmentOverview({
       };
 
       try {
-        const offlineFirst = normalize(
-          await fetchJsonOfflineFirst<LocalGovernmentApiResponse>(url)
-        );
+        let rows: LocalGovernmentApiRow[] = [];
+        let resolvedYear = Number(year);
 
-        let rows = offlineFirst.data || [];
-        let resolvedYear =
-          typeof offlineFirst.year === "number"
-            ? offlineFirst.year
-            : Number(year);
+        // Prefer live for this block to avoid stale offline snapshots.
+        try {
+          const liveRes = await fetch(url, { cache: "no-store" });
+          if (liveRes.ok) {
+            const liveJson = normalize(await liveRes.json());
+            if (Array.isArray(liveJson.data) && liveJson.data.length) {
+              rows = liveJson.data;
+              resolvedYear =
+                typeof liveJson.year === "number"
+                  ? liveJson.year
+                  : resolvedYear;
+            }
+          }
+        } catch {
+          // Ignore live fetch errors and try offline-capable fallback below.
+        }
 
-        // If offline cache came back empty/malformed, force a live read.
         if (!rows.length) {
-          const liveRes = await fetch(url);
-          const liveJson = normalize(await liveRes.json());
-          if (Array.isArray(liveJson.data) && liveJson.data.length) {
-            rows = liveJson.data;
+          const offlineFirst = normalize(
+            await fetchJsonOfflineFirst<LocalGovernmentApiResponse>(url, {
+              cache: "no-store",
+            })
+          );
+          if (Array.isArray(offlineFirst.data) && offlineFirst.data.length) {
+            rows = offlineFirst.data;
             resolvedYear =
-              typeof liveJson.year === "number"
-                ? liveJson.year
+              typeof offlineFirst.year === "number"
+                ? offlineFirst.year
                 : resolvedYear;
           }
         }
 
         // Last-resort fallback for CMMAIO yearly snapshots.
-        if (!rows.length) {
-          rows = CMMAIO_TRANSFER_FALLBACK[year] || [];
+        const fallbackRows = CMMAIO_TRANSFER_FALLBACK[year] || [];
+        if (rows.length && fallbackRows.length) {
+          const byMonth = new Map<number, LocalGovernmentApiRow>();
+          for (const row of rows) {
+            byMonth.set(Number(row.month), row);
+          }
+          for (const row of fallbackRows) {
+            const month = Number(row.month);
+            if (!byMonth.has(month)) {
+              byMonth.set(month, row);
+            }
+          }
+          rows = [...byMonth.values()].sort(
+            (a, b) => Number(a.month) - Number(b.month)
+          );
+        } else if (!rows.length) {
+          rows = fallbackRows;
         }
 
         if (cancelled) return;

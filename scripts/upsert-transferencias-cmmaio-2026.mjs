@@ -10,6 +10,7 @@ const KEY = `transf:${YEAR}:${MUNICIPIO}`;
 const MONTHLY_VALUES_2026 = {
   1: 9219167,
   2: 9219167,
+  3: 11396945,
 };
 
 const loadEnvFile = async (filePath) => {
@@ -78,7 +79,7 @@ async function run() {
           municipio: MUNICIPIO,
           view: "month",
           source: "Portal Transparência CV",
-          note: "2026 atualizado manualmente (MES=1 e MES=2).",
+          note: "2026 atualizado manualmente (MES=1 a MES=3).",
         },
         updatedAt: new Date(),
       },

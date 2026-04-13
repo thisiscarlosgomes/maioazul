@@ -9,6 +9,7 @@ const CMMAIO_FALLBACK: Record<number, Array<{ MES: number; VALOR_PAGO: number; S
   2026: [
     { MES: 1, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
     { MES: 2, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
+    { MES: 3, VALOR_PAGO: 11396945, SIGLA: "CMMAIO" },
   ],
 };
 
@@ -24,6 +25,19 @@ function mapTransferRows(rows: TransferenciaRawRow[]) {
     valor_pago: Number(r.VALOR_PAGO ?? 0),
     sigla: r.SIGLA,
   }));
+}
+
+function mergeMissingMonths(
+  primary: Array<{ month: number; valor_pago: number; sigla?: string }>,
+  supplement: Array<{ month: number; valor_pago: number; sigla?: string }>
+) {
+  const byMonth = new Map<number, { month: number; valor_pago: number; sigla?: string }>();
+  for (const row of primary) byMonth.set(Number(row.month), row);
+  for (const row of supplement) {
+    const month = Number(row.month);
+    if (!byMonth.has(month)) byMonth.set(month, row);
+  }
+  return [...byMonth.values()].sort((a, b) => a.month - b.month);
 }
 
 function hasUsableMonthlyRows(
@@ -122,14 +136,21 @@ export async function GET(req: Request) {
 
     const data = mapTransferRows(doc.data);
     const fallbackYear = year ? Number(year) : null;
+    const fallbackRows =
+      municipio === "CMMAIO" && fallbackYear
+        ? mapTransferRows(CMMAIO_FALLBACK[fallbackYear] ?? [])
+        : [];
+    const completedData = fallbackRows.length
+      ? mergeMissingMonths(data, fallbackRows)
+      : data;
 
-    if (!hasUsableMonthlyRows(data)) {
-      const fallbackRows =
+    if (!hasUsableMonthlyRows(completedData)) {
+      const rawFallbackRows =
         municipio === "CMMAIO" && fallbackYear
           ? CMMAIO_FALLBACK[fallbackYear]
           : null;
 
-      if (fallbackRows) {
+      if (rawFallbackRows) {
         return NextResponse.json(
           {
             scope: "municipal",
@@ -138,7 +159,7 @@ export async function GET(req: Request) {
             year: fallbackYear,
             financiador,
             view: "month",
-            data: mapTransferRows(fallbackRows),
+            data: mapTransferRows(rawFallbackRows),
             updatedAt: doc.updatedAt ?? null,
             source: "Portal Transparência CV",
             fallback: true,
@@ -156,7 +177,7 @@ export async function GET(req: Request) {
         year: doc.meta?.year,
         financiador,
         view: "month",
-        data,
+        data: completedData,
         updatedAt: doc.updatedAt,
         source: "Portal Transparência CV",
       },

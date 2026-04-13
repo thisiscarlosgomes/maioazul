@@ -21,6 +21,10 @@ const endpoints = [
     out: "transparencia/municipal/transferencias-CMMAIO-2025.json",
   },
   {
+    url: "/api/transparencia/municipal/transferencias?municipio=CMMAIO&year=2026",
+    out: "transparencia/municipal/transferencias-CMMAIO-2026.json",
+  },
+  {
     url: "/api/transparencia/transportes/overview?year=2025",
     out: "transparencia/transportes/overview-2025.json",
   },

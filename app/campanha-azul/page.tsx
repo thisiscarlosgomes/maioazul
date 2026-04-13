@@ -106,7 +106,7 @@ const calendarioAtividades = [
     data: "7 - 11 Agosto",
     meses: ["Agosto"],
     linkLabel: "Website",
-    link: "https://www.mbv.maioazul.com",
+    link: "https://mbv.maioazul.com",
   },
   {
    
