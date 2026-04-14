@@ -46,6 +46,7 @@ export const toolSchemas = {
   get_maio_weather: z.object({}).strict(),
   get_maio_wind: z.object({}).strict(),
   get_maio_surf: z.object({}).strict(),
+  get_beach_safety: z.object({}).strict(),
   get_boat_schedules: z.object({}).strict(),
   get_flight_schedules: z.object({}).strict(),
   get_tourism_overview: z
@@ -144,6 +145,12 @@ export const nativeToolDefinitions: Record<
   get_maio_surf: {
     title: "Get Maio Surf",
     description: "Returns 6am/noon/6pm surf outlook for Maio island.",
+    parameters: { type: "object", properties: {}, additionalProperties: false },
+  },
+  get_beach_safety: {
+    title: "Get Beach Safety",
+    description:
+      "Returns a beach-safety advisory with wind/sea-based hazard level and flag-equivalent guidance.",
     parameters: { type: "object", properties: {}, additionalProperties: false },
   },
   get_boat_schedules: {
@@ -382,6 +389,9 @@ export async function executeGuideTool(request: Request, name: GuideToolName, ra
 
     case "get_maio_surf":
       return fetchJson(request, "/api/maio/surf");
+
+    case "get_beach_safety":
+      return fetchJson(request, "/api/maio/beach-safety");
 
     case "get_boat_schedules":
       return fetchJson(request, "/api/schedules/boats");

@@ -11,6 +11,7 @@ import {
   Droplets,
   CloudRain,
   CloudSun,
+  Flag,
   Waves,
   Wind,
   Timer,
@@ -68,6 +69,22 @@ function weatherLabelFromCode(code: number | undefined, lang: "pt" | "en") {
   return lang === "pt" ? "Tempo" : "Weather";
 }
 
+function beachLevelLabel(level: "low" | "medium" | "high" | "closed" | undefined, lang: "pt" | "en") {
+  if (level === "closed") return lang === "pt" ? "Fechada" : "Closed";
+  if (level === "high") return lang === "pt" ? "Risco alto" : "High risk";
+  if (level === "medium") return lang === "pt" ? "Risco moderado" : "Moderate risk";
+  if (level === "low") return lang === "pt" ? "Risco baixo" : "Low risk";
+  return lang === "pt" ? "Sem dados" : "No data";
+}
+
+function flagLabel(flag: "red_yellow" | "yellow" | "red" | "double_red" | undefined, lang: "pt" | "en") {
+  if (flag === "double_red") return lang === "pt" ? "Duplo vermelho" : "Double red";
+  if (flag === "red") return lang === "pt" ? "Vermelha" : "Red";
+  if (flag === "yellow") return lang === "pt" ? "Amarela" : "Yellow";
+  if (flag === "red_yellow") return lang === "pt" ? "Vermelho/amarelo" : "Red/yellow";
+  return "—";
+}
+
 export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWidgetProps) {
   const [lang] = useLang();
   const { messages, input, setInput, loading, error, submitMessage, resetChat } = useGuideChat({
@@ -99,6 +116,8 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
         updated: "Atualizado",
         surf: "Surf",
         outlook: "Condições",
+        beachSafety: "Praia",
+        advisory: "Aviso",
       },
       en: {
         assistant: "Assistant",
@@ -114,6 +133,8 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
         updated: "Updated",
         surf: "Surf",
         outlook: "Outlook",
+        beachSafety: "Beach",
+        advisory: "Advisory",
       },
     }),
     []
@@ -261,6 +282,55 @@ export default function GuideChatWidget({ context, welcomeMessage }: GuideChatWi
 
                   {message.role === "assistant" && Array.isArray(message.toolEvents) ? (
                     <div className="mt-2 grid w-full max-w-[88%] gap-2">
+                      {message.toolEvents
+                        .map((event) => event.beachSafetyCard)
+                        .filter((card): card is NonNullable<typeof card> => Boolean(card))
+                        .slice(0, 1)
+                        .map((card) => (
+                          <div
+                            key={`${message.id}-beach-safety`}
+                            className="rounded-2xl border border-[rgba(17,17,17,0.08)] bg-white p-3"
+                          >
+                            <div className="flex items-center justify-between">
+                              <p className="text-sm font-semibold text-[#111111]">
+                                {card.location} {copy[lang].beachSafety}
+                              </p>
+                              <span className="inline-flex items-center gap-1 text-xs text-[#111111]/62">
+                                <Flag className="h-3.5 w-3.5" />
+                                {copy[lang].advisory}: {beachLevelLabel(card.advisoryLevel, lang)}
+                              </span>
+                            </div>
+                            <div className="mt-2 grid grid-cols-3 gap-2">
+                              <div className="rounded-xl bg-[#f6f6f3] px-2 py-2 text-xs text-[#111111]/76">
+                                <span>{lang === "pt" ? "Bandeira" : "Flag"}</span>
+                                <p className="mt-1 text-sm font-semibold text-[#111111]">
+                                  {flagLabel(card.flagEquivalent, lang)}
+                                </p>
+                              </div>
+                              <div className="rounded-xl bg-[#f6f6f3] px-2 py-2 text-xs text-[#111111]/76">
+                                <span>{lang === "pt" ? "Vento" : "Wind"}</span>
+                                <p className="mt-1 text-sm font-semibold text-[#111111]">
+                                  {card.windKph !== undefined ? `${Math.round(card.windKph)} kph` : "—"}
+                                </p>
+                              </div>
+                              <div className="rounded-xl bg-[#f6f6f3] px-2 py-2 text-xs text-[#111111]/76">
+                                <span>{lang === "pt" ? "Onda" : "Wave"}</span>
+                                <p className="mt-1 text-sm font-semibold text-[#111111]">
+                                  {card.waveHeightM !== undefined ? `${card.waveHeightM.toFixed(1)} m` : "—"}
+                                </p>
+                              </div>
+                            </div>
+                            {card.reasons?.length ? (
+                              <p className="mt-2 text-[11px] text-[#111111]/62">{card.reasons[0]}</p>
+                            ) : null}
+                            {card.updatedAt ? (
+                              <p className="mt-2 text-[11px] text-[#111111]/46">
+                                {copy[lang].updated}: {new Date(card.updatedAt).toLocaleString()}
+                              </p>
+                            ) : null}
+                          </div>
+                        ))}
+
                       {message.toolEvents
                         .map((event) => event.weatherCard)
                         .filter((card): card is NonNullable<typeof card> => Boolean(card))

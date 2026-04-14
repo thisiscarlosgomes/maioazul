@@ -58,6 +58,17 @@ type ToolEvent = {
       swellPeriodS?: number;
     }>;
   };
+  beachSafetyCard?: {
+    location: string;
+    advisoryLevel?: "low" | "medium" | "high" | "closed";
+    flagEquivalent?: "red_yellow" | "yellow" | "red" | "double_red";
+    windKph?: number;
+    windGustKph?: number;
+    waveHeightM?: number;
+    beaufort?: number;
+    updatedAt?: string;
+    reasons: string[];
+  };
 };
 
 const SYSTEM_PROMPT = `
@@ -71,6 +82,7 @@ Rules:
 - Be concise and practical.
 - Do not invent schedules, weather values, or place facts.
 - For weather, wind, surf, ferry, and flight questions, always call tools before answering.
+- For beach-day, swimming, or "is it safe/good for beach" questions, call get_beach_safety before recommending.
 - For place recommendations, call get_places and explain that suggestions are based on available dataset fields.
 - For experiences and services, call get_experiences or get_experience_detail before answering specifics.
 - When a tool returns uncertain, missing, or fallback data, state that clearly.
@@ -121,6 +133,21 @@ function buildInstructions(context: ChatContext | null) {
   }
 
   return `${SYSTEM_PROMPT}\n\nAdditional context:\n- ${lines.join("\n- ")}`;
+}
+
+function isBeachSafetyIntent(text: string) {
+  const value = text.toLowerCase();
+  return [
+    "beach day",
+    "beach",
+    "swim",
+    "swimming",
+    "safe to swim",
+    "praia",
+    "banho",
+    "nadar",
+    "bom para praia",
+  ].some((token) => value.includes(token));
 }
 
 function safeParseArguments(raw: string): Record<string, unknown> {
@@ -231,6 +258,47 @@ function buildSurfCardFromToolPayload(name: GuideToolName, payload: unknown) {
   };
 }
 
+function buildBeachSafetyCardFromToolPayload(name: GuideToolName, payload: unknown) {
+  if (name !== "get_beach_safety" || !payload || typeof payload !== "object") {
+    return null;
+  }
+
+  const data = payload as Record<string, unknown>;
+  const metrics =
+    data.metrics && typeof data.metrics === "object"
+      ? (data.metrics as Record<string, unknown>)
+      : null;
+  const reasons = Array.isArray(data.reasons)
+    ? data.reasons.filter((item): item is string => typeof item === "string")
+    : [];
+  const advisoryLevel =
+    data.advisory_level === "low" ||
+    data.advisory_level === "medium" ||
+    data.advisory_level === "high" ||
+    data.advisory_level === "closed"
+      ? (data.advisory_level as "low" | "medium" | "high" | "closed")
+      : undefined;
+  const flagEquivalent =
+    data.flag_equivalent === "red_yellow" ||
+    data.flag_equivalent === "yellow" ||
+    data.flag_equivalent === "red" ||
+    data.flag_equivalent === "double_red"
+      ? (data.flag_equivalent as "red_yellow" | "yellow" | "red" | "double_red")
+      : undefined;
+
+  return {
+    location: typeof data.location === "string" ? data.location : "Maio",
+    advisoryLevel,
+    flagEquivalent,
+    windKph: asNumber(metrics?.wind_kph),
+    windGustKph: asNumber(metrics?.wind_gust_kph),
+    waveHeightM: asNumber(metrics?.wave_height_m),
+    beaufort: asNumber(metrics?.beaufort),
+    updatedAt: typeof data.updated_at === "string" ? data.updated_at : undefined,
+    reasons,
+  };
+}
+
 function readAssistantText(message: {
   content?: string | Array<{ type?: string; text?: string }> | null;
 }) {
@@ -296,6 +364,31 @@ export async function POST(request: Request) {
       },
       ...messages,
     ];
+
+    const latestUserText =
+      [...messages].reverse().find((item) => item.role === "user")?.content?.trim() ?? "";
+    if (latestUserText && isBeachSafetyIntent(latestUserText)) {
+      try {
+        const payload = await executeGuideTool(request, "get_beach_safety", {});
+        const beachSafetyCard = buildBeachSafetyCardFromToolPayload("get_beach_safety", payload);
+        if (beachSafetyCard) {
+          toolEvents.push({
+            name: "get_beach_safety",
+            arguments: {},
+            ok: true,
+            beachSafetyCard,
+          });
+        }
+        conversation.push({
+          role: "system",
+          content:
+            "Beach safety snapshot (use this before recommending beaches/swimming):\n" +
+            JSON.stringify(payload),
+        });
+      } catch {
+        // If this preload fails, the model can still call tools in normal rounds.
+      }
+    }
 
     let lastToolSignature = "";
     let repeatedToolRounds = 0;
@@ -364,6 +457,7 @@ export async function POST(request: Request) {
           const placeCards = buildPlaceCardsFromToolPayload(name, payload);
           const weatherCard = buildWeatherCardFromToolPayload(name, payload);
           const surfCard = buildSurfCardFromToolPayload(name, payload);
+          const beachSafetyCard = buildBeachSafetyCardFromToolPayload(name, payload);
           toolEvents.push({
             name,
             arguments: rawArgs,
@@ -371,6 +465,7 @@ export async function POST(request: Request) {
             ...(placeCards.length > 0 ? { placeCards } : {}),
             ...(weatherCard ? { weatherCard } : {}),
             ...(surfCard ? { surfCard } : {}),
+            ...(beachSafetyCard ? { beachSafetyCard } : {}),
           });
           conversation.push({
             role: "tool",

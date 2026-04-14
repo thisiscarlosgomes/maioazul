@@ -31,6 +31,17 @@ export type GuideToolEvent = {
       swellPeriodS?: number;
     }>;
   };
+  beachSafetyCard?: {
+    location: string;
+    advisoryLevel?: "low" | "medium" | "high" | "closed";
+    flagEquivalent?: "red_yellow" | "yellow" | "red" | "double_red";
+    windKph?: number;
+    windGustKph?: number;
+    waveHeightM?: number;
+    beaufort?: number;
+    updatedAt?: string;
+    reasons: string[];
+  };
 };
 
 export type GuideChatMessage = {

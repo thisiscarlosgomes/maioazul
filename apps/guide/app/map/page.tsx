@@ -113,6 +113,20 @@ type SurfResponse = {
     points: SurfPoint[];
 };
 
+type BeachSafetyResponse = {
+    location?: string;
+    updated_at?: string;
+    advisory_level?: "low" | "medium" | "high" | "closed";
+    flag_equivalent?: "red_yellow" | "yellow" | "red" | "double_red";
+    reasons?: string[];
+    metrics?: {
+        wind_kph?: number;
+        wind_gust_kph?: number;
+        wave_height_m?: number;
+        beaufort?: number;
+    };
+};
+
 function surfQualityScore(point: SurfPoint) {
     let score = 3;
     if (point.swell_period_s >= 10) score += 1;
@@ -172,6 +186,7 @@ export default function MapPage() {
     const [wind, setWind] = useState<any>(null);
     const [weather, setWeather] = useState<any>(null);
     const [air, setAir] = useState<any>(null);
+    const [beachSafety, setBeachSafety] = useState<BeachSafetyResponse | null>(null);
 
     const [placesOpen, setPlacesOpen] = useState(false);
     const [exploreOpen, setExploreOpen] = useState(false);
@@ -318,6 +333,14 @@ export default function MapPage() {
                 conditionsCalm: "Mar calmo: ótimo para praia.",
                 conditionsWindy: "Vento forte: melhor escolher interior.",
                 conditionsMixed: "Condições mistas: misturar praia e vila.",
+                conditionsHigh: "Risco alto no mar: praia com muita cautela.",
+                conditionsClosed: "Condições para evitar banho de mar hoje.",
+                todayAdvisory: "Aviso de praia",
+                flag: "Bandeira",
+                flagRedYellow: "Vermelho/Amarelo",
+                flagYellow: "Amarela",
+                flagRed: "Vermelha",
+                flagDoubleRed: "Duplo vermelho",
                 schedulesTitle: "Horários de viagem",
                 schedulesHint: "Hoje e próximas partidas disponíveis.",
                 scheduleUnavailable: "Sem horários disponíveis.",
@@ -396,6 +419,14 @@ export default function MapPage() {
                 conditionsCalm: "Calm sea: great for beaches.",
                 conditionsWindy: "Windy: inland works best.",
                 conditionsMixed: "Mixed conditions: beach + town.",
+                conditionsHigh: "High sea risk: beach only with caution.",
+                conditionsClosed: "Sea-bathing conditions are not recommended today.",
+                todayAdvisory: "Beach advisory",
+                flag: "Flag",
+                flagRedYellow: "Red/Yellow",
+                flagYellow: "Yellow",
+                flagRed: "Red",
+                flagDoubleRed: "Double red",
                 schedulesTitle: "Travel schedules",
                 schedulesHint: "Today and upcoming departures.",
                 scheduleUnavailable: "No schedules available.",
@@ -733,6 +764,10 @@ export default function MapPage() {
             fetchJsonOfflineFirst<any>("/api/maio/air")
                 .then(setAir)
                 .catch(() => { });
+
+            fetchJsonOfflineFirst<BeachSafetyResponse>("/api/maio/beach-safety")
+                .then(setBeachSafety)
+                .catch(() => { });
         };
         const idle = (window as any).requestIdleCallback;
         const id = idle ? idle(run, { timeout: 1500 }) : window.setTimeout(run, 1200);
@@ -1005,22 +1040,51 @@ export default function MapPage() {
     };
 
     const todayConditions = useMemo(() => {
-        const wave = marine?.sea?.wave_height;
-        const windSpeed = wind?.wind?.speed;
+        const wave = beachSafety?.metrics?.wave_height_m ?? marine?.sea?.wave_height;
+        const windSpeed = beachSafety?.metrics?.wind_kph ?? wind?.wind?.speed;
         if (wave == null && windSpeed == null) return null;
         const seaCalm = wave != null && wave <= 1.5;
         const windy = windSpeed != null && windSpeed >= 12;
-        const label = seaCalm
-            ? copy[lang].conditionsCalm
-            : windy
-                ? copy[lang].conditionsWindy
-                : copy[lang].conditionsMixed;
+        const advisory = beachSafety?.advisory_level;
+        const label =
+            advisory === "closed"
+                ? copy[lang].conditionsClosed
+                : advisory === "high"
+                    ? copy[lang].conditionsHigh
+                    : advisory === "medium"
+                        ? copy[lang].conditionsMixed
+                        : advisory === "low"
+                            ? copy[lang].conditionsCalm
+                            : seaCalm
+                                ? copy[lang].conditionsCalm
+                                : windy
+                                    ? copy[lang].conditionsWindy
+                                    : copy[lang].conditionsMixed;
+        const flag =
+            beachSafety?.flag_equivalent === "double_red"
+                ? copy[lang].flagDoubleRed
+                : beachSafety?.flag_equivalent === "red"
+                    ? copy[lang].flagRed
+                    : beachSafety?.flag_equivalent === "yellow"
+                        ? copy[lang].flagYellow
+                        : beachSafety?.flag_equivalent === "red_yellow"
+                            ? copy[lang].flagRedYellow
+                            : null;
+        const reason =
+            Array.isArray(beachSafety?.reasons) &&
+                beachSafety.reasons.length > 0 &&
+                typeof beachSafety.reasons[0] === "string"
+                ? beachSafety.reasons[0]
+                : null;
         return {
             wave,
             windSpeed,
             label,
+            advisory,
+            flag,
+            reason,
         };
-    }, [marine, wind, lang, copy]);
+    }, [marine, wind, beachSafety, lang, copy]);
 
 
     const FLIGHT_SCHEDULE = {
@@ -3179,6 +3243,11 @@ export default function MapPage() {
                                     <Skeleton className="h-4 w-44 rounded-full" />
                                 )}
                             </div>
+                            {todayConditions?.flag ? (
+                                <div className="mt-1 text-xs text-muted-foreground">
+                                    {copy[lang].todayAdvisory}: {copy[lang].flag} {todayConditions.flag}
+                                </div>
+                            ) : null}
                             <div className="mt-4 grid gap-4 sm:grid-cols-3">
                                 {todayPlan.length === 0 && (
                                     <>
