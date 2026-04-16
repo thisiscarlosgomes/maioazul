@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Facebook, Instagram, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { CAMP_PACKAGES, type CampPackageId } from "@/lib/payments/config";
+import type { CampPackageId } from "@/lib/payments/config";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type CampLocale = "pt" | "en" | "fr";
@@ -38,6 +38,8 @@ type RegisterCopy = {
   payLoading: string;
   payCta: string;
   payError: string;
+  formModeRegister: string;
+  formModeScholarship: string;
   packageNames: Record<CampPackageId, string>;
   completePackage: PackageCopy;
   essentialPackage: PackageCopy;
@@ -45,7 +47,11 @@ type RegisterCopy = {
   leadSubtitle: string;
   leadNamePlaceholder: string;
   leadEmailPlaceholder: string;
+  leadPhonePlaceholder: string;
+  leadAgePlaceholder: string;
   leadExperiencePlaceholder: string;
+  leadReasonPlaceholder: string;
+  leadMaioConfirm: string;
   leadCta: string;
   leadSuccess: string;
   leadError: string;
@@ -79,11 +85,13 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     payEmailPlaceholder: "Email para recibo",
     payPhonePlaceholder: "Telefone (WhatsApp)",
     refundTitle: "Cancelamento e devolução",
-    refundOrgCancel: "Se o evento for cancelado pelo organizador, os pagamentos feitos serão reembolsados.",
+    refundOrgCancel: "Se o evento for cancelado pelo organizador, os pagamentos são reembolsados.",
     refundUserCancel: "Se o participante desistir, não há devolução.",
     payLoading: "A redirecionar...",
     payCta: "Continuar",
     payError: "Não foi possível iniciar o pagamento. Tenta novamente.",
+    formModeRegister: "Inscrição normal",
+    formModeScholarship: "Pedir bolsa",
     packageNames: {
       completo: "Pacote Completo",
       essencial: "Pacote Essencial",
@@ -111,13 +119,17 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
         "Alojamento não incluído",
       ],
     },
-    leadTitle: "Quero Participar",
-    leadSubtitle: "Envia os teus dados e recebe as próximas instruções.",
+    leadTitle: "Candidatura a bolsa",
+    leadSubtitle: "Bolsa apenas para atletas do Maio com idade maxima de 20 anos.",
     leadNamePlaceholder: "Nome completo",
     leadEmailPlaceholder: "Email",
+    leadPhonePlaceholder: "Telefone (WhatsApp)",
+    leadAgePlaceholder: "Idade (maximo 20)",
     leadExperiencePlaceholder: "Nível/experiência (opcional)",
-    leadCta: "Enviar interesse",
-    leadSuccess: "Inscrição recebida! Obrigado.",
+    leadReasonPlaceholder: "Porque precisas de bolsa?",
+    leadMaioConfirm: "Confirmo que sou atleta do Maio.",
+    leadCta: "Enviar candidatura",
+    leadSuccess: "Candidatura enviada! Obrigado.",
     leadError: "Ocorreu um erro. Tenta novamente.",
     footerAbout: "Sobre",
     footerProgram: "Programa",
@@ -146,6 +158,8 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     payLoading: "Redirecting...",
     payCta: "Continue",
     payError: "Could not start payment. Please try again.",
+    formModeRegister: "Regular registration",
+    formModeScholarship: "Apply for scholarship",
     packageNames: {
       completo: "Full Package",
       essencial: "Essential Package",
@@ -173,13 +187,17 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
         "Accommodation not included",
       ],
     },
-    leadTitle: "I Want to Join",
-    leadSubtitle: "Send your details and receive next steps.",
+    leadTitle: "Scholarship Application",
+    leadSubtitle: "Scholarship is only for athletes from Maio up to 20 years old.",
     leadNamePlaceholder: "Full name",
     leadEmailPlaceholder: "Email",
+    leadPhonePlaceholder: "Phone (WhatsApp)",
+    leadAgePlaceholder: "Age (max 20)",
     leadExperiencePlaceholder: "Level/experience (optional)",
-    leadCta: "Send interest",
-    leadSuccess: "Registration received! Thank you.",
+    leadReasonPlaceholder: "Why are you applying for a scholarship?",
+    leadMaioConfirm: "I confirm that I am an athlete from Maio.",
+    leadCta: "Submit application",
+    leadSuccess: "Application received! Thank you.",
     leadError: "An error occurred. Please try again.",
     footerAbout: "About",
     footerProgram: "Program",
@@ -208,6 +226,8 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     payLoading: "Redirection...",
     payCta: "Continuer",
     payError: "Impossible de lancer le paiement. Reessaie.",
+    formModeRegister: "Inscription normale",
+    formModeScholarship: "Demander une bourse",
     packageNames: {
       completo: "Pack Complet",
       essencial: "Pack Essentiel",
@@ -235,13 +255,17 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
         "Hebergement non inclus",
       ],
     },
-    leadTitle: "Je Veux Participer",
-    leadSubtitle: "Envoie tes donnees et recois les prochaines instructions.",
+    leadTitle: "Candidature Bourse",
+    leadSubtitle: "Bourse reservee aux athletes de Maio jusqu'a 20 ans.",
     leadNamePlaceholder: "Nom complet",
     leadEmailPlaceholder: "Email",
+    leadPhonePlaceholder: "Telephone (WhatsApp)",
+    leadAgePlaceholder: "Age (maximum 20)",
     leadExperiencePlaceholder: "Niveau/experience (optionnel)",
-    leadCta: "Envoyer l'interet",
-    leadSuccess: "Inscription recue! Merci.",
+    leadReasonPlaceholder: "Pourquoi as-tu besoin d'une bourse ?",
+    leadMaioConfirm: "Je confirme que je suis un athlete de Maio.",
+    leadCta: "Envoyer la candidature",
+    leadSuccess: "Candidature recue! Merci.",
     leadError: "Une erreur est survenue. Reessaie.",
     footerAbout: "A propos",
     footerProgram: "Programme",
@@ -249,11 +273,11 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
   },
 };
 
-export default function RegisterPage() {
+export default function BolsaPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [locale, setLocale] = useState<CampLocale>("pt");
-  const [paymentStatus, setPaymentStatus] = useState<null | "loading" | "error">(null);
-  const [selectedPackage, setSelectedPackage] = useState<CampPackageId>("completo");
+  const [studentStatus, setStudentStatus] = useState<null | "success" | "error">(null);
+  const [studentError, setStudentError] = useState<string | null>(null);
 
   useEffect(() => {
     const lang = new URLSearchParams(window.location.search).get("lang");
@@ -278,36 +302,50 @@ export default function RegisterPage() {
 
   const t = registerCopy[locale];
   const homeHref = locale === "pt" ? "/" : `/?lang=${locale}`;
+  const registerHref = locale === "pt" ? "/register" : `/register?lang=${locale}`;
   const bolsaHref = locale === "pt" ? "/bolsa" : `/bolsa?lang=${locale}`;
 
-  async function handlePaymentSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleStudentSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setPaymentStatus("loading");
-
+    setStudentStatus(null);
+    setStudentError(null);
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const age = Number(formData.get("age"));
+    const fromMaio = formData.get("from_maio") === "on";
+    if (!Number.isFinite(age) || age > 20 || !fromMaio) {
+      setStudentStatus("error");
+      setStudentError(t.leadError);
+      return;
+    }
+
     const payload = {
-      name: String(formData.get("pay_name") || "").trim(),
-      email: String(formData.get("pay_email") || "").trim(),
-      phone: String(formData.get("pay_phone") || "").trim(),
-      packageId: String(formData.get("package_id") || "").trim(),
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      age,
+      fromMaio,
+      experience: String(formData.get("experience") || "").trim(),
+      reason: String(formData.get("reason") || "").trim(),
+      applicationType: "scholarship",
     };
 
     try {
-      const res = await fetch("/api/payments/checkout", {
+      const res = await fetch("/api/students", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) throw new Error("Failed to create checkout session.");
-
-      const data = (await res.json()) as { url?: string };
-      if (!data.url) throw new Error("Missing checkout URL.");
-
-      window.location.href = data.url;
-    } catch {
-      setPaymentStatus("error");
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as { error?: string };
+        throw new Error(data.error || "Failed");
+      }
+      form.reset();
+      setStudentStatus("success");
+      setStudentError(null);
+    } catch (error) {
+      setStudentStatus("error");
+      setStudentError(error instanceof Error ? error.message : t.leadError);
     }
   }
 
@@ -341,7 +379,7 @@ export default function RegisterPage() {
               </Link>
               <Link
                 className="!hidden !text-black inline-flex items-center justify-center rounded-full border border-white/40 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition"
-                href="/register"
+                href={registerHref}
               >
                 {t.navJoin}
               </Link>
@@ -449,64 +487,63 @@ export default function RegisterPage() {
           </div>
 
           <div className="rounded-[18px] border border-[rgba(17,17,17,0.12)] bg-white p-6">
-            <h3 className="text-xl font-semibold text-[#111111]">{t.payTitle}</h3>
-            <p className="mt-2 text-[rgba(17,17,17,0.68)]">{t.paySubtitle}</p>
-            <form className="mt-4 grid gap-3" onSubmit={handlePaymentSubmit}>
-              <input
-                className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
-                type="text"
-                name="pay_name"
-                placeholder={t.payNamePlaceholder}
-                required
-              />
-              <input
-                className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
-                type="email"
-                name="pay_email"
-                placeholder={t.payEmailPlaceholder}
-                required
-              />
-              <input
-                className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
-                type="tel"
-                name="pay_phone"
-                placeholder={t.payPhonePlaceholder}
-                required
-              />
-              <input type="hidden" name="package_id" value={selectedPackage} />
-              <div className="grid gap-3 sm:grid-cols-2">
-                {(Object.keys(CAMP_PACKAGES) as CampPackageId[]).map((packageId) => {
-                  const campPackage = CAMP_PACKAGES[packageId];
-                  return (
-                    <button
-                      key={campPackage.id}
-                      type="button"
-                      onClick={() => setSelectedPackage(campPackage.id)}
-                      className={`rounded-[12px] border p-3 text-left transition ${
-                        selectedPackage === campPackage.id
-                          ? "border-[#111111] bg-[#f7f7f4]"
-                          : "border-[rgba(17,17,17,0.12)] bg-white"
-                      }`}
-                    >
-                      <p className="text-sm font-semibold text-[#111111]">{t.packageNames[campPackage.id]}</p>
-                      <p className="mt-1 text-sm text-[rgba(17,17,17,0.72)]">€{campPackage.amountCents / 100}</p>
-                    </button>
-                  );
-                })}
-              </div>
-              <div className="rounded-[12px] border border-[rgba(17,17,17,0.12)] bg-[#f7f7f4] px-4 py-3 text-xs leading-relaxed text-[rgba(17,17,17,0.75)]">
-                <p className="font-semibold text-[#111111]">{t.refundTitle}</p>
-                <p className="mt-1">{t.refundOrgCancel}</p>
-                <p className="mt-1">{t.refundUserCancel}</p>
-              </div>
-              <button
-                className="inline-flex items-center justify-center rounded-full bg-[#111111] px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
-                type="submit"
-                disabled={paymentStatus === "loading"}
-              >
-                {paymentStatus === "loading" ? t.payLoading : t.payCta}
-              </button>
-              {paymentStatus === "error" ? <p className="text-sm text-red-600">{t.payError}</p> : null}
+            <h3 className="text-xl font-semibold text-[#111111]">{t.leadTitle}</h3>
+            <p className="mt-2 text-[rgba(17,17,17,0.68)]">{t.leadSubtitle}</p>
+            <form className="mt-4 grid gap-3" onSubmit={handleStudentSubmit}>
+                <input
+                  className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                  type="text"
+                  name="name"
+                  placeholder={t.leadNamePlaceholder}
+                  required
+                />
+                <input
+                  className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                  type="email"
+                  name="email"
+                  placeholder={t.leadEmailPlaceholder}
+                  required
+                />
+                <input
+                  className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                  type="tel"
+                  name="phone"
+                  placeholder={t.leadPhonePlaceholder}
+                  required
+                />
+                <input
+                  className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                  type="number"
+                  name="age"
+                  placeholder={t.leadAgePlaceholder}
+                  min={1}
+                  max={20}
+                  required
+                />
+                <input
+                  className="w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                  type="text"
+                  name="experience"
+                  placeholder={t.leadExperiencePlaceholder}
+                />
+                <textarea
+                  className="min-h-[120px] w-full rounded-[12px] border border-[rgba(17,17,17,0.12)] px-4 py-3 text-sm"
+                  name="reason"
+                  placeholder={t.leadReasonPlaceholder}
+                  required
+                />
+                <label className="flex items-start gap-2 rounded-[12px] border border-[rgba(17,17,17,0.12)] px-3 py-3 text-sm text-[rgba(17,17,17,0.82)]">
+                  <input type="checkbox" name="from_maio" required className="mt-0.5 h-4 w-4" />
+                  <span>{t.leadMaioConfirm}</span>
+                </label>
+                <button
+                  className="inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-5 py-3 text-sm font-semibold text-[#111111]"
+                  type="submit"
+                >
+                  {t.leadCta}
+                </button>
+                {studentStatus === "success" ? <p className="text-sm text-emerald-600">{t.leadSuccess}</p> : null}
+                {studentStatus === "error" ? <p className="text-sm text-red-600">{studentError || t.leadError}</p> : null}
             </form>
           </div>
         </div>

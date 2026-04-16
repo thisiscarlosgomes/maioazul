@@ -18,6 +18,7 @@ type CampCopy = {
   navProgram: string;
   navCoach: string;
   navPartners: string;
+  navBolsa: string;
   navJoin: string;
   navOpenRegistration: string;
   heroDate: string;
@@ -68,6 +69,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     navProgram: "Programa",
     navCoach: "Coach",
     navPartners: "Parcerias",
+    navBolsa: "Bolsa",
     navJoin: "Participe",
     navOpenRegistration: "Inscrição aberta",
     heroDate: "Ilha do Maio · 7-11 de Agosto 2026",
@@ -151,6 +153,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     navProgram: "Program",
     navCoach: "Coach",
     navPartners: "Partners",
+    navBolsa: "Scholarship",
     navJoin: "Join",
     navOpenRegistration: "Registration open",
     heroDate: "Maio Island · August 7-11, 2026",
@@ -233,6 +236,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     navProgram: "Programme",
     navCoach: "Coach",
     navPartners: "Partenaires",
+    navBolsa: "Bourse",
     navJoin: "Participer",
     navOpenRegistration: "Inscriptions ouvertes",
     heroDate: "Ile de Maio · 7-11 aout 2026",
@@ -340,6 +344,7 @@ export default function CampPage() {
 
   const t = campCopy[locale];
   const registerHref = locale === "pt" ? "/register" : `/register?lang=${locale}`;
+  const bolsaHref = locale === "pt" ? "/bolsa" : `/bolsa?lang=${locale}`;
 
   return (
     <div className="bg-white text-[#111111]">
@@ -376,6 +381,9 @@ export default function CampPage() {
               </a>
               <a className="transition hover:text-[#CEEC58]" href="https://maioazul.com/partners">
                 {t.navPartners}
+              </a>
+              <a className="transition hover:text-[#CEEC58]" href={bolsaHref}>
+                {t.navBolsa}
               </a>
               <a
                 className="!text-black inline-flex items-center justify-center rounded-full border border-white/40 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition"
@@ -437,6 +445,9 @@ export default function CampPage() {
                 </a>
                 <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
                   {t.navPartners}
+                </a>
+                <a className="transition hover:text-[#111111]" href={bolsaHref}>
+                  {t.navBolsa}
                 </a>
                 <a
                   className="inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-4 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-black"
@@ -686,6 +697,9 @@ export default function CampPage() {
           </a>
           <a className="transition hover:text-[#111111]" href="https://maioazul.com/partners">
             {t.navPartners}
+          </a>
+          <a className="transition hover:text-[#111111]" href={bolsaHref}>
+            {t.navBolsa}
           </a>
           <a className="transition hover:text-[#111111]" href={registerHref}>
             {t.footerJoin}
