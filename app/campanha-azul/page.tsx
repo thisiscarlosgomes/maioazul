@@ -75,37 +75,48 @@ const calendarioAtividades = [
   {
 
    atividade: `Campanha Digital: "Visit Maio"`,
-    promotor: "visitmaio.com",
+    promotor: "visitmaio",
     data: "Maio - Setembro",
     meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
     linkLabel: "Website",
     link: "https://www.visitmaio.com",
   },
 
-  {
-   
-    atividade: `Programa: "Buy Maio. For Maio"`,
-    promotor: "Varios parceiros",
-    data: "Maio - Setembro",
-    meses: ["Junho"],
+   {
+    atividade: "Programa de Valorização das Praias",
+    promotor: "Vários Parceiros",
+    data: "Maio - Julho",
+    meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
     linkLabel: "N/A",
     link: "",
   },
+ 
 
   {
     atividade: "Campanha de limpeza & Jogos - Bitche Rotcha",
     promotor: "Iaka / Ondaazul / Maioazul",
-    data: "9 Maio",
+    data: "9 de Maio",
     meses: ["Maio"],
     linkLabel: "N/A",
     link: "",
   },
   
+ 
+
+   {
+   
+    atividade: `Programa: "Buy Maio. For Maio"`,
+    promotor: "Vários parceiros",
+    data: "18 - 19 de Julho",
+    meses: ["Junho"],
+    linkLabel: "N/A",
+    link: "",
+  },
   {
-    atividade: "Programa de Valorização das Praias",
-    promotor: "Varios Parceiros",
-    data: "Maio - Julho",
-    meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
+    atividade: "4x4 Djarmai Offroad & Ação Social",
+    promotor: "4X4 Djarmai",
+    data: "25 de Julho",
+    meses: ["Julho"],
     linkLabel: "N/A",
     link: "",
   },
@@ -130,7 +141,7 @@ const calendarioAtividades = [
    
   {
     atividade: "Maio Digital: Blue Hackathon e Workshop",
-    promotor: "Varios parceiros",
+    promotor: "Vários parceiros",
     data: "20 - 21 Agosto",
     meses: ["Agosto"],
     linkLabel: "N/A",
@@ -143,6 +154,9 @@ const partnerLogos = [
   { src: "/logos/visitmaio.svg", alt: "Visit Maio" },
   { src: "/logos/iaka.png", alt: "IAKA" },
   { src: "/logos/mill2.png", alt: "MILL" },
+  { src: "/logos/oz.png", alt: "OndaAzul" },
+  { src: "/logos/4x4.png", alt: "4x4 Djarmai" },
+  { src: "/logos/jt.png", alt: "J&Tour" },
 ];
 
 const fadeUp = {
@@ -568,7 +582,7 @@ export default function CampanhaAzulPage() {
                 src={logo.src}
                 alt={logo.alt}
                 className={`w-auto object-contain opacity-90 ${
-                  logo.src.includes("mill2")
+                  logo.src.includes("mill2") || logo.src.includes("oz") || logo.src.includes("4x4")
                     ? "h-8 sm:h-10"
                     : "h-4 sm:h-5"
                 }`}
