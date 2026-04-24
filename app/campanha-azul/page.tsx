@@ -75,7 +75,7 @@ const calendarioAtividades = [
   {
 
    atividade: `Campanha Digital: "Visit Maio"`,
-    promotor: "VisitMaio",
+    promotor: "visitmaio.com",
     data: "Maio - Setembro",
     meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
     linkLabel: "Website",
@@ -85,16 +85,25 @@ const calendarioAtividades = [
   {
    
     atividade: `Programa: "Buy Maio. For Maio"`,
-    promotor: "Maioazul / Iaka",
+    promotor: "Varios parceiros",
     data: "Maio - Setembro",
     meses: ["Junho"],
+    linkLabel: "N/A",
+    link: "",
+  },
+
+  {
+    atividade: "Campanha de limpeza & Jogos - Bitche Rotcha",
+    promotor: "Iaka / Ondaazul / Maioazul",
+    data: "9 Maio",
+    meses: ["Maio"],
     linkLabel: "N/A",
     link: "",
   },
   
   {
     atividade: "Programa de Valorização das Praias",
-    promotor: "Maioazul / Iaka",
+    promotor: "Varios Parceiros",
     data: "Maio - Julho",
     meses: ["Maio", "Junho", "Julho", "Agosto", "Setembro"],
     linkLabel: "N/A",
@@ -111,7 +120,7 @@ const calendarioAtividades = [
   {
    
     atividade: "Jogos de Verão (Desportos Náuticos)",
-    promotor: "Maioazul / Iaka",
+    promotor: "Maioazul",
     data: "7 - 29 Agosto",
     meses: ["Agosto"],
     linkLabel: "N/A",
@@ -121,7 +130,7 @@ const calendarioAtividades = [
    
   {
     atividade: "Maio Digital: Blue Hackathon e Workshop",
-    promotor: "Maioazul",
+    promotor: "Varios parceiros",
     data: "20 - 21 Agosto",
     meses: ["Agosto"],
     linkLabel: "N/A",
@@ -489,28 +498,15 @@ export default function CampanhaAzulPage() {
             <div className="divide-y divide-white/15">
               {filteredCalendarActivities.map((item) => (
                 <div key={`${item.atividade}-${item.data}`} className="px-4 py-4 sm:px-6">
-                  <div className="grid gap-4 md:grid-cols-[1fr_2.6fr_auto] md:items-center">
+                  <div className="grid gap-4 md:grid-cols-[1fr_2.2fr_1.2fr] md:items-center">
                     <div>
                       <div className="text-base font-medium text-white">{item.data}</div>
                     </div>
                     <div className="min-w-0">
                       <div className="text-lg font-medium leading-tight text-white">{item.atividade}</div>
                     </div>
-                    <div>
-                      {item.link ? (
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex w-full min-w-[110px] items-center justify-center bg-[#3a2dff] px-4 py-2 text-sm font-medium text-white hover:bg-[#4d41ff] md:w-auto"
-                        >
-                          {item.linkLabel}
-                        </a>
-                      ) : (
-                        <span className="inline-flex w-full min-w-[110px] items-center justify-center border border-white/35 px-4 py-2 text-sm font-medium text-white/85 md:w-auto">
-                          Breve
-                        </span>
-                      )}
+                    <div className="min-w-0 md:text-right">
+                      <div className="text-base font-medium text-white/95 capitalize">{item.promotor}</div>
                     </div>
                   </div>
                 </div>

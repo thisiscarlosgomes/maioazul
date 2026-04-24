@@ -12,6 +12,7 @@ const copy = {
     partners: "Partners",
     visitMaio: "Visit Maio",
     dataPortal: "Data Portal",
+    campanhaAzul: "Campanha Azul",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
     facebook: "Facebook",
@@ -24,6 +25,7 @@ const copy = {
     partners: "Parceiros",
     visitMaio: "Visit Maio",
     dataPortal: "Portal de Dados",
+    campanhaAzul: "Campanha Azul",
     launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
     facebook: "Facebook",
@@ -124,6 +126,12 @@ export default function HomeClient() {
               className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
             >
               {t.dataPortal}
+            </Link>
+            <Link
+              href="/campanha-azul"
+              className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
+            >
+              {t.campanhaAzul}
             </Link>
           </div>
 
