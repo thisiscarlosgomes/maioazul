@@ -34,6 +34,7 @@ let weatherCacheMemory: WeatherCachePayload | null = null;
 
 const navItems = [
   { href: "/map", key: "explore" },
+  { href: "/experiences", key: "thingsToDo" },
   { href: "/experiences", key: "experiences" },
   { href: "/visa", key: "immigrationVisas" },
   { href: "/manifest", key: "manifest" },
@@ -102,6 +103,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
   const copy = {
     en: {
       explore: "Explore",
+      thingsToDo: "Things to Do",
       attractions: "Attractions",
       experiences: "Experiences",
       immigrationVisas: "Immigration & Visas",
@@ -115,6 +117,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
     },
     pt: {
       explore: "Explorar",
+      thingsToDo: "Coisas para Fazer",
       attractions: "Atrações",
       experiences: "Experiências",
       immigrationVisas: "Imigração & Vistos",
@@ -306,6 +309,7 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
             <nav className="mt-4 flex flex-col gap-2">
               {navItems
                 .filter((item) => item.key !== "guiaLocal")
+                .filter((item) => item.key !== "experiences")
                 .map((item) => {
                 const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
                 return (
