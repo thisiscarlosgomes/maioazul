@@ -85,6 +85,8 @@ export default function ExperiencesPage() {
       en: {
         title: "Experiences in Maio",
         aboutTitle: "Maio Curated",
+        eventsCta: "Things to Do",
+        eventsSubtitle: "Events and activities happening across Maio.",
         aboutBody:
           "Maio is a calm island where time moves slowly. The beauty is in the simple rhythm of days, open horizons, and a community that welcomes visitors who travel with care.",
         aboutBody2:
@@ -115,6 +117,8 @@ export default function ExperiencesPage() {
       pt: {
         title: "Experiências em Maio",
         aboutTitle: "Maio Curated",
+        eventsCta: "Coisas para Fazer",
+        eventsSubtitle: "Eventos e atividades a acontecer pelo Maio.",
         aboutBody:
           "Maio é uma ilha calma onde o tempo abranda. A beleza está no ritmo simples dos dias, nos horizontes abertos e na comunidade que recebe quem viaja com cuidado.",
         aboutBody2:
@@ -202,6 +206,24 @@ export default function ExperiencesPage() {
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
               {copy[lang].aboutBody}  {copy[lang].aboutBody2}
             </p>
+            <Link
+              href="/things-to-do"
+              className="group relative mt-4 block h-20 w-full overflow-hidden rounded-xl border border-black/30 bg-black sm:h-24"
+            >
+              <img
+                src="https://res.cloudinary.com/dhxfkhewr/image/upload/v1773214805/600473015_1172435288340497_4740791525896028162_n_qvdffk.jpg"
+                alt={copy[lang].eventsCta}
+                className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-black/55" />
+              <div className="absolute inset-0 flex items-center justify-center px-4">
+                <div className="text-lg font-semibold tracking-tight text-white sm:text-2xl">
+                  {copy[lang].eventsCta}
+                </div>
+              </div>
+            </Link>
 
           </div>
 
