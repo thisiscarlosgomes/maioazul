@@ -39,8 +39,8 @@ const events: EventItem[] = [
   {
     id: "offroad-djarmai",
     title: {
-      en: "OffRoad Djarmai & Acao Social",
-      pt: "OffRoad Djarmai & Ação Social",
+      en: "OffRoad Djarmai",
+      pt: "OffRoad Djarmai",
     },
     dateLabel: {
       en: "July 25",
@@ -55,16 +55,16 @@ const events: EventItem[] = [
   {
     id: "sete-sois-sete-luas-trust",
     title: {
-      en: "Centrum Sete Sois Sete Luas - Maio",
-      pt: "Centrum Sete Sóis Sete Luas - Maio",
+      en: "Centrum Sete Sois Sete Luas",
+      pt: "Centrum Sete Sóis Sete Luas",
     },
     dateLabel: {
       en: "May 9 | 19:00",
       pt: "9 de maio | 19h",
     },
     description: {
-      en: "Opening of the \"TRUST – Terra terra terra\" exhibition, tasting with Chef Nicolas Duberville, and concert by Banda Oásis. Painting workshops run in Maio schools from May 4 to 7.",
-      pt: "Inauguração da exposição \"TRUST – Terra terra terra\", degustação com o Chef Nicolas Duberville e concerto da Banda Oásis. As oficinas de pintura decorrem nas escolas do Maio de 4 a 7 de maio.",
+      en: "Opening of the \"TRUST – Terra terra terra\" exhibition, tasting with Chef Nicolas Duberville, and concert by Banda Oásis.",
+      pt: "Inauguração da exposição \"TRUST – Terra terra terra\", degustação com o Chef Nicolas Duberville e concerto da Banda Oásis.",
     },
     start: { month: 5, day: 9 },
   },
@@ -72,7 +72,7 @@ const events: EventItem[] = [
     id: "beach-volley-camp",
     title: {
       en: "Beach Volley Camp",
-      pt: "Beach Volley Camp",
+      pt: "Campus de Voleibol de Praia",
     },
     dateLabel: {
       en: "August 7 - 11",
@@ -84,7 +84,7 @@ const events: EventItem[] = [
     },
     description: {
       en: "Beach volleyball camp at Rotcha with training sessions and team drills.",
-      pt: "Campo de voleibol de praia na Rotcha com treinos e exercícios em equipa.",
+      pt: "Campus de voleibol de praia na Rotcha com treinos e exercícios em equipa.",
     },
     start: { month: 8, day: 7 },
   },
@@ -92,7 +92,7 @@ const events: EventItem[] = [
     id: "maio-summer-games",
     title: {
       en: "Maio Summer Games",
-      pt: "Jogos de Verão",
+      pt: "Jogos de Verão 2026",
     },
     dateLabel: {
       en: "August 7 - 28",
@@ -111,7 +111,7 @@ const events: EventItem[] = [
   {
     id: "municipal-day",
     title: {
-      en: "Municipal Day",
+      en: "Municipal Day - Sept 8th",
       pt: "Festas dia do Município",
     },
     dateLabel: {
@@ -127,8 +127,8 @@ const events: EventItem[] = [
   {
     id: "badj-conjunt",
     title: {
-      en: "Badje Conjunt",
-      pt: "Badje Conjunt",
+      en: "Badje Conjunt by IAKA",
+      pt: "Badje Conjunt by IAKA",
     },
     dateLabel: {
       en: "September 4",
@@ -158,6 +158,13 @@ const eventImageById: Record<string, string> = {
   "badj-conjunt":
     "https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1600&auto=format&fit=crop",
 };
+
+const campanhaAzulEventIds = new Set([
+  "offroad-djarmai",
+  "beach-volley-camp",
+  "maio-summer-games",
+  "badj-conjunt",
+]);
 
 export default function ThingsToDoPage() {
   const [lang] = useLang();
@@ -213,7 +220,7 @@ export default function ThingsToDoPage() {
         <div className="mx-auto mt-6 flex w-full max-w-5xl items-start justify-between gap-4 px-4">
           <div>
             <h1 className="mt-6 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-              {copy[lang].title}
+              Maio Curated
             </h1>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
               {copy[lang].subtitle}
@@ -240,6 +247,15 @@ export default function ThingsToDoPage() {
                   <CalendarDays className="h-3.5 w-3.5" />
                   {event.dateLabel[lang]}
                 </div>
+                {campanhaAzulEventIds.has(event.id) ? (
+                  <img
+                    src="/logos/caselo.png"
+                    alt="Campanha Azul 2026"
+                    className="absolute right-4 top-4 h-10 w-10 object-contain sm:h-12 sm:w-12"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : null}
               </div>
 
               <div className="px-5 py-5 sm:px-6 sm:py-6">
