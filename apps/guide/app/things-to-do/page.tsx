@@ -53,6 +53,22 @@ const events: EventItem[] = [
     start: { month: 7, day: 25 },
   },
   {
+    id: "sete-sois-sete-luas-trust",
+    title: {
+      en: "Centrum Sete Sois Sete Luas - Maio",
+      pt: "Centrum Sete Sóis Sete Luas - Maio",
+    },
+    dateLabel: {
+      en: "May 9 | 19:00",
+      pt: "9 de maio | 19h",
+    },
+    description: {
+      en: "Opening of the \"TRUST – Terra terra terra\" exhibition, tasting with Chef Nicolas Duberville, and concert by Banda Oásis. Painting workshops run in Maio schools from May 4 to 7.",
+      pt: "Inauguração da exposição \"TRUST – Terra terra terra\", degustação com o Chef Nicolas Duberville e concerto da Banda Oásis. As oficinas de pintura decorrem nas escolas do Maio de 4 a 7 de maio.",
+    },
+    start: { month: 5, day: 9 },
+  },
+  {
     id: "beach-volley-camp",
     title: {
       en: "Beach Volley Camp",
@@ -131,6 +147,8 @@ const eventImageById: Record<string, string> = {
     "https://res.cloudinary.com/dhxfkhewr/image/upload/v1777297844/alkjfal2_twmxpt.jpg",
   "offroad-djarmai":
     "https://res.cloudinary.com/dhxfkhewr/image/upload/v1777298628/aflj2af_n2fjnb.jpg",
+  "sete-sois-sete-luas-trust":
+    "https://res.cloudinary.com/dhxfkhewr/image/upload/v1777368298/maioazul/events/things-to-do/centro-sete-sois-sete-luas-maio-2026.jpg",
   "beach-volley-camp":
     "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770466647/maioazul/camp/volley.jpg",
   "maio-summer-games":
