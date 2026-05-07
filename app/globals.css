@@ -62,6 +62,14 @@ img {
   font-display: swap;
 }
 
+@font-face {
+  font-family: "JetBrainsMonoMedium";
+  src: url("/fonts/JetBrainsMono_Medium-s.p.2be60a00.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
 
   --primary: oklch(0.205 0 0);
@@ -392,4 +400,13 @@ body.map-fullscreen .bottom-nav {
 
 .map-pin--inactive {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+}
+
+@keyframes border-slide {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -20% 0;
+  }
 }
