@@ -10,6 +10,7 @@ const CMMAIO_FALLBACK: Record<number, Array<{ MES: number; VALOR_PAGO: number; S
     { MES: 1, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
     { MES: 2, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
     { MES: 3, VALOR_PAGO: 11396945, SIGLA: "CMMAIO" },
+    { MES: 4, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
   ],
 };
 

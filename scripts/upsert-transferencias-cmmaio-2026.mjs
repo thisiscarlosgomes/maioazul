@@ -11,6 +11,7 @@ const MONTHLY_VALUES_2026 = {
   1: 9219167,
   2: 9219167,
   3: 11396945,
+  4: 9219167,
 };
 
 const loadEnvFile = async (filePath) => {
@@ -79,7 +80,7 @@ async function run() {
           municipio: MUNICIPIO,
           view: "month",
           source: "Portal Transparência CV",
-          note: "2026 atualizado manualmente (MES=1 a MES=3).",
+          note: "2026 atualizado manualmente (MES=1 a MES=4).",
         },
         updatedAt: new Date(),
       },

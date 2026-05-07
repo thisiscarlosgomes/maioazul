@@ -197,6 +197,7 @@ const CMMAIO_TRANSFER_FALLBACK: Record<string, LocalGovernmentApiRow[]> = {
     { month: 1, valor_pago: 9219167 },
     { month: 2, valor_pago: 9219167 },
     { month: 3, valor_pago: 11396945 },
+    { month: 4, valor_pago: 9219167 },
   ],
 };
 

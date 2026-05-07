@@ -11,6 +11,24 @@ export type ManualFeedItem = {
 // Manual feed entries. Add new items here when updates are provided.
 export const MANUAL_FEED_UPDATES: ManualFeedItem[] = [
   {
+    id: "manual-2026-05-07-transferencias-estado-abril-municipios",
+    title: "Transferências do Estado para municípios (abril 2026)",
+    detail: "Atualização manual",
+    source: "manual",
+    updatedAt: "2026-05-07T14:35:00+08:00",
+    href: "/dashboard",
+    tone: "data",
+  },
+  {
+    id: "manual-2026-05-07-receitas-2026-ultimo-update",
+    title: "Receitas 2026 por recebedoria (atualização de 7 de maio)",
+    detail: "Atualização manual",
+    source: "manual",
+    updatedAt: "2026-05-07T14:25:00+08:00",
+    href: "/dashboard",
+    tone: "data",
+  },
+  {
     id: "manual-2026-04-13-receitas-2026-ultimos-dados",
     title: "Receitas 2026 por recebedoria (últimos dados)",
     detail: "Atualização manual",
