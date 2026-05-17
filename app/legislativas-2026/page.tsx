@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ElectionCountdown from "@/components/legislativas/ElectionCountdown";
+import MaioRealtimeResults from "@/components/legislativas/MaioRealtimeResults";
 
 type MesaMember = {
   nome: string;
@@ -306,6 +307,8 @@ export default function Legislativas2026Page() {
       <section className="relative z-10 mx-auto max-w-6xl space-y-6 px-6 pb-16 pt-2">
         <ElectionCountdown />
 
+        <MaioRealtimeResults />
+
         <header className="rounded-lg border border-border bg-card px-6 py-6 sm:px-8">
           <h1 className="text-base font-semibold sm:text-lg">Legislativas 2026 · Maio</h1>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -330,7 +333,7 @@ export default function Legislativas2026Page() {
         </header>
 
         <section className="rounded-lg border border-border bg-card px-6 py-6 sm:px-8">
-          <h2 className="text-base font-semibold sm:text-lg">Comparação com Autárquicas</h2>
+          <h2 className="text-base font-semibold sm:text-lg">Comparação com Autárquicas · Maio</h2>
           <p className="mt-1 text-sm text-muted-foreground">Inscritos: autárquicas 2024 vs legislativas 2026.</p>
 
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
