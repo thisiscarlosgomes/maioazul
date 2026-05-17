@@ -15,11 +15,6 @@ type Version = {
   type?: string;
 };
 
-type Deputado = {
-  circulo?: string;
-  partido?: string;
-};
-
 type MaioVotesEntry = {
   id?: string;
   pct?: number;
@@ -49,6 +44,16 @@ type MaioGraphics = {
     total_circulo?: number;
     pct_pub?: number;
   };
+  elected?: {
+    total?: number;
+    value?: number;
+    pct?: number;
+    toelect?: number;
+    candidates?: Array<{
+      id?: string;
+      elected?: number;
+    }>;
+  };
 };
 
 type NacionalGraphics = {
@@ -73,7 +78,6 @@ type NacionalGraphics = {
 
 const VERSION_URL = "https://eleicoes.cv/data/version.json";
 const REGIONS_URL = "https://eleicoes.cv/data/regions.json";
-const DEPUTADOS_URL = "https://eleicoes.cv/data/deputados.json";
 
 type ApiPayload = {
   ok: boolean;
@@ -151,10 +155,9 @@ export async function GET() {
   try {
     const warnings: string[] = [];
 
-    const [versionRes, regionsRes, deputadosRes] = await Promise.all([
+    const [versionRes, regionsRes] = await Promise.all([
       fetchJsonWithTimeout<Version>(VERSION_URL),
       fetchJsonWithTimeout<Region[]>(REGIONS_URL),
-      fetchJsonWithTimeout<Deputado[]>(DEPUTADOS_URL),
     ]);
 
     const versionJson: Version = versionRes.ok ? versionRes.data : {};
@@ -162,9 +165,6 @@ export async function GET() {
 
     const regionsJson: Region[] = regionsRes.ok ? regionsRes.data : [];
     if (!regionsRes.ok) warnings.push(regionsRes.error);
-
-    const deputadosJson: Deputado[] = deputadosRes.ok ? deputadosRes.data : [];
-    if (!deputadosRes.ok) warnings.push(deputadosRes.error);
 
     const versionTag = String(versionJson.version || "").trim();
     const MAIO_RESULTS_URL = versionTag
@@ -193,20 +193,9 @@ export async function GET() {
     }
 
     const regions = asArray<Region>(regionsJson);
-    const deputados = asArray<Deputado>(deputadosJson);
 
     const maio =
       regions.find((item) => String(item.code || "").toLowerCase() === "ma") ?? null;
-
-    const deputadosMaio = deputados.filter(
-      (item) => String(item.circulo || "").toLowerCase() === "ma",
-    );
-
-    const byParty = deputadosMaio.reduce<Record<string, number>>((acc, item) => {
-      const party = String(item.partido || "N/D").toUpperCase();
-      acc[party] = (acc[party] || 0) + 1;
-      return acc;
-    }, {});
 
     const votosPorPartido = asArray<MaioVotesEntry>(maioGraphics?.votos)
       .map((item) => ({
@@ -217,6 +206,22 @@ export async function GET() {
         eleitos: Number(item.elected || 0),
       }))
       .sort((a, b) => b.votos - a.votos);
+
+    const eleitosPorPartidoFromResults = asArray<{
+      id?: string;
+      elected?: number;
+    }>(maioGraphics?.elected?.candidates).reduce<
+      Record<string, number>
+    >((acc, item) => {
+      const party = String(item?.id || "N/D").toUpperCase();
+      const count = Number(item?.elected || 0);
+      if (count > 0) acc[party] = count;
+      return acc;
+    }, {});
+
+    const deputadosEleitosTotal =
+      Number(maioGraphics?.elected?.value ?? 0) ||
+      Object.values(eleitosPorPartidoFromResults).reduce((sum, n) => sum + n, 0);
 
     const payload: ApiPayload = {
       ok: true,
@@ -254,8 +259,8 @@ export async function GET() {
         name: maio?.name ?? "MAIO",
         inscritos: maio?.nr_inscritos ?? null,
         vagas: maio?.nr_vaga ?? null,
-        deputadosEleitosTotal: deputadosMaio.length,
-        deputadosEleitosPorPartido: byParty,
+        deputadosEleitosTotal,
+        deputadosEleitosPorPartido: eleitosPorPartidoFromResults,
         lider: {
           partidos: asArray<string>(maioGraphics?.nafrente?.ids),
           votos: Number(maioGraphics?.nafrente?.value || 0),
