@@ -29,6 +29,11 @@ type RealtimePayload = {
       percentagem: number;
       eleitos: number;
     }>;
+    mesas?: {
+      total?: number;
+      value?: number;
+      pct?: number;
+    } | null;
   };
   message?: string;
 };
