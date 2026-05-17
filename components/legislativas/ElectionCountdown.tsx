@@ -51,7 +51,7 @@ export default function ElectionCountdown() {
       <p className="hidden opacity-50 text-center">Quando os cabo-verdianos vão votar</p>
       <div className="rounded-md px-3 py-6 sm:px-6">
         {timeLeft.ended ? (
-          <p className="text-center [font-family:'JetBrainsMonoMedium',monospace] text-md font-bold tracking-[0.12em] text-red-600 dark:text-red-400 sm:text-md">
+          <p className="text-center [font-family:'JetBrainsMonoMedium',monospace] text-sm font-bold tracking-[0.12em] text-blue-600 dark:text-red-400 sm:text-sm">
             Apurando resultados
           </p>
         ) : (

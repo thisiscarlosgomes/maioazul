@@ -21,11 +21,24 @@ type RealtimePayload = {
       apuradas?: number;
       percentagem?: number;
     };
+    votosPorPartido?: Array<{
+      id: string;
+      votos: number;
+      percentagem: number;
+      eleitos: number;
+    }>;
   };
   message?: string;
 };
 
 const nf = new Intl.NumberFormat("pt-PT");
+
+function partyColor(id: string) {
+  const party = id.trim().toUpperCase();
+  if (party === "MPD") return "#2e7d32";
+  if (party === "PAICV") return "#f2c94c";
+  return "#0a3b66";
+}
 
 export default function NacionalRealtimeCard() {
   const [data, setData] = useState<RealtimePayload | null>(null);
@@ -86,6 +99,11 @@ export default function NacionalRealtimeCard() {
     return { total, apuradas, pendentes, pctApuradas, pctPendentes };
   }, [data]);
 
+  const topTwo = useMemo(() => {
+    const rows = [...(data?.nacional?.votosPorPartido ?? [])].sort((a, b) => b.votos - a.votos);
+    return rows.slice(0, 2);
+  }, [data]);
+
   return (
     <section className="rounded-lg border border-border bg-card px-6 py-6 sm:px-8">
       <h2 className="text-base font-semibold sm:text-lg">Resumo Nacional em tempo real</h2>
@@ -122,11 +140,31 @@ export default function NacionalRealtimeCard() {
             </div>
           </div>
 
-          <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-muted">
-            <div
-              className="h-full rounded-full bg-emerald-600"
-              style={{ width: `${Math.max(0, Math.min(100, progress.pctApuradas))}%` }}
-            />
+          <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
+            <p className="text-xs text-muted-foreground">CORRIDA NACIONAL (1º vs 2º)</p>
+            <div className="mt-2 space-y-2">
+              {topTwo.map((row) => (
+                <div key={row.id} className="flex items-center justify-between text-sm">
+                  <span className="font-medium">{row.id}</span>
+                  <span className="text-muted-foreground">
+                    {nf.format(row.votos)} · {row.percentagem.toFixed(1)}%
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-muted">
+              {topTwo.map((row) => (
+                <div
+                  key={`seg-${row.id}`}
+                  className="h-full"
+                  style={{
+                    width: `${Math.max(0, Math.min(100, row.percentagem))}%`,
+                    backgroundColor: partyColor(row.id),
+                    float: "left",
+                  }}
+                />
+              ))}
+            </div>
           </div>
 
           <p className="mt-3 text-xs text-muted-foreground">

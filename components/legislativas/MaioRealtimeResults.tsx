@@ -130,6 +130,39 @@ export default function MaioRealtimeResults() {
         Atualizado automaticamente a cada 30 segundos (fonte: eleicoes.cv).
       </p>
 
+      {data ? (
+        <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
+          <p className="text-xs text-muted-foreground">CORRIDA DE VOTOS (%)</p>
+          <div className="mt-3 space-y-3">
+            {voteRace.length ? (
+              voteRace.map((row) => (
+                <div key={row.id}>
+                  <div className="mb-1 flex items-center justify-between text-sm">
+                    <span className="font-medium">{row.id}</span>
+                    <span className="text-muted-foreground">
+                      {nf.format(row.votos)} · {row.percentagem.toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full"
+                      aria-label={`Barra ${row.id}`}
+                      title={row.id}
+                      style={{
+                        backgroundColor: partyBarColor(row.id),
+                        width: `${Math.max(0, Math.min(100, row.percentagem))}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              ))
+            ) : (
+              <span className="text-sm text-muted-foreground">Sem votos publicados ainda.</span>
+            )}
+          </div>
+        </div>
+      ) : null}
+
       {loading && !data ? <p className="mt-4 text-sm text-muted-foreground">A carregar...</p> : null}
 
       {error && !data ? (
@@ -204,37 +237,6 @@ export default function MaioRealtimeResults() {
                 className="h-full rounded-full bg-emerald-600"
                 style={{ width: `${Math.max(0, Math.min(100, mesasResumo.pctApuradas))}%` }}
               />
-            </div>
-          </div>
-
-          <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
-            <p className="text-xs text-muted-foreground">CORRIDA DE VOTOS (%)</p>
-            <div className="mt-3 space-y-3">
-              {voteRace.length ? (
-                voteRace.map((row) => (
-                  <div key={row.id}>
-                    <div className="mb-1 flex items-center justify-between text-sm">
-                      <span className="font-medium">{row.id}</span>
-                      <span className="text-muted-foreground">
-                        {nf.format(row.votos)} · {row.percentagem.toFixed(1)}%
-                      </span>
-                    </div>
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                      <div
-                        className="h-full rounded-full"
-                        aria-label={`Barra ${row.id}`}
-                        title={row.id}
-                        style={{
-                          backgroundColor: partyBarColor(row.id),
-                          width: `${Math.max(0, Math.min(100, row.percentagem))}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <span className="text-sm text-muted-foreground">Sem votos publicados ainda.</span>
-              )}
             </div>
           </div>
 
