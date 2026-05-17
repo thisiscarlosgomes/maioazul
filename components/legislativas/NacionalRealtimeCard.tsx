@@ -99,9 +99,13 @@ export default function NacionalRealtimeCard() {
     return { total, apuradas, pendentes, pctApuradas, pctPendentes };
   }, [data]);
 
-  const topTwo = useMemo(() => {
+  const raceAllParties = useMemo(() => {
     const rows = [...(data?.nacional?.votosPorPartido ?? [])].sort((a, b) => b.votos - a.votos);
-    return rows.slice(0, 2);
+    const totalPct = rows.reduce((acc, row) => acc + Math.max(0, row.percentagem || 0), 0);
+    return rows.map((row) => ({
+      ...row,
+      normalizedPct: totalPct > 0 ? (Math.max(0, row.percentagem || 0) / totalPct) * 100 : 0,
+    }));
   }, [data]);
 
   return (
@@ -141,9 +145,9 @@ export default function NacionalRealtimeCard() {
           </div>
 
           <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
-            <p className="text-xs text-muted-foreground">CORRIDA NACIONAL (1º vs 2º)</p>
+            <p className="text-xs text-muted-foreground">CORRIDA NACIONAL (TODOS OS PARTIDOS)</p>
             <div className="mt-2 space-y-2">
-              {topTwo.map((row) => (
+              {raceAllParties.map((row) => (
                 <div key={row.id} className="flex items-center justify-between text-sm">
                   <span className="font-medium">{row.id}</span>
                   <span className="text-muted-foreground">
@@ -152,13 +156,26 @@ export default function NacionalRealtimeCard() {
                 </div>
               ))}
             </div>
+            <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
+              {raceAllParties.map((row) => (
+                <span key={`pct-${row.id}`} className="inline-flex items-center gap-1">
+                  <span
+                    className="inline-block h-2 w-2 rounded-full"
+                    style={{ backgroundColor: partyColor(row.id) }}
+                  />
+                  <span>
+                    {row.id}: {row.percentagem.toFixed(1)}%
+                  </span>
+                </span>
+              ))}
+            </div>
             <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-muted">
-              {topTwo.map((row) => (
+              {raceAllParties.map((row) => (
                 <div
                   key={`seg-${row.id}`}
                   className="h-full"
                   style={{
-                    width: `${Math.max(0, Math.min(100, row.percentagem))}%`,
+                    width: `${Math.max(0, Math.min(100, row.normalizedPct))}%`,
                     backgroundColor: partyColor(row.id),
                     float: "left",
                   }}

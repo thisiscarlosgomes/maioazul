@@ -123,12 +123,50 @@ export default function MaioRealtimeResults() {
     return { total, apuradas, pendentes, pctApuradas, pctPendentes };
   }, [data]);
 
+  const finalResult = useMemo(() => {
+    const total = mesasResumo.total;
+    const apuradas = mesasResumo.apuradas;
+    const isFinal = total > 0 && apuradas >= total;
+    const first = voteRace[0];
+    const second = voteRace[1];
+
+    if (!isFinal || !first) {
+      return { isFinal: false, headline: "", detail: "" };
+    }
+
+    const isTie = !!second && first.votos === second.votos;
+    if (isTie) {
+      return {
+        isFinal: true,
+        headline: "Resultado Final: Empate técnico",
+        detail: `${first.id} e ${second.id} com ${nf.format(first.votos)} votos cada.`,
+      };
+    }
+
+    return {
+      isFinal: true,
+      headline: `Resultado Final: ${first.id} venceu em Maio`,
+      detail: `${nf.format(first.votos)} votos · ${first.percentagem.toFixed(1)}%`,
+    };
+  }, [mesasResumo.apuradas, mesasResumo.total, voteRace]);
+
   return (
     <section className="rounded-lg border border-border bg-card px-6 py-6 sm:px-8">
       <h2 className="text-base font-semibold sm:text-lg">Resultados em tempo real · Maio</h2>
       <p className="mt-1 text-sm text-muted-foreground">
         Atualizado automaticamente a cada 30 segundos (fonte: eleicoes.cv).
       </p>
+
+      {finalResult.isFinal ? (
+        <div className="mt-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4">
+          <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+            {finalResult.headline}
+          </p>
+          <p className="mt-1 text-sm text-emerald-800/90 dark:text-emerald-200/90">
+            {finalResult.detail}
+          </p>
+        </div>
+      ) : null}
 
       {data ? (
         <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
@@ -212,16 +250,18 @@ export default function MaioRealtimeResults() {
             </div>
           </div>
 
-          <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
-            <p className="text-xs text-muted-foreground">PARTIDO NA FRENTE</p>
-            <p className="mt-1 text-base font-semibold">
-              {(data?.maio?.lider?.partidos ?? []).join(", ") || "N/D"}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {nf.format(data?.maio?.lider?.votos ?? 0)} votos ·{" "}
-              {(data?.maio?.lider?.percentagem ?? 0).toFixed(1)}%
-            </p>
-          </div>
+          {!finalResult.isFinal ? (
+            <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
+              <p className="text-xs text-muted-foreground">PARTIDO NA FRENTE</p>
+              <p className="mt-1 text-base font-semibold">
+                {(data?.maio?.lider?.partidos ?? []).join(", ") || "N/D"}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {nf.format(data?.maio?.lider?.votos ?? 0)} votos ·{" "}
+                {(data?.maio?.lider?.percentagem ?? 0).toFixed(1)}%
+              </p>
+            </div>
+          ) : null}
 
           <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
             <p className="text-xs text-muted-foreground">PROGRESSO DAS MESAS</p>
