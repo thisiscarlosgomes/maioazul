@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type RealtimePayload = {
@@ -38,6 +39,16 @@ function partyColor(id: string) {
   if (party === "MPD") return "#2e7d32";
   if (party === "PAICV") return "#f2c94c";
   return "#0a3b66";
+}
+
+function partyImageSrc(id: string) {
+  const party = id.trim().toUpperCase();
+  if (party === "MPD") return "/partidos/mpd.jpg";
+  if (party === "PAICV") return "/partidos/paicv.jpg";
+  if (party === "UCID") return "/partidos/ucid.jpg";
+  if (party === "PTS") return "/partidos/pts.jpg";
+  if (party === "PP") return "/partidos/pp.jpg";
+  return null;
 }
 
 export default function NacionalRealtimeCard() {
@@ -149,7 +160,18 @@ export default function NacionalRealtimeCard() {
             <div className="mt-2 space-y-2">
               {raceAllParties.map((row) => (
                 <div key={row.id} className="flex items-center justify-between text-sm">
-                  <span className="font-medium">{row.id}</span>
+                  <span className="inline-flex items-center gap-2 font-medium">
+                    {partyImageSrc(row.id) ? (
+                      <Image
+                        src={partyImageSrc(row.id) || ""}
+                        alt={row.id}
+                        width={18}
+                        height={18}
+                        className="h-[18px] w-[18px] rounded-full object-cover"
+                      />
+                    ) : null}
+                    <span>{row.id}</span>
+                  </span>
                   <span className="text-muted-foreground">
                     {nf.format(row.votos)} · {row.percentagem.toFixed(1)}%
                   </span>
