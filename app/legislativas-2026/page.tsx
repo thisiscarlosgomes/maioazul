@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ElectionCountdown from "@/components/legislativas/ElectionCountdown";
 import NacionalRealtimeCard from "@/components/legislativas/NacionalRealtimeCard";
 import MaioRealtimeResults from "@/components/legislativas/MaioRealtimeResults";
+import MaioLiveStats from "@/components/legislativas/MaioLiveStats";
 
 type MesaMember = {
   nome: string;
@@ -332,6 +333,8 @@ export default function Legislativas2026Page() {
               <p className="mt-1 text-lg font-semibold sm:text-xl">{TOTAL_MAVS}</p>
             </div>
           </div>
+
+          <MaioLiveStats />
         </header>
 
         <section className="rounded-lg border border-border bg-card px-6 py-6 sm:px-8">
