@@ -170,8 +170,8 @@ export async function GET() {
     const MAIO_RESULTS_URL = versionTag
       ? `https://eleicoes.cv/data/${versionTag}/ma.json`
       : null;
-    const NACIONAL_RESULTS_URL = versionTag
-      ? `https://eleicoes.cv/data/${versionTag}/nacional.json`
+    const GLOBAL_RESULTS_URL = versionTag
+      ? `https://eleicoes.cv/data/${versionTag}/global.json`
       : null;
 
     let maioGraphics: MaioGraphics | null = null;
@@ -184,12 +184,12 @@ export async function GET() {
     }
 
     let nacionalGraphics: NacionalGraphics | null = null;
-    if (NACIONAL_RESULTS_URL) {
-      const nacionalRes = await fetchJsonWithTimeout<{ graphics?: { nacional?: NacionalGraphics } }>(
-        NACIONAL_RESULTS_URL,
+    if (GLOBAL_RESULTS_URL) {
+      const globalRes = await fetchJsonWithTimeout<{ graphics?: { global?: NacionalGraphics } }>(
+        GLOBAL_RESULTS_URL,
       );
-      if (nacionalRes.ok) nacionalGraphics = nacionalRes.data?.graphics?.nacional ?? null;
-      else warnings.push(nacionalRes.error);
+      if (globalRes.ok) nacionalGraphics = globalRes.data?.graphics?.global ?? null;
+      else warnings.push(globalRes.error);
     }
 
     const regions = asArray<Region>(regionsJson);
