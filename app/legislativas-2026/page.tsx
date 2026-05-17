@@ -373,7 +373,7 @@ export default function Legislativas2026Page() {
             </div>
           </div>
 
-          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4">
             <div className="rounded-md border border-border bg-muted/20 p-3">
               <p className="text-[11px] text-muted-foreground">Votantes 2025</p>
               <p className="mt-1 text-base font-semibold">{numberFormatter.format(AUTARQUICAS_VOTANTES_2025)}</p>

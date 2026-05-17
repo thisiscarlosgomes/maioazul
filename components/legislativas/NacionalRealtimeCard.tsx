@@ -121,8 +121,8 @@ export default function NacionalRealtimeCard() {
 
   return (
     <section className="rounded-lg border border-border bg-card px-6 py-6 sm:px-8">
-      <h2 className="text-base font-semibold sm:text-lg">Resumo Nacional em tempo real</h2>
-      <p className="mt-1 text-sm text-muted-foreground">Lider nacional e progresso de apuramento das mesas.</p>
+      <h2 className="text-base font-semibold sm:text-lg">Resumo Global em tempo real</h2>
+      <p className="mt-1 text-sm text-muted-foreground">Lider global e progresso de apuramento das mesas.</p>
 
       {loading && !data ? <p className="mt-4 text-sm text-muted-foreground">A carregar...</p> : null}
       {error && !data ? (
@@ -135,7 +135,7 @@ export default function NacionalRealtimeCard() {
         <>
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="rounded-md border border-border bg-muted/20 p-4">
-              <p className="text-xs text-muted-foreground">PARTIDO NA FRENTE (NACIONAL)</p>
+              <p className="text-xs text-muted-foreground">PARTIDO NA FRENTE (GLOBAL)</p>
               <p className="mt-1 text-xl font-semibold">
                 {(data?.nacional?.lider?.partidos ?? []).join(", ") || "N/D"}
               </p>
@@ -156,7 +156,7 @@ export default function NacionalRealtimeCard() {
           </div>
 
           <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
-            <p className="text-xs text-muted-foreground">CORRIDA NACIONAL (TODOS OS PARTIDOS)</p>
+            <p className="text-xs text-muted-foreground">CORRIDA GLOBAL (TODOS OS PARTIDOS)</p>
             <div className="mt-2 space-y-2">
               {raceAllParties.map((row) => (
                 <div key={row.id} className="flex items-center justify-between text-sm">
