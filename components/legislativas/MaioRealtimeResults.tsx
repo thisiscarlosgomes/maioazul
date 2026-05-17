@@ -263,23 +263,6 @@ export default function MaioRealtimeResults() {
             </div>
           ) : null}
 
-          <div className="mt-4 rounded-md border border-border bg-muted/20 p-4">
-            <p className="text-xs text-muted-foreground">PROGRESSO DAS MESAS</p>
-            <p className="mt-1 text-base font-semibold">
-              {nf.format(mesasResumo.pendentes)} por concluir · {mesasResumo.pctPendentes.toFixed(1)}%
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {nf.format(mesasResumo.apuradas)} de {nf.format(mesasResumo.total)} apuradas ·{" "}
-              {mesasResumo.pctApuradas.toFixed(1)}%
-            </p>
-            <div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-emerald-600"
-                style={{ width: `${Math.max(0, Math.min(100, mesasResumo.pctApuradas))}%` }}
-              />
-            </div>
-          </div>
-
           <p className="mt-3 text-xs text-muted-foreground">
             Versao {data?.version?.version ?? "-"} · {data?.version?.date ?? "--"} {data?.version?.time ?? "--"}
           </p>
