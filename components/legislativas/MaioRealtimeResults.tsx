@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type RealtimePayload = {
   ok?: boolean;
@@ -51,12 +51,16 @@ export default function MaioRealtimeResults() {
   const [data, setData] = useState<RealtimePayload | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [lastUpdatedAt, setLastUpdatedAt] = useState<number | null>(null);
+  const hasDataRef = useRef(false);
 
   useEffect(() => {
     let mounted = true;
 
-    async function load() {
+    async function load(initial = false) {
       try {
+        if (!initial) setRefreshing(true);
         const response = await fetch("/api/eleicoes/resultados-maio", { cache: "no-store" });
         const payload = (await response.json()) as RealtimePayload;
 
@@ -66,16 +70,27 @@ export default function MaioRealtimeResults() {
 
         if (!mounted) return;
         setData(payload);
+        hasDataRef.current = true;
+        setLastUpdatedAt(Date.now());
+        setError(null);
       } catch (err) {
         if (!mounted) return;
-        setError(err instanceof Error ? err.message : "Falha ao carregar resultados.");
+        const message = err instanceof Error ? err.message : "Falha ao carregar resultados.";
+        if (!hasDataRef.current) {
+          setError(message);
+        } else {
+          setError(null);
+        }
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+          setRefreshing(false);
+        }
       }
     }
 
-    load();
-    const id = window.setInterval(load, 30_000);
+    load(true);
+    const id = window.setInterval(() => load(false), 30_000);
     return () => {
       mounted = false;
       window.clearInterval(id);
@@ -115,15 +130,15 @@ export default function MaioRealtimeResults() {
         Atualizado automaticamente a cada 30 segundos (fonte: eleicoes.cv).
       </p>
 
-      {loading ? <p className="mt-4 text-sm text-muted-foreground">A carregar...</p> : null}
+      {loading && !data ? <p className="mt-4 text-sm text-muted-foreground">A carregar...</p> : null}
 
-      {error ? (
+      {error && !data ? (
         <p className="mt-4 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:border-red-500/40 dark:bg-red-500/10 dark:text-red-300">
           {error}
         </p>
       ) : null}
 
-      {!loading && !error ? (
+      {data ? (
         <>
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-md border border-border bg-muted/20 p-4">
@@ -225,6 +240,13 @@ export default function MaioRealtimeResults() {
 
           <p className="mt-3 text-xs text-muted-foreground">
             Versao {data?.version?.version ?? "-"} · {data?.version?.date ?? "--"} {data?.version?.time ?? "--"}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {refreshing
+              ? "A atualizar dados..."
+              : lastUpdatedAt
+                ? `Última atualização local: ${new Date(lastUpdatedAt).toLocaleTimeString("pt-PT")}`
+                : ""}
           </p>
         </>
       ) : null}

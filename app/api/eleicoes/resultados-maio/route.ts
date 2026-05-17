@@ -51,6 +51,20 @@ type MaioGraphics = {
   };
 };
 
+type NacionalGraphics = {
+  nafrente?: {
+    ids?: string[];
+    value?: number;
+    pct?: number;
+    total?: number;
+  };
+  mesas?: {
+    total?: number;
+    value?: number;
+    pct?: number;
+  };
+};
+
 const VERSION_URL = "https://eleicoes.cv/data/version.json";
 const REGIONS_URL = "https://eleicoes.cv/data/regions.json";
 const DEPUTADOS_URL = "https://eleicoes.cv/data/deputados.json";
@@ -92,6 +106,9 @@ export async function GET() {
     const MAIO_RESULTS_URL = versionTag
       ? `https://eleicoes.cv/data/${versionTag}/ma.json`
       : null;
+    const NACIONAL_RESULTS_URL = versionTag
+      ? `https://eleicoes.cv/data/${versionTag}/nacional.json`
+      : null;
 
     let maioGraphics: MaioGraphics | null = null;
     if (MAIO_RESULTS_URL) {
@@ -101,6 +118,17 @@ export async function GET() {
           graphics?: { ma?: MaioGraphics };
         };
         maioGraphics = maioResultsJson?.graphics?.ma ?? null;
+      }
+    }
+
+    let nacionalGraphics: NacionalGraphics | null = null;
+    if (NACIONAL_RESULTS_URL) {
+      const nacionalResultsRes = await fetch(NACIONAL_RESULTS_URL, { cache: "no-store" });
+      if (nacionalResultsRes.ok) {
+        const nacionalResultsJson = (await nacionalResultsRes.json()) as {
+          graphics?: { nacional?: NacionalGraphics };
+        };
+        nacionalGraphics = nacionalResultsJson?.graphics?.nacional ?? null;
       }
     }
 
@@ -135,6 +163,19 @@ export async function GET() {
         ok: true,
         source: "https://eleicoes.cv",
         version: versionJson,
+        nacional: {
+          lider: {
+            partidos: asArray<string>(nacionalGraphics?.nafrente?.ids),
+            votos: Number(nacionalGraphics?.nafrente?.value || 0),
+            percentagem: Number(nacionalGraphics?.nafrente?.pct || 0),
+            totalVotosContados: Number(nacionalGraphics?.nafrente?.total || 0),
+          },
+          mesas: {
+            total: Number(nacionalGraphics?.mesas?.total || 0),
+            apuradas: Number(nacionalGraphics?.mesas?.value || 0),
+            percentagem: Number(nacionalGraphics?.mesas?.pct || 0),
+          },
+        },
         maio: {
           code: maio?.code ?? "ma",
           name: maio?.name ?? "MAIO",

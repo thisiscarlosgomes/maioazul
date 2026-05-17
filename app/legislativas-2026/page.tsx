@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ElectionCountdown from "@/components/legislativas/ElectionCountdown";
+import NacionalRealtimeCard from "@/components/legislativas/NacionalRealtimeCard";
 import MaioRealtimeResults from "@/components/legislativas/MaioRealtimeResults";
 
 type MesaMember = {
@@ -306,6 +307,7 @@ export default function Legislativas2026Page() {
 
       <section className="relative z-10 mx-auto max-w-6xl space-y-6 px-6 pb-16 pt-2">
         <ElectionCountdown />
+        <NacionalRealtimeCard />
 
         <MaioRealtimeResults />
 
