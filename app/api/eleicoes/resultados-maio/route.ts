@@ -68,6 +68,25 @@ type NacionalGraphics = {
     value?: number;
     pct?: number;
   };
+  votantes?: {
+    total?: number;
+    value?: number;
+    abstention?: number;
+    abstention_pct?: number;
+    pct?: number;
+    total_circulo?: number;
+    pct_pub?: number;
+  };
+  brancos?: {
+    total?: number;
+    value?: number;
+    pct?: number;
+  };
+  nulos?: {
+    total?: number;
+    value?: number;
+    pct?: number;
+  };
   votos?: Array<{
     id?: string;
     pct?: number;
@@ -96,6 +115,25 @@ type ApiPayload = {
       total: number;
       apuradas: number;
       percentagem: number;
+    };
+    geral: {
+      inscritos: number;
+      votantes: {
+        valor: number;
+        percentagem: number;
+      };
+      abstencao: {
+        valor: number;
+        percentagem: number;
+      };
+      nulos: {
+        valor: number;
+        percentagem: number;
+      };
+      brancos: {
+        valor: number;
+        percentagem: number;
+      };
     };
     votosPorPartido: Array<{
       id: string;
@@ -240,6 +278,25 @@ export async function GET() {
           apuradas: Number(nacionalGraphics?.mesas?.value || 0),
           percentagem: Number(nacionalGraphics?.mesas?.pct || 0),
         },
+        geral: {
+          inscritos: Number(nacionalGraphics?.votantes?.total || 0),
+          votantes: {
+            valor: Number(nacionalGraphics?.votantes?.value || 0),
+            percentagem: Number(nacionalGraphics?.votantes?.pct || 0),
+          },
+          abstencao: {
+            valor: Number(nacionalGraphics?.votantes?.abstention || 0),
+            percentagem: Number(nacionalGraphics?.votantes?.abstention_pct || 0),
+          },
+          nulos: {
+            valor: Number(nacionalGraphics?.nulos?.value || 0),
+            percentagem: Number(nacionalGraphics?.nulos?.pct || 0),
+          },
+          brancos: {
+            valor: Number(nacionalGraphics?.brancos?.value || 0),
+            percentagem: Number(nacionalGraphics?.brancos?.pct || 0),
+          },
+        },
         votosPorPartido: asArray<{
           id?: string;
           pct?: number;
@@ -328,6 +385,13 @@ export async function GET() {
         nacional: {
           lider: { partidos: [], votos: 0, percentagem: 0, totalVotosContados: 0 },
           mesas: { total: 0, apuradas: 0, percentagem: 0 },
+          geral: {
+            inscritos: 0,
+            votantes: { valor: 0, percentagem: 0 },
+            abstencao: { valor: 0, percentagem: 0 },
+            nulos: { valor: 0, percentagem: 0 },
+            brancos: { valor: 0, percentagem: 0 },
+          },
           votosPorPartido: [],
         },
         maio: {

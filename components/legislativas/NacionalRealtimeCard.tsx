@@ -22,6 +22,25 @@ type RealtimePayload = {
       apuradas?: number;
       percentagem?: number;
     };
+    geral?: {
+      inscritos?: number;
+      votantes?: {
+        valor?: number;
+        percentagem?: number;
+      };
+      abstencao?: {
+        valor?: number;
+        percentagem?: number;
+      };
+      nulos?: {
+        valor?: number;
+        percentagem?: number;
+      };
+      brancos?: {
+        valor?: number;
+        percentagem?: number;
+      };
+    };
     votosPorPartido?: Array<{
       id: string;
       votos: number;
@@ -119,6 +138,9 @@ export default function NacionalRealtimeCard() {
     }));
   }, [data]);
 
+  const isNearFinal = progress.pctApuradas >= 98;
+  const winnerParty = (data?.nacional?.lider?.partidos ?? []).join(", ") || "N/D";
+
   return (
     <section className="rounded-lg border border-border bg-card px-6 py-6 sm:px-8">
       <h2 className="text-base font-semibold sm:text-lg">Resumo Global em tempo real</h2>
@@ -133,11 +155,61 @@ export default function NacionalRealtimeCard() {
 
       {data ? (
         <>
+          {isNearFinal ? (
+            <div className="mt-5 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4">
+              <p className="text-xs font-semibold tracking-wide text-emerald-700 dark:text-emerald-300">
+                RESULTADO GLOBAL PRATICAMENTE FINAL
+              </p>
+              <p className="mt-1 text-xl font-bold text-emerald-800 dark:text-emerald-200">
+                Vencedor: {winnerParty}
+              </p>
+              <p className="text-sm text-emerald-700/90 dark:text-emerald-300/90">
+                {progress.pctApuradas.toFixed(1)}% das mesas apuradas.
+              </p>
+            </div>
+          ) : null}
+
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-md border border-border bg-muted/20 p-4">
+              <p className="text-xs text-muted-foreground">VOTANTES</p>
+              <p className="mt-1 text-xl font-semibold">{nf.format(data?.nacional?.geral?.votantes?.valor ?? 0)}</p>
+              <p className="text-sm text-muted-foreground">
+                {(data?.nacional?.geral?.votantes?.percentagem ?? 0).toFixed(1)}% de {nf.format(data?.nacional?.geral?.inscritos ?? 0)} inscritos
+              </p>
+            </div>
+
+            <div className="rounded-md border border-border bg-muted/20 p-4">
+              <p className="text-xs text-muted-foreground">ABSTENCAO</p>
+              <p className="mt-1 text-xl font-semibold">{nf.format(data?.nacional?.geral?.abstencao?.valor ?? 0)}</p>
+              <p className="text-sm text-muted-foreground">
+                {(data?.nacional?.geral?.abstencao?.percentagem ?? 0).toFixed(1)}%
+              </p>
+            </div>
+
+            <div className="rounded-md border border-border bg-muted/20 p-4">
+              <p className="text-xs text-muted-foreground">NULOS</p>
+              <p className="mt-1 text-xl font-semibold">{nf.format(data?.nacional?.geral?.nulos?.valor ?? 0)}</p>
+              <p className="text-sm text-muted-foreground">
+                {(data?.nacional?.geral?.nulos?.percentagem ?? 0).toFixed(1)}%
+              </p>
+            </div>
+
+            <div className="rounded-md border border-border bg-muted/20 p-4">
+              <p className="text-xs text-muted-foreground">BRANCOS</p>
+              <p className="mt-1 text-xl font-semibold">{nf.format(data?.nacional?.geral?.brancos?.valor ?? 0)}</p>
+              <p className="text-sm text-muted-foreground">
+                {(data?.nacional?.geral?.brancos?.percentagem ?? 0).toFixed(1)}%
+              </p>
+            </div>
+          </div>
+
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="rounded-md border border-border bg-muted/20 p-4">
-              <p className="text-xs text-muted-foreground">PARTIDO NA FRENTE (GLOBAL)</p>
+              <p className="text-xs text-muted-foreground">
+                {isNearFinal ? "PARTIDO VENCEDOR (GLOBAL)" : "PARTIDO NA FRENTE (GLOBAL)"}
+              </p>
               <p className="mt-1 text-xl font-semibold">
-                {(data?.nacional?.lider?.partidos ?? []).join(", ") || "N/D"}
+                {winnerParty}
               </p>
               <p className="text-sm text-muted-foreground">
                 {nf.format(data?.nacional?.lider?.votos ?? 0)} votos · {(data?.nacional?.lider?.percentagem ?? 0).toFixed(1)}%
