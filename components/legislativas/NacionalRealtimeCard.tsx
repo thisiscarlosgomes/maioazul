@@ -156,16 +156,27 @@ export default function NacionalRealtimeCard() {
       {data ? (
         <>
           {isNearFinal ? (
-            <div className="mt-5 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4">
-              <p className="text-xs font-semibold tracking-wide text-emerald-700 dark:text-emerald-300">
-                RESULTADO GLOBAL PRATICAMENTE FINAL
-              </p>
-              <p className="mt-1 text-xl font-bold text-emerald-800 dark:text-emerald-200">
-                Vencedor: {winnerParty}
-              </p>
-              <p className="text-sm text-emerald-700/90 dark:text-emerald-300/90">
-                {progress.pctApuradas.toFixed(1)}% das mesas apuradas.
-              </p>
+            <div className="mt-5 flex items-center justify-between gap-4 rounded-md border border-[#f2c94c] bg-[#f2c94c]/15 p-4">
+              <div>
+                <p className="text-xs font-semibold tracking-wide text-[#8a6a00] dark:text-[#f2c94c]">
+                  RESULTADO GLOBAL PRATICAMENTE FINAL
+                </p>
+                <p className="mt-1 text-xl font-bold text-[#7a5b00] dark:text-[#f6d977]">
+                  Vencedor: {winnerParty}
+                </p>
+                <p className="text-sm text-[#8a6a00] dark:text-[#f2c94c]">
+                  {progress.pctApuradas.toFixed(1)}% das mesas apuradas.
+                </p>
+              </div>
+              {winnerParty.toUpperCase().includes("PAICV") ? (
+                <Image
+                  src="/partidos/paicv.jpg"
+                  alt="PAICV"
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 shrink-0 rounded-full border border-[#f2c94c] object-cover"
+                />
+              ) : null}
             </div>
           ) : null}
 

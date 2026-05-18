@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 type RealtimePayload = {
@@ -45,6 +46,16 @@ function partyBarColor(partyId: string) {
   if (id === "MPD") return "#2e7d32";
   if (id === "PAICV") return "#f2c94c";
   return "#0a3b66";
+}
+
+function partyImageSrc(id: string) {
+  const party = id.trim().toUpperCase();
+  if (party === "MPD") return "/partidos/mpd.jpg";
+  if (party === "PAICV") return "/partidos/paicv.jpg";
+  if (party === "UCID") return "/partidos/ucid.jpg";
+  if (party === "PTS") return "/partidos/pts.jpg";
+  if (party === "PP") return "/partidos/pp.jpg";
+  return null;
 }
 
 export default function MaioRealtimeResults() {
@@ -131,7 +142,7 @@ export default function MaioRealtimeResults() {
     const second = voteRace[1];
 
     if (!isFinal || !first) {
-      return { isFinal: false, headline: "", detail: "" };
+      return { isFinal: false, headline: "", detail: "", winnerId: "" };
     }
 
     const isTie = !!second && first.votos === second.votos;
@@ -140,6 +151,7 @@ export default function MaioRealtimeResults() {
         isFinal: true,
         headline: "Resultado Final: Empate técnico",
         detail: `${first.id} e ${second.id} com ${nf.format(first.votos)} votos cada.`,
+        winnerId: "",
       };
     }
 
@@ -147,6 +159,7 @@ export default function MaioRealtimeResults() {
       isFinal: true,
       headline: `Resultado Final: ${first.id} venceu em Maio`,
       detail: `${nf.format(first.votos)} votos · ${first.percentagem.toFixed(1)}%`,
+      winnerId: first.id,
     };
   }, [mesasResumo.apuradas, mesasResumo.total, voteRace]);
 
@@ -158,13 +171,24 @@ export default function MaioRealtimeResults() {
       </p>
 
       {finalResult.isFinal ? (
-        <div className="mt-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4">
-          <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-            {finalResult.headline}
-          </p>
-          <p className="mt-1 text-sm text-emerald-800/90 dark:text-emerald-200/90">
-            {finalResult.detail}
-          </p>
+        <div className="mt-4 flex items-center justify-between gap-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 p-4">
+          <div>
+            <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+              {finalResult.headline}
+            </p>
+            <p className="mt-1 text-sm text-emerald-800/90 dark:text-emerald-200/90">
+              {finalResult.detail}
+            </p>
+          </div>
+          {finalResult.winnerId && partyImageSrc(finalResult.winnerId) ? (
+            <Image
+              src={partyImageSrc(finalResult.winnerId) || ""}
+              alt={finalResult.winnerId}
+              width={48}
+              height={48}
+              className="h-12 w-12 shrink-0 rounded-full border border-emerald-500/40 object-cover"
+            />
+          ) : null}
         </div>
       ) : null}
 
