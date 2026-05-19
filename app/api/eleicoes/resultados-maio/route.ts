@@ -95,8 +95,7 @@ type NacionalGraphics = {
   }>;
 };
 
-const VERSION_URL = "https://eleicoes.cv/data/version.json";
-const REGIONS_URL = "https://eleicoes.cv/data/regions.json";
+const RAW_ELECTIONS_COLLECTION = "eleicoes_legislativas_2026_raw";
 
 type ApiPayload = {
   ok: boolean;
@@ -168,23 +167,6 @@ type ApiPayload = {
 
 let lastGoodPayload: ApiPayload | null = null;
 
-async function fetchJsonWithTimeout<T>(url: string, timeoutMs = 7000) {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const response = await fetch(url, { cache: "no-store", signal: controller.signal });
-    if (!response.ok) {
-      return { ok: false as const, error: `HTTP ${response.status} @ ${url}` };
-    }
-    const data = (await response.json()) as T;
-    return { ok: true as const, data };
-  } catch {
-    return { ok: false as const, error: `Timeout/erro de rede @ ${url}` };
-  } finally {
-    clearTimeout(id);
-  }
-}
-
 function asArray<T>(value: unknown): T[] {
   return Array.isArray(value) ? (value as T[]) : [];
 }
@@ -192,45 +174,40 @@ function asArray<T>(value: unknown): T[] {
 export async function GET() {
   try {
     const warnings: string[] = [];
+    const { default: clientPromise } = await import("@/lib/mongodb");
+    const client = await clientPromise;
+    const db = client.db(process.env.MONGODB_DB || "maioazul");
+    const snapshot = await db.collection(RAW_ELECTIONS_COLLECTION).findOne(
+      { election: "legislativas_2026" },
+      { sort: { fetchedAt: -1 } },
+    );
 
-    const [versionRes, regionsRes] = await Promise.all([
-      fetchJsonWithTimeout<Version>(VERSION_URL),
-      fetchJsonWithTimeout<Region[]>(REGIONS_URL),
-    ]);
-
-    const versionJson: Version = versionRes.ok ? versionRes.data : {};
-    if (!versionRes.ok) warnings.push(versionRes.error);
-
-    const regionsJson: Region[] = regionsRes.ok ? regionsRes.data : [];
-    if (!regionsRes.ok) warnings.push(regionsRes.error);
-
-    const versionTag = String(versionJson.version || "").trim();
-    const MAIO_RESULTS_URL = versionTag
-      ? `https://eleicoes.cv/data/${versionTag}/ma.json`
-      : null;
-    const GLOBAL_RESULTS_URL = versionTag
-      ? `https://eleicoes.cv/data/${versionTag}/global.json`
-      : null;
-
-    let maioGraphics: MaioGraphics | null = null;
-    if (MAIO_RESULTS_URL) {
-      const maioRes = await fetchJsonWithTimeout<{ graphics?: { ma?: MaioGraphics } }>(
-        MAIO_RESULTS_URL,
+    if (!snapshot) {
+      return NextResponse.json(
+        {
+          ok: false,
+          source: "mongodb",
+          message: "Sem snapshot das legislativas no banco de dados.",
+        },
+        { status: 503, headers: { "Cache-Control": "no-store" } },
       );
-      if (maioRes.ok) maioGraphics = maioRes.data?.graphics?.ma ?? null;
-      else warnings.push(maioRes.error);
     }
 
-    let nacionalGraphics: NacionalGraphics | null = null;
-    if (GLOBAL_RESULTS_URL) {
-      const globalRes = await fetchJsonWithTimeout<{ graphics?: { global?: NacionalGraphics } }>(
-        GLOBAL_RESULTS_URL,
-      );
-      if (globalRes.ok) nacionalGraphics = globalRes.data?.graphics?.global ?? null;
-      else warnings.push(globalRes.error);
-    }
+    const versionJson: Version = (snapshot.versionMeta as Version) ?? {
+      version: String(snapshot.version ?? ""),
+    };
+    const regions = asArray<Region>(snapshot.regions);
+    const payloadByScope = (snapshot.payloadByScope ?? {}) as Record<string, unknown>;
+    const maioGraphics =
+      (payloadByScope.ma as { graphics?: { ma?: MaioGraphics } } | undefined)?.graphics?.ma ??
+      null;
+    const nacionalGraphics =
+      (payloadByScope.global as { graphics?: { global?: NacionalGraphics } } | undefined)
+        ?.graphics?.global ?? null;
 
-    const regions = asArray<Region>(regionsJson);
+    for (const failed of asArray<{ scope?: string; error?: string }>(snapshot.failedScopes)) {
+      warnings.push(`scope ${failed.scope ?? "?"}: ${failed.error ?? "erro desconhecido"}`);
+    }
 
     const maio =
       regions.find((item) => String(item.code || "").toLowerCase() === "ma") ?? null;
@@ -263,7 +240,7 @@ export async function GET() {
 
     const payload: ApiPayload = {
       ok: true,
-      source: "https://eleicoes.cv",
+      source: "mongodb:eleicoes_legislativas_2026_raw",
       warnings: warnings.length ? warnings : undefined,
       version: versionJson,
       nacional: {
@@ -365,7 +342,7 @@ export async function GET() {
         {
           ...lastGoodPayload,
           stale: true,
-          warnings: ["Falha temporaria no upstream; servindo ultimo snapshot valido."],
+          warnings: ["Falha temporaria ao ler o banco; servindo ultimo snapshot valido em memoria."],
         },
         {
           headers: {
@@ -379,8 +356,8 @@ export async function GET() {
       {
         ok: true,
         stale: true,
-        source: "https://eleicoes.cv",
-        warnings: ["Upstream indisponivel neste momento."],
+        source: "mongodb:eleicoes_legislativas_2026_raw",
+        warnings: ["Base de dados indisponivel neste momento."],
         version: {},
         nacional: {
           lider: { partidos: [], votos: 0, percentagem: 0, totalVotosContados: 0 },
