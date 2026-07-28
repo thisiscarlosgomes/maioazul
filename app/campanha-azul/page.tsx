@@ -103,27 +103,18 @@ const calendarioAtividades = [
   
  
 
-   {
-   
-    atividade: `Programa: "Buy Maio. For Maio"`,
-    promotor: "Vários parceiros",
-    data: "18 - 19 de Julho",
-    meses: ["Junho"],
-    linkLabel: "N/A",
-    link: "",
-  },
   {
     atividade: "4x4 Djarmai Offroad & Ação Social",
     promotor: "4X4 Djarmai",
-    data: "25 de Julho",
-    meses: ["Julho"],
+    data: "22 de Agosto",
+    meses: ["Agosto"],
     linkLabel: "N/A",
     link: "",
   },
   {
     atividade: "Maio Beach Volley Camp",
     promotor: "Maioazul",
-    data: "7 - 11 Agosto",
+    data: "28 - 30 Agosto",
     meses: ["Agosto"],
     linkLabel: "Website",
     link: "https://mbv.maioazul.com",
@@ -132,8 +123,8 @@ const calendarioAtividades = [
    
     atividade: "Jogos de Verão (Desportos Náuticos)",
     promotor: "Maioazul",
-    data: "7 - 29 Agosto",
-    meses: ["Agosto"],
+    data: "22 Agosto - 2 Setembro",
+    meses: ["Agosto", "Setembro"],
     linkLabel: "N/A",
     link: "",
   },
@@ -142,8 +133,8 @@ const calendarioAtividades = [
   {
     atividade: "Maio Digital: Blue Hackathon e Workshop",
     promotor: "Vários parceiros",
-    data: "20 - 21 Agosto",
-    meses: ["Agosto"],
+    data: "1 - 3 Setembro",
+    meses: ["Setembro"],
     linkLabel: "N/A",
     link: "",
   },
