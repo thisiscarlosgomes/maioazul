@@ -121,7 +121,7 @@ const calendarioAtividades = [
   },
   {
    
-    atividade: "Jogos de Verão (Desportos Náuticos)",
+    atividade: "Desportos Náuticos Week",
     promotor: "Maioazul",
     data: "22 Agosto - 2 Setembro",
     meses: ["Agosto", "Setembro"],
