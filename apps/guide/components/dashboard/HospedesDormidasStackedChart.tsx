@@ -33,9 +33,18 @@ const chartConfig = {
 
 type Row = {
   ilha: string
+  axisLabel: string
   hospedes: number
   dormidas: number
+  hospedesShareNational: number
+  dormidasShareNational: number
 }
+
+const formatShare = (value: number) =>
+  `${new Intl.NumberFormat("pt-PT", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(value)}%`
 
 export function HospedesDormidasStackedChart({ year }: { year: string }) {
   const [data, setData] = useState<Row[]>([])
@@ -62,18 +71,44 @@ export function HospedesDormidasStackedChart({ year }: { year: string }) {
             ? res.islands // baseline shape
             : res.islands // overview shape (same keys)
 
-        const rows: Row[] =
+        const baseRows =
           islands
-            ?.filter((i: any) => i.ilha !== "Todas as ilhas")
-            ?.map((i: any) => ({
-              ilha: i.ilha,
-              hospedes: i.hospedes,
-              dormidas: i.dormidas,
-            }))
-            ?.sort(
-              (a: Row, b: Row) =>
-                b.hospedes + b.dormidas - (a.hospedes + a.dormidas)
-            ) ?? []
+            ?.filter((i) => i.ilha && i.ilha !== "Todas as ilhas")
+            ?.map((i) => ({
+              ilha: String(i.ilha),
+              hospedes: Number(i.hospedes ?? 0),
+              dormidas: Number(i.dormidas ?? 0),
+            })) ?? []
+
+        const totals = baseRows.reduce(
+          (acc, row) => {
+            acc.hospedes += row.hospedes
+            acc.dormidas += row.dormidas
+            return acc
+          },
+          { hospedes: 0, dormidas: 0 }
+        )
+
+        const rows: Row[] = baseRows
+          .map((row) => {
+            const hospedesShareNational =
+              totals.hospedes > 0 ? (row.hospedes / totals.hospedes) * 100 : 0
+            const dormidasShareNational =
+              totals.dormidas > 0 ? (row.dormidas / totals.dormidas) * 100 : 0
+
+            return {
+              ilha: row.ilha,
+              axisLabel: `${row.ilha} (H ${formatShare(hospedesShareNational)} · D ${formatShare(dormidasShareNational)})`,
+              hospedes: row.hospedes,
+              dormidas: row.dormidas,
+              hospedesShareNational,
+              dormidasShareNational,
+            }
+          })
+          .sort(
+            (a, b) =>
+              b.hospedes + b.dormidas - (a.hospedes + a.dormidas)
+          )
 
         setData(rows)
         setLoading(false)
@@ -88,7 +123,7 @@ export function HospedesDormidasStackedChart({ year }: { year: string }) {
       <CardHeader>
         <CardTitle>Turismo por ilha</CardTitle>
         <CardDescription>
-          Hóspedes e dormidas — valores anuais ({year})
+          Hóspedes e dormidas — valores anuais ({year}) + % nacional por ilha
         </CardDescription>
       </CardHeader>
 
@@ -99,11 +134,11 @@ export function HospedesDormidasStackedChart({ year }: { year: string }) {
 
             <XAxis type="number" tickLine={false} axisLine={false} />
             <YAxis
-              dataKey="ilha"
+              dataKey="axisLabel"
               type="category"
               tickLine={false}
               axisLine={false}
-              width={90}
+              width={260}
             />
 
             <ChartTooltip content={<ChartTooltipContent indicator="dot" />} />

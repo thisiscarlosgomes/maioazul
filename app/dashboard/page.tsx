@@ -22,14 +22,21 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Drawer } from "vaul";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip as RechartsTooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
-import { ThemeToggle } from "@/components/theme-toggle";
 import { dictionary, type Locale } from "@/lib/i18n";
 import { buildIslandTldr } from "@/lib/tldr";
 import { TldrDrawer } from "@/components/TldrDrawer";
-
-import { Sparkles } from "lucide-react";
 
 import { TourismAccommodationTable } from "@/components/TourismAccommodationTable";
 import { TourismStructuralBaseline } from "@/components/TourismStructuralBaseline";
@@ -38,6 +45,7 @@ import { TourismIslandBaseline } from "@/components/TourismIslandBaseline";
 import { HospedesDormidasStackedChart } from "@/components/dashboard/HospedesDormidasStackedChart";
 import { SectionBlock } from "@/components/dashboard/SectionBlock";
 import { KpiGrid, KpiStat } from "@/components/dashboard/KpiStat";
+import DashboardChatWidget from "@/components/DashboardChatWidget";
 
 import {
   useTourismBaseline2024,
@@ -61,6 +69,24 @@ import { fetchJsonOfflineFirst } from "@/lib/offline";
 const ALL_ISLANDS_LABEL = "Todas as Ilhas";
 const ISLANDS = [ALL_ISLANDS_LABEL, "Maio"];
 const YEARS = ["2026", "2025", "2024"];
+const RECEITAS_COMPOSITION_COLORS = [
+  "#1E78FF",
+  "#FBBF24",
+  "#22C55E",
+  "#14B8A6",
+];
+
+const PRESSURE_MAP_COORDS: Record<string, { x: number; y: number }> = {
+  "santo-antao": { x: 10, y: 24 },
+  "sao-vicente": { x: 23, y: 28 },
+  "sao-nicolau": { x: 41, y: 32 },
+  sal: { x: 60, y: 26 },
+  "boa-vista": { x: 78, y: 22 },
+  maio: { x: 69, y: 47 },
+  santiago: { x: 48, y: 61 },
+  fogo: { x: 43, y: 78 },
+  brava: { x: 31, y: 84 },
+};
 
 type YearCapabilities = {
   hasBaseline2024: boolean;
@@ -73,17 +99,17 @@ type YearCapabilities = {
 const YEAR_CAPABILITIES: Record<string, YearCapabilities> = {
   "2024": {
     hasBaseline2024: true,
-    hasLiveTourism: false,
+    hasLiveTourism: true,
     hasLocalGovernment: true,
     hasInsights: false,
-    note: "2024 apresenta baseline estrutural anual. Transferências municipais estão disponíveis como fecho anual; indicadores dinâmicos e leitura integrada só estão disponíveis a partir de 2025.",
+    note: "2024 apresenta baseline estrutural anual e indicadores de turismo disponíveis por ano. Alguns blocos podem ter cobertura parcial consoante a série publicada.",
   },
   "2025": {
     hasBaseline2024: false,
     hasLiveTourism: true,
     hasLocalGovernment: true,
     hasInsights: true,
-    note: "Para 2025, os indicadores de turismo ainda não incluem o Q4 (tanto em 'Todas as Ilhas' como nas visões por ilha).",
+    note: "Para 2025, o Q4 já está integrado no agregado nacional ('Todas as Ilhas'). A desagregação trimestral por ilha continua a ser complementada conforme publicação oficial.",
   },
   "2026": {
     hasBaseline2024: false,
@@ -167,7 +193,12 @@ type LocalGovernmentApiResponse = {
 const CMMAIO_TRANSFER_FALLBACK: Record<string, LocalGovernmentApiRow[]> = {
   "2024": [{ month: 12, valor_pago: 125537932 }],
   "2025": [{ month: 12, valor_pago: 107960558 }],
-  "2026": [{ month: 1, valor_pago: 9219167 }],
+  "2026": [
+    { month: 1, valor_pago: 9219167 },
+    { month: 2, valor_pago: 9219167 },
+    { month: 3, valor_pago: 11396945 },
+    { month: 4, valor_pago: 9219167 },
+  ],
 };
 
 type CountryDependencyApiCountry = {
@@ -233,13 +264,121 @@ type TourismPressureApiRow = {
 type SeasonalityApiRow = {
   ilha?: string;
   q1_dormidas?: number;
+  q2_dormidas?: number;
   q3_dormidas?: number;
+  q4_dormidas?: number;
+  q4_source?: string;
   seasonality_index?: number;
+};
+
+type TransportApiPortShipsRow = {
+  port?: string;
+  island?: string;
+  movements?: number;
+};
+
+type TransportApiPortPassengersRow = {
+  port?: string;
+  island?: string;
+  passengers?: number;
+};
+
+type TransportApiAirportPassengersRow = {
+  airport?: string;
+  island?: string;
+  embarked?: number;
+  disembarked?: number;
+  transit?: number | null;
+  total?: number;
+};
+
+type TransportApiAirportAircraftRow = {
+  airport?: string;
+  island?: string;
+  domestic?: number;
+  international?: number | null;
+  total?: number;
+};
+
+type TransportApiComparisonRow = {
+  mode?: string;
+  metric?: string;
+  value_2024?: number;
+  value_2025?: number;
+  variation_pct?: number | null;
+};
+
+type TransportApiResponse = {
+  as_of_year?: number;
+  maritime?: {
+    ships_by_port_2025?: TransportApiPortShipsRow[];
+    passengers_by_port_2025?: TransportApiPortPassengersRow[];
+  };
+  air?: {
+    aircraft_by_airport_2025?: TransportApiAirportAircraftRow[];
+    aircraft_totals_2025?: {
+      domestic?: number;
+      international?: number;
+      total?: number;
+    };
+    passengers_by_airport_2025?: TransportApiAirportPassengersRow[];
+    totals_2025?: {
+      embarked?: number;
+      disembarked?: number;
+      transit?: number;
+      total?: number;
+    };
+  };
+  comparison_2024_2025?: TransportApiComparisonRow[];
+  sources?: Array<{
+    id?: string;
+    publisher?: string;
+    title?: string;
+  }>;
+};
+
+type MaioEnergyApiResponse = {
+  scope?: string;
+  dataset?: string;
+  entity?: {
+    country?: string;
+    island?: string;
+    municipality?: string;
+  };
+  as_of_date?: string | null;
+  units?: Record<string, string>;
+  summary?: {
+    annualDemandGwh?: {
+      planningForecast2025?: number | null;
+      impliedCurrentFromSolarPlantReport?: number | null;
+      recommendedWorkingValueGwh?: number | null;
+      lowerBoundGwh?: number | null;
+      upperBoundGwh?: number | null;
+      reason?: string;
+    };
+    solarPlantReference?: {
+      installedCapacityKwp?: number | null;
+      expectedAnnualGenerationMwh?: number | null;
+      reportedShareOfDemandPercent?: number | null;
+    };
+  };
+  source_quality?: {
+    confidence?: string;
+  };
+  sources?: Array<{
+    id?: string;
+    publisher?: string;
+    title?: string;
+    url?: string;
+  }>;
+  fallback?: boolean;
+  updatedAt?: string | null;
 };
 
 type DataTableObjectCell = {
   value: ReactNode;
   className?: string;
+  sortValue?: string | number | null;
 };
 
 type DataTablePrimitiveCell = string | number | null | undefined | ReactNode;
@@ -253,6 +392,38 @@ function isDataTableObjectCell(cell: unknown): cell is DataTableObjectCell {
     "value" in cell &&
     Object.prototype.hasOwnProperty.call(cell, "value")
   );
+}
+
+function toSortableValue(cell: DataTableCellValue): string | number | null {
+  const raw = isDataTableObjectCell(cell) ? cell.sortValue ?? cell.value : cell;
+
+  if (raw == null) return null;
+  if (typeof raw === "number") return Number.isFinite(raw) ? raw : null;
+  if (typeof raw === "string") {
+    const compact = raw.trim();
+    if (!compact) return null;
+
+    const cleaned = compact
+      .replace(/\s+/g, "")
+      .replace("%", "")
+      .replace(/[^\d,.\-]/g, "");
+
+    if (cleaned) {
+      let numericCandidate = cleaned;
+      if (numericCandidate.includes(".") && numericCandidate.includes(",")) {
+        numericCandidate = numericCandidate.replace(/\./g, "").replace(",", ".");
+      } else if (numericCandidate.includes(",")) {
+        numericCandidate = numericCandidate.replace(",", ".");
+      }
+
+      const maybeNumber = Number(numericCandidate);
+      if (Number.isFinite(maybeNumber)) return maybeNumber;
+    }
+
+    return compact.toLocaleLowerCase("pt-PT");
+  }
+
+  return null;
 }
 
 
@@ -371,32 +542,59 @@ function LocalGovernmentOverview({
       };
 
       try {
-        const offlineFirst = normalize(
-          await fetchJsonOfflineFirst<LocalGovernmentApiResponse>(url)
-        );
+        let rows: LocalGovernmentApiRow[] = [];
+        let resolvedYear = Number(year);
 
-        let rows = offlineFirst.data || [];
-        let resolvedYear =
-          typeof offlineFirst.year === "number"
-            ? offlineFirst.year
-            : Number(year);
-
-        // If offline cache came back empty/malformed, force a live read.
-        if (!rows.length) {
+        // Prefer live for this block to avoid stale offline snapshots.
+        try {
           const liveRes = await fetch(url, { cache: "no-store" });
-          const liveJson = normalize(await liveRes.json());
-          if (Array.isArray(liveJson.data) && liveJson.data.length) {
-            rows = liveJson.data;
+          if (liveRes.ok) {
+            const liveJson = normalize(await liveRes.json());
+            if (Array.isArray(liveJson.data) && liveJson.data.length) {
+              rows = liveJson.data;
+              resolvedYear =
+                typeof liveJson.year === "number"
+                  ? liveJson.year
+                  : resolvedYear;
+            }
+          }
+        } catch {
+          // Ignore live fetch errors and try offline-capable fallback below.
+        }
+
+        if (!rows.length) {
+          const offlineFirst = normalize(
+            await fetchJsonOfflineFirst<LocalGovernmentApiResponse>(url, {
+              cache: "no-store",
+            })
+          );
+          if (Array.isArray(offlineFirst.data) && offlineFirst.data.length) {
+            rows = offlineFirst.data;
             resolvedYear =
-              typeof liveJson.year === "number"
-                ? liveJson.year
+              typeof offlineFirst.year === "number"
+                ? offlineFirst.year
                 : resolvedYear;
           }
         }
 
         // Last-resort fallback for CMMAIO yearly snapshots.
-        if (!rows.length) {
-          rows = CMMAIO_TRANSFER_FALLBACK[year] || [];
+        const fallbackRows = CMMAIO_TRANSFER_FALLBACK[year] || [];
+        if (rows.length && fallbackRows.length) {
+          const byMonth = new Map<number, LocalGovernmentApiRow>();
+          for (const row of rows) {
+            byMonth.set(Number(row.month), row);
+          }
+          for (const row of fallbackRows) {
+            const month = Number(row.month);
+            if (!byMonth.has(month)) {
+              byMonth.set(month, row);
+            }
+          }
+          rows = [...byMonth.values()].sort(
+            (a, b) => Number(a.month) - Number(b.month)
+          );
+        } else if (!rows.length) {
+          rows = fallbackRows;
         }
 
         if (cancelled) return;
@@ -485,6 +683,81 @@ function LocalGovernmentOverview({
   );
 }
 
+function MaioEnergyOverview() {
+  const { data, loading, error } = useDashboardQuery<MaioEnergyApiResponse>({
+    depsKey: "maio-energy-core",
+    staleTimeMs: 6 * 60 * 60 * 1000,
+    queryFn: async () =>
+      fetchJsonOfflineFirst<MaioEnergyApiResponse>(
+        "/api/transparencia/municipal/maio/energia"
+      ),
+  });
+
+  if (loading && !data) {
+    return (
+      <section className="space-y-2">
+        <div>
+          <h2 className="font-semibold">Energia Solar do Maio</h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="rounded-lg border border-border p-4 space-y-3">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-8 w-28" />
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (error || !data?.summary) {
+    return null;
+  }
+
+  const annual = data.summary.annualDemandGwh ?? {};
+  const solar = data.summary.solarPlantReference ?? {};
+
+  const formatFixed = (value: number | null | undefined, fractionDigits = 2) =>
+    typeof value === "number"
+      ? new Intl.NumberFormat("pt-PT", {
+          maximumFractionDigits: fractionDigits,
+          minimumFractionDigits: 0,
+        }).format(value)
+      : "—";
+
+  return (
+    <section className="space-y-2">
+      <div>
+        <h2 className="font-semibold">Energia Solar do Maio</h2>
+        <p className="text-sm text-muted-foreground">
+          Síntese energética municipal com foco em procura anual e cobertura solar.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <Kpi
+          label="Procura anual (valor de trabalho)"
+          value={`${formatFixed(annual.recommendedWorkingValueGwh)} GWh`}
+        />
+        <Kpi
+          label="Produção solar anual"
+          value={`${formatFixed(solar.expectedAnnualGenerationMwh, 0)} MWh`}
+        />
+        <Kpi
+          label="Capacidade solar instalada"
+          value={`${formatFixed(solar.installedCapacityKwp, 0)} kWp`}
+        />
+        <Kpi
+          label="Cobertura estimada da procura"
+          value={`${formatFixed(solar.reportedShareOfDemandPercent, 1)}%`}
+        />
+      </div>
+
+    </section>
+  );
+}
+
 
 
 
@@ -499,54 +772,84 @@ function CountryDependency({
   year: string;
   t: DashboardDictionary;
 }) {
+  const isAllIslands = ilha === ALL_ISLANDS_LABEL;
   const { data, loading, error } = useDashboardQuery<CountryDependencyApiResponse>({
-    enabled: ilha !== ALL_ISLANDS_LABEL,
-    depsKey: `${ilha}-${year}`,
+    enabled: true,
+    depsKey: `${isAllIslands ? "all-islands" : ilha}-${year}`,
     queryFn: async () =>
       fetchJsonOfflineFirst<CountryDependencyApiResponse>(
-        `/api/transparencia/turismo/dependency?ilha=${ilha}&year=${year}`
+        isAllIslands
+          ? `/api/transparencia/turismo/dependency?year=${year}`
+          : `/api/transparencia/turismo/dependency?ilha=${ilha}&year=${year}`
       ),
   });
 
-  const rows =
-    data?.data?.[0]?.countries
-      ?.slice()
-      .sort((a, b) => (b.share ?? 0) - (a.share ?? 0))
-      .map((c) => ({
-        país: c.pais,
-        hóspedes: formatNumber(c.hospedes ?? 0),
-        percentagem: `${((c.share ?? 0) * 100).toFixed(1)}%`,
-      })) ?? [];
+  const rows = (() => {
+    if (!Array.isArray(data?.data)) return [];
+
+    if (isAllIslands) {
+      const byCountry = new Map<string, number>();
+      let totalHospedes = 0;
+
+      for (const islandRow of data.data) {
+        for (const country of islandRow.countries ?? []) {
+          const name = String(country.pais ?? "").trim();
+          const hospedes = Number(country.hospedes ?? 0);
+          if (!name || !Number.isFinite(hospedes) || hospedes <= 0) continue;
+          byCountry.set(name, (byCountry.get(name) ?? 0) + hospedes);
+          totalHospedes += hospedes;
+        }
+      }
+
+      return [...byCountry.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .map(([pais, hospedes]) => ({
+          país: pais,
+          hóspedes: formatNumber(hospedes),
+          percentagem: `${(totalHospedes > 0 ? (hospedes / totalHospedes) * 100 : 0).toFixed(1)}%`,
+        }));
+    }
+
+    return (
+      data.data[0]?.countries
+        ?.slice()
+        .sort((a, b) => (b.share ?? 0) - (a.share ?? 0))
+        .map((c) => ({
+          país: c.pais,
+          hóspedes: formatNumber(c.hospedes ?? 0),
+          percentagem: `${((c.share ?? 0) * 100).toFixed(1)}%`,
+        })) ?? []
+    );
+  })();
 
   return (
     <section className="space-y-2">
       <div>
         <h2 className="font-semibold">{t.dependency}</h2>
       </div>
-
-      {ilha === ALL_ISLANDS_LABEL ? (
-        <p className="text-sm text-muted-foreground">
-          Selecione uma ilha para ver o detalhe por país.
-        </p>
-      ) : (
-        <DataTable rows={rows} loading={loading} error={error} />
-      )}
+      <DataTable rows={rows} loading={loading} error={error} />
     </section>
   );
 }
 
 
 function TourismHotelsTable({
+  year,
   highlightIsland,
 }: {
+  year: string;
   highlightIsland?: string;
 }) {
   const [rows, setRows] = useState<TourismHotelsDisplayRow[]>([]);
+  const [sourceYear, setSourceYear] = useState<string | null>(null);
+  const [fallbackYearUsed, setFallbackYearUsed] = useState(false);
 
   useEffect(() => {
     fetchJsonOfflineFirst<{
       islands?: TourismHotelsApiIsland[];
-    }>("/api/transparencia/turismo/hoteis")
+      year?: number;
+      fallback_year_used?: boolean;
+    }>(`/api/transparencia/turismo/hoteis?year=${year}`)
       .then((res) => {
         const data =
           res.islands?.map((i) => ({
@@ -560,8 +863,12 @@ function TourismHotelsTable({
           })) || [];
 
         setRows(data);
+        setSourceYear(
+          typeof res.year === "number" ? String(res.year) : null
+        );
+        setFallbackYearUsed(Boolean(res.fallback_year_used));
       });
-  }, [highlightIsland]);
+  }, [highlightIsland, year]);
 
   if (!rows.length) return null;
 
@@ -573,6 +880,11 @@ function TourismHotelsTable({
         </h2>
         <p className="text-sm text-muted-foreground">
           Número de estabelecimentos e emprego direto no turismo
+          {sourceYear
+            ? fallbackYearUsed
+              ? ` (fallback ${sourceYear})`
+              : ` (${sourceYear})`
+            : ""}
         </p>
       </div>
 
@@ -649,6 +961,7 @@ function ReceitasSection({
   ilha,
   year,
   onData,
+  onMeta,
 }: {
   ilha: string;
   year: string;
@@ -659,6 +972,7 @@ function ReceitasSection({
     islandLabel: string;
     shareNational: number;
   }) => void;
+  onMeta?: (meta: string | null) => void;
 }) {
   const lastEmittedRef = useRef<string | null>(null);
   const { data, loading, error } = useDashboardQuery<ReceitasApiResponse>({
@@ -701,6 +1015,23 @@ function ReceitasSection({
       shareNational: summary.share,
     });
   }, [selected, summary, ilha, selectedIslandLabel, onData]);
+
+  useEffect(() => {
+    if (!selected) {
+      onMeta?.(null);
+      return;
+    }
+
+    const baseSource = data?.source || "Portal Transparência CV";
+    const sourceWithIne = baseSource.includes("INE.CV")
+      ? baseSource
+      : `${baseSource} · INE.CV`;
+    const meta = `Fonte: ${sourceWithIne} · Atualizado: ${formatShortDate(data?.updatedAt || null)}${
+      data?.fallback ? " · modo fallback" : ""
+    }`;
+
+    onMeta?.(meta);
+  }, [selected, data?.source, data?.updatedAt, data?.fallback, onMeta]);
 
   if (!selected && loading) {
     return (
@@ -746,12 +1077,14 @@ function ReceitasSection({
     );
   }
 
-  const tableRows = buildReceitasTableRows(
+  const rankedRows = buildReceitasTableRows(
     selected,
     previousYear,
     ilha,
     ALL_ISLANDS_LABEL
-  ).map((r) => ({
+  );
+
+  const tableRows = rankedRows.map((r) => ({
     ranking: `${r.rank}º`,
     ilha: r.ilha,
     receitas: formatCVE(r.value),
@@ -762,7 +1095,7 @@ function ReceitasSection({
         <div className="flex items-center gap-2">
           <span>{formatPercent(r.share)}</span>
           <span
-            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${band.className}`}
+            className={`hidden items-center rounded-full px-2.5 py-0.5 text-xs font-medium md:inline-flex ${band.className}`}
           >
             {band.label}
           </span>
@@ -772,14 +1105,20 @@ function ReceitasSection({
     variação_yoy: formatDeltaPercent(r.yoy),
   }));
 
+  const compositionChartData = rankedRows
+    .slice()
+    .sort((a, b) => b.value - a.value)
+    .map((r) => ({
+      rank: r.rank,
+      ilha: r.ilha,
+      receitas: Number((r.value / 1_000_000).toFixed(2)),
+      peso: Number(r.share.toFixed(2)),
+    }));
+
   return (
     <SectionBlock
       title={`Receitas (${year})`}
-      description={`Receita arrecadada por recebedorias. Fonte: ${
-        data?.source || "Portal Transparência CV"
-      } · Atualizado: ${formatShortDate(data?.updatedAt || null)}${
-        data?.fallback ? " · modo fallback" : ""
-      }`}
+      description="Receita arrecadada por recebedorias."
     >
       <KpiGrid>
         <KpiStat label="Total arrecadado" value={formatCVE(selected.total)} />
@@ -798,15 +1137,62 @@ function ReceitasSection({
       </KpiGrid>
 
       <DataTable rows={tableRows} loading={loading} error={error} />
+
+      {ilha === ALL_ISLANDS_LABEL ? (
+        <div className="rounded-lg border border-border p-4 md:p-5 space-y-3">
+          <div>
+            <h3 className="font-medium">Composição por ilha</h3>
+            <p className="text-sm text-muted-foreground">
+              Participação de cada ilha no total arrecadado.
+            </p>
+          </div>
+
+          <div className="space-y-3 md:space-y-4">
+            {compositionChartData.map((entry) => {
+              const color =
+                RECEITAS_COMPOSITION_COLORS[
+                  (Number(entry.rank ?? 1) - 1) %
+                    RECEITAS_COMPOSITION_COLORS.length
+                ];
+              return (
+                <div key={entry.ilha} className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-3 text-sm">
+                    <span className="font-medium">{entry.ilha}</span>
+                    <span className="text-muted-foreground">
+                      {entry.peso.toFixed(2)}% ·{" "}
+                      {entry.receitas.toLocaleString("pt-PT", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      M CVE
+                    </span>
+                  </div>
+                  <div className="h-2 rounded-full bg-muted/50 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all"
+                      style={{
+                        width: `${Math.max(0, Math.min(100, entry.peso))}%`,
+                        backgroundColor: color,
+                      }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
     </SectionBlock>
   );
 }
 
 function IslandPopulationSnapshot({
   ilha,
+  year,
   onData,
 }: {
   ilha: string;
+  year: string;
   onData?: (data: {
     population?: number;
     populationShareNational?: number;
@@ -817,7 +1203,7 @@ function IslandPopulationSnapshot({
 
     fetchJsonOfflineFirst<{
       data?: TourismPopulationApiRow[];
-    }>(`/api/transparencia/turismo/population?year=2025`)
+    }>(`/api/transparencia/turismo/population?year=${year}`)
       .then((res) => {
         const row = res.data?.find(
           (r) => (r.ilha ?? "").toLowerCase() === ilha.toLowerCase()
@@ -830,7 +1216,7 @@ function IslandPopulationSnapshot({
           populationShareNational: row.population_share_national,
         });
       });
-  }, [ilha, onData]);
+  }, [ilha, year, onData]);
 
   return null;
 }
@@ -963,10 +1349,12 @@ function AllIslandsTourismTotals({ year }: { year: string }) {
 
 function TourismOverview({
   ilha,
+  year,
   t,
   onData,
 }: {
   ilha: string;
+  year: string;
   t: DashboardDictionary;
   onData?: (data: DerivedTourismOverviewData) => void;
 }) {
@@ -976,7 +1364,7 @@ function TourismOverview({
     fetchJsonOfflineFirst<{
       islands?: TourismOverviewApiIsland[];
       total?: TourismOverviewApiResponse["total"];
-    }>(`/api/transparencia/turismo/overview`)
+    }>(`/api/transparencia/turismo/overview?year=${year}`)
       .then((res) => {
         setData(res);
 
@@ -1003,7 +1391,7 @@ function TourismOverview({
           }
         }
       });
-  }, [ilha]);
+  }, [ilha, year, onData]);
 
   if (!data?.islands) return null;
 
@@ -1063,6 +1451,15 @@ function getPressureBand(value: number) {
     className: "bg-red-500/10 text-red-700 dark:text-red-400",
   };
 }
+
+function normalizeIslandKey(value: string | null | undefined) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 function PressurePill({ value }: { value: number }) {
   const band = getPressureBand(value);
 
@@ -1076,12 +1473,63 @@ function PressurePill({ value }: { value: number }) {
   );
 }
 
+function InfoHelp({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label={title}
+              className="hidden cursor-help text-muted-foreground md:inline-flex"
+            >
+              ⓘ
+            </button>
+          </TooltipTrigger>
+          <TooltipContent className="max-w-xs text-sm">
+            <p className="mb-1 font-medium">{title}</p>
+            <p>{description}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <Drawer.Root>
+        <Drawer.Trigger asChild>
+          <button
+            type="button"
+            aria-label={title}
+            className="cursor-pointer text-muted-foreground md:hidden"
+          >
+            ⓘ
+          </button>
+        </Drawer.Trigger>
+        <Drawer.Portal>
+          <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/45 backdrop-blur-sm md:hidden" />
+          <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl border border-border bg-background p-4 pb-24 outline-none md:hidden">
+            <Drawer.Title className="text-base font-semibold">{title}</Drawer.Title>
+            <div className="mt-2 text-sm text-muted-foreground">{description}</div>
+          </Drawer.Content>
+        </Drawer.Portal>
+      </Drawer.Root>
+    </>
+  );
+}
+
 function TourismPressure({
   ilha,
+  year,
   t,
   onValue,
 }: {
   ilha: string;
+  year: string;
   t: DashboardDictionary;
   onValue?: (value: number) => void;
 }) {
@@ -1089,65 +1537,133 @@ function TourismPressure({
   const { data, loading, error } = useDashboardQuery<{
     data?: TourismPressureApiRow[];
   }>({
-    depsKey: "tourism-pressure",
+    depsKey: `tourism-pressure-${year}`,
     queryFn: async () =>
       fetchJsonOfflineFirst<{
         data?: TourismPressureApiRow[];
-      }>(`/api/transparencia/turismo/pressure`),
+      }>(`/api/transparencia/turismo/pressure?year=${year}`),
   });
 
   const rows = (data?.data || []).filter((r) => r.ilha !== "Todas as ilhas");
-
+  const dedupedRows = Array.from(
+    new Map(
+      rows
+        .filter((row) => row.ilha && row.pressure_index != null)
+        .map((row) => [String(row.ilha), row])
+    ).values()
+  );
 
   const filtered =
-    ilha === ALL_ISLANDS_LABEL ? rows : rows.filter((r) => r.ilha === ilha);
+    ilha === ALL_ISLANDS_LABEL
+      ? dedupedRows
+      : dedupedRows.filter((r) => r.ilha === ilha);
 
   useEffect(() => {
     if (ilha === ALL_ISLANDS_LABEL) return;
 
-    const row = rows.find((r) => r.ilha === ilha);
+    const row = dedupedRows.find((r) => r.ilha === ilha);
     if (row?.pressure_index == null) return;
 
     if (lastValueRef.current !== row.pressure_index) {
       lastValueRef.current = row.pressure_index;
       onValue?.(row.pressure_index);
     }
-  }, [ilha, rows]);
+  }, [ilha, dedupedRows]);
 
   const ordered =
     ilha === ALL_ISLANDS_LABEL
       ? [
-        ...rows.filter((r) => r.ilha === "Maio"),
-        ...rows.filter((r) => r.ilha !== "Maio"),
+        ...dedupedRows.filter((r) => r.ilha === "Maio"),
+        ...dedupedRows.filter((r) => r.ilha !== "Maio"),
       ]
       : filtered;
 
+  const chartRows = ordered
+    .filter((row) => row.ilha && row.pressure_index != null)
+    .map((row) => ({
+      ilha: String(row.ilha),
+      pressure: Number(row.pressure_index ?? 0),
+    }))
+    .sort((a, b) => b.pressure - a.pressure);
+  const mapRows = chartRows.filter(
+    (row) => PRESSURE_MAP_COORDS[normalizeIslandKey(row.ilha)]
+  );
+  const maxPressure = Math.max(1, ...chartRows.map((row) => row.pressure));
 
   return (
     <section className="space-y-2">
       <div>
         <h2 className="flex items-center gap-2 font-semibold">
           {t.tourismPressure}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="text-muted-foreground cursor-help">
-                ⓘ
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs text-sm">
-                <p className="font-medium mb-1">
-                  Índice de Pressão Turística
-                </p>
-                <p>
-                  Relação entre dormidas turísticas e população residente.
-                  Valores mais elevados indicam maior pressão sobre serviços
-                  e habitação locais.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <InfoHelp
+            title="Índice de Pressão Turística"
+            description="Relação entre dormidas turísticas e população residente. Valores mais elevados indicam maior pressão sobre serviços e habitação locais."
+          />
         </h2>
 
       </div>
+
+      {ilha === ALL_ISLANDS_LABEL ? (
+        <div className="grid gap-3 lg:grid-cols-2">
+          <div className="h-[340px] rounded-lg border border-border bg-card p-3">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartRows}
+                layout="vertical"
+                margin={{ left: 8, right: 8, top: 4, bottom: 4 }}
+              >
+                <CartesianGrid horizontal={false} strokeDasharray="3 3" strokeOpacity={0.3} />
+                <XAxis type="number" tickLine={false} axisLine={false} />
+                <YAxis
+                  type="category"
+                  dataKey="ilha"
+                  width={92}
+                  tickLine={false}
+                  axisLine={false}
+                  className="text-xs"
+                />
+                <RechartsTooltip
+                  cursor={{ fill: "transparent" }}
+                  formatter={(value) =>
+                    typeof value === "number" ? value.toFixed(2) : "—"
+                  }
+                />
+                <Bar dataKey="pressure" radius={[0, 6, 6, 0]} fill="#0ea5e9" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex h-[340px] flex-col rounded-lg border border-border bg-card p-3">
+            <div className="relative min-h-0 flex-1 overflow-hidden rounded-md border border-border bg-gradient-to-b from-sky-100 to-sky-200 dark:from-sky-950/50 dark:to-sky-900/40">
+              {mapRows.map((row) => {
+                const key = normalizeIslandKey(row.ilha);
+                const pos = PRESSURE_MAP_COORDS[key];
+                if (!pos) return null;
+                const size = 14 + Math.round((row.pressure / maxPressure) * 42);
+                return (
+                  <div
+                    key={row.ilha}
+                    className="absolute"
+                    style={{
+                      left: `${pos.x}%`,
+                      top: `${pos.y}%`,
+                      transform: "translate(-50%, -50%)",
+                    }}
+                    title={`${row.ilha}: ${row.pressure.toFixed(2)}`}
+                  >
+                    <div
+                      className="rounded-full border-2 border-sky-700/80 bg-sky-500/65"
+                      style={{ width: `${size}px`, height: `${size}px` }}
+                    />
+                    <span className="mt-1 block text-center text-[10px] font-medium text-foreground">
+                      {row.ilha}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <DataTable
         rows={ordered.map((r) => {
@@ -1158,12 +1674,15 @@ function TourismPressure({
             hospedes: formatNumber(r.hospedes ?? 0),
             dormidas: formatNumber(r.dormidas ?? 0),
             população: formatNumber(r.population ?? 0),
-            índice_pressão: (
-              <div className="flex items-center gap-2">
-                <span>{formatRatio(value)}</span>
-                <PressurePill value={value ?? 0} />
-              </div>
-            ),
+            índice_pressão: {
+              value: (
+                <div className="flex items-center gap-2">
+                  <span>{formatRatio(value)}</span>
+                  <PressurePill value={value ?? 0} />
+                </div>
+              ),
+              sortValue: value ?? null,
+            },
 
           };
         })}
@@ -1177,74 +1696,14 @@ function TourismPressure({
 }
 
 
-function getSeasonDominance(value: number) {
-  if (value < 0.85)
-    return {
-      label: "Inverno dominante",
-      className: "bg-blue-500/10 text-blue-700 dark:text-blue-400",
-    };
-
-  if (value <= 1.15)
-    return {
-      label: "Neutro",
-      className: "bg-muted text-foreground",
-    };
-
-  return {
-    label: "Verão dominante",
-    className: "bg-orange-500/10 text-orange-700 dark:text-orange-400",
-  };
-}
-
-function getSeasonalityBalance(value: number) {
-  if (value < 1.3)
-    return {
-      label: "Equilibrada",
-      className: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
-    };
-
-  if (value < 3)
-    return {
-      label: "Moderadamente concentrada",
-      className: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
-    };
-
-  return {
-    label: "Desequilibrada",
-    className: "bg-red-500/10 text-red-700 dark:text-red-400",
-  };
-}
-function SeasonalityPills({ value }: { value: number }) {
-  const dominance = getSeasonDominance(value);
-  const balance = getSeasonalityBalance(value);
-
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span
-        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${dominance.className}`}
-        title="Qual estação concentra mais dormidas"
-      >
-        {dominance.label}
-      </span>
-
-      <span
-        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${balance.className}`}
-        title="Grau de concentração sazonal"
-      >
-        {balance.label}
-      </span>
-    </div>
-  );
-}
-
-
-
 function SeasonalityIndex({
   ilha,
+  year,
   t,
   onValue,
 }: {
   ilha: string;
+  year: string;
   t: DashboardDictionary;
   onValue?: (value: number) => void;
 }) {
@@ -1252,11 +1711,11 @@ function SeasonalityIndex({
   const { data, loading, error } = useDashboardQuery<{
     data?: SeasonalityApiRow[];
   }>({
-    depsKey: "tourism-seasonality",
+    depsKey: `tourism-seasonality-${year}`,
     queryFn: async () =>
       fetchJsonOfflineFirst<{
         data?: SeasonalityApiRow[];
-      }>(`/api/transparencia/turismo/seasonality`),
+      }>(`/api/transparencia/turismo/seasonality?year=${year}`),
   });
   const rows = data?.data || [];
 
@@ -1286,41 +1745,21 @@ function SeasonalityIndex({
       <div>
         <h2 className="flex items-center gap-2 font-semibold">
           {t.seasonality}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger className="text-muted-foreground cursor-help">
-                ⓘ
-              </TooltipTrigger>
-              <TooltipContent className="max-w-xs text-sm">
-                <p className="font-medium mb-1">
-                  Contraste Sazonal (Q3 / Q1)
-                </p>
-                <p>
-                  Mede quantas vezes o verão é mais ativo do que o inverno em
-                  termos de dormidas turísticas. Valores elevados indicam forte
-                  concentração da atividade no verão. Valores próximos de 1
-                  indicam uma distribuição mais equilibrada ao longo do ano.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <InfoHelp
+            title="Contraste Sazonal"
+            description="Mede quantas vezes o verão é mais ativo do que o inverno em termos de dormidas turísticas. Valores elevados indicam forte concentração da atividade no verão. Valores próximos de 1 indicam uma distribuição mais equilibrada ao longo do ano."
+          />
         </h2>
 
       </div>
       <DataTable
         rows={ordered.map((r) => {
-          const value = r.seasonality_index;
-
           return {
             ilha: r.ilha,
             dormidas_Q1: formatNumber(r.q1_dormidas ?? 0),
+            dormidas_Q2: formatNumber(r.q2_dormidas ?? 0),
             dormidas_Q3: formatNumber(r.q3_dormidas ?? 0),
-            índice_sazonalidade: (
-              <div className="flex items-center gap-2">
-                <span>{formatRatio(value)}</span>
-                <SeasonalityPills value={value ?? 0} />
-              </div>
-            ),
+            dormidas_Q4: formatNumber(r.q4_dormidas ?? 0),
           };
         })}
         loading={loading}
@@ -1329,6 +1768,214 @@ function SeasonalityIndex({
 
 
     </section>
+  );
+}
+
+function TransportOverviewSection({
+  year,
+  ilha,
+}: {
+  year: string;
+  ilha: string;
+}) {
+  const { data, loading, error } = useDashboardQuery<TransportApiResponse>({
+    depsKey: `transport-overview-${year}-${ilha}`,
+    queryFn: async () =>
+      fetchJsonOfflineFirst<TransportApiResponse>(
+        `/api/transparencia/transportes/overview?year=${year}`
+      ),
+  });
+
+  const rawShipsRows = (data?.maritime?.ships_by_port_2025 || []).slice();
+  const rawMaritimePassengerRows = (data?.maritime?.passengers_by_port_2025 || []).slice();
+  const rawAircraftRows = (data?.air?.aircraft_by_airport_2025 || []).slice();
+  const rawAirportRows = (data?.air?.passengers_by_airport_2025 || []).slice();
+
+  const shipsRankMap = new Map(
+    rawShipsRows
+      .slice()
+      .sort((a, b) => Number(b.movements ?? 0) - Number(a.movements ?? 0))
+      .map((row, index) => [String(row.port ?? ""), index + 1])
+  );
+
+  const maritimePassengerRankMap = new Map(
+    rawMaritimePassengerRows
+      .slice()
+      .sort((a, b) => Number(b.passengers ?? 0) - Number(a.passengers ?? 0))
+      .map((row, index) => [String(row.port ?? ""), index + 1])
+  );
+
+  const shipsRows = rawShipsRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.movements ?? 0) - Number(a.movements ?? 0));
+
+  const maritimePassengerRows = rawMaritimePassengerRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.passengers ?? 0) - Number(a.passengers ?? 0));
+
+  const airportRows = rawAirportRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
+
+  const aircraftRows = rawAircraftRows
+    .filter((row) => ilha === ALL_ISLANDS_LABEL || row.island === ilha)
+    .sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
+
+  const comparisonRows = (data?.comparison_2024_2025 || []).slice();
+
+  const totalShips = shipsRows.reduce((sum, row) => sum + Number(row.movements ?? 0), 0);
+  const totalMaritimePassengers = maritimePassengerRows.reduce(
+    (sum, row) => sum + Number(row.passengers ?? 0),
+    0
+  );
+  const totalAirPassengers =
+    ilha === ALL_ISLANDS_LABEL
+      ? Number(data?.air?.totals_2025?.total ?? 0)
+      : airportRows.reduce((sum, row) => sum + Number(row.total ?? 0), 0);
+  const totalAircraft =
+    ilha === ALL_ISLANDS_LABEL
+      ? Number(data?.air?.aircraft_totals_2025?.total ?? 0)
+      : aircraftRows.reduce((sum, row) => sum + Number(row.total ?? 0), 0);
+  const terrestrialPassengers2025 =
+    comparisonRows.find((row) => row.mode === "Terrestre")?.value_2025 ?? null;
+
+  const sourceLabel = (data?.sources || [])
+    .map((source) => source.publisher)
+    .filter((value): value is string => Boolean(value))
+    .join(" · ");
+
+  return (
+    <SectionBlock
+      title={`Transportes (${data?.as_of_year || 2025})`}
+      description="Movimentação por porto e aeroporto + comparação nacional 2024-2025."
+    >
+      <KpiGrid>
+        <KpiStat
+          label="Passageiros marítimos"
+          value={
+            loading ? " " : error ? "—" : formatNumber(totalMaritimePassengers)
+          }
+        />
+        <KpiStat
+          label="Passageiros aéreos"
+          value={loading ? " " : error ? "—" : formatNumber(totalAirPassengers)}
+        />
+        <KpiStat
+          label="Aeronaves"
+          value={loading ? " " : error ? "—" : formatNumber(totalAircraft)}
+        />
+        <KpiStat
+          label="Navios (portos)"
+          value={loading ? " " : error ? "—" : formatNumber(totalShips)}
+        />
+        {/* {ilha === ALL_ISLANDS_LABEL ? (
+          <KpiStat
+            label="Passageiros terrestres"
+            value={
+              loading
+                ? " "
+                : error
+                  ? "—"
+                  : terrestrialPassengers2025 == null
+                    ? "—"
+                    : formatNumber(Number(terrestrialPassengers2025))
+            }
+          />
+        ) : null} */}
+      </KpiGrid>
+
+      <div className="space-y-6 mt-6">
+        {ilha === ALL_ISLANDS_LABEL ? (
+          <>
+            <div className="space-y-2">
+              <h3 className="font-medium">Movimentação de navios por porto (2025)</h3>
+              <DataTable
+                rows={shipsRows.map((row) => ({
+                  ranking_cv: `${shipsRankMap.get(String(row.port ?? "")) ?? "—"}º`,
+                  porto: row.port,
+                  ilha: row.island,
+                  navios: formatNumber(Number(row.movements ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-medium">Movimentação de passageiros por porto (2025)</h3>
+              <DataTable
+                rows={maritimePassengerRows.map((row) => ({
+                  ranking_cv: `${maritimePassengerRankMap.get(String(row.port ?? "")) ?? "—"}º`,
+                  porto: row.port,
+                  ilha: row.island,
+                  passageiros: formatNumber(Number(row.passengers ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-medium">Movimentação de aeronaves por aeroporto (2025)</h3>
+              <DataTable
+                rows={aircraftRows.map((row) => ({
+                  aeroporto: row.airport,
+                  ilha: row.island,
+                  doméstico: formatNumber(Number(row.domestic ?? 0)),
+                  internacional:
+                    row.international == null
+                      ? "—"
+                      : formatNumber(Number(row.international ?? 0)),
+                  total: formatNumber(Number(row.total ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-medium">Passageiros em aeroportos e aeródromos (2025)</h3>
+              <DataTable
+                rows={airportRows.map((row) => ({
+                  aeroporto: row.airport,
+                  ilha: row.island,
+                  embarcados: formatNumber(Number(row.embarked ?? 0)),
+                  desembarcados: formatNumber(Number(row.disembarked ?? 0)),
+                  trânsito:
+                    row.transit == null ? "—" : formatNumber(Number(row.transit ?? 0)),
+                  total: formatNumber(Number(row.total ?? 0)),
+                }))}
+                loading={loading}
+                error={error}
+              />
+            </div>
+          </>
+        ) : null}
+
+        {ilha === ALL_ISLANDS_LABEL ? (
+          <div className="space-y-2">
+            <h3 className="font-medium">Principais indicadores dos transportes (2024-2025)</h3>
+            <DataTable
+              rows={comparisonRows.map((row) => ({
+                modo: row.mode,
+                indicador: row.metric,
+                ano_2024: formatNumber(Number(row.value_2024 ?? 0)),
+                ano_2025: formatNumber(Number(row.value_2025 ?? 0)),
+                variação: formatDeltaPercent(row.variation_pct ?? null),
+              }))}
+              loading={loading}
+              error={error}
+            />
+          </div>
+        ) : null}
+      </div>
+
+      {sourceLabel ? (
+        <p className="hidden text-sm text-muted-foreground">
+          Fonte: {sourceLabel}
+        </p>
+      ) : null}
+    </SectionBlock>
   );
 }
 
@@ -1355,11 +2002,27 @@ export default function TourismPage() {
   const [year, setYear] = useState("2025");
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    const handleSparkles = () => {
+      setIlha((current) => (current === ALL_ISLANDS_LABEL ? "Maio" : current));
+      setYear((current) =>
+        YEAR_CAPABILITIES[current]?.hasInsights ? current : "2025"
+      );
+      setOpen(true);
+    };
+
+    window.addEventListener("maio-open-sparkles", handleSparkles);
+    return () => {
+      window.removeEventListener("maio-open-sparkles", handleSparkles);
+    };
+  }, []);
+
   const [populationData, setPopulationData] = useState<DerivedPopulationData>({});
   const [derivedMetrics, setDerivedMetrics] = useState<DerivedMetricsData>({});
   const [tourismOverviewData, setTourismOverviewData] =
     useState<DerivedTourismOverviewData>({});
   const [receitasData, setReceitasData] = useState<DerivedReceitasData>({});
+  const [receitasMeta, setReceitasMeta] = useState<string | null>(null);
   const capabilities = YEAR_CAPABILITIES[year] || YEAR_CAPABILITIES["2025"];
 
   const tldr = useMemo(
@@ -1384,6 +2047,14 @@ export default function TourismPage() {
   );
 
   const { sections, globalVerdict } = tldr;
+  const sidebarSections = useMemo(
+    () =>
+      sections.filter(
+        (section) =>
+          section.title !== "Sazonalidade" && section.title !== "Receitas"
+      ),
+    [sections]
+  );
 
   const { data: baseline2024, loading: baselineLoading } =
     useTourismBaseline2024();
@@ -1422,64 +2093,47 @@ export default function TourismPage() {
       />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-2 pb-16 space-y-6">
-        {/* Header */}
-        <div className="border-b border-border">
-          <div className="pt-6 pb-6 space-y-2">
-            <div className="flex items-start justify-between gap-6">
-              <div>
-                <h1 className="text-xl font-semibold">{t.title}</h1>
-                <p className="text-sm text-muted-foreground">{t.subtitle}</p>
-              </div>
+        <div className="space-y-4 pt-6">
+          <div>
+            <h1 className="text-lg font-semibold sm:text-xl">{t.title}</h1>
+            <p className="hidden text-sm text-muted-foreground sm:block">{t.subtitle}</p>
+          </div>
 
-              <div className="flex items-center gap-3">
-                {ilha !== ALL_ISLANDS_LABEL && capabilities.hasInsights && (
-                  <button
-                    onClick={() => setOpen(true)}
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border"
-                  >
-                    <Sparkles className="h-4 w-4 text-amber-500" />
-                  </button>
-                )}
-                <ThemeToggle />
-              </div>
-            </div>
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:items-center">
+            <Select value={ilha} onValueChange={setIlha}>
+              <SelectTrigger className="w-full sm:w-[180px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {ISLANDS.map((i) => (
+                  <SelectItem key={i} value={i}>
+                    {i}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            {/* Filters */}
-            <div className="flex items-center gap-3">
-              <Select value={ilha} onValueChange={setIlha}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ISLANDS.map((i) => (
-                    <SelectItem key={i} value={i}>
-                      {i}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={year} onValueChange={setYear}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {YEARS.map((y) => (
-                    <SelectItem key={y} value={y}>
-                      {y}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Select value={year} onValueChange={setYear}>
+              <SelectTrigger className="w-full sm:w-[120px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {YEARS.map((y) => (
+                  <SelectItem key={y} value={y}>
+                    {y}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
+
 
         {/* =========================
             YEAR = 2024 · BASELINE
         ========================= */}
 
-        {ilha === "Maio" && (
+        {ilha === "Maio" && year !== "2025" && year !== "2024" && (
           <MaioPopulationSnapshot
             t={t}
             onData={(data) =>
@@ -1491,7 +2145,12 @@ export default function TourismPage() {
           />
         )}
 
-        <ReceitasSection ilha={ilha} year={year} onData={setReceitasData} />
+        <ReceitasSection
+          ilha={ilha}
+          year={year}
+          onData={setReceitasData}
+          onMeta={setReceitasMeta}
+        />
 
         {ilha === ALL_ISLANDS_LABEL &&
           (capabilities.hasBaseline2024 || capabilities.hasLiveTourism) && (
@@ -1501,15 +2160,17 @@ export default function TourismPage() {
           </>
         )}
 
-        {ilha === "Maio" && capabilities.hasLocalGovernment && (
+        {ilha === "Maio" && capabilities.hasLocalGovernment && year !== "2025" && (
           <LocalGovernmentOverview t={t} year={year} />
         )}
+
+        {ilha === "Maio" && year === "2026" && <MaioEnergyOverview />}
 
 
 
         {capabilities.hasBaseline2024 && (
           <>
-            {ilha === ALL_ISLANDS_LABEL && (
+            {ilha === ALL_ISLANDS_LABEL && !capabilities.hasLiveTourism && (
               <HospedesDormidasStackedChart year={year} />
             )}
 
@@ -1599,6 +2260,7 @@ export default function TourismPage() {
                 <HospedesDormidasStackedChart year={year} />
                 <TourismPressure
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(value) =>
                     setDerivedMetrics((m) => ({
@@ -1607,13 +2269,15 @@ export default function TourismPage() {
                     }))
                   }
                 />
-                <TourismHotelsTable />
+                <TourismHotelsTable year={year} />
 
+                <CountryDependency ilha={ilha} year={year} t={t} />
 
 
 
                 <SeasonalityIndex
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(value) =>
                     setDerivedMetrics((m) => ({
@@ -1622,6 +2286,7 @@ export default function TourismPage() {
                     }))
                   }
                 />
+                <TransportOverviewSection year={year} ilha={ilha} />
 
 
               </>
@@ -1631,11 +2296,15 @@ export default function TourismPage() {
               <>
                 <IslandPopulationSnapshot
                   ilha={ilha}
+                  year={year}
                   onData={setPopulationData}
                 />
 
+                <TransportOverviewSection year={year} ilha={ilha} />
+
                 <TourismOverview
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onData={setTourismOverviewData}
                 />
@@ -1645,6 +2314,7 @@ export default function TourismPage() {
 
                 <TourismPressure
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(v) =>
                     setDerivedMetrics((m) => ({
@@ -1656,6 +2326,7 @@ export default function TourismPage() {
 
                 <SeasonalityIndex
                   ilha={ilha}
+                  year={year}
                   t={t}
                   onValue={(v) =>
                     setDerivedMetrics((m) => ({
@@ -1672,7 +2343,7 @@ export default function TourismPage() {
                     open={open}
                     onOpenChange={setOpen}
                     title="Estado atual da ilha"
-                    sections={sections}
+                    sections={sidebarSections}
                     globalVerdict={globalVerdict}
                   />
                 )}
@@ -1684,7 +2355,21 @@ export default function TourismPage() {
         {(capabilities.hasBaseline2024 || capabilities.hasLiveTourism) && (
           <BaselineNote />
         )}
+
+        {receitasMeta ? (
+          <div className="rounded-lg border border-border bg-muted/30 p-4 text-sm">
+            <strong>Fonte:</strong>{" "}
+            {receitasMeta.replace(/^Fonte:\s*/i, "")}
+          </div>
+        ) : null}
+
       </div>
+      <DashboardChatWidget
+        context={{
+          surface: "dashboard",
+          year,
+        }}
+      />
     </div>
   );
 }
@@ -1721,6 +2406,55 @@ function DataTable({
   loading?: boolean;
   error?: string | null;
 }) {
+  const [sortColumn, setSortColumn] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+
+  const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
+  const mobileHiddenColumns = new Set([
+    "índice_sazonalidade",
+    "indice_sazonalidade",
+    "índice_pressão",
+    "indice_pressao",
+    "variação_yoy",
+    "variacao_yoy",
+  ]);
+  const columnLabelMap: Record<string, string> = {
+    peso_no_total: "% total",
+  };
+
+  const sortedRows = useMemo(() => {
+    if (!sortColumn) return rows;
+
+    const result = [...rows];
+    result.sort((a, b) => {
+      const aValue = toSortableValue(a[sortColumn]);
+      const bValue = toSortableValue(b[sortColumn]);
+
+      if (aValue == null && bValue == null) return 0;
+      if (aValue == null) return 1;
+      if (bValue == null) return -1;
+
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+      }
+
+      const aText = String(aValue);
+      const bText = String(bValue);
+      const cmp = aText.localeCompare(bText, "pt-PT");
+      return sortDirection === "asc" ? cmp : -cmp;
+    });
+    return result;
+  }, [rows, sortColumn, sortDirection]);
+
+  const handleSort = (column: string) => {
+    if (sortColumn === column) {
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+      return;
+    }
+    setSortColumn(column);
+    setSortDirection("desc");
+  };
+
   if (loading) {
     return (
       <div className="rounded-lg border border-border overflow-hidden">
@@ -1766,21 +2500,33 @@ function DataTable({
     );
   }
 
-  const columns = Object.keys(rows[0]);
-
   return (
     <div className="rounded-lg border border-border overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
             {columns.map((k) => (
-              <TableHead key={k}>{k}</TableHead>
+              <TableHead
+                key={k}
+                className={mobileHiddenColumns.has(k) ? "hidden md:table-cell" : undefined}
+              >
+                <button
+                  type="button"
+                  onClick={() => handleSort(k)}
+                  className="inline-flex items-center gap-1 hover:text-foreground"
+                >
+                  <span>{columnLabelMap[k] ?? k}</span>
+                  <span className="text-xs">
+                    {sortColumn === k ? (sortDirection === "asc" ? "↑" : "↓") : "↕"}
+                  </span>
+                </button>
+              </TableHead>
             ))}
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {rows.map((row, i) => (
+          {sortedRows.map((row, i) => (
             <TableRow key={i}>
               {columns.map((key) => {
                 const cell = row[key];
@@ -1788,14 +2534,22 @@ function DataTable({
                   return (
                     <TableCell
                       key={key}
-                      className={cell.className}
+                      className={[
+                        cell.className,
+                        mobileHiddenColumns.has(key) ? "hidden md:table-cell" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                     >
                       {cell.value}
                     </TableCell>
                   );
                 }
                 return (
-                  <TableCell key={key}>
+                  <TableCell
+                    key={key}
+                    className={mobileHiddenColumns.has(key) ? "hidden md:table-cell" : undefined}
+                  >
                     {cell}
                   </TableCell>
                 );

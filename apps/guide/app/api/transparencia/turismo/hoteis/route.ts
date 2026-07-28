@@ -8,20 +8,22 @@ import clientPromise from "@/lib/mongodb";
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const year = Number(searchParams.get("year") ?? 2024);
+    const requestedYear = Number(searchParams.get("year") ?? 2025);
 
     const client = await clientPromise;
     const db = client.db();
 
     const raw = db.collection("estabelecimentos_raw");
+    let effectiveYear = Number.isFinite(requestedYear) ? requestedYear : 2025;
+    let usedFallbackYear = false;
 
     /* =========================
        1. Aggregate by island + type + metric
     ========================= */
 
-    const rows = await raw
+    let rows = await raw
       .aggregate([
-        { $match: { year } },
+        { $match: { year: effectiveYear } },
         {
           $group: {
             _id: {
@@ -34,6 +36,35 @@ export async function GET(req: Request) {
         },
       ])
       .toArray();
+
+    if (rows.length === 0) {
+      const latestDoc = await raw
+        .find({})
+        .project({ _id: 0, year: 1 })
+        .sort({ year: -1 })
+        .limit(1)
+        .next();
+
+      if (latestDoc?.year != null) {
+        effectiveYear = Number(latestDoc.year);
+        usedFallbackYear = true;
+        rows = await raw
+          .aggregate([
+            { $match: { year: effectiveYear } },
+            {
+              $group: {
+                _id: {
+                  ilha: "$ilha",
+                  tipo: "$tipo_estabelecimento",
+                  metric: "$metric",
+                },
+                total: { $sum: "$value" },
+              },
+            },
+          ])
+          .toArray();
+      }
+    }
 
     /* =========================
        2. Normalize structure
@@ -127,7 +158,9 @@ export async function GET(req: Request) {
     ========================= */
 
     return NextResponse.json({
-      year,
+      requested_year: Number.isFinite(requestedYear) ? requestedYear : null,
+      year: effectiveYear,
+      fallback_year_used: usedFallbackYear,
       islands: Object.values(islandMap),
       updatedAt: new Date(),
       source:

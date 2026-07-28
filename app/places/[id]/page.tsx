@@ -323,7 +323,7 @@ export default function PlacePage() {
         />
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-3">
           <Link
-            href="/map"
+            href="/places"
             aria-label="Close"
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur hover:bg-black/55 active:scale-[0.95]"
           >

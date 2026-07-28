@@ -11,6 +11,47 @@ const SOURCES = {
     "https://info.flightmapper.net/route/Cabo_Verde_Airlines_VR_MMO_RAI",
 };
 
+const CV_TIMEZONE = "Atlantic/Cape_Verde";
+const DAY_TO_INDEX: Record<string, number> = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+};
+
+function getCapeVerdeToday() {
+  const [year, month, day] = new Intl.DateTimeFormat("en-CA", {
+    timeZone: CV_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })
+    .format(new Date())
+    .split("-")
+    .map((part) => Number(part));
+
+  return { year, month, day };
+}
+
+function nextDateForDay(dayCode: string) {
+  const target = DAY_TO_INDEX[dayCode];
+  if (target == null) return "";
+
+  const { year, month, day } = getCapeVerdeToday();
+  const base = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+  const current = base.getUTCDay();
+  const delta = (target - current + 7) % 7;
+  base.setUTCDate(base.getUTCDate() + delta);
+
+  const y = base.getUTCFullYear();
+  const m = String(base.getUTCMonth() + 1).padStart(2, "0");
+  const d = String(base.getUTCDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function stripHtml(html: string) {
   return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
@@ -43,6 +84,7 @@ function parseFlightMapper(
     const [, day, departure, fromCode, arrival, toCode] = directMatch;
     if (fromCode !== from || toCode !== to) continue;
     results.push({
+      date: nextDateForDay(day),
       day,
       from: fromCode,
       to: toCode,
@@ -83,6 +125,7 @@ function parseFlightMapper(
 
     days.forEach((day) => {
       results.push({
+        date: nextDateForDay(day),
         day,
         from: fromCode,
         to: toCode,

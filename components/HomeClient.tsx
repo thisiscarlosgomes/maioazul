@@ -8,9 +8,11 @@ const copy = {
   en: {
     title: "Maio, at its own pace",
     description:
-      "Maioazul is an NGO that works toward the progressive construction of Maio Island’s socioeconomic autonomy. We develop initiatives aligned with the island’s reality, strengthening its collective capacity and creating conditions to retain and organize value within the territory.\n\nWe believe in structured development, at the right scale and with continuity, where innovation, the blue economy, and community move together while respecting Maio’s identity, rhythm, and history.",
+      "Maioazul is an NGO that works toward the progressive construction of Maio Island’s socioeconomic autonomy. We develop initiatives aligned with the island’s reality, strengthening its collective capacity and creating conditions to retain and organize value within the territory.",
     partners: "Partners",
+    visitMaio: "Visit Maio",
     dataPortal: "Data Portal",
+    campanhaAzul: "Campanha Azul",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
     facebook: "Facebook",
@@ -19,9 +21,11 @@ const copy = {
   pt: {
     title: "Maio, no seu próprio ritmo",
     description:
-      "A Maioazul é uma ONG que trabalha para a construção progressiva da autonomia socioeconómica da Ilha do Maio. Desenvolvemos iniciativas alinhadas com a realidade da ilha, reforçando a sua capacidade colectiva e criando condições para reter e organizar valor no território.\n\nAcreditamos num desenvolvimento estruturado, à escala certa e com continuidade onde inovação, economia azul e comunidade caminham juntas, respeitando a identidade, o ritmo e a história do Maio.",
+      "A Maioazul é uma ONG que trabalha para a construção progressiva da autonomia socioeconómica da Ilha do Maio. Desenvolvemos iniciativas alinhadas com a realidade da ilha, reforçando a sua capacidade colectiva e criando condições para reter e organizar valor no território.",
     partners: "Parceiros",
+    visitMaio: "Visit Maio",
     dataPortal: "Portal de Dados",
+    campanhaAzul: "Campanha Azul",
     launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
     facebook: "Facebook",
@@ -50,7 +54,10 @@ export default function HomeClient() {
   }, []);
 
   return (
-    <main className="relative h-screen w-screen overflow-hidden px-10">
+    <main
+      className="relative h-screen w-screen overflow-hidden px-10"
+      style={{ fontFamily: "Mabry, Inter, ui-sans-serif, system-ui, -apple-system" }}
+    >
       {/* Background image */}
       <img
         src="/image.png"
@@ -101,20 +108,30 @@ export default function HomeClient() {
           </h1>
 
           <p className="text-lg text-white/80 max-w-2xl">{t.description}</p>
-          <p className="hidden text-lg text-white/80 max-w-2xl">"De empreendedores do Maio, para empreendedores do Maio"</p>
+          <p className="hidden text-lg text-white/80 max-w-2xl">
+            &quot;De empreendedores do Maio, para empreendedores do Maio&quot;
+          </p>
 
           <div className="flex flex-wrap justify-center gap-3 pt-4">
             <Link
-              href="/partners"
+              href="https://visitmaio.com"
+              target="_blank"
+              rel="noreferrer"
               className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
             >
-              {t.partners}
+              {t.visitMaio}
             </Link>
             <Link
               href="/dashboard"
               className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
             >
               {t.dataPortal}
+            </Link>
+            <Link
+              href="/campanha-azul"
+              className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
+            >
+              {t.campanhaAzul}
             </Link>
           </div>
 
@@ -131,6 +148,10 @@ export default function HomeClient() {
             >
               {t.facebook}
             </a>
+            <span className="opacity-40">·</span>
+            <Link href="/partners" className="hover:text-white transition">
+              {t.partners}
+            </Link>
             <span className="opacity-40">·</span>
             <a
               href="https://instagram.com/maio__azul"

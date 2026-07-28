@@ -6,7 +6,7 @@ type Theme = "light" | "dark";
 
 export function ThemeProvider({
   children,
-  defaultTheme = "dark",
+  defaultTheme = "light",
 }: {
   children: React.ReactNode;
   defaultTheme?: Theme;
@@ -14,18 +14,10 @@ export function ThemeProvider({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    const theme =
-      stored ??
-      defaultTheme ??
-      (window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light");
+    const theme = defaultTheme ?? "light";
 
     document.documentElement.classList.toggle("dark", theme === "dark");
-    if (!stored) {
-      localStorage.setItem("theme", theme);
-    }
+    localStorage.setItem("theme", theme);
     setMounted(true);
   }, [defaultTheme]);
 

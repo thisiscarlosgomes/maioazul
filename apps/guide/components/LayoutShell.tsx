@@ -10,6 +10,9 @@ import { useLang } from "@/lib/lang";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Drawer } from "vaul";
 import { useRef } from "react";
+import GuideChatWidget from "@/components/chat/GuideChatWidget";
+import SiteFooter from "@/components/SiteFooter";
+import MainSiteHeader from "@/components/MainSiteHeader";
 
 const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
 
@@ -22,8 +25,33 @@ function shouldShowNav(pathname: string | null) {
 
 export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const allowIntroDrawer = Boolean(pathname?.startsWith("/map"));
   const showNav = shouldShowNav(pathname);
+  const chatSurface =
+    pathname?.startsWith("/mcp-guide") || pathname?.startsWith("/mpc-guide")
+      ? "mcp-guide"
+      : pathname?.startsWith("/map")
+        ? "map"
+        : pathname?.startsWith("/places")
+          ? "places"
+          : pathname?.startsWith("/experiences")
+            ? "experiences"
+            : pathname?.startsWith("/favorites")
+              ? "favorites"
+              : "guide";
   const [hideNav, setHideNav] = useState(false);
+  const [isAnyVaulOpen, setIsAnyVaulOpen] = useState(false);
+  const showChatWidget =
+    !(pathname?.startsWith("/map") && hideNav) && !isAnyVaulOpen;
+  const showFooter =
+    pathname === "/" ||
+    pathname === "/manifest" ||
+    pathname === "/guia" ||
+    pathname === "/visa";
+  const showMainSiteHeader =
+    pathname === "/manifest" ||
+    pathname === "/guia" ||
+    pathname === "/visa";
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav
@@ -87,6 +115,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
           "Pin places to return later.",
           "Connect with locals — feel the morabeza.",
         ],
+        voiceGuideFallback: "Voice guide",
+        preparingAudio: "Preparing audio...",
       },
       pt: {
         nowPlaying: "A tocar",
@@ -119,6 +149,8 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
           "Fixe lugares para voltar depois.",
           "Conecte-se com os locais — sinta a morabeza.",
         ],
+        voiceGuideFallback: "Guia de voz",
+        preparingAudio: "A preparar áudio...",
       },
     }),
     []
@@ -126,6 +158,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!allowIntroDrawer) return;
     if (window.matchMedia("(min-width: 1024px)").matches) return;
     const already = window.localStorage.getItem(INTRO_KEY);
     const hidden = window.localStorage.getItem(GUIDE_LAUNCHER_KEY) === "1";
@@ -133,7 +166,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     if (!already && !hidden) {
       setIntroOpen(true);
     }
-  }, []);
+  }, [allowIntroDrawer]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -338,10 +371,35 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     navigator.serviceWorker.register("/sw.js").catch(() => {});
   }, []);
 
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    const hasOpenVaul = () => {
+      const drawerOpen = document.querySelector('[data-vaul-drawer][data-state="open"]');
+      const overlayOpen = document.querySelector('[data-vaul-overlay][data-state="open"]');
+      const dialogOpen = document.querySelector(
+        '[role="dialog"][data-state="open"], [data-slot="dialog-content"][data-state="open"]'
+      );
+      return Boolean(drawerOpen || overlayOpen || dialogOpen);
+    };
+
+    const sync = () => setIsAnyVaulOpen(hasOpenVaul());
+
+    const observer = new MutationObserver(sync);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-state"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <Drawer.Root
-        open={introOpen}
+        open={allowIntroDrawer && introOpen}
         onOpenChange={(next) => {
           if (!next && introStep < 2) return;
           setIntroOpen(next);
@@ -488,7 +546,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
       </Drawer.Root>
 
       <div
-        className={showNav ? "min-h-[100svh] pb-24" : "min-h-[100svh]"}
+        className={showNav ? "flex min-h-[100svh] flex-col pb-24" : "flex min-h-[100svh] flex-col"}
         style={
           showNav && !hideNav
             ? {
@@ -501,7 +559,9 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
               : undefined
         }
       >
-        {children}
+        {showMainSiteHeader && <MainSiteHeader />}
+        <div className="flex-1">{children}</div>
+        {showFooter && <SiteFooter />}
       </div>
       {!hideNav && showVoicePill && (
         <div className="fixed inset-x-0 z-50" style={{ bottom: voicePillBottom }}>
@@ -511,14 +571,14 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
                 <Link
                   href={`/places/${voiceState.placeId}`}
                   prefetch
-                  aria-label={voiceState.title || "Voice guide"}
+                  aria-label={voiceState.title || copy[lang].voiceGuideFallback}
                   className="min-w-0 flex-1 cursor-pointer"
                 >
                   <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
                     {copy[lang].nowPlaying}
                   </div>
                   <div className="text-sm font-semibold text-foreground truncate">
-                    {voiceState.title || "Voice guide"}
+                    {voiceState.title || copy[lang].voiceGuideFallback}
                   </div>
                 </Link>
               ) : (
@@ -527,14 +587,14 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
                     {copy[lang].nowPlaying}
                   </div>
                   <div className="text-sm font-semibold text-foreground truncate">
-                    {voiceState.title || "Voice guide"}
+                    {voiceState.title || copy[lang].voiceGuideFallback}
                   </div>
                 </div>
               )}
               <div className="flex items-center gap-2">
                 {voiceState.status === "loading" ? (
                   <div className="text-xs text-muted-foreground">
-                    {lang === "pt" ? "A preparar áudio..." : "Preparing audio..."}
+                    {copy[lang].preparingAudio}
                   </div>
                 ) : voiceState.status === "paused" ? (
                   <button
@@ -569,6 +629,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
         </div>
       )}
       {showNav && !hideNav && <BottomNav />}
+      {showChatWidget && <GuideChatWidget context={{ surface: chatSurface }} />}
     </>
   );
 }

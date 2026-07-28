@@ -4,22 +4,22 @@ export type Locale = "pt" | "en";
 
 export const dictionary = {
     pt: {
-        title: "Portal de Dados do Maio",
+        title: "Indicadores do desenvolvimento e turismo",
         subtitle:
-            "Indicadores do desenvolvimento e turismo da ilha do Maio · maioazul.com",
+            "Indicadores da ilha, Transferências do Estado, Receitas, Alojamento turistico...",
 
         localGovernment: "Governo Local",
         localPopulation: "população",
         localGovernmentDesc:
             "Transferências do Estado para o município do Maio.",
 
-        tourismOverview: "Turismo · Visão Geral (Q3)",
+        tourismOverview: "Turismo · Visão Geral",
 
         tourismPressure: "Índice de Pressão Turística",
         tourismPressureDesc:
             "Relação entre o número de dormidas turísticas e a população residente.",
 
-        seasonality: "Contraste Sazonal (Q3 / Q1)",
+        seasonality: "Contraste Sazonal",
 
         dependency: "Turistas por País de Origem",
 
@@ -126,7 +126,7 @@ export const dictionary = {
         tourismPressureDesc:
             "Relationship between tourist nights and resident population.",
 
-        seasonality: "Seasonality Contrast (Q3 / Q1)",
+        seasonality: "Seasonality Contrast",
 
         dependency: "Country of Origin Dependency",
 

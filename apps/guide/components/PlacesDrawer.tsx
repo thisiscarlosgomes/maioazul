@@ -2,6 +2,7 @@
 
 import { Drawer } from "vaul";
 import { useEffect, useState } from "react";
+import { useLang } from "@/lib/lang";
 
 export type Place = {
   id: string;
@@ -26,12 +27,29 @@ export function PlacesDrawer({
   onSelect?: (place: Place) => void;
 }) {
   const [places, setPlaces] = useState<Place[]>([]);
+  const [lang] = useLang();
 
   useEffect(() => {
     fetch("/data/maio_places_with_coords.json")
       .then((r) => r.json())
       .then(setPlaces);
   }, []);
+
+  const copy = {
+    pt: {
+      title: "Escolha um lugar",
+      subtitle: "Passeie por praias, povoações e áreas protegidas.",
+      loading: "A carregar lugares...",
+    },
+    en: {
+      title: "Choose a place",
+      subtitle: "Wander beaches, settlements, and protected areas.",
+      loading: "Loading places...",
+    },
+  };
+
+  const pick = (value?: { pt?: string; en?: string }) =>
+    value?.[lang] || value?.en || value?.pt || "";
 
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange} direction="right">
@@ -51,10 +69,10 @@ export function PlacesDrawer({
             {/* Header */}
             <div className="px-5 pt-6 pb-5 border-b border-border">
               <Drawer.Title className="text-base font-semibold leading-tight">
-                Escolha um lugar
+                {copy[lang].title}
               </Drawer.Title>
               <p className="text-xs text-muted-foreground mt-1">
-                Passeie por praias, povoações e áreas protegidas.
+                {copy[lang].subtitle}
               </p>
             </div>
 
@@ -81,10 +99,10 @@ export function PlacesDrawer({
 
                     <div className="space-y-1">
                       <div className="font-medium text-sm">
-                        {place.name.pt}
+                        {pick(place.name)}
                       </div>
                       <div className="text-xs text-muted-foreground ">
-                        {place.description.pt}
+                        {pick(place.description)}
                       </div>
                     </div>
                   </div>
@@ -93,7 +111,7 @@ export function PlacesDrawer({
 
               {places.length === 0 && (
                 <p className="text-sm text-muted-foreground px-2">
-                  A carregar lugares...
+                  {copy[lang].loading}
                 </p>
               )}
             </div>

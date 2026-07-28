@@ -82,10 +82,10 @@ export function TldrDrawer({
   return (
     <Drawer.Root open={open} onOpenChange={onOpenChange} direction="right">
       <Drawer.Portal>
-        <Drawer.Overlay className="fixed inset-0 bg-black/50 z-40 backdrop-blur-sm" />
+        <Drawer.Overlay className="fixed inset-0 z-[88] bg-black/50 backdrop-blur-sm" />
 
         <Drawer.Content
-          className="fixed right-2 top-2 bottom-2 z-50 w-[350px] outline-none flex"
+          className="fixed right-2 top-2 bottom-2 z-[90] w-[350px] outline-none flex"
           style={
             {
               "--initial-transform": "calc(100% + 8px)",

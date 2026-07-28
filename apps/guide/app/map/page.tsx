@@ -20,12 +20,12 @@ import {
     Smartphone,
 } from "lucide-react";
 import maplibregl from "maplibre-gl";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Drawer } from "vaul";
 import { hasVoiceForId, playVoice, stopVoice, useVoiceManifest, useVoiceState } from "@/lib/voice";
 import { useLang } from "@/lib/lang";
 import Link from "next/link";
+import ResponsiveDialog from "@/components/ui/responsive-dialog";
 
 import { PlacesDrawer } from "@/components/PlacesDrawer";
 import { fetchJsonOfflineFirst } from "@/lib/offline";
@@ -113,6 +113,20 @@ type SurfResponse = {
     points: SurfPoint[];
 };
 
+type BeachSafetyResponse = {
+    location?: string;
+    updated_at?: string;
+    advisory_level?: "low" | "medium" | "high" | "closed";
+    flag_equivalent?: "red_yellow" | "yellow" | "red" | "double_red";
+    reasons?: string[];
+    metrics?: {
+        wind_kph?: number;
+        wind_gust_kph?: number;
+        wave_height_m?: number;
+        beaufort?: number;
+    };
+};
+
 function surfQualityScore(point: SurfPoint) {
     let score = 3;
     if (point.swell_period_s >= 10) score += 1;
@@ -172,6 +186,7 @@ export default function MapPage() {
     const [wind, setWind] = useState<any>(null);
     const [weather, setWeather] = useState<any>(null);
     const [air, setAir] = useState<any>(null);
+    const [beachSafety, setBeachSafety] = useState<BeachSafetyResponse | null>(null);
 
     const [placesOpen, setPlacesOpen] = useState(false);
     const [exploreOpen, setExploreOpen] = useState(false);
@@ -311,13 +326,21 @@ export default function MapPage() {
                 boatsSection: "Barcos",
                 flightsSection: "Voos",
                 todayInMaio: "Hoje no Maio",
-                todayHint: "Maio é ensolarado quase todo o ano; o vento decide o melhor roteiro.",
+                todayHint: "Temos sol quase todo o ano; o vento decide o melhor roteiro.",
                 morning: "Manhã",
                 midday: "Meio-dia",
                 lateDay: "Fim de tarde",
                 conditionsCalm: "Mar calmo: ótimo para praia.",
                 conditionsWindy: "Vento forte: melhor escolher interior.",
                 conditionsMixed: "Condições mistas: misturar praia e vila.",
+                conditionsHigh: "Risco alto no mar: praia com muita cautela.",
+                conditionsClosed: "Condições para evitar banho de mar hoje.",
+                todayAdvisory: "Aviso de praia",
+                flag: "Bandeira",
+                flagRedYellow: "Vermelho/Amarelo",
+                flagYellow: "Amarela",
+                flagRed: "Vermelha",
+                flagDoubleRed: "Duplo vermelho",
                 schedulesTitle: "Horários de viagem",
                 schedulesHint: "Hoje e próximas partidas disponíveis.",
                 scheduleUnavailable: "Sem horários disponíveis.",
@@ -396,6 +419,14 @@ export default function MapPage() {
                 conditionsCalm: "Calm sea: great for beaches.",
                 conditionsWindy: "Windy: inland works best.",
                 conditionsMixed: "Mixed conditions: beach + town.",
+                conditionsHigh: "High sea risk: beach only with caution.",
+                conditionsClosed: "Sea-bathing conditions are not recommended today.",
+                todayAdvisory: "Beach advisory",
+                flag: "Flag",
+                flagRedYellow: "Red/Yellow",
+                flagYellow: "Yellow",
+                flagRed: "Red",
+                flagDoubleRed: "Double red",
                 schedulesTitle: "Travel schedules",
                 schedulesHint: "Today and upcoming departures.",
                 scheduleUnavailable: "No schedules available.",
@@ -671,7 +702,10 @@ export default function MapPage() {
         const raw =
             typeof place.description === "string"
                 ? place.description
-                : place.description?.en || "";
+                : place.description?.[lang] ||
+                  place.description?.en ||
+                  place.description?.pt ||
+                  "";
         const cleaned = typeof raw === "string" ? raw.replace(/\s+/g, " ").trim() : "";
         return cleaned;
     };
@@ -729,6 +763,10 @@ export default function MapPage() {
 
             fetchJsonOfflineFirst<any>("/api/maio/air")
                 .then(setAir)
+                .catch(() => { });
+
+            fetchJsonOfflineFirst<BeachSafetyResponse>("/api/maio/beach-safety")
+                .then(setBeachSafety)
                 .catch(() => { });
         };
         const idle = (window as any).requestIdleCallback;
@@ -1002,22 +1040,51 @@ export default function MapPage() {
     };
 
     const todayConditions = useMemo(() => {
-        const wave = marine?.sea?.wave_height;
-        const windSpeed = wind?.wind?.speed;
+        const wave = beachSafety?.metrics?.wave_height_m ?? marine?.sea?.wave_height;
+        const windSpeed = beachSafety?.metrics?.wind_kph ?? wind?.wind?.speed;
         if (wave == null && windSpeed == null) return null;
         const seaCalm = wave != null && wave <= 1.5;
         const windy = windSpeed != null && windSpeed >= 12;
-        const label = seaCalm
-            ? copy[lang].conditionsCalm
-            : windy
-                ? copy[lang].conditionsWindy
-                : copy[lang].conditionsMixed;
+        const advisory = beachSafety?.advisory_level;
+        const label =
+            advisory === "closed"
+                ? copy[lang].conditionsClosed
+                : advisory === "high"
+                    ? copy[lang].conditionsHigh
+                    : advisory === "medium"
+                        ? copy[lang].conditionsMixed
+                        : advisory === "low"
+                            ? copy[lang].conditionsCalm
+                            : seaCalm
+                                ? copy[lang].conditionsCalm
+                                : windy
+                                    ? copy[lang].conditionsWindy
+                                    : copy[lang].conditionsMixed;
+        const flag =
+            beachSafety?.flag_equivalent === "double_red"
+                ? copy[lang].flagDoubleRed
+                : beachSafety?.flag_equivalent === "red"
+                    ? copy[lang].flagRed
+                    : beachSafety?.flag_equivalent === "yellow"
+                        ? copy[lang].flagYellow
+                        : beachSafety?.flag_equivalent === "red_yellow"
+                            ? copy[lang].flagRedYellow
+                            : null;
+        const reason =
+            Array.isArray(beachSafety?.reasons) &&
+                beachSafety.reasons.length > 0 &&
+                typeof beachSafety.reasons[0] === "string"
+                ? beachSafety.reasons[0]
+                : null;
         return {
             wave,
             windSpeed,
             label,
+            advisory,
+            flag,
+            reason,
         };
-    }, [marine, wind, lang, copy]);
+    }, [marine, wind, beachSafety, lang, copy]);
 
 
     const FLIGHT_SCHEDULE = {
@@ -1033,7 +1100,11 @@ export default function MapPage() {
         },
     } as const;
 
-    const nextScheduledDate = (days: Array<keyof typeof FLIGHT_SCHEDULE.RAI_MMO>) => {
+    const nextScheduledDate = (
+        days: Array<keyof typeof FLIGHT_SCHEDULE.RAI_MMO>,
+        baseDate?: Date | null,
+        includeBase = true
+    ) => {
         const dayMap: Record<string, number> = {
             Sun: 0,
             Mon: 1,
@@ -1044,8 +1115,22 @@ export default function MapPage() {
             Sat: 6,
         };
         const targets = new Set(days.map((d) => dayMap[d]));
-        const { year, month, day } = getCvTodayKey();
-        const base = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+        const base = baseDate
+            ? new Date(
+                  Date.UTC(
+                      baseDate.getUTCFullYear(),
+                      baseDate.getUTCMonth(),
+                      baseDate.getUTCDate(),
+                      12,
+                      0,
+                      0
+                  )
+              )
+            : (() => {
+                  const { year, month, day } = getCvTodayKey();
+                  return new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+              })();
+        if (!includeBase) base.setUTCDate(base.getUTCDate() + 1);
         for (let i = 0; i < 21; i++) {
             const d = new Date(base);
             d.setUTCDate(d.getUTCDate() + i);
@@ -1057,20 +1142,141 @@ export default function MapPage() {
     };
 
     const getTodayFlight = (items: any[], from: "RAI" | "MMO", to: "RAI" | "MMO") => {
-        const todayItem = items.find((item) => item?.date && isCvToday(item.date));
+        const todayDay = new Intl.DateTimeFormat("en-US", {
+            weekday: "short",
+            timeZone: "Atlantic/Cape_Verde",
+        }).format(new Date());
+        const todayItem = items.find(
+            (item) =>
+                (item?.date && isCvToday(item.date)) ||
+                (!item?.date && item?.day === todayDay)
+        );
         if (!todayItem) return null;
+        const { year, month, day } = getCvTodayKey();
         return {
             ...todayItem,
             from,
             to,
-            dateObj: parseCvDate(todayItem.date),
+            dateObj: todayItem.date ? parseCvDate(todayItem.date) : new Date(Date.UTC(year, month - 1, day, 12, 0, 0)),
             source: todayItem.source || "Aviationstack",
         };
+    };
+
+    const getNextFlightFromApi = (
+        items: any[],
+        from: "RAI" | "MMO",
+        to: "RAI" | "MMO",
+        baseDate?: Date | null
+    ) => {
+        if (!Array.isArray(items) || items.length === 0) return null;
+        const dayMap: Record<string, number> = {
+            Sun: 0,
+            Mon: 1,
+            Tue: 2,
+            Wed: 3,
+            Thu: 4,
+            Fri: 5,
+            Sat: 6,
+        };
+        const base = baseDate
+            ? new Date(
+                  Date.UTC(
+                      baseDate.getUTCFullYear(),
+                      baseDate.getUTCMonth(),
+                      baseDate.getUTCDate(),
+                      12,
+                      0,
+                      0
+                  )
+              )
+            : (() => {
+                  const { year, month, day } = getCvTodayKey();
+                  return new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+              })();
+        const baseKey =
+            base.getUTCFullYear() * 10000 +
+            (base.getUTCMonth() + 1) * 100 +
+            base.getUTCDate();
+
+        const candidates = items
+            .map((item) => {
+                if (item?.date) {
+                    const d = parseCvDate(item.date);
+                    if (!d) return null;
+                    const dKey =
+                        d.getUTCFullYear() * 10000 +
+                        (d.getUTCMonth() + 1) * 100 +
+                        d.getUTCDate();
+                    if (dKey < baseKey) return null;
+                    return {
+                        ...item,
+                        from,
+                        to,
+                        dateObj: d,
+                        key: dKey,
+                        source: item.source || "Aviationstack",
+                    };
+                }
+
+                const dayIndex = dayMap[item?.day];
+                if (dayIndex == null) return null;
+                const d = new Date(base);
+                const delta = (dayIndex - d.getUTCDay() + 7) % 7;
+                d.setUTCDate(d.getUTCDate() + delta);
+                const dKey =
+                    d.getUTCFullYear() * 10000 +
+                    (d.getUTCMonth() + 1) * 100 +
+                    d.getUTCDate();
+                return {
+                    ...item,
+                    from,
+                    to,
+                    dateObj: d,
+                    key: dKey,
+                    source: item.source || "FlightMapper",
+                };
+            })
+            .filter(Boolean)
+            .sort((a: any, b: any) => {
+                if (a.key !== b.key) return a.key - b.key;
+                const ta = String(a.departure || "99:99");
+                const tb = String(b.departure || "99:99");
+                return ta.localeCompare(tb);
+            });
+
+        return candidates[0] || null;
     };
 
     const getFallbackFlight = (from: "RAI" | "MMO", to: "RAI" | "MMO") => {
         const schedule = from === "RAI" ? FLIGHT_SCHEDULE.RAI_MMO : FLIGHT_SCHEDULE.MMO_RAI;
         const dateObj = nextScheduledDate(Object.keys(schedule) as Array<keyof typeof schedule>);
+        const dayCode = new Intl.DateTimeFormat("en-US", {
+            weekday: "short",
+            timeZone: "Atlantic/Cape_Verde",
+        }).format(dateObj) as keyof typeof schedule;
+        const slot = schedule[dayCode] || schedule.Tue;
+        return {
+            from,
+            to,
+            departure: slot.departure,
+            arrival: slot.arrival,
+            dateObj,
+            status: lang === "pt" ? "Agendado" : "Scheduled",
+            source: "Fixed schedule",
+        };
+    };
+
+    const getFallbackFlightAfter = (
+        from: "RAI" | "MMO",
+        to: "RAI" | "MMO",
+        afterDate?: Date | null
+    ) => {
+        const schedule = from === "RAI" ? FLIGHT_SCHEDULE.RAI_MMO : FLIGHT_SCHEDULE.MMO_RAI;
+        const dateObj = nextScheduledDate(
+            Object.keys(schedule) as Array<keyof typeof schedule>,
+            afterDate || null,
+            false
+        );
         const dayCode = new Intl.DateTimeFormat("en-US", {
             weekday: "short",
             timeZone: "Atlantic/Cape_Verde",
@@ -1339,7 +1545,7 @@ export default function MapPage() {
         ["praia da bitxe rotcha", "praia de bitche rotcha"],
         ["praia da salina", "praias da salina e bancona"],
         ["praia de boca ribeira", "praias de prainha e boca ribeira", "prainha and boca ribeira beaches"],
-        ["praia de cadjetinha", "praia da cadjetinha de morrinho", "cadjetinha beach of morrinho"],
+        ["praia da cadjetinha de morrinho", "cadjetinha beach of morrinho"],
         ["praia de porto cais", "praia e refugio pesqueiro de porto cais", "beach and port of porto cais"],
         ["praia de prainha", "praias de prainha e boca ribeira", "prainha and boca ribeira beaches"],
         ["praia de santo antonio", "praia e dunas de santo antonio"],
@@ -2797,6 +3003,14 @@ export default function MapPage() {
     }, [isFullscreen]);
 
     useEffect(() => {
+        window.dispatchEvent(
+            new CustomEvent("maio-nav-visibility", {
+                detail: { hidden: isFullscreen, hideHeader: isFullscreen },
+            })
+        );
+    }, [isFullscreen]);
+
+    useEffect(() => {
         if (typeof document === "undefined") return;
         if (isFullscreen) {
             const previous = document.body.style.overflow;
@@ -2843,46 +3057,67 @@ export default function MapPage() {
 
             {!isFullscreen && (
                 <div className="maio-map-header fixed inset-x-0 top-0 z-40 bg-background/90 backdrop-blur">
-                    <div className="max-w-6xl mx-auto px-6 py-4 flex items-start justify-between">
-                        <div>
-                            <h1 className="text-xl font-semibold">
-                                {copy[lang].title}
-                            </h1>
-                        </div>
+                    <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+                        <Link href="/" aria-label={lang === "pt" ? "Página inicial" : "Home"}>
+                            <img
+                                src="/visitmaio.svg"
+                                alt="Visit Maio"
+                                className="h-5 w-auto"
+                            />
+                        </Link>
 
                         <div className="flex items-center gap-2">
-                            <div className="inline-flex rounded-md border border-border bg-background/95 backdrop-blur overflow-hidden">
+                            {weatherAqiBadge && (
+                                <div className="w-[56px] rounded-lg border border-border bg-background/95 px-1.5 py-1 text-foreground shadow-sm backdrop-blur">
+                                    <div className="flex items-center justify-center gap-0.5 leading-none">
+                                        <span className="text-[10px]">{weatherAqiBadge.icon}</span>
+                                        <span className="text-[13px] font-semibold leading-none tracking-tight">
+                                            {weatherAqiBadge.temp != null ? `${weatherAqiBadge.temp}°` : "—"}
+                                        </span>
+                                    </div>
+                                    <div className="mt-0.5 flex items-center justify-center gap-0.5 leading-none">
+                                        <span className="text-[7px] font-medium uppercase tracking-wide text-muted-foreground">
+                                            AQI
+                                        </span>
+                                        <span className="text-[10px] font-semibold leading-none">
+                                            {weatherAqiBadge.aqi ?? "—"}
+                                        </span>
+                                        <span className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="inline-flex items-center rounded-2xl border border-border bg-background p-1">
                                 <button
                                     type="button"
                                     onClick={() => setLang("pt")}
-                                    aria-pressed={lang === "pt"}
-                                    className={`px-3 py-2 text-xs font-medium transition ${lang === "pt"
-                                        ? "bg-foreground text-background"
-                                        : "text-muted-foreground hover:text-foreground"
+                                    aria-label="Português"
+                                    className={`rounded-xl px-3 py-1.5 text-lg leading-none transition ${lang === "pt"
+                                        ? "bg-muted text-foreground"
+                                        : "text-muted-foreground hover:bg-muted/70"
                                         }`}
                                 >
-                                    PT
+                                    <span aria-hidden="true" className="text-base leading-none">🇵🇹</span>
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setLang("en")}
-                                    aria-pressed={lang === "en"}
-                                    className={`px-3 py-2 text-xs font-medium transition ${lang === "en"
-                                        ? "bg-foreground text-background"
-                                        : "text-muted-foreground hover:text-foreground"
+                                    aria-label="English"
+                                    className={`rounded-xl px-3 py-1.5 text-lg leading-none transition ${lang === "en"
+                                        ? "bg-muted text-foreground"
+                                        : "text-muted-foreground hover:bg-muted/70"
                                         }`}
                                 >
-                                    EN
+                                    <span aria-hidden="true" className="text-base leading-none">🇬🇧</span>
                                 </button>
                             </div>
-                            <ThemeToggle />
                         </div>
 
                     </div>
                 </div>
             )}
 
-            <div className="relative z-10 max-w-6xl mx-auto px-6 pt-20 pb-10 flex flex-col gap-8">
+            <div className="relative z-10 max-w-5xl mx-auto px-6 pt-20 pb-10 flex flex-col gap-8">
 
 
                 <div className="flex flex-col gap-5 overflow-hidden">
@@ -2988,7 +3223,7 @@ export default function MapPage() {
                         </div>
 
                         <div className="mt-5 rounded-2xl border border-border bg-background p-6 shadow-sm maio-fade-up">
-                            <div className="mb-6 flex items-center justify-between">
+                            <div className="mb-2 flex items-center justify-between">
                                 <div>
                                     <div className="text-base font-semibold">
                                         {copy[lang].todayInMaio}
@@ -3008,6 +3243,11 @@ export default function MapPage() {
                                     <Skeleton className="h-4 w-44 rounded-full" />
                                 )}
                             </div>
+                            {todayConditions?.flag ? (
+                                <div className="mt-1 text-xs text-muted-foreground">
+                                    {copy[lang].todayAdvisory}: {copy[lang].flag} {todayConditions.flag}
+                                </div>
+                            ) : null}
                             <div className="mt-4 grid gap-4 sm:grid-cols-3">
                                 {todayPlan.length === 0 && (
                                     <>
@@ -3216,8 +3456,62 @@ export default function MapPage() {
                                         (() => {
                                             const todayRai = getTodayFlight(flightSchedules.rai_mmo, "RAI", "MMO");
                                             const todayMmo = getTodayFlight(flightSchedules.mmo_rai, "MMO", "RAI");
-                                            const nextRai = todayRai || getFallbackFlight("RAI", "MMO");
-                                            const nextMmo = todayMmo || getFallbackFlight("MMO", "RAI");
+                                            const nextRai =
+                                                todayRai ||
+                                                getNextFlightFromApi(flightSchedules.rai_mmo, "RAI", "MMO") ||
+                                                getFallbackFlight("RAI", "MMO");
+                                            const nextMmo =
+                                                todayMmo ||
+                                                getNextFlightFromApi(flightSchedules.mmo_rai, "MMO", "RAI") ||
+                                                getFallbackFlight("MMO", "RAI");
+                                            const nextRaiBaseDate = nextRai?.date
+                                                ? parseCvDate(nextRai.date)
+                                                : nextRai?.dateObj || null;
+                                            const nextMmoBaseDate = nextMmo?.date
+                                                ? parseCvDate(nextMmo.date)
+                                                : nextMmo?.dateObj || null;
+                                            const followingRai =
+                                                getNextFlightFromApi(
+                                                    flightSchedules.rai_mmo,
+                                                    "RAI",
+                                                    "MMO",
+                                                    nextRaiBaseDate
+                                                        ? new Date(
+                                                              Date.UTC(
+                                                                  nextRaiBaseDate.getUTCFullYear(),
+                                                                  nextRaiBaseDate.getUTCMonth(),
+                                                                  nextRaiBaseDate.getUTCDate() + 1,
+                                                                  12,
+                                                                  0,
+                                                                  0
+                                                              )
+                                                          )
+                                                        : null
+                                                ) || getFallbackFlightAfter("RAI", "MMO", nextRaiBaseDate);
+                                            const followingMmo =
+                                                getNextFlightFromApi(
+                                                    flightSchedules.mmo_rai,
+                                                    "MMO",
+                                                    "RAI",
+                                                    nextMmoBaseDate
+                                                        ? new Date(
+                                                              Date.UTC(
+                                                                  nextMmoBaseDate.getUTCFullYear(),
+                                                                  nextMmoBaseDate.getUTCMonth(),
+                                                                  nextMmoBaseDate.getUTCDate() + 1,
+                                                                  12,
+                                                                  0,
+                                                                  0
+                                                              )
+                                                          )
+                                                        : null
+                                                ) || getFallbackFlightAfter("MMO", "RAI", nextMmoBaseDate);
+                                            const followingRaiDateLabel = followingRai?.date
+                                                ? formatCvDate(followingRai.date)
+                                                : formatCvDateObj(followingRai?.dateObj);
+                                            const followingMmoDateLabel = followingMmo?.date
+                                                ? formatCvDate(followingMmo.date)
+                                                : formatCvDateObj(followingMmo?.dateObj);
 
                                             const renderCard = (item: any, from: "RAI" | "MMO", to: "RAI" | "MMO") => {
                                                 const dateLabel = item?.date
@@ -3242,7 +3536,7 @@ export default function MapPage() {
                                                         }}
                                                         className="rounded-2xl border border-border bg-background/80 p-4 text-left shadow-sm transition duration-300 ease-out active:scale-[0.98]"
                                                     >
-                                                        <div className="flex items-center justify-between text-xs font-semibold text-foreground">
+                                                        <div className="capitalize flex items-center justify-between text-xs font-semibold text-foreground">
                                                             <span>{dateLabel}</span>
                                                             {isToday && (
                                                                 <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200">
@@ -3287,16 +3581,13 @@ export default function MapPage() {
                                             return (
                                                 <div className="grid gap-4 sm:grid-cols-1">
                                                     {renderCard(nextRai, "RAI", "MMO")}
+                                                    <div className="capitalize text-xs text-muted-foreground">
+                                                        {lang === "pt" ? "Próximos voos disponíveis:" : "Next available flights:"}{" "}
+                                                        {`${followingRaiDateLabel}`}
+                                                    </div>
                                                 </div>
                                             );
                                         })()}
-                                    {!flightsLoading && (
-                                        <div className="mt-2 text-xs text-muted-foreground">
-                                            {lang === "pt"
-                                                ? "Horário baseado em dados públicos."
-                                                : "Schedule based on public data."}
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>
@@ -3313,7 +3604,7 @@ export default function MapPage() {
                                     {weather?.daily?.length ? (
                                         <div className="flex gap-1 overflow-x-auto pb-1 sm:grid sm:grid-cols-7 sm:gap-3 sm:overflow-visible">
                                             {weather.daily.slice(0, 7).map((day: any, index: number) => {
-                                                const date = new Date(day.date);
+                                                const date = parseCvDate(day.date) ?? new Date(day.date);
                                                 const dayLabel =
                                                     index === 0
                                                         ? copy[lang].today
@@ -3330,7 +3621,7 @@ export default function MapPage() {
                                                     <div
                                                         key={`${day.date}-${index}`}
                                                         className={`min-w-[76px] sm:min-w-0 rounded-2xl px-3 py-3 text-center ${index === 0
-                                                                ? "bg-black/5 text-foreground dark:bg-white/10"
+                                                                ? "bg-blue-500/10 border border-blue-500/50 text-foreground dark:bg-white/10"
                                                                 : "bg-muted/40 text-foreground"
                                                             }`}
                                                     >
@@ -3372,7 +3663,7 @@ export default function MapPage() {
                         <div className="mt-6">
                             <div className="rounded-3xl border border-border bg-background p-6 shadow-sm maio-fade-up">
                                 <div className="text-lg font-semibold">{copy[lang].servicesTitle}</div>
-                                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                                     <button
                                         type="button"
                                         onClick={() => setCurrencyOpen(true)}
@@ -3438,16 +3729,16 @@ export default function MapPage() {
                             />
 
                             <div className="absolute top-4 left-3 right-16 sm:right-20 lg:right-3 z-30 flex items-center gap-2">
-                                {isFullscreen && (
-                                    <button
-                                        type="button"
-                                        onClick={() => setFiltersOpen((o) => !o)}
-                                        aria-label={copy[lang].filters}
-                                        className="h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent flex items-center justify-center"
-                                    >
-                                        <SlidersHorizontal className="h-4 w-4" />
-                                    </button>
-                                )}
+                                <button
+                                    type="button"
+                                    onClick={() => setFiltersOpen((o) => !o)}
+                                    aria-label={copy[lang].filters}
+                                    className={`h-10 w-10 rounded-lg border border-border bg-background/95 backdrop-blur shadow-sm hover:bg-accent items-center justify-center ${
+                                        isFullscreen ? "inline-flex" : "hidden lg:inline-flex"
+                                    }`}
+                                >
+                                    <SlidersHorizontal className="h-4 w-4" />
+                                </button>
 
                                 <div className="relative flex-1">
                                     <input
@@ -3553,77 +3844,71 @@ export default function MapPage() {
                                 </div>
                             )}
 
-                            <Drawer.Root
+                            <ResponsiveDialog
                                 open={Boolean(selectedMapItem)}
                                 onOpenChange={(open) => {
                                     if (!open) clearSelections();
                                 }}
+                                title={selectedMapItem?.name || (lang === "pt" ? "Detalhes do local" : "Place details")}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-8 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
                             >
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl border border-border bg-background p-4 pt-6 pb-8 shadow-xl">
-                                        <Drawer.Title className="sr-only">
-                                            {selectedMapItem?.name || (lang === "pt" ? "Detalhes do local" : "Place details")}
-                                        </Drawer.Title>
-                                        {selectedMapItem && (
-                                            <div className="space-y-3">
-                                                <div className="mx-auto h-1 w-10 rounded-full bg-muted-foreground/30" />
-                                                <div className="relative h-44 overflow-hidden rounded-2xl">
-                                                    <img
-                                                        src={
-                                                            selectedMapItem.image ||
-                                                            selectedMapItem.image_url ||
-                                                            getDefaultImageForPlace(selectedMapItem)
-                                                        }
-                                                        alt={selectedMapItem.name}
-                                                        className="h-full w-full object-cover"
-                                                        loading="lazy"
-                                                        decoding="async"
-                                                    />
+                                {selectedMapItem && (
+                                    <div className="space-y-3">
+                                        <div className="relative h-44 overflow-hidden rounded-2xl">
+                                            <img
+                                                src={
+                                                    selectedMapItem.image ||
+                                                    selectedMapItem.image_url ||
+                                                    getDefaultImageForPlace(selectedMapItem)
+                                                }
+                                                alt={selectedMapItem.name}
+                                                className="h-full w-full object-cover"
+                                                loading="lazy"
+                                                decoding="async"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={clearSelections}
+                                                aria-label={copy[lang].close}
+                                                className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                        <div className="px-1">
+                                            <div className="text-base font-semibold text-foreground">
+                                                {selectedMapItem.name}
+                                            </div>
+                                            {getVoiceSummary(selectedMapItem) && (
+                                                <div className="mt-1 text-sm text-muted-foreground">
+                                                    {getShortText(getVoiceSummary(selectedMapItem), 220)}
+                                                </div>
+                                            )}
+                                            <div className="mt-3 flex items-center gap-2">
+                                                {selectedMapItem.id && (
+                                                    <Link
+                                                        href={`/places/${selectedMapItem.id}`}
+                                                        prefetch
+                                                        className="inline-flex items-center justify-center rounded-full border border-border bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wide text-foreground shadow-sm hover:bg-accent"
+                                                    >
+                                                        {lang === "pt" ? "Abrir" : "Open"}
+                                                    </Link>
+                                                )}
+                                                {canPlayVoice(selectedMapItem) && (
                                                     <button
                                                         type="button"
-                                                        onClick={clearSelections}
-                                                        aria-label={copy[lang].close}
-                                                        className="absolute right-3 top-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/30 bg-black/40 text-white backdrop-blur"
+                                                        onClick={() => handleStoryPlay(selectedMapItem)}
+                                                        className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background shadow-sm hover:bg-accent"
                                                     >
-                                                        <X className="h-4 w-4" />
+                                                        <Volume2 className="h-4 w-4" />
                                                     </button>
-                                                </div>
-                                                <div className="px-1">
-                                                    <div className="text-base font-semibold text-foreground">
-                                                        {selectedMapItem.name}
-                                                    </div>
-                                                    {getVoiceSummary(selectedMapItem) && (
-                                                        <div className="mt-1 text-sm text-muted-foreground">
-                                                            {getShortText(getVoiceSummary(selectedMapItem), 220)}
-                                                        </div>
-                                                    )}
-                                                    <div className="mt-3 flex items-center gap-2">
-                                                        {selectedMapItem.id && (
-                                                            <Link
-                                                                href={`/places/${selectedMapItem.id}`}
-                                                                prefetch
-                                                                className="inline-flex items-center justify-center rounded-full border border-border bg-background px-4 py-2 text-xs font-semibold uppercase tracking-wide text-foreground shadow-sm hover:bg-accent"
-                                                            >
-                                                                {lang === "pt" ? "Abrir" : "Open"}
-                                                            </Link>
-                                                        )}
-                                                        {canPlayVoice(selectedMapItem) && (
-                                                            <button
-                                                                type="button"
-                                                                onClick={() => handleStoryPlay(selectedMapItem)}
-                                                                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background shadow-sm hover:bg-accent"
-                                                            >
-                                                                <Volume2 className="h-4 w-4" />
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                </div>
+                                                )}
                                             </div>
-                                        )}
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                                        </div>
+                                    </div>
+                                )}
+                            </ResponsiveDialog>
 
                             {debugEnabled && debugPanelOpen && (
                                 <div className="absolute bottom-4 left-3 z-30 w-[92%] max-w-sm rounded-2xl border border-border bg-background/95 backdrop-blur shadow-lg p-3">
@@ -3686,102 +3971,90 @@ export default function MapPage() {
                                 </div>
                             )}
 
-                            <Drawer.Root open={filtersOpen} onOpenChange={setFiltersOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-40 bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content
-                                        className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border border-border bg-background p-5 pt-7 pb-10 shadow-xl"
-                                        style={
-                                            {
-                                                "--initial-transform": "calc(100% + 12px)",
-                                                paddingBottom:
-                                                    "calc(3.25rem + env(safe-area-inset-bottom))",
-                                            } as React.CSSProperties
+                            <ResponsiveDialog
+                                open={filtersOpen}
+                                onOpenChange={setFiltersOpen}
+                                title={lang === "pt" ? "Filtros do mapa" : "Map filters"}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-5 pt-7 pb-10 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({
+                                                ...l,
+                                                protectedAreas: !l.protectedAreas,
+                                            }))
                                         }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.protectedAreas ? "border-green-400" : "opacity-50"
+                                            }`}
                                     >
-                                        <Drawer.Title className="sr-only">
-                                            {lang === "pt" ? "Filtros do mapa" : "Map filters"}
-                                        </Drawer.Title>
-                                        <div className="mx-auto h-1 w-10 rounded-full bg-muted-foreground/30" />
-                                        <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({
-                                                        ...l,
-                                                        protectedAreas: !l.protectedAreas,
-                                                    }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.protectedAreas ? "border-green-400" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].protectedAreas}
-                                            </button>
+                                        {copy[lang].protectedAreas}
+                                    </button>
 
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({ ...l, beaches: !l.beaches }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.beaches ? " border-yellow-400" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].beaches}
-                                            </button>
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({ ...l, beaches: !l.beaches }))
+                                        }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.beaches ? " border-yellow-400" : "opacity-50"
+                                            }`}
+                                    >
+                                        {copy[lang].beaches}
+                                    </button>
 
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({ ...l, settlements: !l.settlements }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.settlements ? "border-purple-400" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].settlements}
-                                            </button>
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({ ...l, settlements: !l.settlements }))
+                                        }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.settlements ? "border-purple-400" : "opacity-50"
+                                            }`}
+                                    >
+                                        {copy[lang].settlements}
+                                    </button>
 
-                                            <button
-                                                onClick={() =>
-                                                    setLayers((l) => ({ ...l, trilhas: !l.trilhas }))
-                                                }
-                                                className={`px-3 py-2.5 rounded-xl border ${layers.trilhas ? "border-orange-500" : "opacity-50"
-                                                    }`}
-                                            >
-                                                {copy[lang].trails}
-                                            </button>
-                                        </div>
+                                    <button
+                                        onClick={() =>
+                                            setLayers((l) => ({ ...l, trilhas: !l.trilhas }))
+                                        }
+                                        className={`px-3 py-2.5 rounded-xl border ${layers.trilhas ? "border-orange-500" : "opacity-50"
+                                            }`}
+                                    >
+                                        {copy[lang].trails}
+                                    </button>
+                                </div>
 
-                                        <div className="mt-5 text-sm font-medium text-muted-foreground">
-                                            {copy[lang].mapView}
-                                        </div>
-                                        <div className="mt-2 grid w-full grid-cols-2 gap-2">
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    setBaseMap("normal");
-                                                    setFiltersOpen(false);
-                                                }}
-                                                className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "normal"
-                                                    ? "bg-foreground text-background border-foreground"
-                                                    : "text-muted-foreground hover:text-foreground"
-                                                    }`}
-                                            >
-                                                {lang === "pt" ? "Normal" : "Normal"}
-                                            </button>
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    setBaseMap("satellite");
-                                                    setFiltersOpen(false);
-                                                }}
-                                                className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "satellite"
-                                                    ? "bg-foreground text-background border-foreground"
-                                                    : "text-muted-foreground hover:text-foreground"
-                                                    }`}
-                                            >
-                                                {lang === "pt" ? "Satélite" : "Satellite"}
-                                            </button>
-                                        </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                                <div className="mt-5 text-sm font-medium text-muted-foreground">
+                                    {copy[lang].mapView}
+                                </div>
+                                <div className="mt-2 grid w-full grid-cols-2 gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setBaseMap("normal");
+                                            setFiltersOpen(false);
+                                        }}
+                                        className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "normal"
+                                            ? "bg-foreground text-background border-foreground"
+                                            : "text-muted-foreground hover:text-foreground"
+                                            }`}
+                                    >
+                                        {lang === "pt" ? "Normal" : "Normal"}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setBaseMap("satellite");
+                                            setFiltersOpen(false);
+                                        }}
+                                        className={`w-full px-3 py-2.5 rounded-xl border text-sm font-medium transition ${baseMap === "satellite"
+                                            ? "bg-foreground text-background border-foreground"
+                                            : "text-muted-foreground hover:text-foreground"
+                                            }`}
+                                    >
+                                        {lang === "pt" ? "Satélite" : "Satellite"}
+                                    </button>
+                                </div>
+                            </ResponsiveDialog>
 
                             <Drawer.Root open={exploreOpen} onOpenChange={setExploreOpen}>
                                 <Drawer.Portal>
@@ -3821,7 +4094,7 @@ export default function MapPage() {
                                                     Array.from({ length: 4 }).map((_, index) => (
                                                         <div
                                                             key={`story-skeleton-${index}`}
-                                                            className="relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%] rounded-2xl border border-black dark:border-white bg-background p-3 shadow-sm"
+                                                            className="relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[320px] lg:max-w-[320px] rounded-2xl border border-black dark:border-white bg-background p-3 shadow-sm"
                                                         >
                                                             <div className="h-32 w-full rounded-2xl bg-muted animate-pulse" />
                                                             <div className="mt-3 h-4 w-3/5 rounded-full bg-muted animate-pulse" />
@@ -3834,7 +4107,7 @@ export default function MapPage() {
                                                     chapters.map((chapter, index) => (
                                                         <div
                                                             key={chapter.id}
-                                                            className={`relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[22%] min-h-[300px] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition flex flex-col ${activeChapterId === chapter.id
+                                                            className={`relative snap-start min-w-[72%] sm:min-w-[48%] lg:min-w-[320px] lg:max-w-[320px] min-h-[300px] rounded-2xl border bg-background p-3 shadow-sm hover:shadow-md transition flex flex-col ${activeChapterId === chapter.id
                                                                 ? "border-black dark:border-white shadow-lg ring-1 ring-black/10 dark:ring-white/15"
                                                                 : "border-black/20 dark:border-white/30"
                                                                 }`}
@@ -3890,111 +4163,99 @@ export default function MapPage() {
                                 </Drawer.Portal>
                             </Drawer.Root>
 
-                            <Drawer.Root open={currencyOpen} onOpenChange={setCurrencyOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-12 shadow-xl">
-                                        <Drawer.Title className="text-base font-semibold text-foreground">
-                                            {copy[lang].currencyConverterTitle}
-                                        </Drawer.Title>
-                                        <div className="mt-4">
-                                            <CurrencyConverterPanel />
-                                        </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                            <ResponsiveDialog
+                                open={currencyOpen}
+                                onOpenChange={setCurrencyOpen}
+                                title={copy[lang].currencyConverterTitle}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-12 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <CurrencyConverterPanel />
+                            </ResponsiveDialog>
 
-                            <Drawer.Root open={esimOpen} onOpenChange={setEsimOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl  bg-background p-4 pt-6 pb-10 shadow-xl">
-                                        <Drawer.Title className="text-base font-semibold text-foreground">
-                                            {copy[lang].esimTitle}
-                                        </Drawer.Title>
-                                        <div className="mt-4">
-                                            <EsimCheckoutPanel />
-                                        </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                            <ResponsiveDialog
+                                open={esimOpen}
+                                onOpenChange={setEsimOpen}
+                                title={copy[lang].esimTitle}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-10 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <EsimCheckoutPanel />
+                            </ResponsiveDialog>
 
-                            <Drawer.Root open={surfOpen} onOpenChange={setSurfOpen}>
-                                <Drawer.Portal>
-                                    <Drawer.Overlay className="fixed inset-0 z-[60] bg-black/35 backdrop-blur-sm" />
-                                    <Drawer.Content className="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl  bg-background p-4 pt-6 pb-10 shadow-xl">
-                                        <Drawer.Title className="text-base font-semibold text-foreground">
-                                            {copy[lang].surfDrawerTitle}
-                                        </Drawer.Title>
-                                        <div className="mt-1 text-xs text-muted-foreground">
-                                            {copy[lang].surfConditionsHint}
-                                        </div>
-                                        <div className="mt-4 rounded-2xl border border-border">
-                                            <div className="grid grid-cols-4 gap-2 border-b border-border px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                                                <div>{copy[lang].surfColTime}</div>
-                                                <div>{copy[lang].surfColSurf}</div>
-                                                <div>{copy[lang].surfColSwell}</div>
-                                                <div>{copy[lang].surfColWind}</div>
-                                            </div>
-                                            {surfLoading && (
-                                                <div className="space-y-2 px-3 py-3">
-                                                    {Array.from({ length: 3 }).map((_, idx) => (
-                                                        <div
-                                                            key={`surf-row-skeleton-${idx}`}
-                                                            className="grid grid-cols-4 gap-2"
-                                                        >
-                                                            <Skeleton className="h-4 w-14 rounded-full" />
-                                                            <Skeleton className="h-4 w-20 rounded-full" />
-                                                            <Skeleton className="h-4 w-24 rounded-full" />
-                                                            <Skeleton className="h-4 w-20 rounded-full" />
-                                                        </div>
-                                                    ))}
+                            <ResponsiveDialog
+                                open={surfOpen}
+                                onOpenChange={setSurfOpen}
+                                title={copy[lang].surfDrawerTitle}
+                                description={copy[lang].surfConditionsHint}
+                                mobileContentClassName="fixed inset-x-0 bottom-0 z-[70] rounded-t-3xl bg-background p-4 pt-6 pb-10 shadow-xl"
+                                desktopContentClassName="max-w-md max-h-[85vh] overflow-y-auto p-6"
+                            >
+                                <div className="rounded-2xl border border-border">
+                                    <div className="grid grid-cols-4 gap-2 border-b border-border px-3 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                                        <div>{copy[lang].surfColTime}</div>
+                                        <div>{copy[lang].surfColSurf}</div>
+                                        <div>{copy[lang].surfColSwell}</div>
+                                        <div>{copy[lang].surfColWind}</div>
+                                    </div>
+                                    {surfLoading && (
+                                        <div className="space-y-2 px-3 py-3">
+                                            {Array.from({ length: 3 }).map((_, idx) => (
+                                                <div
+                                                    key={`surf-row-skeleton-${idx}`}
+                                                    className="grid grid-cols-4 gap-2"
+                                                >
+                                                    <Skeleton className="h-4 w-14 rounded-full" />
+                                                    <Skeleton className="h-4 w-20 rounded-full" />
+                                                    <Skeleton className="h-4 w-24 rounded-full" />
+                                                    <Skeleton className="h-4 w-20 rounded-full" />
                                                 </div>
-                                            )}
-                                            {!surfLoading && surfData?.points?.length
-                                                ? surfData.points.map((point) => {
-                                                      const quality = surfQualityScore(point);
-                                                      return (
-                                                      <div
-                                                          key={`${point.label}-${point.wind_kph}-${point.swell_m}`}
-                                                          className="grid grid-cols-4 gap-2 border-b border-border px-3 py-3 text-sm last:border-b-0 items-center justify-center"
-                                                      >
-                                                          <div className="inline-flex items-center gap-2 font-semibold text-foreground">
-                                                              <SurfQualityBar score={quality} />
-                                                              <span>{point.label}</span>
-                                                          </div>
-                                                          <div className="text-foreground font-semibold text-md">
-                                                              {point.surf_min_m.toFixed(1)}-{point.surf_max_m.toFixed(1)}m
-                                                          </div>
-                                                          <div className="text-foreground">
-                                                              {point.swell_m.toFixed(1)}m · {point.swell_period_s}s
-                                                          </div>
-                                                          <div className="text-foreground">
-                                                              {point.wind_kph} ({point.wind_gust_kph}) kph
-                                                          </div>
-                                                      </div>
-                                                  );
-                                                })
-                                                : null}
-                                            {!surfLoading && (surfError || !surfData?.points?.length) && (
-                                                <div className="px-3 py-3 text-sm text-muted-foreground">
-                                                    <div>{copy[lang].surfUnavailable}</div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setSurfData(null);
-                                                            setSurfError(false);
-                                                            loadSurf();
-                                                        }}
-                                                        className="mt-2 inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:bg-accent"
-                                                    >
-                                                        {copy[lang].retry}
-                                                    </button>
-                                                </div>
-                                            )}
+                                            ))}
                                         </div>
-                                    </Drawer.Content>
-                                </Drawer.Portal>
-                            </Drawer.Root>
+                                    )}
+                                    {!surfLoading && surfData?.points?.length
+                                        ? surfData.points.map((point) => {
+                                              const quality = surfQualityScore(point);
+                                              return (
+                                              <div
+                                                  key={`${point.label}-${point.wind_kph}-${point.swell_m}`}
+                                                  className="grid grid-cols-4 gap-2 border-b border-border px-3 py-3 text-sm last:border-b-0 items-center justify-center"
+                                              >
+                                                  <div className="inline-flex items-center gap-2 font-semibold text-foreground">
+                                                      <SurfQualityBar score={quality} />
+                                                      <span>{point.label}</span>
+                                                  </div>
+                                                  <div className="text-foreground font-semibold text-md">
+                                                      {point.surf_min_m.toFixed(1)}-{point.surf_max_m.toFixed(1)}m
+                                                  </div>
+                                                  <div className="text-foreground">
+                                                      {point.swell_m.toFixed(1)}m · {point.swell_period_s}s
+                                                  </div>
+                                                  <div className="text-foreground">
+                                                      {point.wind_kph} ({point.wind_gust_kph}) kph
+                                                  </div>
+                                              </div>
+                                          );
+                                        })
+                                        : null}
+                                    {!surfLoading && (surfError || !surfData?.points?.length) && (
+                                        <div className="px-3 py-3 text-sm text-muted-foreground">
+                                            <div>{copy[lang].surfUnavailable}</div>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    setSurfData(null);
+                                                    setSurfError(false);
+                                                    loadSurf();
+                                                }}
+                                                className="mt-2 inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:bg-accent"
+                                            >
+                                                {copy[lang].retry}
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            </ResponsiveDialog>
 
                             <div className="absolute top-4 right-3 z-30 flex flex-col items-end gap-2">
                                 {isFullscreen && (

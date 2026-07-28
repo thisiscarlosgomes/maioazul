@@ -4,11 +4,20 @@ import { ReactNode, useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import BottomNav from "@/components/BottomNav";
-import { Pause, Play, X } from "lucide-react";
+import AppHeader from "@/components/AppHeader";
+import SiteFooter from "@/components/SiteFooter";
+import { Pause, Play } from "lucide-react";
 import { pauseVoice, resumeVoice, stopVoice, useVoiceState } from "@/lib/voice";
 import { useLang } from "@/lib/lang";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-const navRoutes = ["/map", "/places", "/experiences", "/favorites"];
+const navRoutes = ["/places", "/experiences", "/favorites"];
+const PORTAL_INTRO_STORAGE_KEY = "maio-portal-intro-seen-v1";
 
 function shouldShowNav(pathname: string | null) {
   if (!pathname) return false;
@@ -20,7 +29,16 @@ function shouldShowNav(pathname: string | null) {
 export default function LayoutShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const showNav = shouldShowNav(pathname);
+  const showAppHeader = Boolean(
+    pathname &&
+      pathname !== "/" &&
+      pathname !== "/partners" &&
+      pathname !== "/campanha-azul"
+  );
+  const showSiteFooter = showAppHeader;
+  const [showPortalIntro, setShowPortalIntro] = useState(false);
   const [hideNav, setHideNav] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false);
   const voiceState = useVoiceState();
   const showVoicePill = voiceState.status !== "idle";
   const voicePillBottom = showNav && !hideNav
@@ -50,6 +68,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     const handler = (event: Event) => {
       const detail = (event as CustomEvent<{ hidden: boolean; hideHeader?: boolean }>).detail;
       setHideNav(Boolean(detail?.hidden));
+      setHideHeader(Boolean(detail?.hideHeader));
       if (detail?.hideHeader) {
         document.body.classList.add("maio-hide-header");
       } else {
@@ -60,6 +79,34 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     return () => {
       window.removeEventListener("maio-nav-visibility", handler as EventListener);
       document.body.classList.remove("maio-hide-header");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (
+      !pathname ||
+      pathname === "/" ||
+      pathname === "/partners" ||
+      pathname.startsWith("/partners/") ||
+      pathname === "/campanha-azul" ||
+      pathname.startsWith("/campanha-azul/")
+    ) {
+      return;
+    }
+    const hasSeenIntro = window.localStorage.getItem(PORTAL_INTRO_STORAGE_KEY) === "1";
+    if (!hasSeenIntro) {
+      queueMicrotask(() => {
+        setShowPortalIntro(true);
+      });
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    const handleOpenPortalIntro = () => setShowPortalIntro(true);
+    window.addEventListener("maio-open-portal-intro", handleOpenPortalIntro);
+    return () => {
+      window.removeEventListener("maio-open-portal-intro", handleOpenPortalIntro);
     };
   }, []);
 
@@ -76,24 +123,74 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
     }
   }, [voiceState.status]);
 
+  const dismissPortalIntro = () => {
+    setShowPortalIntro(false);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(PORTAL_INTRO_STORAGE_KEY, "1");
+    }
+  };
+  const contentStyle = {
+    ...(showNav && !hideNav
+      ? {
+          paddingBottom: showVoicePill
+            ? "calc(11rem + env(safe-area-inset-bottom))"
+            : "calc(6.5rem + env(safe-area-inset-bottom))",
+        }
+      : showVoicePill
+        ? { paddingBottom: "calc(5rem + env(safe-area-inset-bottom))" }
+        : {}),
+    ...(showAppHeader && !hideHeader ? { paddingTop: "3.5rem" } : {}),
+  };
+
   return (
     <>
+      {showAppHeader && <AppHeader />}
       <div
         className={showNav ? "min-h-[100svh] pb-24" : "min-h-[100svh]"}
-        style={
-          showNav && !hideNav
-            ? {
-                paddingBottom: showVoicePill
-                  ? "calc(11rem + env(safe-area-inset-bottom))"
-                  : "calc(6.5rem + env(safe-area-inset-bottom))",
-              }
-            : showVoicePill
-              ? { paddingBottom: "calc(5rem + env(safe-area-inset-bottom))" }
-              : undefined
-        }
+        style={contentStyle}
       >
         {children}
       </div>
+      {showSiteFooter && <SiteFooter />}
+      <Dialog
+        open={showPortalIntro}
+        onOpenChange={(nextOpen) => {
+          if (nextOpen) {
+            setShowPortalIntro(true);
+            return;
+          }
+          dismissPortalIntro();
+        }}
+      >
+        <DialogContent
+          aria-label="Sobre o Portal de Dados"
+          className="z-[90] w-[calc(100vw-1.5rem)] max-w-xl gap-0 rounded-2xl border-border bg-background p-0 text-left sm:rounded-3xl"
+          overlayClassName="z-[89] bg-black/45 backdrop-blur-sm"
+          showClose={false}
+        >
+          <div className="p-5 sm:p-6">
+            <DialogTitle className="text-lg font-semibold leading-tight sm:text-xl">
+              O que é o Portal de Dados do Maio?
+            </DialogTitle>
+            <DialogDescription className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+              Pela primeira vez, informação pública sobre a Ilha do Maio está organizada num só lugar.
+              O portal reúne indicadores, orçamento municipal, documentos públicos e dados territoriais.
+              Com apoio de inteligência artificial, qualquer cidadão pode explorar os dados, acompanhar
+              tendências e compreender melhor o desenvolvimento da ilha.
+            </DialogDescription>
+            <div className="mt-5">
+              <button
+                type="button"
+                onClick={dismissPortalIntro}
+                className="inline-flex w-full items-center justify-center rounded-lg border border-border bg-muted p-2 text-sm font-medium text-foreground transition hover:bg-accent"
+              >
+                Fechar
+              </button>
+            </div>
+            <div className="mt-3 text-xs opacity-50">Um projeto publico da maioazul.com</div>
+          </div>
+        </DialogContent>
+      </Dialog>
       {!hideNav && showVoicePill && (
         <div className="fixed inset-x-0 z-50" style={{ bottom: voicePillBottom }}>
           <div className="mx-auto max-w-3xl px-10">

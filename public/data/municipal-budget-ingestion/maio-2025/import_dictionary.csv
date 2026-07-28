@@ -1,0 +1,119 @@
+entity,field_name,data_type,required,example,description
+source_documents,id,text,yes,cv-maio-bo-2025-81-delib-04,Stable primary key for the source document.
+source_documents,source_file_path,text,yes,/Users/carlos/.../BO_05-05-2025_81_i85162.pdf,Absolute path of the ingested file.
+source_documents,source_file_name,text,yes,BO_05-05-2025_81_i85162.pdf,Original file name.
+source_documents,source_type,text,yes,pdf,Physical source type.
+source_documents,title,text,no,Deliberacao n.o 04/2025 - Orcamento Municipal 2025,Normalized display title.
+source_documents,document_type,text,yes,municipal_deliberation,Top-level classification.
+source_documents,subtype,text,no,annual_budget_approval,Finer document subtype.
+source_documents,jurisdiction_country,text,no,Cabo Verde,Country of jurisdiction.
+source_documents,jurisdiction_level,text,no,municipality,Administrative level.
+source_documents,jurisdiction_name,text,no,Municipio do Maio,Municipality or issuing jurisdiction.
+source_documents,issuing_body,text,no,Assembleia Municipal do Maio,Authority issuing or approving the act.
+source_documents,signatory_name,text,no,Adelaide Brito,Named signatory.
+source_documents,publication_series,text,no,II Serie,Gazette series.
+source_documents,publication_issue_number,text,no,81,Gazette issue number.
+source_documents,publication_date,date,no,2025-05-05,Official publication date.
+source_documents,approval_date,date,no,2025-02-13,Date the assembly approved the budget.
+source_documents,signature_date,date,no,2025-03-14,Date next to signature block.
+source_documents,budget_year,integer,no,2025,Budget year governed by the document.
+source_documents,language_code,text,no,pt-CV,Language or locale code.
+source_documents,currency_code,text,no,CVE,Currency code for all monetary values.
+source_documents,total_amount_cve,numeric,no,276920126.00,Grand total budget amount in CVE.
+source_documents,summary_text,text,no,Aprovando a Proposta do Plano...,Short normalized summary.
+source_documents,source_page_start,integer,no,1,First page where the record begins inside the source file.
+source_documents,source_page_end,integer,no,13,Last page where the record ends inside the source file.
+source_documents,page_count,integer,no,13,Number of pages in the source file.
+source_documents,extraction_method,text,no,pypdf_text_layer,How text was extracted.
+source_documents,extraction_confidence,numeric,no,0.93,Overall confidence for parent metadata.
+source_documents,review_status,text,no,needs_review,Operational QA status.
+source_documents,ingestion_notes,text,no,Staffing annex contains layout ambiguity,Reviewer notes or extraction caveats.
+legislative_decisions,id,text,yes,cv-maio-2025-delib-04,Stable primary key for decision metadata.
+legislative_decisions,source_document_id,text,yes,cv-maio-bo-2025-81-delib-04,Foreign key to source_documents.
+legislative_decisions,decision_number,text,yes,04/2025,Published decision number.
+legislative_decisions,decision_type,text,no,deliberation,Decision family.
+legislative_decisions,decision_subject,text,no,Aprovacao do plano de atividades e orcamento municipal 2025,Normalized subject.
+legislative_decisions,meeting_session_label,text,no,1a Sessao Ordinaria,Session label.
+legislative_decisions,votes_for,integer,no,7,Number of votes in favor.
+legislative_decisions,votes_against,integer,no,6,Number of votes against.
+legislative_decisions,votes_abstain,integer,no,0,Number of abstentions.
+legislative_decisions,supporting_group,text,no,PAICV,Political group voting in favor.
+legislative_decisions,opposing_group,text,no,MPD,Political group voting against.
+legislative_decisions,decision_text_excerpt,text,no,Esta proposta foi aprovada...,Short supporting excerpt.
+budget_summaries,id,text,yes,cv-maio-2025-budget-summary-main,Stable primary key for a summary row.
+budget_summaries,source_document_id,text,yes,cv-maio-bo-2025-81-delib-04,Foreign key to source_documents.
+budget_summaries,summary_scope,text,yes,municipal_budget_approved,Meaning of the summary row.
+budget_summaries,revenue_total_cve,numeric,no,276920126.00,Total revenue.
+budget_summaries,revenue_current_cve,numeric,no,152034690.00,Current revenue subtotal.
+budget_summaries,revenue_capital_cve,numeric,no,124885436.00,Capital revenue subtotal.
+budget_summaries,expense_total_cve,numeric,no,276920126.00,Total expenditure.
+budget_summaries,expense_current_cve,numeric,no,149934690.00,Current expenditure subtotal.
+budget_summaries,expense_capital_cve,numeric,no,126985436.00,Capital expenditure subtotal.
+budget_summaries,operating_share_pct,numeric,no,54.10,Operating share of total budget.
+budget_summaries,capital_share_pct,numeric,no,45.90,Capital share of total budget.
+budget_summaries,notes,text,no,Balanced approved budget,Context note.
+budget_line_items,id,text,yes,cv-maio-2025-map1-revenue-01-03,Stable primary key for a line item.
+budget_line_items,source_document_id,text,yes,cv-maio-bo-2025-81-delib-04,Foreign key to source_documents.
+budget_line_items,map_number,text,yes,Mapa I,Map or annex identifier.
+budget_line_items,section_type,text,yes,revenue,Broad bucket: revenue, expense, functional_expense, investment, staffing_summary.
+budget_line_items,hierarchy_type,text,yes,economic_classification,Type of hierarchy represented by the row.
+budget_line_items,classification_code,text,no,01.03,Published code.
+budget_line_items,parent_classification_code,text,no,01,Immediate parent code when known.
+budget_line_items,classification_label,text,yes,Transferencias,Human-readable label.
+budget_line_items,department_name,text,no,Direcao de Administracao Financas e Patrimonio,Department for organica splits when applicable.
+budget_line_items,program_name,text,no,Capital Humano,Program name for investment rows.
+budget_line_items,subprogram_name,text,no,Educacao,Subprogram name if present.
+budget_line_items,project_name,text,no,Reabilitacao de Escolas...,Project name if present.
+budget_line_items,admin_direct_cve,numeric,no,105859690.00,Amount assigned to administracao directa.
+budget_line_items,services_autonomous_cve,numeric,no,0.00,Amount assigned to autonomous services.
+budget_line_items,operating_cve,numeric,no,149934690.00,Operating or funcionamento amount.
+budget_line_items,investment_cve,numeric,no,126985436.00,Investment amount.
+budget_line_items,subtotal_cve,numeric,no,152034690.00,Subtotal if the row is a subtotal.
+budget_line_items,total_cve,numeric,no,153245126.00,Total amount for the row.
+budget_line_items,share_pct,numeric,no,55.30,Percent share of total budget.
+budget_line_items,source_page,integer,yes,2,PDF page used for the extraction.
+budget_line_items,extraction_confidence,numeric,no,0.95,Confidence for the row.
+budget_line_items,needs_manual_review,boolean,no,false,Whether a human should verify the row.
+budget_line_items,raw_text,text,no,01.03 Transferencias ...,Raw source text for traceability.
+funding_sources,id,text,yes,cv-maio-2025-funding-gov,Stable primary key for a funding record.
+funding_sources,source_document_id,text,yes,cv-maio-bo-2025-81-delib-04,Foreign key to source_documents.
+funding_sources,related_budget_line_item_id,text,no,cv-maio-2025-map10-proj-educacao,Optional link to a project row.
+funding_sources,map_number,text,yes,Mapa X,Map where funding source is stated.
+funding_sources,funding_source_name,text,yes,Governo,Named funding source.
+funding_sources,funding_source_type,text,no,external_public,Normalized funding source category.
+funding_sources,amount_cve,numeric,yes,41983552.00,Amount financed by the source.
+funding_sources,source_page,integer,yes,10,PDF page used for the extraction.
+funding_sources,extraction_confidence,numeric,no,0.95,Confidence for the row.
+funding_sources,needs_manual_review,boolean,no,false,Whether the row requires QA.
+staffing_positions,id,text,yes,cv-maio-2025-staff-gp-presidente,Stable primary key for a staffing row.
+staffing_positions,source_document_id,text,yes,cv-maio-bo-2025-81-delib-04,Foreign key to source_documents.
+staffing_positions,map_number,text,yes,Proposta do quadro de pessoal,Annex identifier.
+staffing_positions,cost_center_name,text,yes,Gabinete do Presidente,Cost center or department.
+staffing_positions,budget_code,text,no,02.01.01,Budget code shown in the annex.
+staffing_positions,staff_group,text,no,Pessoal de Quadro Especial,Personnel group.
+staffing_positions,position_title,text,yes,Presidente,Role title.
+staffing_positions,level_label,text,no,III,Level label when shown.
+staffing_positions,vacancy_count,numeric,no,1,Number of positions or vacancies.
+staffing_positions,monthly_salary_cve,numeric,no,136000.00,Monthly salary.
+staffing_positions,annual_salary_cve,numeric,no,1632000.00,Annual salary.
+staffing_positions,employment_type,text,no,Nomeacao,Type of appointment when shown.
+staffing_positions,observation,text,no,Salario correspondente a 2 meses,Footnote or row-specific note.
+staffing_positions,source_page,integer,yes,12,PDF page used for the extraction.
+staffing_positions,extraction_confidence,numeric,no,0.70,Confidence for the row.
+staffing_positions,needs_manual_review,boolean,no,true,Annex rows are often misaligned and should be reviewed.
+staffing_positions,raw_text,text,no,02.01.01.01.01 Pessoal de Quadro Especial...,Raw text source.
+personnel_projections,id,text,yes,cv-maio-2025-proj-dir-gabinete,Stable primary key for a projected hire row.
+personnel_projections,source_document_id,text,yes,cv-maio-bo-2025-81-delib-04,Foreign key to source_documents.
+personnel_projections,map_number,text,yes,Mapa Prev acrescimo,Annex identifier.
+personnel_projections,department_name,text,yes,Gabinete do Presidente,Department or center.
+personnel_projections,position_title,text,yes,Diretor de Gabinete,Projected position title.
+personnel_projections,level_label,text,no,Nivel III,Level label.
+personnel_projections,vacancy_count,numeric,no,1,Projected count.
+personnel_projections,projected_monthly_cost_cve,numeric,no,112158.00,Projected monthly cost.
+personnel_projections,projected_annual_cost_cve,numeric,no,1233738.00,Projected annual cost.
+personnel_projections,employment_type,text,no,Nomeacao,Type of appointment or contract.
+personnel_projections,observation,text,no,,Optional notes.
+personnel_projections,source_page,integer,yes,13,PDF page used for extraction.
+personnel_projections,extraction_confidence,numeric,no,0.95,Confidence for the row.
+personnel_projections,needs_manual_review,boolean,no,false,Whether QA is required.
+personnel_projections,raw_text,text,no,1 Diretor de Gabinete Nivel III...,Raw source text.

@@ -1,21 +1,35 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "./theme-provider";
 import LayoutShell from "@/components/LayoutShell";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import VisitorTracker from "@/components/VisitorTracker";
 
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL("https://www.visit-maio.com"),
     manifest: "/manifest.webmanifest",
+    applicationName: "Visit Maio",
     title: {
       default: "Visit Maio",
       template: "%s · Visit Maio",
     },
     description:
       "A slower way to discover Maio. Rooted in local life, shared with care, and built to last.",
+    keywords: [
+      "Maio",
+      "Maio island",
+      "Cabo Verde travel",
+      "Cape Verde travel guide",
+      "Visit Maio",
+      "Maio beaches",
+      "Maio tourism",
+      "Maio map",
+    ],
+    category: "travel",
     alternates: {
       canonical: "https://www.visit-maio.com",
       languages: {
@@ -29,6 +43,8 @@ export async function generateMetadata(): Promise<Metadata> {
       title: "Maio, at its own pace",
       description:
         "A slower way to discover Maio. Rooted in local life, shared with care, and built to last.",
+      siteName: "Visit Maio",
+      locale: "en_US",
       images: [
         {
           url: "https://www.visit-maio.com/cover.jpg",
@@ -57,6 +73,13 @@ export async function generateMetadata(): Promise<Metadata> {
     robots: {
       index: true,
       follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
     },
   };
 }
@@ -72,8 +95,46 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://www.visit-maio.com/#website",
+        name: "Visit Maio",
+        url: "https://www.visit-maio.com",
+        inLanguage: ["en", "pt"],
+        potentialAction: {
+          "@type": "SearchAction",
+          target: "https://www.visit-maio.com/places?query={search_term_string}",
+          "query-input": "required name=search_term_string",
+        },
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://www.visit-maio.com/#organization",
+        name: "Visit Maio",
+        url: "https://www.visit-maio.com",
+        logo: "https://www.visit-maio.com/logo.png",
+      },
+      {
+        "@type": "TravelGuide",
+        "@id": "https://www.visit-maio.com/#travel-guide",
+        name: "Visit Maio Travel Guide",
+        url: "https://www.visit-maio.com",
+        about: {
+          "@type": "TouristDestination",
+          "@id": "https://www.visit-maio.com/#destination-maio",
+          name: "Maio, Cabo Verde",
+          description:
+            "A slow travel destination in Cabo Verde with protected nature, quiet villages, and long beaches.",
+        },
+      },
+    ],
+  };
+
   return (
-    <html lang="en" className="dark bg-background">
+    <html lang="pt" className="bg-background">
 
       <head>
         {/* Preload local font */}
@@ -114,12 +175,18 @@ export default function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </head>
       <body className="antialiased bg-background text-foreground">
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="light">
           <LayoutShell>{children}</LayoutShell>
         </ThemeProvider>
+        <VisitorTracker />
         <ServiceWorkerRegister />
+        <Analytics />
       </body>
 
     </html>

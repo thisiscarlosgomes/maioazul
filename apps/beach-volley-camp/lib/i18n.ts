@@ -6,14 +6,14 @@ export const dictionary = {
     pt: {
         title: "Portal de Dados do Maio",
         subtitle:
-            "Indicadores do desenvolvimento e turismo da ilha do Maio · maioazul.com",
+            "Indicadores do desenvolvimento e turismo da ilha do Maio",
 
         localGovernment: "Governo Local",
         localPopulation: "população",
         localGovernmentDesc:
             "Transferências do Estado para o município do Maio.",
 
-        tourismOverview: "Turismo · Visão Geral (Q3)",
+        tourismOverview: "Turismo · Visão Geral",
 
         tourismPressure: "Índice de Pressão Turística",
         tourismPressureDesc:

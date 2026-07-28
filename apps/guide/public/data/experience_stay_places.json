@@ -1,0 +1,23 @@
+[
+  {
+    "id": "stay-001",
+    "title": "Maio Seaside Guesthouse",
+    "location": "Porto Inglês, Maio",
+    "phone": "+238 991 00 01",
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1600&auto=format&fit=crop"
+  },
+  {
+    "id": "stay-002",
+    "title": "Dunas Boutique Stay",
+    "location": "Morrinho, Maio",
+    "phone": "+238 991 00 02",
+    "image": "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?q=80&w=1600&auto=format&fit=crop"
+  },
+  {
+    "id": "stay-003",
+    "title": "Blue Horizon Lodge",
+    "location": "Calheta, Maio",
+    "phone": "+238 991 00 03",
+    "image": "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?q=80&w=1600&auto=format&fit=crop"
+  }
+]

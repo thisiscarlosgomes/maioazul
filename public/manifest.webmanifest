@@ -2,7 +2,7 @@
   "name": "MaioAzul",
   "short_name": "MaioAzul",
   "description": "A quiet, local-first guide to the island of Maio, Cabo Verde.",
-  "start_url": "/map",
+  "start_url": "/dashboard",
   "display": "standalone",
   "background_color": "#f8f7f2",
   "theme_color": "#10069f",

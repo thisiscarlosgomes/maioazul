@@ -10,11 +10,11 @@ export async function generateMetadata({
 
   return {
     title: label,
-    description: `Experience details for ${label} in Maio.`,
+    description: `${label} on MaioAzul: local experience details, context, and availability information for Maio, Cabo Verde.`,
     alternates: { canonical: `/x/${params.slug}` },
     openGraph: {
       title: `${label} · MaioAzul`,
-      description: `Experience details for ${label} in Maio.`,
+      description: `${label} on MaioAzul: local experience details and availability information for Maio.`,
       url: `/x/${params.slug}`,
     },
   };

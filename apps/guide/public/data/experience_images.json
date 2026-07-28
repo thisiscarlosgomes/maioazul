@@ -9,31 +9,22 @@
     "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633850/tuna_oyjqjz.png"
   },
   {
-    "id": "trekking",
-    "title": "Trekking",
+    "id": "stay",
+    "title": "Stay",
     "subtitle": {
-      "en": "Slow walks through dunes and trails.",
-      "pt": "Caminhadas lentas entre dunas e trilhos."
+      "en": "Places to stay with comfort and local character.",
+      "pt": "Lugares para ficar com conforto e caráter local."
     },
-    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634013/penoso_2_zrdjrz.jpg"
+    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773089189/12323f0a48bf-cdf2-4eeb-8e48-7c6e4cbb6351_vchbng.avif"
   },
   {
-    "id": "fishing",
-    "title": "Fishing",
+    "id": "guia",
+    "title": "Guia turístico",
     "subtitle": {
-      "en": "Cast a line where locals do.",
-      "pt": "Pesque onde os locais pescam."
+      "en": "Local guidance to explore Maio with context.",
+      "pt": "Guia local para explorar o Maio com contexto."
     },
-    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/fish_rih7bp.png"
-  },
-  {
-    "id": "beach",
-    "title": "Beach",
-    "subtitle": {
-      "en": "Quiet shores made for unhurried days.",
-      "pt": "Praias calmas para dias sem pressa."
-    },
-    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634116/morro1_olke19.jpg"
+    "image": "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1600&auto=format&fit=crop"
   },
   {
     "id": "blue-sports",
@@ -43,14 +34,5 @@
       "pt": "Surf, Jet ski, SUP ou mergulho em águas claras."
     },
     "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/surf_qfgyc1.png"
-  },
-  {
-    "id": "routes-4x4",
-    "title": "4x4 Routes",
-    "subtitle": {
-      "en": "Wander the island at your own pace.",
-      "pt": "Passeie pela ilha ao seu ritmo."
-    },
-    "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/4_lpqfzn.png"
   }
 ]

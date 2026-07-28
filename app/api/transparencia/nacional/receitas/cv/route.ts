@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
+export const revalidate = 3600;
+
 type RecebedoriaRow = {
   recebedoria: string;
   value: number;
@@ -57,20 +59,20 @@ const FALLBACK_DATA: ReceitaYearDoc[] = [
     dataset: "receitas_cv_recebedorias",
     year: 2026,
     rows: [
-      { recebedoria: "Boa Vista", value: 88279986 },
-      { recebedoria: "Brava", value: 4180910 },
+      { recebedoria: "Boa Vista", value: 361587866 },
+      { recebedoria: "Brava", value: 13159680 },
       { recebedoria: "Exterior", value: 0 },
-      { recebedoria: "Fogo", value: 34203322 },
-      { recebedoria: "Maio", value: 6424792 },
-      { recebedoria: "Outras fontes", value: 0 },
-      { recebedoria: "Sal", value: 1255162600 },
-      { recebedoria: "Santiago", value: 4294483183 },
-      { recebedoria: "Santo Antão", value: 182141318 },
-      { recebedoria: "São Nicolau", value: 12113466 },
-      { recebedoria: "São Vicente", value: 575709623 },
+      { recebedoria: "Fogo", value: 137821483 },
+      { recebedoria: "Maio", value: 21788502 },
+      { recebedoria: "Outras fontes", value: 200 },
+      { recebedoria: "Sal", value: 5391180556 },
+      { recebedoria: "Santiago", value: 18365338873 },
+      { recebedoria: "Santo Antão", value: 617104763 },
+      { recebedoria: "São Nicolau", value: 53956874 },
+      { recebedoria: "São Vicente", value: 2249669428 },
       { recebedoria: "Várias Ilhas de Cabo Verde", value: 0 },
     ],
-    total: 6452699200,
+    total: 27211608225,
   },
 ];
 
@@ -98,10 +100,16 @@ function mapYearDoc(doc: ReceitaYearDoc) {
   };
 }
 
+function cacheHeaders() {
+  return {
+    "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=21600",
+  };
+}
+
 export async function GET() {
   try {
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db(process.env.MONGODB_DB || "maioazul");
     const col = db.collection<ReceitaYearDoc>("receitas_cv_recebedorias");
 
     const docs = await col
@@ -128,15 +136,18 @@ export async function GET() {
           })()
         : null;
 
-    return NextResponse.json({
-      scope: "national",
-      dataset: "receitas_cv_recebedorias",
-      unit: "CVE",
-      data,
-      source: "Portal Transparência CV · Por Recebedorias",
-      fallback: docs.length === 0,
-      updatedAt: latestUpdatedAt,
-    });
+    return NextResponse.json(
+      {
+        scope: "national",
+        dataset: "receitas_cv_recebedorias",
+        unit: "CVE",
+        data,
+        source: "Portal Transparência CV · Por Recebedorias",
+        fallback: docs.length === 0,
+        updatedAt: latestUpdatedAt,
+      },
+      { headers: cacheHeaders() }
+    );
   } catch (err) {
     console.error("[Nacional Receitas CV]", err);
     return NextResponse.json(
@@ -149,7 +160,7 @@ export async function GET() {
         fallback: true,
         updatedAt: null,
       },
-      { status: 200 }
+      { status: 200, headers: cacheHeaders() }
     );
   }
 }

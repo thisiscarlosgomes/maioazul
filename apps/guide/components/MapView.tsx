@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { ThemeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
 
 export default function MapPage() {
   const mapRef = useRef<maplibregl.Map | null>(null);
@@ -130,15 +130,20 @@ export default function MapPage() {
         {/* Header */}
         <div className="flex items-start justify-between gap-6 border-b border-border pb-4">
           <div>
-            <h1 className="text-xl font-semibold">Visit Maio</h1>
+            <Image
+              src="/visitmaio.svg"
+              alt="Visit Maio"
+              width={180}
+              height={42}
+              className="h-9 w-auto"
+              priority
+            />
             <p className="text-sm text-muted-foreground">
               Mapa interativo do território do Maio.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-          </div>
+          <div className="flex items-center gap-2" />
         </div>
 
         {/* Map */}

@@ -15,24 +15,56 @@ export async function GET(req: Request) {
     const db = client.db();
 
     const raw = db.collection("turismo_raw");
+    const annualCountryIsland = db.collection("turismo_country_island_annual");
     const population = db.collection("population"); // assumed existing
 
     /* =========================
        1. Aggregate tourism flows
     ========================= */
 
-    const flows = await raw
-      .aggregate([
-        { $match: { year } },
-        {
-          $group: {
-            _id: "$ilha",
-            dormidas: { $sum: "$dormidas" },
-            hospedes: { $sum: "$hospedes" },
-          },
-        },
-      ])
-      .toArray();
+    const hasAnnualIslandDataset =
+      (await annualCountryIsland.countDocuments({
+        year,
+        granularity: "annual",
+      })) > 0;
+
+    const flows = hasAnnualIslandDataset
+      ? await annualCountryIsland
+          .aggregate([
+            {
+              $match: {
+                year,
+                granularity: "annual",
+                pais: { $in: ["Cabo Verde", "Estrangeiros"] },
+              },
+            },
+            {
+              $group: {
+                _id: "$ilha",
+                dormidas: { $sum: "$dormidas" },
+                hospedes: { $sum: "$hospedes" },
+              },
+            },
+          ])
+          .toArray()
+      : await raw
+          .aggregate([
+            {
+              $match: {
+                year,
+                tipo_estabelecimento: "Todos",
+                ilha: { $ne: "Todas as ilhas" },
+              },
+            },
+            {
+              $group: {
+                _id: "$ilha",
+                dormidas: { $sum: "$dormidas" },
+                hospedes: { $sum: "$hospedes" },
+              },
+            },
+          ])
+          .toArray();
 
     /* =========================
        2. Population lookup
@@ -105,6 +137,9 @@ export async function GET(req: Request) {
       data: nationalRow
         ? [nationalRow, ...islandData]
         : islandData,
+      source_dataset: hasAnnualIslandDataset
+        ? "turismo_country_island_annual"
+        : "turismo_raw",
       source: "INE Cabo Verde · Turismo + População",
       updatedAt: new Date(),
     });

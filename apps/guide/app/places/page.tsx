@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Bird,
   Compass,
@@ -26,6 +27,7 @@ import { useFavorites } from "@/lib/favorites";
 import { fetchJsonOfflineFirst } from "@/lib/offline";
 import { useLang } from "@/lib/lang";
 import { setCachedPlaces } from "@/lib/places-cache";
+import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 
 type Place = {
   id: string;
@@ -48,7 +50,9 @@ export default function PlacesIndexPage() {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeIntent, setActiveIntent] = useState<string | null>(null);
+  const searchParams = useSearchParams();
   const { isFavorite, toggle } = useFavorites();
+  const activeCategory = searchParams.get("category")?.toLowerCase() || null;
 
   const copy = useMemo(
     () => ({
@@ -200,6 +204,22 @@ export default function PlacesIndexPage() {
     ],
   };
 
+  const categoryFilters: Record<string, string[]> = {
+    heritage: ["historical_heritage", "religious_heritage"],
+    nature: [
+      "protected_area",
+      "wetland",
+      "ribeira",
+      "mountain",
+      "islet",
+      "forest_area",
+      "dunes",
+      "biosphere",
+    ],
+    beach: ["beach"],
+    culture: ["settlement", "economic_activity", "education_center"],
+  };
+
   const intents = useMemo(
     () => [
       {
@@ -219,7 +239,7 @@ export default function PlacesIndexPage() {
       },
       {
         id: "quiet_villages",
-        label: { pt: "Vilarejos tranquilos", en: "Quiet villages" },
+        label: { pt: "Povoações", en: "Quiet villages" },
         Icon: MapPin,
       },
       {
@@ -229,7 +249,7 @@ export default function PlacesIndexPage() {
       },
       {
         id: "quick_two_hours",
-        label: { pt: "2 horas rápidas", en: "Quick 2 hours" },
+        label: { pt: "2 horas", en: "Quick 2 hours" },
         Icon: Compass,
       },
     ],
@@ -241,6 +261,14 @@ export default function PlacesIndexPage() {
     const stored = window.localStorage.getItem("maio-places-intent");
     if (stored) setActiveIntent(stored);
   }, []);
+
+  useEffect(() => {
+    if (!activeCategory) return;
+    // Category deep-links from landing should open deterministic results.
+    // Clear persisted/intent-driven filters that would otherwise intersect.
+    setActiveIntent(null);
+    setActiveTag(null);
+  }, [activeCategory]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -434,9 +462,10 @@ export default function PlacesIndexPage() {
   };
 
   const filteredPlaces = useMemo(() => {
+    const effectiveIntent = activeCategory ? null : activeIntent;
     const normalized = query.trim().toLowerCase();
     const hasActiveFilter =
-      Boolean(normalized) || Boolean(activeTag) || Boolean(activeIntent);
+      Boolean(normalized) || Boolean(activeTag) || Boolean(effectiveIntent) || Boolean(activeCategory);
     const portoIngles = places.find((place) => place.id === "cidade-porto-ingles");
     const portoLat = Array.isArray(portoIngles?.coordinates)
       ? portoIngles.coordinates[1]
@@ -450,10 +479,19 @@ export default function PlacesIndexPage() {
           return haystack.includes(normalized);
         });
 
-    const withTags =
-      !activeTag
+    const withCategory =
+      !activeCategory || !categoryFilters[activeCategory]
         ? filtered
         : filtered.filter((place) => {
+            const category = (place.category || "").toLowerCase();
+            const allowed = categoryFilters[activeCategory];
+            return allowed.includes(category);
+          });
+
+    const withTags =
+      !activeTag
+        ? withCategory
+        : withCategory.filter((place) => {
             const sourceTags =
               lang === "en" && Array.isArray(place.tags_en) && place.tags_en.length
                 ? place.tags_en
@@ -464,7 +502,7 @@ export default function PlacesIndexPage() {
           });
 
     const withIntent =
-      !activeIntent
+      !effectiveIntent
         ? withTags
         : withTags.filter((place) => {
             const sourceTags =
@@ -472,7 +510,7 @@ export default function PlacesIndexPage() {
                 ? place.tags_en
                 : place.tags || [];
             const tags = sourceTags.map((tag) => tag.toLowerCase());
-            const keys = intentFilters[activeIntent] || [activeIntent];
+            const keys = intentFilters[effectiveIntent] || [effectiveIntent];
             return tags.some((tag) => keys.some((key) => tag.includes(key)));
           });
 
@@ -497,8 +535,8 @@ export default function PlacesIndexPage() {
         tags.some((tag) => keys.some((key) => tag.includes(key)));
       let score = 0;
 
-      if (activeIntent) {
-        const keys = intentFilters[activeIntent] || [];
+      if (effectiveIntent) {
+        const keys = intentFilters[effectiveIntent] || [];
         if (hasTag(keys)) score += 6;
       }
 
@@ -621,14 +659,18 @@ export default function PlacesIndexPage() {
         const bLat = Array.isArray(b.coordinates) ? b.coordinates[1] : -999;
         return aLat - bLat;
       });
-  }, [places, query, activeTag, activeIntent, lang]);
+  }, [places, query, activeTag, activeIntent, activeCategory, lang]);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-8 pb-16">
+    <>
+      <SecondaryPageHeader
+        title={{ pt: "Todos os lugares", en: "All places" }}
+        backHref="/map"
+      />
+      <div className="max-w-5xl mx-auto px-4 pt-6 pb-16">
       <div className="flex items-start justify-between gap-3 maio-fade-up">
         <div>
-          <h1 className="text-2xl font-semibold">{copy[lang].title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground">
             {copy[lang].subtitle}
           </p>
         </div>
@@ -730,6 +772,12 @@ export default function PlacesIndexPage() {
                   loading="lazy"
                   decoding="async"
                 />
+                {place.tips?.length ? (
+                  <div className="absolute bottom-3 left-3 max-w-[85%] rounded-full border border-white/40 bg-black/45 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm line-clamp-1">
+                    Local Tip:{" "}
+                    {place.tips?.[0]?.[lang] || place.tips?.[0]?.en || place.tips?.[0]?.pt}
+                  </div>
+                ) : null}
                 <button
                   type="button"
                   aria-label={
@@ -765,13 +813,6 @@ export default function PlacesIndexPage() {
               <div className="mt-1 text-sm text-muted-foreground line-clamp-2">
                 {pick(place.description)}
               </div>
-              {place.tips?.length ? (
-                <div className="mt-2 text-xs text-muted-foreground line-clamp-2">
-                  {place.tips?.[0]?.[lang] ||
-                    place.tips?.[0]?.en ||
-                    place.tips?.[0]?.pt}
-                </div>
-              ) : null}
             </Link>
           ))}
       </div>
@@ -787,6 +828,7 @@ export default function PlacesIndexPage() {
             : "Unable to load places right now."}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

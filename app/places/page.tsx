@@ -28,10 +28,10 @@ export default function PlacesIndexPage() {
       pt: {
         title: "Todos os lugares",
         subtitle: "Explore praias, povoações e áreas protegidas.",
-        voiceTitle: "Guia de voz no mapa",
+        voiceTitle: "Guia de voz no dashboard",
         voiceDescription:
           "Ative o guia de voz para ouvir curiosidades quando estiver perto das áreas protegidas.",
-        voiceCta: "Abrir o mapa",
+        voiceCta: "Abrir dashboard",
         view: "Ver lugar →",
         searchPlaceholder: "Pesquisar lugares...",
         noResults: "Sem resultados para a pesquisa.",
@@ -39,10 +39,10 @@ export default function PlacesIndexPage() {
       en: {
         title: "All places",
         subtitle: "Explore beaches, settlements, and protected areas.",
-        voiceTitle: "Voice guide on the map",
+        voiceTitle: "Voice guide on the dashboard",
         voiceDescription:
           "Enable the voice guide to hear facts when you’re near protected areas.",
-        voiceCta: "Open the map",
+        voiceCta: "Open dashboard",
         view: "View place →",
         searchPlaceholder: "Search places...",
         noResults: "No results for that search.",
@@ -90,7 +90,7 @@ export default function PlacesIndexPage() {
           {copy[lang].voiceDescription}
         </p>
         <Link
-          href="/map"
+          href="/dashboard"
           className="mt-3 inline-flex items-center justify-center rounded-full border border-border px-4 py-2 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent"
         >
           {copy[lang].voiceCta}

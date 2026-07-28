@@ -1,27 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 
-export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(false);
+type ThemeToggleProps = {
+  className?: string;
+  iconClassName?: string;
+};
 
-  useEffect(() => {
-    const stored = localStorage.getItem("theme");
-    const prefersDark =
-      stored === "dark" ||
-      (!stored &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches);
-
-    if (prefersDark) {
-      document.documentElement.classList.add("dark");
-      setIsDark(true);
-    }
-  }, []);
-
+export function ThemeToggle({
+  className,
+  iconClassName,
+}: ThemeToggleProps = {}) {
   function toggleTheme() {
+    const isDark = document.documentElement.classList.contains("dark");
     const next = !isDark;
-    setIsDark(next);
 
     document.documentElement.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
@@ -31,13 +23,13 @@ export function ThemeToggle() {
     <button
       onClick={toggleTheme}
       aria-label="Toggle theme"
-      className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground transition"
+      className={
+        className ??
+        "cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-background text-muted-foreground hover:text-foreground transition"
+      }
     >
-      {isDark ? (
-        <Sun className="h-4 w-4" />
-      ) : (
-        <Moon className="h-4 w-4" />
-      )}
+      <Sun className={`${iconClassName ?? "h-4 w-4"} hidden dark:block`} />
+      <Moon className={`${iconClassName ?? "h-4 w-4"} dark:hidden`} />
     </button>
   );
 }

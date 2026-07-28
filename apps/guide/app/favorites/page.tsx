@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { useFavorites } from "@/lib/favorites";
 import { useLang } from "@/lib/lang";
 import Link from "next/link";
+import SecondaryPageHeader from "@/components/SecondaryPageHeader";
 
 type Place = {
   id: string;
@@ -54,9 +55,13 @@ export default function FavoritesPage() {
   const favorites = places.filter((place) => favoritesSet.has(place.id));
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
+    <>
+      <SecondaryPageHeader
+        title={{ pt: "Favoritos", en: "Favorites" }}
+        backHref="/map"
+      />
+      <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
       <div>
-        <h1 className="text-2xl font-semibold">{copy[lang].title}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           {copy[lang].subtitle}
         </p>
@@ -113,12 +118,12 @@ export default function FavoritesPage() {
         </div>
       </div>
 
-      <div className="mt-12 flex flex-col items-center border-t pt-6 text-center text-xs text-muted-foreground">
+      <div className="mt-12 flex flex-col items-center pt-6 text-center text-xs text-muted-foreground">
         <a
           href="https://maioazul.com"
           target="_blank"
           rel="noreferrer"
-          className="mt-4 inline-flex items-center rounded-lg border px-3 py-2 text-xs font-medium text-foreground transition hover:bg-muted"
+          className="hidden mt-4 inline-flex items-center rounded-lg border px-3 py-2 text-xs font-medium text-foreground transition hover:bg-muted"
         >
           {copy[lang].developmentBy} maiozul.com
         </a>
@@ -134,8 +139,13 @@ export default function FavoritesPage() {
           <span>C&#226;mara Municipal do Maio</span>
           <span>·</span>
           <span>Governo de Cabo Verde</span>
+          <span>·</span>
+          <span>UE</span>
+          <span>·</span>
+          <span>Dados Públicos</span>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

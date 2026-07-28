@@ -1,0 +1,87 @@
+{
+  "entity": {
+    "country": "Cabo Verde",
+    "island": "Maio",
+    "municipality": "Maio"
+  },
+  "dataset": "maio_energy_core_data",
+  "as_of_date": "2026-03-06",
+  "units": {
+    "annual_demand": "GWh_per_year",
+    "solar_generation": "MWh_per_year",
+    "solar_capacity": "kWp",
+    "share_of_demand": "percent"
+  },
+  "core_data": {
+    "annual_electricity_demand_gwh": {
+      "planning_forecast_2025": 7.43,
+      "implied_current_from_solar_plant_report": 4.024,
+      "implied_current_calculation": {
+        "solar_generation_mwh_per_year": 684,
+        "share_of_demand_percent": 17,
+        "formula": "684 MWh / 0.17 = 4023.53 MWh = 4.024 GWh"
+      },
+      "recommended_working_value_gwh": 7.43,
+      "recommended_working_value_reason": "Best single value for planning/sizing based on an island demand table with explicit year labels.",
+      "lower_bound_gwh": 4.024,
+      "upper_bound_gwh": 7.43,
+      "notes": [
+        "No direct Maio-specific annual consumption figure was found on EDEC's public site during this review.",
+        "The two externally sourced figures do not fully agree, so both are preserved."
+      ]
+    },
+    "solar_plant_reference": {
+      "installed_capacity_kwp": 412,
+      "expected_annual_generation_mwh": 684,
+      "reported_share_of_maio_current_demand_percent": 17
+    }
+  },
+  "source_quality": {
+    "edec_public_site_direct_maio_consumption_found": false,
+    "confidence": "medium",
+    "comments": [
+      "Planning-study value is suitable for system sizing and scenario work.",
+      "Solar-plant article provides a useful implied current-demand check."
+    ]
+  },
+  "sources": [
+    {
+      "id": "esmap_cabo_verde_esp_2022",
+      "publisher": "ESMAP / World Bank support materials",
+      "title": "Cabo Verde ESP Stakeholder Forum presentation",
+      "url": "https://www.esmap.org/sites/default/files/2022/ESP%20Korea%202022/Cabo%20Verde%20ESP%20Stakeholder%20Forum%20Dec%202022.pdf",
+      "relevant_data": {
+        "maio_demand_gwh": {
+          "2020": 6.29,
+          "2025": 7.43,
+          "2030": 8.56,
+          "2040": 12.2
+        }
+      },
+      "use_case": "Primary planning value"
+    },
+    {
+      "id": "inforpress_maio_solar_plant",
+      "publisher": "Inforpress",
+      "title": "Maio solar plant report",
+      "url": "https://www.inforpress.cv/maio-central-solar-fotovoltaica-evita-consumo-de-35-mil-litros-de-gasoleo-em-dois-meses-de-testes-app?utm_source=chatgpt.com",
+      "relevant_data": {
+        "solar_capacity_kwp": 412,
+        "annual_generation_mwh": 684,
+        "share_of_current_demand_percent": 17,
+        "implied_current_demand_gwh": 4.024
+      },
+      "use_case": "Operational lower-bound estimate"
+    },
+    {
+      "id": "edec_site_check",
+      "publisher": "EDEC",
+      "title": "EDEC public website",
+      "url": "https://edec.cv/",
+      "relevant_data": {
+        "direct_maio_specific_annual_consumption_found": false
+      },
+      "use_case": "Site-check provenance"
+    }
+  ]
+}

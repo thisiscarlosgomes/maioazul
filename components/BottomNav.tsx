@@ -31,7 +31,7 @@ export default function BottomNav() {
   );
 
   const items = [
-    { href: "/map", label: copy[lang].home, icon: Map },
+    { href: "/dashboard", label: copy[lang].home, icon: Map },
     { href: "/places", label: copy[lang].places, icon: MapPinned },
     { href: "/experiences", label: copy[lang].experiences, icon: Sparkles },
     { href: "/favorites", label: copy[lang].favorites, icon: Heart },

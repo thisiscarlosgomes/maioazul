@@ -20,6 +20,10 @@ const endpoints = [
     url: "/api/transparencia/municipal/transferencias?municipio=CMMAIO&year=2025",
     out: "transparencia/municipal/transferencias-CMMAIO-2025.json",
   },
+  {
+    url: "/api/transparencia/municipal/transferencias?municipio=CMMAIO&year=2026",
+    out: "transparencia/municipal/transferencias-CMMAIO-2026.json",
+  },
   { url: "/api/transparencia/turismo/hoteis", out: "transparencia/turismo/hoteis.json" },
   {
     url: "/api/transparencia/turismo/population?year=2025",

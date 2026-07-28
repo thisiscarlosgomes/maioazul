@@ -7,7 +7,12 @@ const root = process.cwd();
 const MUNICIPIO = "CMMAIO";
 const YEAR = 2026;
 const KEY = `transf:${YEAR}:${MUNICIPIO}`;
-const JAN_2026_VALUE = 9219167;
+const MONTHLY_VALUES_2026 = {
+  1: 9219167,
+  2: 9219167,
+  3: 11396945,
+  4: 9219167,
+};
 
 const loadEnvFile = async (filePath) => {
   try {
@@ -55,15 +60,14 @@ async function run() {
   const existing = await col.findOne({ key: KEY });
   const baseData = Array.isArray(existing?.data) ? existing.data : [];
 
-  const filtered = baseData.filter((row) => Number(row?.MES) !== 1);
-  const updatedData = [
-    ...filtered,
-    {
-      MES: 1,
-      VALOR_PAGO: JAN_2026_VALUE,
-      SIGLA: MUNICIPIO,
-    },
-  ].sort((a, b) => Number(a.MES) - Number(b.MES));
+  const monthKeys = Object.keys(MONTHLY_VALUES_2026).map((m) => Number(m));
+  const filtered = baseData.filter((row) => !monthKeys.includes(Number(row?.MES)));
+  const updates = monthKeys.map((month) => ({
+    MES: month,
+    VALOR_PAGO: MONTHLY_VALUES_2026[month],
+    SIGLA: MUNICIPIO,
+  }));
+  const updatedData = [...filtered, ...updates].sort((a, b) => Number(a.MES) - Number(b.MES));
 
   await col.updateOne(
     { key: KEY },
@@ -76,7 +80,7 @@ async function run() {
           municipio: MUNICIPIO,
           view: "month",
           source: "Portal Transparência CV",
-          note: "Janeiro 2026 atualizado manualmente.",
+          note: "2026 atualizado manualmente (MES=1 a MES=4).",
         },
         updatedAt: new Date(),
       },
@@ -88,7 +92,12 @@ async function run() {
   );
 
   await client.close();
-  console.log(`Transferências atualizadas: ${KEY} (MES=1, VALOR_PAGO=${JAN_2026_VALUE})`);
+  console.log(`Transferências atualizadas: ${KEY}`);
+  console.log(
+    monthKeys
+      .map((month) => `MES=${month}, VALOR_PAGO=${MONTHLY_VALUES_2026[month]}`)
+      .join(" | "),
+  );
 }
 
 run().catch((err) => {

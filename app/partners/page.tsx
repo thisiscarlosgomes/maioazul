@@ -181,16 +181,19 @@ export default function PartnersPage() {
   }
 
   return (
-    <div className="bg-white text-[#111111]">
+    <div
+      className="bg-white text-[#111111]"
+      style={{ fontFamily: "Mabry, Inter, ui-sans-serif, system-ui, -apple-system" }}
+    >
       <header className="border-b border-[rgba(17,17,17,0.08)]">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-7 py-6">
           <img className="h-[18px] w-auto" src="/maioazul.png" alt="Maioazul" />
           <nav className="flex items-center gap-6 text-sm font-semibold text-[#111111]/75">
 
-            <a className="transition hover:text-[#111111]" href="mailto:hello@maioazul.com">
+            <a className="text-[#10069F] transition hover:text-[#0c0478]" href="mailto:hello@maioazul.com">
               hello@maioazul.com
             </a>
-            <div className="flex items-center gap-3 text-xs uppercase tracking-[0.08em] text-[#111111]/70">
+            <div className="hidden items-center gap-3 text-xs uppercase tracking-[0.08em] text-[#111111]/70 sm:flex">
               {(["pt", "en"] as const).map((l) => (
                 <button
                   key={l}

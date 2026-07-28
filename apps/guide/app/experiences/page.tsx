@@ -2,23 +2,91 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useLang } from "@/lib/lang";
+import SecondaryPageHeader from "@/components/SecondaryPageHeader";
+import Link from "next/link";
+import {
+  getCachedExperienceImages,
+  setCachedExperienceImages,
+} from "@/lib/experiences-cache";
+
+const FALLBACK_ACTIVITIES = [
+  {
+    id: "food",
+    title: "Food",
+    subtitle: {
+      en: "Taste the island’s freshest catch.",
+      pt: "Saboreie o peixe mais fresco da ilha.",
+    },
+    image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633850/tuna_oyjqjz.png",
+  },
+  {
+    id: "stay",
+    title: "Stay",
+    subtitle: {
+      en: "Places to stay with comfort and local character.",
+      pt: "Lugares para ficar com conforto e caráter local.",
+    },
+    image:
+      "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773089189/12323f0a48bf-cdf2-4eeb-8e48-7c6e4cbb6351_vchbng.avif",
+  },
+  {
+    id: "guia",
+    title: "Guia turístico",
+    subtitle: {
+      en: "Local guidance to explore Maio with context.",
+      pt: "Guia local para explorar o Maio com contexto.",
+    },
+    image:
+      "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=1600&auto=format&fit=crop",
+  },
+  {
+    id: "blue-sports",
+    title: "Blue Sports",
+    subtitle: {
+      en: "Surf, Jet ski, SUP, or dive in clear waters.",
+      pt: "Surf, Jet ski, SUP ou mergulho em águas claras.",
+    },
+    image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/surf_qfgyc1.png",
+  },
+];
 
 export default function ExperiencesPage() {
   const [lang] = useLang();
+  const cachedImages = getCachedExperienceImages<{
+    id: string;
+    title: string | { en?: string; pt?: string };
+    subtitle: { en: string; pt: string };
+    image: string;
+  }>();
   const [activities, setActivities] = useState<
     Array<{
       id: string;
-      title: string;
+      title: string | { en?: string; pt?: string };
       subtitle: { en: string; pt: string };
       image: string;
     }>
-  >([]);
+  >(cachedImages && cachedImages.length > 0 ? cachedImages : FALLBACK_ACTIVITIES);
+
+  const activityTitleById = useMemo(
+    () => ({
+      food: { en: "Food", pt: "Comer" },
+      "blue-sports": { en: "Blue Sports", pt: "Desportos Azuis" },
+      stay: { en: "Stay", pt: "Estadia" },
+      guia: { en: "Tour Guide", pt: "Guia turístico" },
+    }),
+    []
+  );
+
+  const pickLocalized = (value: string | { en?: string; pt?: string }) =>
+    typeof value === "string" ? value : value[lang] || value.en || value.pt || "";
 
   const copy = useMemo(
     () => ({
       en: {
         title: "Experiences in Maio",
-        aboutTitle: "Maio, at its own pace",
+        aboutTitle: "Maio Curated",
+        eventsCta: "Things to Do",
+        eventsSubtitle: "Events and activities happening across Maio.",
         aboutBody:
           "Maio is a calm island where time moves slowly. The beauty is in the simple rhythm of days, open horizons, and a community that welcomes visitors who travel with care.",
         aboutBody2:
@@ -48,7 +116,9 @@ export default function ExperiencesPage() {
       },
       pt: {
         title: "Experiências em Maio",
-        aboutTitle: "Maio, ao seu ritmo",
+        aboutTitle: "Maio Curated",
+        eventsCta: "Coisas para Fazer",
+        eventsSubtitle: "Eventos e atividades a acontecer pelo Maio.",
         aboutBody:
           "Maio é uma ilha calma onde o tempo abranda. A beleza está no ritmo simples dos dias, nos horizontes abertos e na comunidade que recebe quem viaja com cuidado.",
         aboutBody2:
@@ -80,124 +150,117 @@ export default function ExperiencesPage() {
     []
   );
 
-  const fallbackActivities = [
-    {
-      id: "food",
-      title: "Food",
-      subtitle: {
-        en: "Taste the island’s freshest catch.",
-        pt: "Saboreie o peixe mais fresco da ilha.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633850/tuna_oyjqjz.png",
-    },
-    {
-      id: "trekking",
-      title: "Trekking",
-      subtitle: {
-        en: "Slow walks through dunes and trails.",
-        pt: "Caminhadas lentas entre dunas e trilhos.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634013/penoso_2_zrdjrz.jpg",
-    },
-    {
-      id: "fishing",
-      title: "Fishing",
-      subtitle: {
-        en: "Cast a line where locals do.",
-        pt: "Pesque onde os locais pescam.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/fish_rih7bp.png",
-    },
-    {
-      id: "beach",
-      title: "Beach",
-      subtitle: {
-        en: "Quiet shores made for unhurried days.",
-        pt: "Praias calmas para dias sem pressa.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770634116/morro1_olke19.jpg",
-    },
-    {
-      id: "blue-sports",
-      title: "Blue Sports",
-      subtitle: {
-        en: "Surf, Jet ski, SUP, or dive in clear waters.",
-        pt: "Surf, Jet ski, SUP ou mergulho em águas claras.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/surf_qfgyc1.png",
-    },
-    {
-      id: "routes-4x4",
-      title: "4x4 Routes",
-      subtitle: {
-        en: "Wander the island at your own pace.",
-        pt: "Passeie pela ilha ao seu ritmo.",
-      },
-      image: "https://res.cloudinary.com/dhxfkhewr/image/upload/v1770633849/4_lpqfzn.png",
-    },
-  ];
-
   useEffect(() => {
-    fetch("/api/experience-images")
+    let cancelled = false;
+    fetch("/api/experience-images", { cache: "force-cache" })
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data) && data.length) {
-          setActivities(data);
+        if (cancelled) return;
+        if (Array.isArray(data) && data.length > 0) {
+          const order = ["food", "stay", "guia", "blue-sports"];
+          const orderIndex = new Map(order.map((id, idx) => [id, idx]));
+          const sorted = [...data]
+            .map((item) => {
+              const fallback = FALLBACK_ACTIVITIES.find((f) => f.id === item?.id);
+              return {
+                id: item?.id || fallback?.id || "",
+                title: item?.title || fallback?.title || "",
+                subtitle: item?.subtitle || fallback?.subtitle || { en: "", pt: "" },
+                image: item?.image || fallback?.image || "",
+              };
+            })
+            .filter((item) => item.id && item.image)
+            .sort((a, b) => {
+            const ai = orderIndex.get(a.id) ?? Number.MAX_SAFE_INTEGER;
+            const bi = orderIndex.get(b.id) ?? Number.MAX_SAFE_INTEGER;
+            return ai - bi;
+          });
+          if (sorted.length > 0) {
+            setCachedExperienceImages(sorted);
+            setActivities(sorted);
+          }
           return;
         }
-        setActivities(fallbackActivities);
+        if (cancelled) return;
+        setActivities(FALLBACK_ACTIVITIES);
       })
-      .catch(() => setActivities(fallbackActivities));
+      .catch(() => {
+        if (cancelled) return;
+        setActivities(FALLBACK_ACTIVITIES);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
-      <div className="w-full">
-        <h1 className="text-2xl font-semibold">
-          {copy[lang].title}
-        </h1>
-        <div className="mt-4">
-          <div className="text-sm font-semibold">{copy[lang].aboutTitle}</div>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            {copy[lang].aboutBody}
-          </p>
-          <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            {copy[lang].aboutBody2}
-          </p>
+    <>
+      <SecondaryPageHeader
+        title={{ pt: "Experiências em Maio", en: "Experiences in Maio" }}
+        backHref="/map"
+      />
+      <div className="max-w-5xl mx-auto px-4 pt-6 pb-12">
+        <div className="w-full">
+          <div className="mt-1">
+            <div className="text-sm font-semibold">{copy[lang].aboutTitle}</div>
+            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
+              {copy[lang].aboutBody}  {copy[lang].aboutBody2}
+            </p>
+            <Link
+              href="/things-to-do"
+              className="group relative mt-4 block h-20 w-full overflow-hidden rounded-xl border border-black/30 bg-black sm:h-24"
+            >
+              <img
+                src="https://res.cloudinary.com/dhxfkhewr/image/upload/v1773214805/600473015_1172435288340497_4740791525896028162_n_qvdffk.jpg"
+                alt={copy[lang].eventsCta}
+                className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-black/55" />
+              <div className="absolute inset-0 flex items-center justify-center px-4">
+                <div className="text-lg font-semibold tracking-tight text-white sm:text-2xl">
+                  {copy[lang].eventsCta}
+                </div>
+              </div>
+            </Link>
+
+          </div>
+
+
+
+
         </div>
 
-
-
-
-      </div>
-
-      <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {activities.map((activity) => (
-          <div
-            key={activity.id}
-            className="relative overflow-hidden rounded-2xl border border-border shadow-sm"
-          >
-            <img
-              src={activity.image}
-              alt={activity.title}
-              className="h-44 w-full object-cover sm:h-52"
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-4">
-              <div className="text-lg font-semibold text-white">
-                {activity.title}
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {activities.map((activity) => (
+            <Link
+              key={activity.id}
+              href={`/experiences/${activity.id}`}
+              className="relative overflow-hidden rounded-2xl border border-border shadow-sm transition hover:shadow-md"
+            >
+              <img
+                src={activity.image}
+                alt={pickLocalized(activity.title)}
+                className="h-44 w-full object-cover sm:h-52"
+                loading="lazy"
+                decoding="async"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-4">
+                <div className="text-lg font-semibold text-white">
+                  {activityTitleById[activity.id as keyof typeof activityTitleById]?.[lang] ||
+                    pickLocalized(activity.title)}
+                </div>
+                <div className="mt-1 text-xs text-white/80">
+                  {activity.subtitle[lang]}
+                </div>
               </div>
-              <div className="mt-1 text-xs text-white/80">
-                {activity.subtitle[lang]}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
 
-      {/* <div className="mt-6">
+        {/* <div className="mt-6">
         <div className="text-sm font-semibold">{copy[lang].mustKnowTitle}</div>
         <div className="mt-3 flex flex-wrap gap-1">
           {copy[lang].mustKnows.map((item) => (
@@ -211,7 +274,7 @@ export default function ExperiencesPage() {
         </div>
       </div> */}
 
-      {/* <div className="mt-10">
+        {/* <div className="mt-10">
         <a
           href="/contact"
           className="hidden inline-flex w-full items-center justify-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-black/90 active:scale-[0.98]"
@@ -219,6 +282,7 @@ export default function ExperiencesPage() {
           {copy[lang].contact}
         </a>
       </div> */}
-    </div>
+      </div>
+    </>
   );
 }

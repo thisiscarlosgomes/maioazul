@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 
+export const revalidate = 900;
+
 const CMMAIO_FALLBACK: Record<number, Array<{ MES: number; VALOR_PAGO: number; SIGLA: string }>> = {
   2024: [{ MES: 12, VALOR_PAGO: 125537932, SIGLA: "CMMAIO" }],
   2025: [{ MES: 12, VALOR_PAGO: 107960558, SIGLA: "CMMAIO" }],
-  2026: [{ MES: 1, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" }],
+  2026: [
+    { MES: 1, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
+    { MES: 2, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
+    { MES: 3, VALOR_PAGO: 11396945, SIGLA: "CMMAIO" },
+    { MES: 4, VALOR_PAGO: 9219167, SIGLA: "CMMAIO" },
+  ],
 };
 
 type TransferenciaRawRow = {
@@ -21,6 +28,19 @@ function mapTransferRows(rows: TransferenciaRawRow[]) {
   }));
 }
 
+function mergeMissingMonths(
+  primary: Array<{ month: number; valor_pago: number; sigla?: string }>,
+  supplement: Array<{ month: number; valor_pago: number; sigla?: string }>
+) {
+  const byMonth = new Map<number, { month: number; valor_pago: number; sigla?: string }>();
+  for (const row of primary) byMonth.set(Number(row.month), row);
+  for (const row of supplement) {
+    const month = Number(row.month);
+    if (!byMonth.has(month)) byMonth.set(month, row);
+  }
+  return [...byMonth.values()].sort((a, b) => a.month - b.month);
+}
+
 function hasUsableMonthlyRows(
   rows: Array<{ month: number; valor_pago: number }>
 ) {
@@ -32,6 +52,12 @@ function hasUsableMonthlyRows(
       Number.isFinite(row.valor_pago) &&
       row.valor_pago > 0
   );
+}
+
+function cacheHeaders() {
+  return {
+    "Cache-Control": "public, s-maxage=900, stale-while-revalidate=3600",
+  };
 }
 
 export async function GET(req: Request) {
@@ -92,31 +118,8 @@ export async function GET(req: Request) {
         return NextResponse.json([]);
       }
 
-      return NextResponse.json({
-        scope: "municipal",
-        dataset: "transferencias",
-        municipio,
-        year: fallbackYear,
-        financiador,
-        view: "month",
-        data: mapTransferRows(fallbackRows),
-        updatedAt: null,
-        source: "Portal Transparência CV",
-        fallback: true,
-      });
-    }
-
-    const data = mapTransferRows(doc.data);
-    const fallbackYear = year ? Number(year) : null;
-
-    if (!hasUsableMonthlyRows(data)) {
-      const fallbackRows =
-        municipio === "CMMAIO" && fallbackYear
-          ? CMMAIO_FALLBACK[fallbackYear]
-          : null;
-
-      if (fallbackRows) {
-        return NextResponse.json({
+      return NextResponse.json(
+        {
           scope: "municipal",
           dataset: "transferencias",
           municipio,
@@ -124,24 +127,63 @@ export async function GET(req: Request) {
           financiador,
           view: "month",
           data: mapTransferRows(fallbackRows),
-          updatedAt: doc.updatedAt ?? null,
+          updatedAt: null,
           source: "Portal Transparência CV",
           fallback: true,
-        });
+        },
+        { headers: cacheHeaders() }
+      );
+    }
+
+    const data = mapTransferRows(doc.data);
+    const fallbackYear = year ? Number(year) : null;
+    const fallbackRows =
+      municipio === "CMMAIO" && fallbackYear
+        ? mapTransferRows(CMMAIO_FALLBACK[fallbackYear] ?? [])
+        : [];
+    const completedData = fallbackRows.length
+      ? mergeMissingMonths(data, fallbackRows)
+      : data;
+
+    if (!hasUsableMonthlyRows(completedData)) {
+      const rawFallbackRows =
+        municipio === "CMMAIO" && fallbackYear
+          ? CMMAIO_FALLBACK[fallbackYear]
+          : null;
+
+      if (rawFallbackRows) {
+        return NextResponse.json(
+          {
+            scope: "municipal",
+            dataset: "transferencias",
+            municipio,
+            year: fallbackYear,
+            financiador,
+            view: "month",
+            data: mapTransferRows(rawFallbackRows),
+            updatedAt: doc.updatedAt ?? null,
+            source: "Portal Transparência CV",
+            fallback: true,
+          },
+          { headers: cacheHeaders() }
+        );
       }
     }
 
-    return NextResponse.json({
-      scope: "municipal",
-      dataset: "transferencias",
-      municipio,
-      year: doc.meta?.year,
-      financiador,
-      view: "month",
-      data,
-      updatedAt: doc.updatedAt,
-      source: "Portal Transparência CV",
-    });
+    return NextResponse.json(
+      {
+        scope: "municipal",
+        dataset: "transferencias",
+        municipio,
+        year: doc.meta?.year,
+        financiador,
+        view: "month",
+        data: completedData,
+        updatedAt: doc.updatedAt,
+        source: "Portal Transparência CV",
+      },
+      { headers: cacheHeaders() }
+    );
   } catch (err) {
     console.error("[Municipal Transferencias]", err);
 
@@ -153,18 +195,21 @@ export async function GET(req: Request) {
         municipio === "CMMAIO" ? CMMAIO_FALLBACK[year] : undefined;
 
       if (fallbackRows) {
-        return NextResponse.json({
-          scope: "municipal",
-          dataset: "transferencias",
-          municipio,
-          year,
-          financiador: searchParams.get("financiador"),
-          view: "month",
-          data: mapTransferRows(fallbackRows),
-          updatedAt: null,
-          source: "Portal Transparência CV",
-          fallback: true,
-        });
+        return NextResponse.json(
+          {
+            scope: "municipal",
+            dataset: "transferencias",
+            municipio,
+            year,
+            financiador: searchParams.get("financiador"),
+            view: "month",
+            data: mapTransferRows(fallbackRows),
+            updatedAt: null,
+            source: "Portal Transparência CV",
+            fallback: true,
+          },
+          { headers: cacheHeaders() }
+        );
       }
     } catch {
       // Ignore fallback parsing failure and return default error shape.
