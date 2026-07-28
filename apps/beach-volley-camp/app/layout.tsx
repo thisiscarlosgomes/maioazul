@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 const siteUrl = "https://mbv.maioazul.com";
 const defaultTitle = "Maio Beach Volley Camp";
 const defaultDescription =
-  "Camp de beach volley na Ilha do Maio, Cabo Verde (7-11 de agosto de 2026), com coaching de Márcio Araújo, treinos profissionais, experiências locais e vagas limitadas.";
+  "Camp de beach volley na Ilha do Maio, Cabo Verde (28-30 de agosto de 2026), com coaching de Márcio Araújo, treinos profissionais, experiências locais e vagas limitadas.";
 const defaultOgImage = `${siteUrl}/og-camp.jpg`;
 
 export async function generateMetadata(): Promise<Metadata> {

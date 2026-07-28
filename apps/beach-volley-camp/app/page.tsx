@@ -72,7 +72,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     navBolsa: "Bolsa",
     navJoin: "Participe",
     navOpenRegistration: "Inscrição aberta",
-    heroDate: "Ilha do Maio · 7-11 de Agosto 2026",
+    heroDate: "Ilha do Maio · 28-30 de Agosto 2026",
     magicTitle: "Uma Experiência Mágica",
     magicP1:
       "Em agosto de 2026 a ilha do Maio acolhe uma experiência rara: treinar beach volley com tempo, espaço e atenção, orientado por coaching de classe mundial, numa ilha onde o jogo acontece ao ritmo do mar.",
@@ -156,7 +156,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     navBolsa: "Scholarship",
     navJoin: "Join",
     navOpenRegistration: "Registration open",
-    heroDate: "Maio Island · August 7-11, 2026",
+    heroDate: "Maio Island · August 28-30, 2026",
     magicTitle: "A Magical Experience",
     magicP1:
       "In August 2026, Maio Island hosts a rare experience: beach volleyball training with time, space, and focus, guided by world-class coaching on an island where the game follows the rhythm of the sea.",
@@ -239,7 +239,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     navBolsa: "Bourse",
     navJoin: "Participer",
     navOpenRegistration: "Inscriptions ouvertes",
-    heroDate: "Ile de Maio · 7-11 aout 2026",
+    heroDate: "Ile de Maio · 28-30 aout 2026",
     magicTitle: "Une Experience Magique",
     magicP1:
       "En aout 2026, l'ile de Maio accueille une experience rare: s'entrainer au beach-volley avec du temps, de l'espace et de l'attention, guide par un coaching de classe mondiale sur une ile ou le jeu suit le rythme de la mer.",

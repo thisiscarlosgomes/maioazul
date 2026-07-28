@@ -23,6 +23,7 @@ type RegisterCopy = {
   navPartners: string;
   navBolsa: string;
   navJoin: string;
+  eventDate: string;
   heroTitle: string;
   heroSubtitle: string;
   detailsTitle: string;
@@ -69,10 +70,11 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     navPartners: "Parcerias",
     navBolsa: "Bolsa",
     navJoin: "Participe",
+    eventDate: "28–30 de agosto de 2026",
     heroTitle: "Garante a tua vaga no Maio Beach Volley Camp",
-    heroSubtitle: "Deixa o teu contacto e enviamos a confirmação por email. Vagas limitadas.",
+    heroSubtitle: "28–30 de agosto, na Ilha do Maio. Garante já a tua inscrição — vagas limitadas.",
     detailsTitle: "Detalhes do Camp",
-    detailsSubtitle: "Treino profissional, jogo diário e experiências locais.",
+    detailsSubtitle: "28–30 de agosto de 2026 · Treino profissional, jogo diário e experiências locais.",
     payTitle: "Checkout",
     paySubtitle: "Escolhe o pacote e faz o pagamento seguro por Stripe.",
     payNamePlaceholder: "Nome completo",
@@ -131,10 +133,11 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     navPartners: "Partners",
     navBolsa: "Scholarship",
     navJoin: "Join",
+    eventDate: "August 28–30, 2026",
     heroTitle: "Secure your spot at Maio Beach Volley Camp",
-    heroSubtitle: "Share your contact and we will send confirmation by email. Limited spots.",
+    heroSubtitle: "August 28–30 on Maio Island. Register now — spots are limited.",
     detailsTitle: "Camp Details",
-    detailsSubtitle: "Professional training, daily play, and local experiences.",
+    detailsSubtitle: "August 28–30, 2026 · Professional training, daily play, and local experiences.",
     payTitle: "Checkout",
     paySubtitle: "Choose your package and pay securely with Stripe.",
     payNamePlaceholder: "Full name",
@@ -193,10 +196,11 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     navPartners: "Partenaires",
     navBolsa: "Bourse",
     navJoin: "Participer",
+    eventDate: "28–30 aout 2026",
     heroTitle: "Reserve ta place au Maio Beach Volley Camp",
-    heroSubtitle: "Laisse ton contact et nous enverrons la confirmation par email. Places limitees.",
+    heroSubtitle: "Du 28 au 30 aout sur l'ile de Maio. Inscris-toi maintenant — places limitees.",
     detailsTitle: "Details du Camp",
-    detailsSubtitle: "Entrainement professionnel, jeu quotidien et experiences locales.",
+    detailsSubtitle: "28–30 aout 2026 · Entrainement professionnel, jeu quotidien et experiences locales.",
     payTitle: "Checkout",
     paySubtitle: "Choisis ton pack et paie en toute securite avec Stripe.",
     payNamePlaceholder: "Nom complet",
@@ -409,6 +413,9 @@ export default function RegisterPage() {
         </header>
 
         <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center gap-4 px-6">
+          <p className="rounded-full border border-white/40 bg-black/20 px-4 py-2 text-sm font-semibold uppercase tracking-[0.12em] text-white">
+            {t.eventDate}
+          </p>
           <h1 className="text-[clamp(2.4rem,5vw,4.2rem)] leading-tight">{t.heroTitle}</h1>
           <p className="text-[clamp(1rem,2.1vw,1.2rem)] text-white/80">{t.heroSubtitle}</p>
         </div>
