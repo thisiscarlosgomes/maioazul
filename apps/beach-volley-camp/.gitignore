@@ -2,3 +2,4 @@
 public/*.mov
 public/*.mp4
 .next
+.env*

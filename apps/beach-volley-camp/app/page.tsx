@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Facebook, Instagram, Menu, X } from "lucide-react";
+import { Facebook, Instagram, Menu, MessageCircle, X } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type CampLocale = "pt" | "en" | "fr";
@@ -37,6 +37,10 @@ type CampCopy = {
   programTitle: string;
   openRegistrationCta: string;
   galleryTitle: string;
+  helpTitle: string;
+  helpText: string;
+  helpWhatsapp: string;
+  helpCta: string;
   maioTitle: string;
   maioP1: string;
   maioStrong: string;
@@ -95,6 +99,10 @@ const campCopy: Record<CampLocale, CampCopy> = {
     programTitle: "Programa do Camp",
     openRegistrationCta: "Inscrição aberta",
     galleryTitle: "2024 Camp em ação",
+    helpTitle: "Precisas de ajuda?",
+    helpText: "Tens dúvidas sobre o camp, a viagem ou o alojamento? Fala connosco pelo WhatsApp.",
+    helpWhatsapp: "+86 150 7241 4348",
+    helpCta: "Conversar no WhatsApp →",
     maioTitle: "Uma Experiência Maiense",
     maioP1:
       "A Ilha do Maio é um dos segredos mais bem guardados de Cabo Verde. Praias abertas, ritmo tranquilo e uma relação autêntica entre natureza, comunidade e tempo.",
@@ -179,6 +187,10 @@ const campCopy: Record<CampLocale, CampCopy> = {
     programTitle: "Camp Program",
     openRegistrationCta: "Registration open",
     galleryTitle: "2024 Camp Highlights",
+    helpTitle: "Need help?",
+    helpText: "Have questions about the camp, travel or accommodation? Contact us on WhatsApp.",
+    helpWhatsapp: "+86 150 7241 4348",
+    helpCta: "Chat on WhatsApp →",
     maioTitle: "A True Maio Experience",
     maioP1:
       "Maio Island is one of Cabo Verde's best-kept secrets. Open beaches, a calm rhythm, and an authentic connection between nature, community, and time.",
@@ -262,6 +274,10 @@ const campCopy: Record<CampLocale, CampCopy> = {
     programTitle: "Programme du Camp",
     openRegistrationCta: "Inscriptions ouvertes",
     galleryTitle: "Camp 2024 en images",
+    helpTitle: "Besoin d'aide ?",
+    helpText: "Des questions sur le camp, le voyage ou l'hebergement ? Contacte-nous sur WhatsApp.",
+    helpWhatsapp: "+86 150 7241 4348",
+    helpCta: "Discuter sur WhatsApp →",
     maioTitle: "Une Experience Authentique de Maio",
     maioP1:
       "L'ile de Maio est l'un des secrets les mieux gardes du Cabo Verde. Plages ouvertes, rythme paisible et relation authentique entre nature, communaute et temps.",
@@ -631,6 +647,25 @@ export default function CampPage() {
               className="h-64 w-full rounded-[24px] object-cover sm:h-72 lg:h-80"
             />
           </div>
+        </div>
+      </section>
+
+      <section className="px-7 py-12 sm:py-16">
+        <div className="mx-auto flex w-full max-w-4xl flex-col items-center rounded-[28px] bg-[#f2f8ef] px-6 py-10 text-center sm:px-10 sm:py-12">
+          <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white">
+            <MessageCircle aria-hidden="true" className="h-6 w-6" />
+          </span>
+          <h2 className="mt-5 text-3xl tracking-[-0.02em] sm:text-4xl">{t.helpTitle}</h2>
+          <p className="mt-3 max-w-xl text-[rgba(17,17,17,0.68)]">{t.helpText}</p>
+          <p className="mt-5 text-lg font-semibold text-[#111111]">💬 WhatsApp: {t.helpWhatsapp}</p>
+          <a
+            href="https://wa.me/8615072414348"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:scale-[1.02] hover:bg-[#20bd5a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/30"
+          >
+            {t.helpCta}
+          </a>
         </div>
       </section>
 

@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const siteUrl = "https://mbv.maioazul.com";
 const defaultTitle = "Maio Beach Volley Camp";
@@ -105,6 +106,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         {children}
+        <WhatsAppButton />
         <Analytics />
       </body>
     </html>
