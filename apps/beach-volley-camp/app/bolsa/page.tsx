@@ -120,7 +120,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       ],
     },
     leadTitle: "Candidatura a bolsa",
-    leadSubtitle: "Bolsa apenas para atletas do Maio com idade maxima de 20 anos.",
+    leadSubtitle: "Bolsa apenas para atletas do Maio com idade maxima de 30 anos.",
     leadNamePlaceholder: "Nome completo",
     leadEmailPlaceholder: "Email",
     leadPhonePlaceholder: "Telefone (WhatsApp)",
@@ -188,7 +188,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       ],
     },
     leadTitle: "Scholarship Application",
-    leadSubtitle: "Scholarship is only for athletes from Maio up to 20 years old.",
+    leadSubtitle: "Scholarship is only for athletes from Maio up to 30 years old.",
     leadNamePlaceholder: "Full name",
     leadEmailPlaceholder: "Email",
     leadPhonePlaceholder: "Phone (WhatsApp)",
@@ -256,7 +256,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       ],
     },
     leadTitle: "Candidature Bourse",
-    leadSubtitle: "Bourse reservee aux athletes de Maio jusqu'a 20 ans.",
+    leadSubtitle: "Bourse reservee aux athletes de Maio jusqu'a 30 ans.",
     leadNamePlaceholder: "Nom complet",
     leadEmailPlaceholder: "Email",
     leadPhonePlaceholder: "Telephone (WhatsApp)",
@@ -313,7 +313,7 @@ export default function BolsaPage() {
     const formData = new FormData(form);
     const age = Number(formData.get("age"));
     const fromMaio = formData.get("from_maio") === "on";
-    if (!Number.isFinite(age) || age > 20 || !fromMaio) {
+    if (!Number.isFinite(age) || age > 30 || !fromMaio) {
       setStudentStatus("error");
       setStudentError(t.leadError);
       return;
@@ -453,39 +453,7 @@ export default function BolsaPage() {
       </section>
 
       <section className="py-16">
-        <div className="mx-auto grid w-full max-w-6xl gap-6 px-7 lg:grid-cols-[1fr_1.1fr]">
-          <div>
-            <h2 className="font-[Playfair_Display] text-3xl tracking-[-0.02em]">{t.detailsTitle}</h2>
-            <p className="mt-3 text-[rgba(17,17,17,0.68)]">{t.detailsSubtitle}</p>
-
-            <div className="mt-6 grid gap-4">
-              <div className="rounded-[16px] border border-[rgba(17,17,17,0.12)] bg-[#f7f7f4] p-4 text-[rgba(17,17,17,0.75)]">
-                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#111111]">{t.completePackage.title}</p>
-                <p className="mt-1 text-lg font-semibold text-[#111111]">€180 {t.completePackage.priceSuffix}</p>
-                {t.completePackage.badge ? (
-                  <p className="pt-2 text-xs font-semibold uppercase tracking-[0.06em] text-[#10069f]">{t.completePackage.badge}</p>
-                ) : null}
-
-                <ul className="mt-3 list-disc pl-5 text-sm">
-                  {t.completePackage.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="rounded-[16px] border border-[rgba(17,17,17,0.12)] bg-[#f7f7f4] p-4 text-[rgba(17,17,17,0.75)]">
-                <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#111111]">{t.essentialPackage.title}</p>
-                <p className="mt-1 text-lg font-semibold text-[#111111]">€90 {t.essentialPackage.priceSuffix}</p>
-
-                <ul className="mt-3 list-disc pl-5 text-sm">
-                  {t.essentialPackage.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-
+        <div className="mx-auto w-full max-w-3xl px-7">
           <div className="rounded-[18px] border border-[rgba(17,17,17,0.12)] bg-white p-6">
             <h3 className="text-xl font-semibold text-[#111111]">{t.leadTitle}</h3>
             <p className="mt-2 text-[rgba(17,17,17,0.68)]">{t.leadSubtitle}</p>
@@ -517,7 +485,7 @@ export default function BolsaPage() {
                   name="age"
                   placeholder={t.leadAgePlaceholder}
                   min={1}
-                  max={20}
+                  max={30}
                   required
                 />
                 <input

@@ -35,9 +35,9 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      if (!Number.isFinite(age) || age <= 0 || age > 20) {
+      if (!Number.isFinite(age) || age <= 0 || age > 30) {
         return NextResponse.json(
-          { error: "Scholarship is only available for athletes up to 20 years old." },
+          { error: "Scholarship is only available for athletes up to 30 years old." },
           { status: 400 }
         );
       }
