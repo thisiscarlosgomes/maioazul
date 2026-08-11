@@ -103,7 +103,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       bullets: [
         "Viagem de barco ida e volta (Praia / Maio / Praia)",
         "Alojamento incluído (3 noites)",
-        "3 dias de treino, workshop e jogos",
+        "2 dias de treino, workshop e jogos",
         "Alimentação conjunta no final do dia",
         "Kit exclusivo do evento",
       ],
@@ -112,7 +112,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       title: "Pacote Essencial",
       priceSuffix: "/ Participante",
       bullets: [
-        "3 dias de treino, workshop e jogos",
+        "2 dias de treino, workshop e jogos",
         "Alimentação conjunta no final do dia",
         "Kit exclusivo do evento",
         "Transporte não incluído",
@@ -171,7 +171,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       bullets: [
         "Round-trip boat transfer (Praia / Maio / Praia)",
         "Accommodation included (3 nights)",
-        "3 days of training, workshops, and matches",
+        "2 days of training, workshops, and matches",
         "Shared meal at the end of each day",
         "Exclusive event kit",
       ],
@@ -180,7 +180,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       title: "Essential Package",
       priceSuffix: "/ Participant",
       bullets: [
-        "3 days of training, workshops, and matches",
+        "2 days of training, workshops, and matches",
         "Shared meal at the end of each day",
         "Exclusive event kit",
         "Transport not included",
@@ -239,7 +239,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       bullets: [
         "Trajet bateau aller-retour (Praia / Maio / Praia)",
         "Hebergement inclus (3 nuits)",
-        "3 jours d'entrainement, workshop et matchs",
+        "2 jours d'entrainement, workshop et matchs",
         "Repas partage en fin de journee",
         "Kit exclusif de l'evenement",
       ],
@@ -248,7 +248,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       title: "Pack Essentiel",
       priceSuffix: "/ Participant",
       bullets: [
-        "3 jours d'entrainement, workshop et matchs",
+        "2 jours d'entrainement, workshop et matchs",
         "Repas partage en fin de journee",
         "Kit exclusif de l'evenement",
         "Transport non inclus",

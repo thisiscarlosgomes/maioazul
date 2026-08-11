@@ -12,6 +12,16 @@ type CampCard = {
   detail: string;
 };
 
+type ScheduleDay = {
+  date: string;
+  title: string;
+  detail: string;
+  periods: Array<{
+    label?: string;
+    items: string[];
+  }>;
+};
+
 type CampCopy = {
   menuOpen: string;
   menuClose: string;
@@ -35,6 +45,7 @@ type CampCopy = {
   coachP2: string;
   coachP3: string;
   programTitle: string;
+  scheduleTitle: string;
   openRegistrationCta: string;
   galleryTitle: string;
   helpTitle: string;
@@ -58,6 +69,7 @@ type CampCopy = {
   altMaio: string;
   structure: CampCard[];
   experience: CampCard[];
+  schedule: ScheduleDay[];
 };
 
 const localeOptions: Array<{ code: CampLocale; label: string }> = [
@@ -97,6 +109,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     coachP3:
       "Como atleta, foi campeão do mundo em 2005 e vice-campeão olímpico em 2008.",
     programTitle: "Programa do Camp",
+    scheduleTitle: "Programa · 28–30 de agosto",
     openRegistrationCta: "Inscrição aberta",
     galleryTitle: "2024 Camp em ação",
     helpTitle: "Precisas de ajuda?",
@@ -123,7 +136,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     structure: [
       {
         title: "Duração",
-        value: "3 dias",
+        value: "2 dias",
         detail: "Treino e jogo diário até ao pôr do sol",
       },
       {
@@ -152,6 +165,68 @@ const campCopy: Record<CampLocale, CampCopy> = {
         title: "Experiência",
         value: "Workshop & Visita Local",
         detail: "Sessão dedicada a conhecer a ilha do Maio",
+      },
+    ],
+    schedule: [
+      {
+        date: "28 AGO",
+        title: "Boas-vindas",
+        detail: "Jantar · Encontro dos participantes",
+        periods: [
+          {
+            items: [
+              "Chegada e check-in",
+              "Boas-vindas e apresentação do camp",
+              "Jantar de boas-vindas e encontro do grupo",
+            ],
+          },
+        ],
+      },
+      {
+        date: "29 AGO",
+        title: "Treino & Workshops",
+        detail: "Workshops · Beach Volley",
+        periods: [
+          {
+            label: "Manhã",
+            items: ["Aquecimento e avaliação dos atletas", "Treino técnico de beach volley"],
+          },
+          {
+            label: "Tarde",
+            items: [
+              "Workshops de performance e saúde",
+              "Treino técnico e tático",
+              "Treino até ao pôr do sol",
+            ],
+          },
+          {
+            label: "Noite",
+            items: ["Jantar de grupo e convívio"],
+          },
+        ],
+      },
+      {
+        date: "30 AGO",
+        title: "Treino & Torneio",
+        detail: "Treino · Torneio Sunset · Encerramento",
+        periods: [
+          {
+            label: "Manhã",
+            items: ["Aquecimento e treino", "Preparação técnica e tática"],
+          },
+          {
+            label: "Tarde",
+            items: [
+              "Sessão final de treino",
+              "Torneio amigável de beach volley",
+              "Fotografia de grupo e encerramento do camp",
+            ],
+          },
+          {
+            label: "Noite",
+            items: ["Jantar de encerramento e celebração"],
+          },
+        ],
       },
     ],
   },
@@ -185,6 +260,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     coachP3:
       "As an athlete, he was world champion in 2005 and Olympic silver medalist in 2008.",
     programTitle: "Camp Program",
+    scheduleTitle: "Schedule · August 28–30",
     openRegistrationCta: "Registration open",
     galleryTitle: "2024 Camp Highlights",
     helpTitle: "Need help?",
@@ -210,7 +286,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     structure: [
       {
         title: "Duration",
-        value: "3 days",
+        value: "2 days",
         detail: "Daily training and games until sunset",
       },
       {
@@ -239,6 +315,68 @@ const campCopy: Record<CampLocale, CampCopy> = {
         title: "Experience",
         value: "Workshop & Local Visit",
         detail: "Dedicated session to discover Maio Island",
+      },
+    ],
+    schedule: [
+      {
+        date: "AUG 28",
+        title: "Welcome",
+        detail: "Dinner · Meet the participants",
+        periods: [
+          {
+            items: [
+              "Arrival & check-in",
+              "Welcome and camp introduction",
+              "Welcome dinner & group gathering",
+            ],
+          },
+        ],
+      },
+      {
+        date: "AUG 29",
+        title: "Training & Workshops",
+        detail: "Workshops · Beach Volleyball",
+        periods: [
+          {
+            label: "Morning",
+            items: ["Warm-up & athlete assessment", "Beach volleyball technical training"],
+          },
+          {
+            label: "Afternoon",
+            items: [
+              "Performance & health workshops",
+              "Technical & tactical training",
+              "Training until sunset",
+            ],
+          },
+          {
+            label: "Evening",
+            items: ["Group dinner & social"],
+          },
+        ],
+      },
+      {
+        date: "AUG 30",
+        title: "Training & Tournament",
+        detail: "Training · Sunset Tournament · Closing",
+        periods: [
+          {
+            label: "Morning",
+            items: ["Warm-up & training", "Technical & tactical preparation"],
+          },
+          {
+            label: "Afternoon",
+            items: [
+              "Final training session",
+              "Friendly beach volleyball tournament",
+              "Group photo & camp closing",
+            ],
+          },
+          {
+            label: "Evening",
+            items: ["Closing dinner & celebration"],
+          },
+        ],
       },
     ],
   },
@@ -272,6 +410,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     coachP3:
       "Comme athlete, il a ete champion du monde en 2005 et vice-champion olympique en 2008.",
     programTitle: "Programme du Camp",
+    scheduleTitle: "Programme · 28–30 aout",
     openRegistrationCta: "Inscriptions ouvertes",
     galleryTitle: "Camp 2024 en images",
     helpTitle: "Besoin d'aide ?",
@@ -298,7 +437,7 @@ const campCopy: Record<CampLocale, CampCopy> = {
     structure: [
       {
         title: "Duree",
-        value: "3 jours",
+        value: "2 jours",
         detail: "Entrainement et matchs quotidiens jusqu'au coucher du soleil",
       },
       {
@@ -327,6 +466,68 @@ const campCopy: Record<CampLocale, CampCopy> = {
         title: "Experience",
         value: "Workshop & Visite Locale",
         detail: "Session dediee a la decouverte de l'ile de Maio",
+      },
+    ],
+    schedule: [
+      {
+        date: "28 AOUT",
+        title: "Bienvenue",
+        detail: "Diner · Rencontre des participants",
+        periods: [
+          {
+            items: [
+              "Arrivee et check-in",
+              "Bienvenue et presentation du camp",
+              "Diner de bienvenue et rencontre du groupe",
+            ],
+          },
+        ],
+      },
+      {
+        date: "29 AOUT",
+        title: "Entrainement & Workshops",
+        detail: "Workshops · Beach-volley",
+        periods: [
+          {
+            label: "Matin",
+            items: ["Echauffement et evaluation des athletes", "Entrainement technique de beach-volley"],
+          },
+          {
+            label: "Apres-midi",
+            items: [
+              "Workshops performance et sante",
+              "Entrainement technique et tactique",
+              "Entrainement jusqu'au coucher du soleil",
+            ],
+          },
+          {
+            label: "Soir",
+            items: ["Diner de groupe et moment convivial"],
+          },
+        ],
+      },
+      {
+        date: "30 AOUT",
+        title: "Entrainement & Tournoi",
+        detail: "Entrainement · Tournoi Sunset · Cloture",
+        periods: [
+          {
+            label: "Matin",
+            items: ["Echauffement et entrainement", "Preparation technique et tactique"],
+          },
+          {
+            label: "Apres-midi",
+            items: [
+              "Derniere session d'entrainement",
+              "Tournoi amical de beach-volley",
+              "Photo de groupe et cloture du camp",
+            ],
+          },
+          {
+            label: "Soir",
+            items: ["Diner de cloture et celebration"],
+          },
+        ],
       },
     ],
   },
@@ -591,6 +792,50 @@ export default function CampPage() {
                 <p className="mt-2 text-sm text-[rgba(17,17,17,0.6)]">{item.detail}</p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-8 overflow-hidden rounded-[24px] bg-[#10069F] px-5 py-7 text-white sm:px-8 sm:py-9">
+            <h3 className="text-2xl text-[#46D9FF] sm:text-3xl">{t.scheduleTitle}</h3>
+            <div className="mt-5 divide-y divide-white/15">
+              {t.schedule.map((day) => (
+                <details key={day.date} className="group py-5 first:pt-2">
+                  <summary className="grid cursor-pointer list-none gap-3 rounded-xl outline-none transition hover:bg-white/5 focus-visible:ring-2 focus-visible:ring-[#46D9FF] sm:grid-cols-[1fr_auto] sm:items-start sm:gap-8 [&::-webkit-details-marker]:hidden">
+                    <div>
+                      <h4 className="text-xl font-medium tracking-[-0.01em] sm:text-2xl">{day.title}</h4>
+                      <p className="mt-1 text-base text-white/65 sm:text-lg">{day.detail}</p>
+                    </div>
+                    <div className="flex items-center justify-between gap-4 sm:justify-end">
+                      <p className="text-lg font-semibold text-[#FF6B2C] sm:text-xl">{day.date}</p>
+                      <span
+                        aria-hidden="true"
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/35 text-xl leading-none transition-transform group-open:rotate-45"
+                      >
+                        +
+                      </span>
+                    </div>
+                  </summary>
+                  <div className="mt-5 grid gap-5 rounded-[16px] bg-white/8 p-5 sm:grid-cols-3 sm:p-6">
+                    {day.periods.map((period, index) => (
+                      <div key={`${day.date}-${period.label ?? index}`}>
+                        {period.label ? (
+                          <h5 className="text-xs font-bold uppercase tracking-[0.16em] text-[#46D9FF]">
+                            {period.label}
+                          </h5>
+                        ) : null}
+                        <ul className={`${period.label ? "mt-3" : ""} space-y-2 text-sm text-white/80 sm:text-base`}>
+                          {period.items.map((item) => (
+                            <li key={item} className="flex gap-2">
+                              <span aria-hidden="true" className="mt-[0.65em] h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF6B2C]" />
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              ))}
+            </div>
           </div>
 
           <div className="mt-8 flex justify-center">

@@ -93,11 +93,11 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     completePackage: {
       title: "Pacote Completo",
       priceSuffix: "/ Participante",
-      badge: "Vagas limitadas",
+      badge: "Esgotado",
       bullets: [
         "Viagem de barco ida e volta (Praia / Maio / Praia)",
         "Alojamento incluído (3 noites)",
-        "3 dias de treino, workshop e jogos",
+        "2 dias de treino, workshop e jogos",
         "Alimentação conjunta no final do dia",
         "Kit exclusivo do evento",
       ],
@@ -106,7 +106,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       title: "Pacote Essencial",
       priceSuffix: "/ Participante",
       bullets: [
-        "3 dias de treino, workshop e jogos",
+        "2 dias de treino, workshop e jogos",
         "Alimentação conjunta no final do dia",
         "Kit exclusivo do evento",
         "Transporte não incluído",
@@ -156,11 +156,11 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     completePackage: {
       title: "Full Package",
       priceSuffix: "/ Participant",
-      badge: "Limited spots",
+      badge: "Sold out",
       bullets: [
         "Round-trip boat transfer (Praia / Maio / Praia)",
         "Accommodation included (3 nights)",
-        "3 days of training, workshops, and matches",
+        "2 days of training, workshops, and matches",
         "Shared meal at the end of each day",
         "Exclusive event kit",
       ],
@@ -169,7 +169,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       title: "Essential Package",
       priceSuffix: "/ Participant",
       bullets: [
-        "3 days of training, workshops, and matches",
+        "2 days of training, workshops, and matches",
         "Shared meal at the end of each day",
         "Exclusive event kit",
         "Transport not included",
@@ -219,11 +219,11 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
     completePackage: {
       title: "Pack Complet",
       priceSuffix: "/ Participant",
-      badge: "Places limitees",
+      badge: "Complet",
       bullets: [
         "Trajet bateau aller-retour (Praia / Maio / Praia)",
         "Hebergement inclus (3 nuits)",
-        "3 jours d'entrainement, workshop et matchs",
+        "2 jours d'entrainement, workshop et matchs",
         "Repas partage en fin de journee",
         "Kit exclusif de l'evenement",
       ],
@@ -232,7 +232,7 @@ const registerCopy: Record<CampLocale, RegisterCopy> = {
       title: "Pack Essentiel",
       priceSuffix: "/ Participant",
       bullets: [
-        "3 jours d'entrainement, workshop et matchs",
+        "2 jours d'entrainement, workshop et matchs",
         "Repas partage en fin de journee",
         "Kit exclusif de l'evenement",
         "Transport non inclus",
@@ -257,7 +257,7 @@ export default function RegisterPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [locale, setLocale] = useState<CampLocale>("pt");
   const [paymentStatus, setPaymentStatus] = useState<null | "loading" | "error">(null);
-  const [selectedPackage, setSelectedPackage] = useState<CampPackageId>("completo");
+  const [selectedPackage, setSelectedPackage] = useState<CampPackageId>("essencial");
 
   useEffect(() => {
     const lang = new URLSearchParams(window.location.search).get("lang");
@@ -428,11 +428,11 @@ export default function RegisterPage() {
             <p className="mt-3 text-[rgba(17,17,17,0.68)]">{t.detailsSubtitle}</p>
 
             <div className="mt-6 grid gap-4">
-              <div className="rounded-[16px] border border-[rgba(17,17,17,0.12)] bg-[#f7f7f4] p-4 text-[rgba(17,17,17,0.75)]">
+              <div className="relative overflow-hidden rounded-[16px] border border-[rgba(17,17,17,0.12)] bg-[#f1f1ee] p-4 text-[rgba(17,17,17,0.48)]">
                 <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#111111]">{t.completePackage.title}</p>
-                <p className="mt-1 text-lg font-semibold text-[#111111]">€180 {t.completePackage.priceSuffix}</p>
+                <p className="mt-1 text-lg font-semibold text-[rgba(17,17,17,0.55)] line-through">€180 {t.completePackage.priceSuffix}</p>
                 {t.completePackage.badge ? (
-                  <p className="pt-2 text-xs font-semibold uppercase tracking-[0.06em] text-[#10069f]">{t.completePackage.badge}</p>
+                  <p className="pt-2 text-xs font-bold uppercase tracking-[0.08em] text-[#b42318]">{t.completePackage.badge}</p>
                 ) : null}
 
                 <ul className="mt-3 list-disc pl-5 text-sm">
@@ -484,19 +484,29 @@ export default function RegisterPage() {
               <div className="grid gap-3 sm:grid-cols-2">
                 {(Object.keys(CAMP_PACKAGES) as CampPackageId[]).map((packageId) => {
                   const campPackage = CAMP_PACKAGES[packageId];
+                  const isSoldOut = !campPackage.available;
                   return (
                     <button
                       key={campPackage.id}
                       type="button"
+                      disabled={isSoldOut}
+                      aria-disabled={isSoldOut}
                       onClick={() => setSelectedPackage(campPackage.id)}
                       className={`rounded-[12px] border p-3 text-left transition ${
-                        selectedPackage === campPackage.id
+                        isSoldOut
+                          ? "cursor-not-allowed border-[rgba(17,17,17,0.08)] bg-[#f1f1ee] opacity-60"
+                          : selectedPackage === campPackage.id
                           ? "border-[#111111] bg-[#f7f7f4]"
                           : "border-[rgba(17,17,17,0.12)] bg-white"
                       }`}
                     >
                       <p className="text-sm font-semibold text-[#111111]">{t.packageNames[campPackage.id]}</p>
                       <p className="mt-1 text-sm text-[rgba(17,17,17,0.72)]">€{campPackage.amountCents / 100}</p>
+                      {isSoldOut ? (
+                        <p className="mt-2 text-xs font-bold uppercase tracking-[0.08em] text-[#b42318]">
+                          {t.completePackage.badge}
+                        </p>
+                      ) : null}
                     </button>
                   );
                 })}

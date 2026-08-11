@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import clientPromise from "@/lib/mongodb";
 import { CAMP_PACKAGES, isCampPackageId } from "@/lib/payments/config";
 import { getStripeClient } from "@/lib/payments/stripe";
 
@@ -23,6 +22,14 @@ export async function POST(request: NextRequest) {
     }
 
     const selectedPackage = CAMP_PACKAGES[packageId];
+    if (!selectedPackage.available) {
+      return NextResponse.json(
+        { error: "This package is sold out." },
+        { status: 409 }
+      );
+    }
+
+    const { default: clientPromise } = await import("@/lib/mongodb");
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
     const stripe = getStripeClient();
