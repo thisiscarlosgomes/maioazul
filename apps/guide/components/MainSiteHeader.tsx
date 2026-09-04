@@ -216,11 +216,28 @@ export default function MainSiteHeader({ inverted = false }: MainSiteHeaderProps
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6">
         <Link href="/" aria-label={copy[lang].home} className="inline-flex items-center">
-          <img
-            src="/visitmaio.svg"
-            alt="Visit Maio"
-            className={`h-[1.2rem] w-auto sm:h-[1.4rem] ${inverted ? "brightness-0 invert" : ""}`}
-          />
+          {inverted ? (
+            <span className="relative inline-block h-[1.2rem] sm:h-[1.4rem]">
+              <img
+                src="/visitmaio.svg"
+                alt="Visit Maio"
+                className="h-full w-auto"
+              />
+              <img
+                src="/visitmaio.svg"
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 h-full w-auto brightness-0 invert"
+                style={{ clipPath: "inset(0 0 16.5% 0)" }}
+              />
+            </span>
+          ) : (
+            <img
+              src="/visitmaio.svg"
+              alt="Visit Maio"
+              className="h-[1.2rem] w-auto sm:h-[1.4rem]"
+            />
+          )}
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">

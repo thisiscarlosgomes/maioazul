@@ -93,6 +93,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
         introBody:
           "A calm, local-first guide to Maio Island: beaches, protected areas, and everyday life, curated with care. Move slowly, notice the small details, and feel the rhythm of the island as you explore. Let each stop be unhurried, each walk a quiet discovery, and each moment a chance to see how nature and community meet.",
         introPlay: "Play intro",
+        introSkip: "Skip video",
         introContinue: "Continue",
         introNext: "Next",
         introClose: "Close",
@@ -127,6 +128,7 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
         introBody:
           "Um guia calmo e local da ilha do Maio: praias, áreas protegidas e vida quotidiana, com curadoria cuidada. Explore com calma, repare nos detalhes e sinta o ritmo da ilha. Que cada paragem seja sem pressa, cada caminhada uma descoberta tranquila, e cada momento uma forma de ver como a natureza e a comunidade se encontram.",
         introPlay: "Reproduzir intro",
+        introSkip: "Saltar vídeo",
         introContinue: "Continuar",
         introNext: "Seguinte",
         introClose: "Fechar",
@@ -516,6 +518,15 @@ export default function LayoutShell({ children }: { children: ReactNode }) {
                           : introSkipEnabled
                             ? copy[lang].introContinue
                             : copy[lang].introListening}
+                      </button>
+                    )}
+                    {!introPlayed && (
+                      <button
+                        type="button"
+                        onClick={handleIntroContinue}
+                        className="inline-flex w-full items-center justify-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground transition hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                      >
+                        {copy[lang].introSkip}
                       </button>
                     )}
                   </>

@@ -222,6 +222,7 @@ export default function MapPage() {
         rai_mmo: FlightSchedule[];
         mmo_rai: FlightSchedule[];
     }>({ rai_mmo: [], mmo_rai: [] });
+    const [flightSelectedDate, setFlightSelectedDate] = useState<string | null>(null);
     const [boatsLoading, setBoatsLoading] = useState(true);
     const [flightsLoading, setFlightsLoading] = useState(true);
     const [activeChapterId, setActiveChapterId] = useState<string | null>(null);
@@ -810,6 +811,14 @@ export default function MapPage() {
 
     const formatBoatDate = (raw?: string) => {
         if (!raw) return lang === "pt" ? "Sem data" : "No date";
+        if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+            return new Intl.DateTimeFormat(lang === "pt" ? "pt-PT" : "en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                timeZone: "Atlantic/Cape_Verde",
+            }).format(new Date(`${raw}T12:00:00Z`));
+        }
         const lower = raw.toLowerCase();
         const today = new Date();
         const todayParts = new Intl.DateTimeFormat("en-CA", {
@@ -910,6 +919,9 @@ export default function MapPage() {
 
     const boatDateKey = (raw?: string) => {
         if (!raw) return 99999999;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) {
+            return Number(raw.replaceAll("-", ""));
+        }
         const cleaned = raw
             .replace(/[-]/g, " ")
             .replace(/\s+/g, " ")
@@ -1038,6 +1050,34 @@ export default function MapPage() {
         const mm = total % 60;
         return `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}`;
     };
+
+    const formatBoatStopover = (arrival?: string, departure?: string) => {
+        const parseMinutes = (value?: string) => {
+            const match = String(value || "").match(/(\d{1,2}):(\d{2})/);
+            if (!match) return null;
+            return Number(match[1]) * 60 + Number(match[2]);
+        };
+        const arrivalMinutes = parseMinutes(arrival);
+        const departureMinutes = parseMinutes(departure);
+        if (arrivalMinutes == null || departureMinutes == null) return null;
+        const total = (departureMinutes - arrivalMinutes + 24 * 60) % (24 * 60);
+        const hours = Math.floor(total / 60);
+        const minutes = total % 60;
+        return `${hours ? `${hours}h` : ""}${minutes ? `${String(minutes).padStart(2, "0")}min` : ""}`;
+    };
+
+    const activeBoatDate =
+        boatSelectedDate && boatDates.includes(boatSelectedDate)
+            ? boatSelectedDate
+            : boatDates[0] || null;
+    const activeBoatSchedules = boatSchedules.filter(
+        (schedule) => schedule.date === activeBoatDate
+    );
+    const activeBoatTrips = activeBoatSchedules.reduce<BoatSchedule[][]>((trips, schedule, index) => {
+        if (index % 2 === 0) trips.push([schedule]);
+        else trips[trips.length - 1]?.push(schedule);
+        return trips;
+    }, []);
 
     const todayConditions = useMemo(() => {
         const wave = beachSafety?.metrics?.wave_height_m ?? marine?.sea?.wave_height;
@@ -1802,6 +1842,70 @@ export default function MapPage() {
                 },
             });
 
+            map.addSource("maio-offroad-trail", {
+                type: "geojson",
+                data: "/data/maio_offroad_trail_2026.geojson",
+            });
+
+            map.addLayer({
+                id: "maio-offroad-trail-glow",
+                type: "line",
+                source: "maio-offroad-trail",
+                layout: {
+                    "line-cap": "round",
+                    "line-join": "round",
+                },
+                paint: {
+                    "line-color": "#111827",
+                    "line-width": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        9, 5,
+                        14, 9,
+                    ],
+                    "line-opacity": 0.45,
+                },
+            });
+
+            map.addLayer({
+                id: "maio-offroad-trail-line",
+                type: "line",
+                source: "maio-offroad-trail",
+                layout: {
+                    "line-cap": "round",
+                    "line-join": "round",
+                },
+                paint: {
+                    "line-color": "#ffffff",
+                    "line-width": [
+                        "interpolate",
+                        ["linear"],
+                        ["zoom"],
+                        9, 2.5,
+                        14, 5,
+                    ],
+                    "line-opacity": 0.95,
+                },
+            });
+
+            if (
+                typeof window !== "undefined" &&
+                new URLSearchParams(window.location.search).get("trail") === "maio-offroad"
+            ) {
+                map.fitBounds(
+                    [
+                        [-23.229756, 15.127445],
+                        [-23.090573, 15.333049],
+                    ],
+                    {
+                        padding: { top: 72, right: 36, bottom: 140, left: 36 },
+                        maxZoom: 12,
+                        duration: 0,
+                    }
+                );
+            }
+
 
             /* =========================
                SOURCES
@@ -2328,7 +2432,12 @@ export default function MapPage() {
         );
 
         toggle(
-            ["trilhas-line", "trilhas-glow"],
+            [
+                "trilhas-line",
+                "trilhas-glow",
+                "maio-offroad-trail-glow",
+                "maio-offroad-trail-line",
+            ],
             layers.trilhas
         );
 
@@ -3329,8 +3438,8 @@ export default function MapPage() {
                             </div>
                         </div>
 
-                            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm maio-fade-up">
+                            <div className="mt-5 grid min-w-0 gap-4 sm:grid-cols-2">
+                            <div className="min-w-0 overflow-hidden rounded-2xl border border-border bg-background p-6 shadow-sm maio-fade-up">
                                     <div className="flex items-center justify-between">
                                         <div className="text-base font-semibold">
                                             {copy[lang].boatsSection}
@@ -3350,93 +3459,101 @@ export default function MapPage() {
                                         <div>{copy[lang].scheduleUnavailable}</div>
                                     )}
                                     {!boatsLoading && boatSchedules.length > 0 && (
-                                        <div>
-                                            {boatSchedules
-                                                .reduce((acc: any[], item: any) => {
-                                                    const rawDate = item.date || item.day;
-                                                    const label = formatBoatDate(rawDate);
-                                                    const key = rawDate || label;
-                                                    if (!acc.find((d) => d.key === key)) {
-                                                        acc.push({
-                                                            key,
-                                                            label,
-                                                            items: [item],
-                                                            sortKey: boatDateKey(rawDate),
-                                                        });
-                                                    } else {
-                                                        const bucket = acc.find((d) => d.key === key);
-                                                        if (bucket && bucket.items.length < 2) bucket.items.push(item);
-                                                    }
-                                                    return acc;
-                                                }, [])
-                                                .filter((group: any) => group.sortKey >= getCvTodayKey().key)
-                                                .sort((a: any, b: any) => a.sortKey - b.sortKey)
-                                                .slice(0, 1)
-                                                .map((group, idx) => (
-                                                    <div key={`boat-day-${idx}`} className="space-y-3">
+                                        <div className="min-w-0 space-y-3">
+                                            <div
+                                                className="flex min-w-0 max-w-full gap-2 overflow-x-auto pb-1"
+                                                aria-label={lang === "pt" ? "Datas das viagens" : "Sailing dates"}
+                                            >
+                                                {boatDates
+                                                    .filter((date) => boatDateKey(date) >= getCvTodayKey().key)
+                                                    .map((date) => (
+                                                        <button
+                                                            key={date}
+                                                            type="button"
+                                                            aria-pressed={date === activeBoatDate}
+                                                            onClick={() => setBoatSelectedDate(date)}
+                                                            className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold capitalize transition ${
+                                                                date === activeBoatDate
+                                                                    ? "border-foreground bg-foreground text-background"
+                                                                    : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground"
+                                                            }`}
+                                                        >
+                                                            {formatBoatDate(date)}
+                                                        </button>
+                                                    ))}
+                                            </div>
 
-
-
-
-
-
-                                                        <div className="grid gap-3 sm:grid-cols-1">
-                                                            {[group.items.find((i: any) => i.to === "Maio") || group.items[0]]
-                                                                .filter(Boolean)
-                                                                .map((item: any, j: number) => (
-                                                                    <div
-                                                                        key={`boat-item-${idx}-${j}`}
-                                                                        className="rounded-2xl border border-border bg-background/80 p-4 shadow-sm"
-                                                                    >
-                                                                        <div className="capitalize mb-2 text-xs font-semibold text-foreground">
-                                                                            {group.label}
-                                                                        </div>
-                                                                        <div className="flex items-center justify-between text-[11px] uppercase tracking-wide text-muted-foreground">
-                                                                            <span>{item.from}</span>
-                                                                            <span className="relative flex-1 mx-3 h-px bg-border">
-                                                                                <span className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
-                                                                                <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
-                                                                            </span>
-                                                                            <span>{item.to}</span>
-                                                                        </div>
-                                                                        <div className="mt-2 grid grid-cols-2 gap-3 text-sm text-foreground">
-                                                                            <div>
-                                                                                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                                                                                    {lang === "pt" ? "Partida" : "Departed"}
-                                                                                </div>
-                                                                                <div className="text-base font-semibold">
-                                                                                    {item.departure}
-                                                                                </div>
-                                                                            </div>
-                                                                            <div>
-                                                                                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                                                                                    {lang === "pt" ? "Chega" : "Arrives"}
-                                                                                </div>
-                                                                                <div className="text-base font-semibold">
-                                                                                    {item.arrival || computeBoatArrival(item.departure)}
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="hidden mt-2 text-xs text-muted-foreground">
-                                                                            {item.vessel}
-                                                                        </div>
-                                                                    </div>
-                                                                ))}
+                                            {activeBoatTrips.map((trip, tripIndex) => (
+                                                <div
+                                                    key={`${activeBoatDate}-${tripIndex}`}
+                                                    className="min-w-0 overflow-hidden rounded-2xl border border-border bg-background/80 p-4 shadow-sm"
+                                                >
+                                                    <div className="mb-4 flex items-center justify-between gap-3">
+                                                        <div className="text-xs font-semibold capitalize text-foreground">
+                                                            {activeBoatDate && formatBoatDate(activeBoatDate)}
                                                         </div>
+                                                        {trip.length > 1 && (
+                                                            <div className="shrink-0 rounded-full bg-rose-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-rose-600 dark:bg-rose-500/10 dark:text-rose-300">
+                                                                {lang === "pt" ? "Ida e volta" : "Round trip"}
+                                                            </div>
+                                                        )}
                                                     </div>
-                                                ))}
-                                            {boatFallback && (
-                                                <div className="mt-2 text-xs text-muted-foreground">
-                                                    {lang === "pt"
-                                                        ? "Horário padrão (Qua, Sex, Dom)"
-                                                        : "Default schedule (Wed, Fri, Sun)"}
+
+                                                    {trip.map((item, index) => {
+                                                        const arrival = item.arrival || computeBoatArrival(item.departure);
+                                                        const previous = trip[index - 1];
+                                                        const previousArrival = previous
+                                                            ? previous.arrival || computeBoatArrival(previous.departure)
+                                                            : undefined;
+                                                        const stopover = previous
+                                                            ? formatBoatStopover(previousArrival, item.departure)
+                                                            : null;
+
+                                                        return (
+                                                            <div key={`${item.date}-${item.from}-${item.departure}-${index}`}>
+                                                                {index > 0 && (
+                                                                    <div className="my-4 flex min-w-0 items-center gap-2" aria-label={lang === "pt" ? "Tempo no Maio" : "Time in Maio"}>
+                                                                        <span className="h-px min-w-0 flex-1 border-t border-dashed border-border" />
+                                                                        <span className="shrink-0 text-[10px] font-medium text-muted-foreground">
+                                                                            {stopover
+                                                                                ? lang === "pt"
+                                                                                    ? `${stopover} no Maio`
+                                                                                    : `${stopover} in Maio`
+                                                                                : lang === "pt" ? "Regresso" : "Return"}
+                                                                        </span>
+                                                                        <span className="h-px min-w-0 flex-1 border-t border-dashed border-border" />
+                                                                    </div>
+                                                                )}
+
+                                                                <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-rose-500">
+                                                                    {index === 0
+                                                                        ? lang === "pt" ? "Ida" : "Outbound"
+                                                                        : lang === "pt" ? "Volta" : "Return"}
+                                                                </div>
+                                                                <div className="grid min-w-0 grid-cols-[auto_minmax(1.5rem,1fr)_auto] items-center gap-2 sm:gap-3">
+                                                                    <div className="min-w-0">
+                                                                        <div className="text-base font-semibold text-foreground">{item.departure}</div>
+                                                                        <div className="max-w-[7rem] truncate text-[10px] uppercase tracking-wide text-muted-foreground">{item.from}</div>
+                                                                    </div>
+                                                                    <div className="relative h-px min-w-0 bg-border">
+                                                                        <span className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
+                                                                        <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
+                                                                    </div>
+                                                                    <div className="min-w-0 text-right">
+                                                                        <div className="text-base font-semibold text-foreground">{arrival}</div>
+                                                                        <div className="max-w-[7rem] truncate text-[10px] uppercase tracking-wide text-muted-foreground">{item.to}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
                                                 </div>
-                                            )}
+                                            ))}
                                         </div>
                                     )}
                                 </div>
                             </div>
-                            <div className="rounded-2xl border border-border bg-background p-6 shadow-sm maio-fade-up">
+                            <div className="min-w-0 overflow-hidden rounded-2xl border border-border bg-background p-6 shadow-sm maio-fade-up">
                                 <div className="flex items-center justify-between">
                                     <div className="text-base font-semibold">
                                         {copy[lang].flightsSection}
@@ -3454,137 +3571,139 @@ export default function MapPage() {
                                     )}
                                     {!flightsLoading &&
                                         (() => {
-                                            const todayRai = getTodayFlight(flightSchedules.rai_mmo, "RAI", "MMO");
-                                            const todayMmo = getTodayFlight(flightSchedules.mmo_rai, "MMO", "RAI");
-                                            const nextRai =
-                                                todayRai ||
-                                                getNextFlightFromApi(flightSchedules.rai_mmo, "RAI", "MMO") ||
-                                                getFallbackFlight("RAI", "MMO");
-                                            const nextMmo =
-                                                todayMmo ||
-                                                getNextFlightFromApi(flightSchedules.mmo_rai, "MMO", "RAI") ||
-                                                getFallbackFlight("MMO", "RAI");
-                                            const nextRaiBaseDate = nextRai?.date
-                                                ? parseCvDate(nextRai.date)
-                                                : nextRai?.dateObj || null;
-                                            const nextMmoBaseDate = nextMmo?.date
-                                                ? parseCvDate(nextMmo.date)
-                                                : nextMmo?.dateObj || null;
-                                            const followingRai =
-                                                getNextFlightFromApi(
-                                                    flightSchedules.rai_mmo,
-                                                    "RAI",
-                                                    "MMO",
-                                                    nextRaiBaseDate
-                                                        ? new Date(
-                                                              Date.UTC(
-                                                                  nextRaiBaseDate.getUTCFullYear(),
-                                                                  nextRaiBaseDate.getUTCMonth(),
-                                                                  nextRaiBaseDate.getUTCDate() + 1,
-                                                                  12,
-                                                                  0,
-                                                                  0
-                                                              )
-                                                          )
-                                                        : null
-                                                ) || getFallbackFlightAfter("RAI", "MMO", nextRaiBaseDate);
-                                            const followingMmo =
-                                                getNextFlightFromApi(
-                                                    flightSchedules.mmo_rai,
-                                                    "MMO",
-                                                    "RAI",
-                                                    nextMmoBaseDate
-                                                        ? new Date(
-                                                              Date.UTC(
-                                                                  nextMmoBaseDate.getUTCFullYear(),
-                                                                  nextMmoBaseDate.getUTCMonth(),
-                                                                  nextMmoBaseDate.getUTCDate() + 1,
-                                                                  12,
-                                                                  0,
-                                                                  0
-                                                              )
-                                                          )
-                                                        : null
-                                                ) || getFallbackFlightAfter("MMO", "RAI", nextMmoBaseDate);
-                                            const followingRaiDateLabel = followingRai?.date
-                                                ? formatCvDate(followingRai.date)
-                                                : formatCvDateObj(followingRai?.dateObj);
-                                            const followingMmoDateLabel = followingMmo?.date
-                                                ? formatCvDate(followingMmo.date)
-                                                : formatCvDateObj(followingMmo?.dateObj);
-
-                                            const renderCard = (item: any, from: "RAI" | "MMO", to: "RAI" | "MMO") => {
-                                                const dateLabel = item?.date
-                                                    ? formatCvDate(item.date)
-                                                    : formatCvDateObj(item.dateObj);
-                                                const isToday = item?.date ? isCvToday(item.date) : false;
-                                                const flightLabel = item?.flight ? item.flight : "VR";
-                                                const sourceLabel = item?.source || "";
-                                                return (
-                                                    <button
-                                                        key={`${from}-${to}-${item?.departure}-${dateLabel}`}
-                                                        type="button"
-                                                        onClick={() => {
-                                                            setActiveFlight({
-                                                                from,
-                                                                to,
-                                                                departure: item.departure,
-                                                                arrival: item.arrival || "",
-                                                                dateLabel,
-                                                            });
-                                                            setFlightOverlayOpen(true);
-                                                        }}
-                                                        className="rounded-2xl border border-border bg-background/80 p-4 text-left shadow-sm transition duration-300 ease-out active:scale-[0.98]"
-                                                    >
-                                                        <div className="capitalize flex items-center justify-between text-xs font-semibold text-foreground">
-                                                            <span>{dateLabel}</span>
-                                                            {isToday && (
-                                                                <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200">
-                                                                    {lang === "pt" ? "Hoje" : "Today"}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        <div className="mt-2 flex items-center justify-between text-[11px] uppercase tracking-wide text-muted-foreground">
-                                                            <span>{from}</span>
-                                                            <span className="relative flex-1 mx-3 h-px bg-border">
-                                                                <span className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
-                                                                <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
-                                                            </span>
-                                                            <span>{to}</span>
-                                                        </div>
-                                                        <div className="mt-2 grid grid-cols-2 gap-3 text-sm text-foreground">
-                                                            <div>
-                                                                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                                                                    {lang === "pt" ? "Partida" : "Departed"}
-                                                                </div>
-                                                                <div className="text-base font-semibold">
-                                                                    {item?.departure || "—"}
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                                                                    {lang === "pt" ? "Chega" : "Arrives"}
-                                                                </div>
-                                                                <div className="text-base font-semibold">
-                                                                    {item?.arrival || "—"}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="hidden mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
-                                                            <span>{flightLabel}</span>
-                                                            <span>{item?.status || (sourceLabel ? sourceLabel : "")}</span>
-                                                        </div>
-                                                    </button>
-                                                );
-                                            };
+                                            const itemDateKey = (item?: FlightSchedule) =>
+                                                item?.date || item?.dateObj?.toISOString().slice(0, 10) || "";
+                                            const flightsByDate = new Map<
+                                                string,
+                                                { outbound?: FlightSchedule; return?: FlightSchedule }
+                                            >();
+                                            flightSchedules.rai_mmo.forEach((item) => {
+                                                const key = itemDateKey(item);
+                                                if (!key) return;
+                                                flightsByDate.set(key, {
+                                                    ...flightsByDate.get(key),
+                                                    outbound: item,
+                                                });
+                                            });
+                                            flightSchedules.mmo_rai.forEach((item) => {
+                                                const key = itemDateKey(item);
+                                                if (!key) return;
+                                                flightsByDate.set(key, {
+                                                    ...flightsByDate.get(key),
+                                                    return: item,
+                                                });
+                                            });
+                                            const flightDays = Array.from(flightsByDate.entries())
+                                                .sort(([dateA], [dateB]) => dateA.localeCompare(dateB))
+                                                .slice(0, 7)
+                                                .map(([key, flights]) => ({
+                                                    key,
+                                                    label: formatCvDate(key),
+                                                    legs: [flights.outbound, flights.return],
+                                                }));
+                                            const selectedFlightDay =
+                                                flightDays.find((day) => day.key === flightSelectedDate) || flightDays[0];
 
                                             return (
-                                                <div className="grid gap-4 sm:grid-cols-1">
-                                                    {renderCard(nextRai, "RAI", "MMO")}
-                                                    <div className="capitalize text-xs text-muted-foreground">
-                                                        {lang === "pt" ? "Próximos voos disponíveis:" : "Next available flights:"}{" "}
-                                                        {`${followingRaiDateLabel}`}
+                                                <div className="min-w-0 space-y-3">
+                                                    <div
+                                                        className="flex min-w-0 max-w-full gap-2 overflow-x-auto pb-1"
+                                                        aria-label={lang === "pt" ? "Datas dos voos" : "Flight dates"}
+                                                    >
+                                                        {flightDays.map((day) => (
+                                                            <button
+                                                                key={day.key}
+                                                                type="button"
+                                                                aria-pressed={day.key === selectedFlightDay?.key}
+                                                                onClick={() => setFlightSelectedDate(day.key)}
+                                                                className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold capitalize transition ${
+                                                                    day.key === selectedFlightDay?.key
+                                                                        ? "border-foreground bg-foreground text-background"
+                                                                        : "border-border bg-background text-muted-foreground hover:bg-accent hover:text-foreground"
+                                                                }`}
+                                                            >
+                                                                {day.label}
+                                                            </button>
+                                                        ))}
                                                     </div>
+
+                                                    {selectedFlightDay && (
+                                                        <div className="min-w-0 overflow-hidden rounded-2xl border border-border bg-background/80 p-4 shadow-sm">
+                                                            <div className="mb-4 flex items-center justify-between gap-3">
+                                                                <div className="text-xs font-semibold capitalize text-foreground">
+                                                                    {selectedFlightDay.label}
+                                                                </div>
+                                                                <div className="rounded-full bg-indigo-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-300">
+                                                                    {selectedFlightDay.legs.filter(Boolean).length > 1
+                                                                        ? lang === "pt" ? "Ida e volta" : "Round trip"
+                                                                        : lang === "pt" ? "Só ida" : "One way"}
+                                                                </div>
+                                                            </div>
+
+                                                            {selectedFlightDay.legs.map((item, index) => {
+                                                                if (!item) return null;
+                                                                const from = index === 0 ? "RAI" : "MMO";
+                                                                const to = index === 0 ? "MMO" : "RAI";
+                                                                const dateLabel = selectedFlightDay.label;
+                                                                const previous = selectedFlightDay.legs[index - 1];
+                                                                const stopover = previous
+                                                                    ? formatBoatStopover(previous.arrival, item.departure)
+                                                                    : null;
+
+                                                                return (
+                                                                    <div key={`${selectedFlightDay.key}-${from}-${item.departure}`}>
+                                                                        {index > 0 && (
+                                                                            <div className="my-4 flex items-center gap-3">
+                                                                                <span className="h-px flex-1 border-t border-dashed border-border" />
+                                                                                <span className="text-[10px] font-medium text-muted-foreground">
+                                                                                    {stopover
+                                                                                        ? lang === "pt"
+                                                                                            ? `${stopover} no Maio`
+                                                                                            : `${stopover} in Maio`
+                                                                                        : lang === "pt" ? "Regresso" : "Return"}
+                                                                                </span>
+                                                                                <span className="h-px flex-1 border-t border-dashed border-border" />
+                                                                            </div>
+                                                                        )}
+                                                                        <button
+                                                                            type="button"
+                                                                            onClick={() => {
+                                                                                setActiveFlight({
+                                                                                    from,
+                                                                                    to,
+                                                                                    departure: item.departure || "",
+                                                                                    arrival: item.arrival || "",
+                                                                                    dateLabel,
+                                                                                });
+                                                                                setFlightOverlayOpen(true);
+                                                                            }}
+                                                                            className="block w-full text-left transition active:scale-[0.99]"
+                                                                        >
+                                                                            <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-indigo-500">
+                                                                                {index === 0
+                                                                                    ? lang === "pt" ? "Ida" : "Outbound"
+                                                                                    : lang === "pt" ? "Volta" : "Return"}
+                                                                            </div>
+                                                                            <div className="grid min-w-0 grid-cols-[auto_minmax(1.5rem,1fr)_auto] items-center gap-2 sm:gap-3">
+                                                                                <div>
+                                                                                    <div className="text-base font-semibold text-foreground">{item.departure || "—"}</div>
+                                                                                    <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{from}</div>
+                                                                                </div>
+                                                                                <div className="relative h-px bg-border">
+                                                                                    <span className="absolute left-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
+                                                                                    <span className="absolute right-0 top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-rose-500" />
+                                                                                </div>
+                                                                                <div className="text-right">
+                                                                                    <div className="text-base font-semibold text-foreground">{item.arrival || "—"}</div>
+                                                                                    <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{to}</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </button>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             );
                                         })()}

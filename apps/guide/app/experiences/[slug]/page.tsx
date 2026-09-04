@@ -18,6 +18,7 @@ type Place = {
   phone: string;
   image?: string;
   images?: string[];
+  map_url?: string;
   source_url?: string;
   instagram_url?: string;
   facebook_url?: string;
@@ -57,6 +58,7 @@ export default function ExperienceBySlugPage() {
         openLink: "Open",
         openOnInstagram: "Instagram",
         openOnFacebook: "Facebook",
+        trailMap: "Trail map",
         email: "Email",
         empty: "No places yet.",
       },
@@ -75,6 +77,7 @@ export default function ExperienceBySlugPage() {
         openLink: "Abrir",
         openOnInstagram: "Instagram",
         openOnFacebook: "Facebook",
+        trailMap: "Mapa do percurso",
         email: "Email",
         empty: "Ainda sem lugares.",
       },
@@ -340,6 +343,14 @@ export default function ExperienceBySlugPage() {
                     className={`${item.phone || item.instagram_url || item.facebook_url ? "ml-2 " : ""}inline-flex rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent`}
                   >
                     {copy[lang].email}
+                  </a>
+                ) : null}
+                {!hideContactAndBook && item.map_url ? (
+                  <a
+                    href={item.map_url}
+                    className="mr-2 inline-flex rounded-full border border-border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-foreground hover:bg-accent"
+                  >
+                    {copy[lang].trailMap}
                   </a>
                 ) : null}
                 {!hideContactAndBook &&

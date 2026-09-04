@@ -3,10 +3,7 @@ import { NextResponse } from "next/server";
 export const revalidate = 900; // 15 min
 
 const SOURCE_URL = "https://www.cvinterilhas.cv/routesschedules";
-
-function stripHtml(html: string) {
-  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
-}
+const REQUEST_TIMEOUT_MS = 12_000;
 
 type BoatSchedule = {
   line: string;
@@ -24,181 +21,172 @@ type BoatResponse = {
   selected_date: string | null;
   available_dates: string[];
   schedules: BoatSchedule[];
-  fallback?: boolean;
+  fallback: false;
+  partial?: boolean;
 };
 
-function parseAvailableDates(text: string) {
-  const matches = [...text.matchAll(/\b(\d{2}\s+[A-Za-z]{3})\b/g)].map(
-    (m) => m[1]
-  );
-  return Array.from(new Set(matches));
+type DatePostback = {
+  date: string;
+  target: string;
+};
+
+function decodeHtml(value: string) {
+  return value
+    .replace(/&amp;/g, "&")
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ");
 }
 
-function parseSelectedDate(text: string) {
-  const match = text.match(
-    /\b(\d{1,2}\s+[A-Za-z]+\s*-\s*[A-Za-z]+)\b/
-  );
-  return match ? match[1] : null;
+function stripHtml(html: string) {
+  return decodeHtml(html.replace(/<[^>]*>/g, " "))
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
-function parseSchedules(text: string, selectedDate: string | null): BoatSchedule[] {
+function getAttribute(tag: string, name: string) {
+  const match = tag.match(new RegExp(`\\b${name}=["']([^"']*)["']`, "i"));
+  return match ? decodeHtml(match[1]) : "";
+}
+
+function parseHiddenFields(html: string) {
+  const fields: Record<string, string> = {};
+  for (const match of html.matchAll(/<input\b[^>]*>/gi)) {
+    const tag = match[0];
+    if (getAttribute(tag, "type").toLowerCase() !== "hidden") continue;
+    const name = getAttribute(tag, "name");
+    if (name) fields[name] = getAttribute(tag, "value");
+  }
+  return fields;
+}
+
+function toIsoDate(raw: string) {
+  const match = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  return match ? `${match[3]}-${match[2]}-${match[1]}` : "";
+}
+
+function parseDatePostbacks(html: string): DatePostback[] {
+  const dates = [...html.matchAll(/<input\b[^>]*hdfDepartureDate[^>]*>/gi)]
+    .map((match) => toIsoDate(getAttribute(match[0], "value")))
+    .filter(Boolean);
+  const targets = [
+    ...html.matchAll(
+      /__doPostBack\(&#39;([^<]*?rptScheduleDayPick[^<]*?)&#39;,&#39;&#39;\)/g
+    ),
+  ].map((match) => decodeHtml(match[1]));
+
+  return dates
+    .map((date, index) => ({ date, target: targets[index] || "" }))
+    .filter((item) => item.target);
+}
+
+function parseSchedules(html: string, date: string): BoatSchedule[] {
+  const text = stripHtml(html);
   const results: BoatSchedule[] = [];
-  const pattern =
-    /(LS)\s+(\d{2}:\d{2})\s+(Santiago|Maio)\s+(Santiago|Maio)/g;
+  const pattern = /(LS)\s+(\d{2}:\d{2})\s+(Santiago|Maio)\s+(Santiago|Maio)/g;
 
   let match: RegExpExecArray | null;
   while ((match = pattern.exec(text))) {
     const [, line, departure, from, to] = match;
-    if (
-      (from === "Santiago" && to === "Maio") ||
-      (from === "Maio" && to === "Santiago")
-    ) {
-      results.push({
-        line,
-        date: selectedDate || "",
-        vessel: "CV Interilhas",
-        from,
-        to,
-        departure,
-        arrival: "",
-      });
-    }
+    if (from === to) continue;
+    results.push({
+      line,
+      date,
+      vessel: "CV Interilhas",
+      from,
+      to,
+      departure,
+      arrival: "",
+    });
   }
 
   return results;
 }
 
+function getCookieHeader(response: Response) {
+  const raw = response.headers.get("set-cookie") || "";
+  return raw
+    .split(/,(?=[^;,]+=)/)
+    .map((cookie) => cookie.split(";", 1)[0])
+    .filter(Boolean)
+    .join("; ");
+}
+
+async function fetchSource(init?: RequestInit) {
+  return fetch(SOURCE_URL, {
+    ...init,
+    headers: {
+      "user-agent": "Mozilla/5.0 (compatible; MaioGuide/1.0)",
+      ...init?.headers,
+    },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+}
+
 export async function GET() {
   try {
-    const res = await fetch(SOURCE_URL, { next: { revalidate } });
-    if (!res.ok) {
-      return NextResponse.json(
-        { error: "Boat schedules unavailable" },
-        { status: 500 }
-      );
+    const initialResponse = await fetchSource();
+    if (!initialResponse.ok) {
+      throw new Error(`CV Interilhas returned ${initialResponse.status}`);
     }
-    const html = await res.text();
-    const text = stripHtml(html);
-    const availableDates = parseAvailableDates(text);
-    const selectedDate = parseSelectedDate(text);
-    const schedules = parseSchedules(text, selectedDate);
 
-    let fallback = false;
-    let finalSchedules = schedules;
-    let finalAvailableDates = availableDates;
-    let finalSelectedDate = selectedDate;
+    const initialHtml = await initialResponse.text();
+    const postbacks = parseDatePostbacks(initialHtml);
+    if (!postbacks.length) throw new Error("No schedule dates found");
 
-    const buildFallbackDates = () => {
-      const now = new Date();
-      const parts = new Intl.DateTimeFormat("en-CA", {
-        timeZone: "Atlantic/Cape_Verde",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-        .format(now)
-        .split("-");
-      const cvNoon = new Date(
-        Date.UTC(
-          Number(parts[0]),
-          Number(parts[1]) - 1,
-          Number(parts[2]),
-          12,
-          0,
-          0
-        )
-      );
-      const targetDays = new Set(["Wed", "Fri", "Sun"]);
-      const dates: string[] = [];
-      for (let i = 0; i < 21 && dates.length < 14; i++) {
-        const d = new Date(cvNoon);
-        d.setUTCDate(d.getUTCDate() + i);
-        const label = new Intl.DateTimeFormat("en-US", {
-          timeZone: "Atlantic/Cape_Verde",
-          weekday: "short",
-        }).format(d);
-        if (targetDays.has(label)) {
-          const dateLabel = new Intl.DateTimeFormat("en-US", {
-            timeZone: "Atlantic/Cape_Verde",
-            month: "short",
-            day: "numeric",
-          }).format(d);
-          dates.push(dateLabel);
+    const hiddenFields = parseHiddenFields(initialHtml);
+    const cookie = getCookieHeader(initialResponse);
+    const [first, ...remaining] = postbacks;
+    const schedules = parseSchedules(initialHtml, first.date);
+
+    const results = await Promise.allSettled(
+      remaining.map(async ({ date, target }) => {
+        const body = new URLSearchParams({
+          ...hiddenFields,
+          __EVENTTARGET: target,
+          __EVENTARGUMENT: "",
+        });
+        const response = await fetchSource({
+          method: "POST",
+          headers: {
+            "content-type": "application/x-www-form-urlencoded",
+            ...(cookie ? { cookie } : {}),
+          },
+          body,
+        });
+        if (!response.ok) {
+          throw new Error(`Schedule postback returned ${response.status}`);
         }
-      }
-      return dates;
-    };
+        return parseSchedules(await response.text(), date);
+      })
+    );
 
-    if (!finalSchedules.length) {
-      fallback = true;
-      const dates = buildFallbackDates();
-      finalAvailableDates = dates;
-      finalSelectedDate = dates[0] || null;
-      finalSchedules = dates.flatMap((date) => [
-        {
-          line: "LS",
-          date,
-          vessel: "CV Interilhas",
-          from: "Santiago",
-          to: "Maio",
-          departure: "07:00",
-          arrival: "",
-        },
-        {
-          line: "LS",
-          date,
-          vessel: "CV Interilhas",
-          from: "Maio",
-          to: "Santiago",
-          departure: "10:00",
-          arrival: "",
-        },
-      ]);
-    } else {
-      // If we only have a single day from the site, extend with the weekly pattern.
-      const uniqueDates = Array.from(new Set(finalSchedules.map((s) => s.date)));
-      if (uniqueDates.length <= 1) {
-        const dates = buildFallbackDates();
-        finalAvailableDates = dates;
-        finalSelectedDate = finalSelectedDate || dates[0] || null;
-        finalSchedules = dates.flatMap((date) => [
-          {
-            line: "LS",
-            date,
-            vessel: "CV Interilhas",
-            from: "Santiago",
-            to: "Maio",
-            departure: "07:00",
-            arrival: "",
-          },
-          {
-            line: "LS",
-            date,
-            vessel: "CV Interilhas",
-            from: "Maio",
-            to: "Santiago",
-            departure: "10:00",
-            arrival: "",
-          },
-        ]);
-        fallback = true;
-      }
+    for (const result of results) {
+      if (result.status === "fulfilled") schedules.push(...result.value);
     }
 
+    schedules.sort(
+      (a, b) => a.date.localeCompare(b.date) || a.departure.localeCompare(b.departure)
+    );
+    const availableDates = Array.from(new Set(schedules.map((item) => item.date)));
     const response: BoatResponse = {
       source: SOURCE_URL,
       updated_at: new Date().toISOString(),
-      selected_date: finalSelectedDate,
-      available_dates: finalAvailableDates,
-      schedules: finalSchedules,
-      fallback,
+      selected_date: availableDates[0] || null,
+      available_dates: availableDates,
+      schedules,
+      fallback: false,
+      partial: results.some((result) => result.status === "rejected") || undefined,
     };
 
     return NextResponse.json(response);
-  } catch {
+  } catch (error) {
+    console.error("Failed to load CV Interilhas schedules", error);
     return NextResponse.json(
       { error: "Boat schedules unavailable" },
-      { status: 500 }
+      { status: 502 }
     );
   }
 }

@@ -142,6 +142,19 @@
         "phone": "",
         "image": "https://res.cloudinary.com/dhxfkhewr/image/upload/v1773135464/pesca-e-noleggio-quad-isola-di-maio-3jlaY7bANPxgfKg4_q8ribz.avif",
         "email": "biggamemaio@gmail.com"
+      },
+      {
+        "id": "blue-maio-offroad",
+        "title": "Maio Offroad",
+        "description": {
+          "en": "Where the road ends, Maio begins. A 4×4 route across Maio Island where adventure, community, and nature follow the same path.",
+          "pt": "Onde a estrada termina, o Maio começa. Um percurso 4×4 pela ilha do Maio onde aventura, comunidade e natureza seguem o mesmo caminho."
+        },
+        "location": "Maio",
+        "phone": "",
+        "image": "/experiences/blue-sports/maio-offroad.jpg",
+        "map_url": "/map?trail=maio-offroad",
+        "source_url": "https://www.offroadmaio.com/"
       }
     ]
   },
