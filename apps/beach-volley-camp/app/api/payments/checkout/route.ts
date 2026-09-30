@@ -4,9 +4,17 @@ import { CAMP_PACKAGES, isCampPackageId } from "@/lib/payments/config";
 import { getStripeClient } from "@/lib/payments/stripe";
 
 export const runtime = "nodejs";
+const registrationOpen: boolean = false;
 
 export async function POST(request: NextRequest) {
   try {
+    if (!registrationOpen) {
+      return NextResponse.json(
+        { error: "Registration is closed because the event has ended." },
+        { status: 410 }
+      );
+    }
+
     const body = await request.json();
 
     const packageId = String(body?.packageId || "").trim();

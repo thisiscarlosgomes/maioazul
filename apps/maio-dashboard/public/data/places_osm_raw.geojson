@@ -1,0 +1,5906 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2026-01-28T21:57:58Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/3408433",
+        "ISO3166-2": "CV-S",
+        "name": "Ilhas de Sotavento",
+        "name:en": "Sotavento Islands",
+        "name:es": "Islas de Sotavento",
+        "name:fr": "Îles de Sotavento",
+        "name:ja": "ソタヴェント諸島",
+        "name:uk": "Підвітряні острови",
+        "place": "archipelago",
+        "type": "multipolygon",
+        "wikidata": "Q500453",
+        "wikipedia": "pt:Ilhas de Sotavento (Cabo Verde)",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.9183779,
+          15.0716996
+        ]
+      },
+      "id": "relation/3408433"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/3408442",
+        "alt_name:cs": "ostrovy Zeleného mysu",
+        "name": "Cape Verde",
+        "name:cs": "Kapverdské ostrovy",
+        "name:de": "Kapverdische Inseln",
+        "name:en": "Cape Verde Islands",
+        "name:fr": "îles du Cap-Vert",
+        "name:kea": "Ilhas di Kabu Verdi",
+        "name:pl": "wyspy Zielonego Przylądka",
+        "name:pt": "Ilhas de Cabo Verde",
+        "name:ru": "острова Зелёного Мыса",
+        "name:uk": "острови Зеленого Мису",
+        "place": "archipelago",
+        "short_name:de": "Kapverden",
+        "short_name:en": "Cape Verde",
+        "short_name:fr": "Cap-Vert",
+        "short_name:kea": "Kabu Verdi",
+        "short_name:pt": "Cabo Verde",
+        "type": "multipolygon",
+        "wikidata": "Q31878253",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -24.0095808,
+          16.0042631
+        ]
+      },
+      "id": "relation/3408442"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/3830197",
+        "ISO3166-2": "CV-MA",
+        "admin_level": "6",
+        "boundary": "administrative",
+        "name": "Maio",
+        "name:ar": "مايو",
+        "name:br": "Maio",
+        "name:ca": "Maio",
+        "name:ceb": "Concelho do Maio",
+        "name:en": "Maio",
+        "name:fr": "Maio",
+        "name:it": "Contea di Maio",
+        "name:ko": "마이우시",
+        "name:pl": "Maio",
+        "name:pt": "Maio",
+        "name:ur": "مائیو، کیپ ورڈی",
+        "name:zh": "馬約島縣",
+        "type": "boundary",
+        "wikidata": "Q2551133",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1610127,
+          15.2272257
+        ]
+      },
+      "id": "relation/3830197"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/4277644",
+        "name": "Maio",
+        "name:ar": "مايو",
+        "name:ru": "остров Маю",
+        "place": "island",
+        "source": "PGS",
+        "type": "multipolygon",
+        "wikidata": "Q492551",
+        "wikipedia": "pt:Ilha do Maio",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1610127,
+          15.2272257
+        ]
+      },
+      "id": "relation/4277644"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/7888748",
+        "name": "dunas",
+        "natural": "sand",
+        "type": "multipolygon",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1081274,
+          15.2828909
+        ]
+      },
+      "id": "relation/7888748"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/17219324",
+        "name": "dunas",
+        "natural": "sand",
+        "type": "multipolygon",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0908493,
+          15.183012
+        ]
+      },
+      "id": "relation/17219324"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "relation/17219325",
+        "name": "dunas",
+        "natural": "sand",
+        "type": "multipolygon",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0886965,
+          15.1793626
+        ]
+      },
+      "id": "relation/17219325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/172092807",
+        "aeroway": "terminal",
+        "building": "yes",
+        "name": "Maio",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2151266,
+          15.1579973
+        ]
+      },
+      "id": "way/172092807"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/172092815",
+        "landuse": "residential",
+        "name": "Figueira Seca",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1448219,
+          15.1562345
+        ]
+      },
+      "id": "way/172092815"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/172092816",
+        "landuse": "residential",
+        "name": "Morro",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.22243,
+          15.1803443
+        ]
+      },
+      "id": "way/172092816"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/172092819",
+        "landuse": "residential",
+        "name": "Figueira da Horta",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.151719,
+          15.1602494
+        ]
+      },
+      "id": "way/172092819"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/183217385",
+        "intermittent": "yes",
+        "name": "Ribeira Água Junga",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1690772,
+          15.1725619
+        ]
+      },
+      "id": "way/183217385"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/183217392",
+        "intermittent": "yes",
+        "name": "Ribeira da Lagoa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1477307,
+          15.1431329
+        ]
+      },
+      "id": "way/183217392"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/183217398",
+        "intermittent": "yes",
+        "name": "Ribeira Chico Vaz",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1524405,
+          15.1604016
+        ]
+      },
+      "id": "way/183217398"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/183217403",
+        "intermittent": "yes",
+        "name": "Ribeira da Lagoa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1396609,
+          15.1741721
+        ]
+      },
+      "id": "way/183217403"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/183217404",
+        "intermittent": "yes",
+        "name": "Ribeira Chico Vaz",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1491964,
+          15.1900288
+        ]
+      },
+      "id": "way/183217404"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/184672212",
+        "intermittent": "yes",
+        "name": "Ribeira Furna Porco",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2199374,
+          15.1869349
+        ]
+      },
+      "id": "way/184672212"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/237282357",
+        "landuse": "residential",
+        "name": "Santo António",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1234294,
+          15.2750911
+        ]
+      },
+      "id": "way/237282357"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/237282894",
+        "landuse": "residential",
+        "name": "Alcatraz",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1037528,
+          15.2174124
+        ]
+      },
+      "id": "way/237282894"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/237283262",
+        "intermittent": "yes",
+        "name": "Ribeira Dom João",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1196662,
+          15.1660568
+        ]
+      },
+      "id": "way/237283262"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/237396818",
+        "access": "yes",
+        "name": "dunas",
+        "natural": "sand",
+        "surface": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1517312,
+          15.3137223
+        ]
+      },
+      "id": "way/237396818"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/242678889",
+        "intermittent": "yes",
+        "name": "Ribeira Figueira Inglesa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1579169,
+          15.1680936
+        ]
+      },
+      "id": "way/242678889"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/242678890",
+        "intermittent": "yes",
+        "name": "Ribeira Figueira Inglesa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1680728,
+          15.1826494
+        ]
+      },
+      "id": "way/242678890"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/242678931",
+        "intermittent": "yes",
+        "name": "Ribeira Bombagelim",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1635668,
+          15.1957097
+        ]
+      },
+      "id": "way/242678931"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/242731336",
+        "intermittent": "yes",
+        "name": "Ribeira de Alcatraz",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1142451,
+          15.2166395
+        ]
+      },
+      "id": "way/242731336"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/242732062",
+        "intermittent": "yes",
+        "name": "Ribeira Sololó",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1833088,
+          15.247018
+        ]
+      },
+      "id": "way/242732062"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/316913517",
+        "intermittent": "yes",
+        "name": "Ribeira da Figueira",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.132592,
+          15.1906064
+        ]
+      },
+      "id": "way/316913517"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/316915910",
+        "intermittent": "yes",
+        "name": "Ribeira Catemicia",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.148121,
+          15.1971054
+        ]
+      },
+      "id": "way/316915910"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317083376",
+        "intermittent": "yes",
+        "name": "Ribeira Praia da Guarda",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1196277,
+          15.2288488
+        ]
+      },
+      "id": "way/317083376"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317083677",
+        "intermittent": "yes",
+        "name": "Ribeira Praia da Guarda",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0980158,
+          15.2258747
+        ]
+      },
+      "id": "way/317083677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317498215",
+        "intermittent": "yes",
+        "name": "Ribeira Clara",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1172455,
+          15.2092665
+        ]
+      },
+      "id": "way/317498215"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317498445",
+        "intermittent": "yes",
+        "name": "Ribeira Lomba Greija",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1007928,
+          15.2048028
+        ]
+      },
+      "id": "way/317498445"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317499174",
+        "intermittent": "yes",
+        "name": "Ribeira da Baia",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1031992,
+          15.1849382
+        ]
+      },
+      "id": "way/317499174"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317500065",
+        "intermittent": "yes",
+        "name": "Ribeira da Tráz",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1024765,
+          15.1692586
+        ]
+      },
+      "id": "way/317500065"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317500094",
+        "intermittent": "yes",
+        "name": "Lagoa Cimidor",
+        "natural": "water",
+        "water": "lake",
+        "wikidata": "Q28232412",
+        "wikipedia": "en:Lagoa Cimidor",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0966607,
+          15.165924
+        ]
+      },
+      "id": "way/317500094"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317500668",
+        "intermittent": "yes",
+        "name": "Ribeira do Poço",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1002092,
+          15.1658612
+        ]
+      },
+      "id": "way/317500668"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317501180",
+        "intermittent": "yes",
+        "name": "Ribeira Funda da Cima",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1098545,
+          15.1529513
+        ]
+      },
+      "id": "way/317501180"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317548833",
+        "intermittent": "yes",
+        "name": "Ribeira da Cruz",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1238097,
+          15.1793964
+        ]
+      },
+      "id": "way/317548833"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317555641",
+        "intermittent": "yes",
+        "name": "Ribeira de Santo António",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1322105,
+          15.2721973
+        ]
+      },
+      "id": "way/317555641"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317555644",
+        "intermittent": "yes",
+        "name": "Ribeira Gonçalo",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1255784,
+          15.2630413
+        ]
+      },
+      "id": "way/317555644"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317557454",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1204217,
+          15.2679945
+        ]
+      },
+      "id": "way/317557454"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317557460",
+        "intermittent": "yes",
+        "name": "Ribeira Aguinha",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1176284,
+          15.2570731
+        ]
+      },
+      "id": "way/317557460"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317559514",
+        "intermittent": "yes",
+        "name": "Ribeira Aguinha",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1076958,
+          15.2580841
+        ]
+      },
+      "id": "way/317559514"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317565414",
+        "intermittent": "yes",
+        "name": "Ribeira de Faranego",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1967194,
+          15.2313118
+        ]
+      },
+      "id": "way/317565414"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317565415",
+        "intermittent": "yes",
+        "name": "Ribeira de Calheta",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2128209,
+          15.2292775
+        ]
+      },
+      "id": "way/317565415"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317640886",
+        "designation": "Zona florestal",
+        "landuse": "plant_nursery",
+        "name": "Zona florestal",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1151827,
+          15.2080472
+        ]
+      },
+      "id": "way/317640886"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317640887",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.116717,
+          15.211065
+        ]
+      },
+      "id": "way/317640887"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317650214",
+        "landuse": "forest",
+        "landuse_1": "plant_nursery",
+        "name": "Zona florestal-reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1510143,
+          15.2564352
+        ]
+      },
+      "id": "way/317650214"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317650346",
+        "landuse": "forest",
+        "landuse_1": "plant_nursery",
+        "name": "Zona florestal-reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1471124,
+          15.2465046
+        ]
+      },
+      "id": "way/317650346"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317660232",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1251499,
+          15.2192204
+        ]
+      },
+      "id": "way/317660232"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317661358",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "deciduous",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1160278,
+          15.2199515
+        ]
+      },
+      "id": "way/317661358"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317661360",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1240865,
+          15.2210424
+        ]
+      },
+      "id": "way/317661360"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317661362",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.119954,
+          15.2193885
+        ]
+      },
+      "id": "way/317661362"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317715801",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "source": "bing",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2003741,
+          15.2032292
+        ]
+      },
+      "id": "way/317715801"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317770001",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1540617,
+          15.1553687
+        ]
+      },
+      "id": "way/317770001"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317770138",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1600911,
+          15.1586525
+        ]
+      },
+      "id": "way/317770138"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317770395",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1646402,
+          15.1522432
+        ]
+      },
+      "id": "way/317770395"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317778076",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1420779,
+          15.2329923
+        ]
+      },
+      "id": "way/317778076"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317778338",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1509643,
+          15.2355545
+        ]
+      },
+      "id": "way/317778338"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317793680",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1388872,
+          15.1500759
+        ]
+      },
+      "id": "way/317793680"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794027",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1321521,
+          15.1523527
+        ]
+      },
+      "id": "way/317794027"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794028",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1330685,
+          15.153497
+        ]
+      },
+      "id": "way/317794028"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794029",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.134482,
+          15.1519514
+        ]
+      },
+      "id": "way/317794029"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794030",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1320931,
+          15.1530984
+        ]
+      },
+      "id": "way/317794030"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794031",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1327728,
+          15.151986
+        ]
+      },
+      "id": "way/317794031"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794032",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1324543,
+          15.1543074
+        ]
+      },
+      "id": "way/317794032"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794033",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "deciduous",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1332885,
+          15.1529145
+        ]
+      },
+      "id": "way/317794033"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794159",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1358965,
+          15.1501987
+        ]
+      },
+      "id": "way/317794159"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794160",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.133562,
+          15.1507424
+        ]
+      },
+      "id": "way/317794160"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794161",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "deciduous",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1351445,
+          15.151097
+        ]
+      },
+      "id": "way/317794161"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794193",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1340055,
+          15.1496239
+        ]
+      },
+      "id": "way/317794193"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317794283",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "deciduous",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1313012,
+          15.1478766
+        ]
+      },
+      "id": "way/317794283"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317838424",
+        "intermittent": "yes",
+        "name": "Ribeira do Lugar",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1559356,
+          15.2657485
+        ]
+      },
+      "id": "way/317838424"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317839293",
+        "intermittent": "yes",
+        "name": "Ribeira Pá do Beijo",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1764356,
+          15.2645492
+        ]
+      },
+      "id": "way/317839293"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/317997080",
+        "intermittent": "yes",
+        "name": "Ribeira de Água",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.144577,
+          15.2257953
+        ]
+      },
+      "id": "way/317997080"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/318042289",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "deciduous",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1758627,
+          15.2201295
+        ]
+      },
+      "id": "way/318042289"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/318126093",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1260289,
+          15.2161584
+        ]
+      },
+      "id": "way/318126093"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/318126862",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1123003,
+          15.2142221
+        ]
+      },
+      "id": "way/318126862"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/318865755",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1987428,
+          15.187729
+        ]
+      },
+      "id": "way/318865755"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/318950509",
+        "building": "house",
+        "name": "Artesanato",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2208882,
+          15.1816577
+        ]
+      },
+      "id": "way/318950509"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/319012043",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "natural": "tree_row",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1696229,
+          15.2763632
+        ]
+      },
+      "id": "way/319012043"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/320256632",
+        "name": "Terras Salgadas",
+        "natural": "mud",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1845323,
+          15.296436
+        ]
+      },
+      "id": "way/320256632"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/328535543",
+        "intermittent": "yes",
+        "name": "Ribeira Chiqueiro Nha Lixa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1157205,
+          15.2855145
+        ]
+      },
+      "id": "way/328535543"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/328535549",
+        "intermittent": "yes",
+        "name": "Ribeira Caixa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1142895,
+          15.2971294
+        ]
+      },
+      "id": "way/328535549"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/333382111",
+        "intermittent": "yes",
+        "name": "Ribeira da Lagoa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1468385,
+          15.1485197
+        ]
+      },
+      "id": "way/333382111"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/333383675",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1210801,
+          15.2089892
+        ]
+      },
+      "id": "way/333383675"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/336041170",
+        "intermittent": "yes",
+        "name": "Ribeira Figueira Farinha",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2167807,
+          15.1777069
+        ]
+      },
+      "id": "way/336041170"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/336413218",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1942446,
+          15.1834505
+        ]
+      },
+      "id": "way/336413218"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/336414154",
+        "designation": "zona florestal",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1914022,
+          15.1784653
+        ]
+      },
+      "id": "way/336414154"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/336415413",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1816945,
+          15.1787833
+        ]
+      },
+      "id": "way/336415413"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/363802173",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1350165,
+          15.2413518
+        ]
+      },
+      "id": "way/363802173"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/363871956",
+        "intermittent": "yes",
+        "name": "Ribeira da Lagoa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1427739,
+          15.1544804
+        ]
+      },
+      "id": "way/363871956"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/386180989",
+        "designation": "Salinas natural",
+        "intermittent": "yes",
+        "name": "Salina natural",
+        "natural": "water",
+        "water": "lake",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.225367,
+          15.1582767
+        ]
+      },
+      "id": "way/386180989"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/386181060",
+        "intermittent": "yes",
+        "name": "Salinas",
+        "natural": "water",
+        "water": "lake",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2189816,
+          15.1471227
+        ]
+      },
+      "id": "way/386181060"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/388431773",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1603513,
+          15.1485932
+        ]
+      },
+      "id": "way/388431773"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/400062197",
+        "aerodrome:type": "public",
+        "aeroway": "aerodrome",
+        "ele": "11",
+        "iata": "MMO",
+        "icao": "GVMA",
+        "name": "Aeródromo do Maio",
+        "name:ar": "مطار مايو",
+        "name:en": "Maio Airport",
+        "operator": "Aeroportos e Seguranca Aerea (ASA)",
+        "source": "ourairports.com",
+        "website": "https://www.asa.cv/aerodromos/aerodromo-do-maio/",
+        "wikidata": "Q2011846",
+        "wikipedia": "en:Maio Airport",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2137036,
+          15.1560111
+        ]
+      },
+      "id": "way/400062197"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/405898626",
+        "intermittent": "yes",
+        "name": "Ribeira Clara",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1049563,
+          15.2094661
+        ]
+      },
+      "id": "way/405898626"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/405898627",
+        "intermittent": "yes",
+        "name": "Ribeira Clara",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0982387,
+          15.2126264
+        ]
+      },
+      "id": "way/405898627"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/405900196",
+        "intermittent": "yes",
+        "name": "Ribeira Clara",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.103304,
+          15.2099314
+        ]
+      },
+      "id": "way/405900196"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406194239",
+        "amenity": "place_of_worship",
+        "building": "church",
+        "denomination": "roman_catholic",
+        "name": "Igreja Nossa Senhora do Rosário",
+        "religion": "christian",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1136706,
+          15.2386504
+        ]
+      },
+      "id": "way/406194239"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406195594",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1368597,
+          15.2336717
+        ]
+      },
+      "id": "way/406195594"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406195595",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1384281,
+          15.2325377
+        ]
+      },
+      "id": "way/406195595"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406195596",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1378318,
+          15.230547
+        ]
+      },
+      "id": "way/406195596"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406460090",
+        "intermittent": "yes",
+        "name": "Ribeira da Monte Branco",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1117504,
+          15.2050747
+        ]
+      },
+      "id": "way/406460090"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406460612",
+        "intermittent": "yes",
+        "name": "Ribeira da Monte Branco",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1166271,
+          15.2049063
+        ]
+      },
+      "id": "way/406460612"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406461609",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "natural": "tree_row",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1279701,
+          15.2137949
+        ]
+      },
+      "id": "way/406461609"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406462643",
+        "intermittent": "yes",
+        "name": "Ribeira Sololó",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.141525,
+          15.219659
+        ]
+      },
+      "id": "way/406462643"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406620688",
+        "intermittent": "yes",
+        "name": "Ribeira Aguinha",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1045164,
+          15.259228
+        ]
+      },
+      "id": "way/406620688"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406622835",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1109401,
+          15.242143
+        ]
+      },
+      "id": "way/406622835"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406622836",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1082741,
+          15.2417667
+        ]
+      },
+      "id": "way/406622836"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/406628070",
+        "landuse": "plant_nursery",
+        "landuse_1": "forest",
+        "name": "reflorestação",
+        "wood": "tree_rows",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1339263,
+          15.2493754
+        ]
+      },
+      "id": "way/406628070"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/407237562",
+        "intermittent": "yes",
+        "name": "Ribeira da Monte Branco",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1025482,
+          15.2072683
+        ]
+      },
+      "id": "way/407237562"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/407314597",
+        "intermittent": "yes",
+        "name": "Ribeira do Lugar",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1856722,
+          15.2790612
+        ]
+      },
+      "id": "way/407314597"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/407314665",
+        "intermittent": "yes",
+        "name": "Ribeira do Lugar",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1873612,
+          15.2737602
+        ]
+      },
+      "id": "way/407314665"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/407466050",
+        "intermittent": "yes",
+        "name": "Ribeira Boca Antes Morro",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1385188,
+          15.286582
+        ]
+      },
+      "id": "way/407466050"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/407466051",
+        "intermittent": "yes",
+        "name": "Ribeira Curral de Aso",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1274414,
+          15.2877502
+        ]
+      },
+      "id": "way/407466051"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/407764016",
+        "intermittent": "yes",
+        "name": "Ribeira Caixa",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0999482,
+          15.1916696
+        ]
+      },
+      "id": "way/407764016"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/407994705",
+        "landuse": "plant_nursery",
+        "landuse_1": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.129272,
+          15.1475535
+        ]
+      },
+      "id": "way/407994705"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/444477708",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2015386,
+          15.2466523
+        ]
+      },
+      "id": "way/444477708"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/454330888",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.193744,
+          15.2376904
+        ]
+      },
+      "id": "way/454330888"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/485014729",
+        "building": "yes",
+        "description": "Example for Mapbox",
+        "name": "Jairson Future House",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.207865,
+          15.2838625
+        ]
+      },
+      "id": "way/485014729"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/539038291",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.189974,
+          15.2090997
+        ]
+      },
+      "id": "way/539038291"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/539038292",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1909079,
+          15.2069174
+        ]
+      },
+      "id": "way/539038292"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/539038293",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1913761,
+          15.1986108
+        ]
+      },
+      "id": "way/539038293"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/542304927",
+        "landuse": "residential",
+        "name": "Hotel Bela Vista",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2300108,
+          15.1768225
+        ]
+      },
+      "id": "way/542304927"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/542304928",
+        "landuse": "residential",
+        "name": "Villa Maris Eco Village",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2306015,
+          15.1781063
+        ]
+      },
+      "id": "way/542304928"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/542378946",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1912118,
+          15.1751265
+        ]
+      },
+      "id": "way/542378946"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543244096",
+        "landuse": "forest",
+        "name": "palmeiras",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2165284,
+          15.2264407
+        ]
+      },
+      "id": "way/543244096"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543259080",
+        "amenity": "hospital",
+        "building": "yes",
+        "healthcare": "hospital",
+        "name": "Posto Sanitário",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2115147,
+          15.2291434
+        ]
+      },
+      "id": "way/543259080"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543261483",
+        "building": "church",
+        "name": "Igreja",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2112083,
+          15.2296102
+        ]
+      },
+      "id": "way/543261483"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543261484",
+        "leisure": "common",
+        "name": "Praça Calheta do Maio",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2115102,
+          15.2296921
+        ]
+      },
+      "id": "way/543261484"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543266201",
+        "highway": "residential",
+        "name": "Rua de Raboleira",
+        "surface": "unpaved",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2125896,
+          15.2306483
+        ]
+      },
+      "id": "way/543266201"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543270501",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.177489,
+          15.2267761
+        ]
+      },
+      "id": "way/543270501"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543270502",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1753156,
+          15.2221743
+        ]
+      },
+      "id": "way/543270502"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543283412",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1657889,
+          15.2624837
+        ]
+      },
+      "id": "way/543283412"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543310651",
+        "building": "church",
+        "name": "Igreja",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1151088,
+          15.2478006
+        ]
+      },
+      "id": "way/543310651"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543310653",
+        "amenity": "hospital",
+        "building": "yes",
+        "healthcare": "hospital",
+        "name": "Posto Sanitário de Pedro Vaz",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1155326,
+          15.247344
+        ]
+      },
+      "id": "way/543310653"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543318610",
+        "intermittent": "yes",
+        "name": "Ribeira de Santo António",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1228529,
+          15.2739513
+        ]
+      },
+      "id": "way/543318610"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543318612",
+        "intermittent": "yes",
+        "name": "Ribeira de Santo António",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1134377,
+          15.277881
+        ]
+      },
+      "id": "way/543318612"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543318648",
+        "intermittent": "yes",
+        "name": "Ribeira de Santo António",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1034498,
+          15.2818454
+        ]
+      },
+      "id": "way/543318648"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543335084",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1313687,
+          15.240726
+        ]
+      },
+      "id": "way/543335084"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543367752",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1508122,
+          15.153159
+        ]
+      },
+      "id": "way/543367752"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543375060",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1778167,
+          15.1687855
+        ]
+      },
+      "id": "way/543375060"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543375061",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.17347,
+          15.170315
+        ]
+      },
+      "id": "way/543375061"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543446704",
+        "building": "church",
+        "name": "Igreja",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1515306,
+          15.1598548
+        ]
+      },
+      "id": "way/543446704"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543649772",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.182626,
+          15.1768025
+        ]
+      },
+      "id": "way/543649772"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543649773",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1800716,
+          15.1771687
+        ]
+      },
+      "id": "way/543649773"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543653969",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.181403,
+          15.1728295
+        ]
+      },
+      "id": "way/543653969"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543653973",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1753791,
+          15.1677224
+        ]
+      },
+      "id": "way/543653973"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/543945363",
+        "highway": "residential",
+        "name": "Rua São José",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2125893,
+          15.2300426
+        ]
+      },
+      "id": "way/543945363"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/544200218",
+        "name": "Praia de Santo António",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1036423,
+          15.2829047
+        ]
+      },
+      "id": "way/544200218"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/544375538",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.139494,
+          15.2566159
+        ]
+      },
+      "id": "way/544375538"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545294922",
+        "intermittent": "yes",
+        "name": "Ribeira Furna Porco",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2318558,
+          15.1807501
+        ]
+      },
+      "id": "way/545294922"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545300366",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1495811,
+          15.2418316
+        ]
+      },
+      "id": "way/545300366"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545300368",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1351103,
+          15.2127766
+        ]
+      },
+      "id": "way/545300368"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545300369",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1331746,
+          15.2100463
+        ]
+      },
+      "id": "way/545300369"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545300473",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1362236,
+          15.2285919
+        ]
+      },
+      "id": "way/545300473"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545301033",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1191518,
+          15.2399188
+        ]
+      },
+      "id": "way/545301033"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545802101",
+        "natural": "bare_rock",
+        "place": "islet",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0896835,
+          15.1742877
+        ]
+      },
+      "id": "way/545802101"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/545802113",
+        "colour": "gray",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0967236,
+          15.1626689
+        ]
+      },
+      "id": "way/545802113"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/547116727",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2178242,
+          15.2228534
+        ]
+      },
+      "id": "way/547116727"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/547660989",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2169217,
+          15.2764576
+        ]
+      },
+      "id": "way/547660989"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/547660991",
+        "colour": "white",
+        "name": "Praia de Santana",
+        "natural": "beach",
+        "surface": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2204414,
+          15.2791807
+        ]
+      },
+      "id": "way/547660991"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/547660992",
+        "colour": "white",
+        "name": "Praia de Santana",
+        "natural": "beach",
+        "surface": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2132899,
+          15.2832811
+        ]
+      },
+      "id": "way/547660992"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/547660993",
+        "colour": "white",
+        "name": "Praia de Santana",
+        "natural": "beach",
+        "surface": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2071681,
+          15.2880811
+        ]
+      },
+      "id": "way/547660993"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/547712502",
+        "colour": "white",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.13257,
+          15.3080235
+        ]
+      },
+      "id": "way/547712502"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/548607115",
+        "alt_name": "Praia Gonçalo",
+        "colour": "white",
+        "name": "Praiona",
+        "natural": "beach",
+        "surface": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1057912,
+          15.2683143
+        ]
+      },
+      "id": "way/548607115"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/548607129",
+        "colour": "white",
+        "name": "Prainha",
+        "natural": "beach",
+        "surface": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.10112,
+          15.2549237
+        ]
+      },
+      "id": "way/548607129"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/548607142",
+        "colour": "yellow",
+        "name": "Praia de Boca Ribeira",
+        "natural": "beach",
+        "surface": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0984083,
+          15.2433807
+        ]
+      },
+      "id": "way/548607142"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/548940616",
+        "colour": "black",
+        "name": "Praia da Ribeira de Alcatraz",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0950324,
+          15.2219123
+        ]
+      },
+      "id": "way/548940616"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/548940724",
+        "colour": "black",
+        "name": "Praia de Guarda",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0953325,
+          15.2262286
+        ]
+      },
+      "id": "way/548940724"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/549393314",
+        "leisure": "nature_reserve",
+        "name": "Parque Natural de Barreiro e Figueira",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1494452,
+          15.1431479
+        ]
+      },
+      "id": "way/549393314"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/550057925",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1080379,
+          15.2890122
+        ]
+      },
+      "id": "way/550057925"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/550277593",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1772648,
+          15.2582026
+        ]
+      },
+      "id": "way/550277593"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/550280000",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1661637,
+          15.2456901
+        ]
+      },
+      "id": "way/550280000"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/550280001",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1623387,
+          15.2321875
+        ]
+      },
+      "id": "way/550280001"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/550280002",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1579069,
+          15.2314636
+        ]
+      },
+      "id": "way/550280002"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/550280003",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1541348,
+          15.2287452
+        ]
+      },
+      "id": "way/550280003"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/550280232",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1690244,
+          15.2302423
+        ]
+      },
+      "id": "way/550280232"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/551465571",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1740945,
+          15.2346098
+        ]
+      },
+      "id": "way/551465571"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/551468456",
+        "intermittent": "yes",
+        "name": "Ribeira de Calheta",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.197902,
+          15.2258929
+        ]
+      },
+      "id": "way/551468456"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/551969788",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1763527,
+          15.1749944
+        ]
+      },
+      "id": "way/551969788"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576481115",
+        "intermittent": "yes",
+        "layer": "-1",
+        "name": "Ribeira do Lugar",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1826297,
+          15.268631
+        ]
+      },
+      "id": "way/576481115"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576481116",
+        "intermittent": "yes",
+        "name": "Ribeira do Lugar",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1814065,
+          15.2679814
+        ]
+      },
+      "id": "way/576481116"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576481117",
+        "intermittent": "yes",
+        "layer": "-1",
+        "name": "Ribeira do Lugar",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1816775,
+          15.2686619
+        ]
+      },
+      "id": "way/576481117"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576481118",
+        "intermittent": "yes",
+        "name": "Ribeira do Lugar",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1759906,
+          15.2669831
+        ]
+      },
+      "id": "way/576481118"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576481120",
+        "intermittent": "yes",
+        "name": "Ribeira do Lugar",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1848681,
+          15.2737187
+        ]
+      },
+      "id": "way/576481120"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576481121",
+        "intermittent": "yes",
+        "layer": "-1",
+        "name": "Ribeira do Lugar",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1699721,
+          15.2655287
+        ]
+      },
+      "id": "way/576481121"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576497918",
+        "intermittent": "yes",
+        "layer": "-1",
+        "name": "Ribeira Água Junga",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1770054,
+          15.1799029
+        ]
+      },
+      "id": "way/576497918"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/576497919",
+        "intermittent": "yes",
+        "name": "Ribeira Água Junga",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1801027,
+          15.1869386
+        ]
+      },
+      "id": "way/576497919"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/592324171",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1139167,
+          15.268348
+        ]
+      },
+      "id": "way/592324171"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/778935787",
+        "leisure": "nature_reserve",
+        "name": "Parque Natural do Norte",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.163693,
+          15.3058917
+        ]
+      },
+      "id": "way/778935787"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/788635468",
+        "intermittent": "yes",
+        "layer": "-1",
+        "name": "Ribeira Pá do Beijo",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1865608,
+          15.2678895
+        ]
+      },
+      "id": "way/788635468"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/788635469",
+        "intermittent": "yes",
+        "name": "Ribeira Pá do Beijo",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1887648,
+          15.2703916
+        ]
+      },
+      "id": "way/788635469"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/863255042",
+        "landuse": "residential",
+        "name": "Funchago (villagem projetado)",
+        "planned": "yes",
+        "residential": "gated",
+        "source": "survey",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2224182,
+          15.1620449
+        ]
+      },
+      "id": "way/863255042"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1043410151",
+        "building": "yes",
+        "name": "Campo Tropikal",
+        "tourism": "apartment",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1940758,
+          15.2043415
+        ]
+      },
+      "id": "way/1043410151"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237727012",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1133051,
+          15.2249486
+        ]
+      },
+      "id": "way/1237727012"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237729019",
+        "intermittent": "yes",
+        "name": "Ribeira Clara",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1067397,
+          15.2101044
+        ]
+      },
+      "id": "way/1237729019"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237729020",
+        "intermittent": "yes",
+        "layer": "-1",
+        "name": "Ribeira Clara",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1079478,
+          15.2104973
+        ]
+      },
+      "id": "way/1237729020"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237729025",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.110192,
+          15.2095172
+        ]
+      },
+      "id": "way/1237729025"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237729272",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1127947,
+          15.2082001
+        ]
+      },
+      "id": "way/1237729272"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237810596",
+        "intermittent": "yes",
+        "name": "Ribeira Gonçalo",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1098404,
+          15.2681205
+        ]
+      },
+      "id": "way/1237810596"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237810597",
+        "intermittent": "yes",
+        "layer": "-1",
+        "name": "Ribeira Gonçalo",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1141669,
+          15.2690208
+        ]
+      },
+      "id": "way/1237810597"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237810598",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1089689,
+          15.2672813
+        ]
+      },
+      "id": "way/1237810598"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237812666",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.111433,
+          15.2664094
+        ]
+      },
+      "id": "way/1237812666"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237812667",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1104538,
+          15.2663885
+        ]
+      },
+      "id": "way/1237812667"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1237812668",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1926206,
+          15.2868244
+        ]
+      },
+      "id": "way/1237812668"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1238903641",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1757731,
+          15.1822508
+        ]
+      },
+      "id": "way/1238903641"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1238903642",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1742628,
+          15.1762291
+        ]
+      },
+      "id": "way/1238903642"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1238904039",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1786971,
+          15.1790508
+        ]
+      },
+      "id": "way/1238904039"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1238912693",
+        "intermittent": "yes",
+        "name": "Ribiera João Martins",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1320045,
+          15.1527372
+        ]
+      },
+      "id": "way/1238912693"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1243757224",
+        "amenity": "school",
+        "name": "Escola Primária da Calheta",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2105465,
+          15.228307
+        ]
+      },
+      "id": "way/1243757224"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1243757225",
+        "amenity": "school",
+        "kindergarten": "yes",
+        "name": "Jardim Brilho do Sol",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2103004,
+          15.2285619
+        ]
+      },
+      "id": "way/1243757225"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1243789180",
+        "amenity": "school",
+        "name": "Escola Básica de Morrinho",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2041255,
+          15.2655
+        ]
+      },
+      "id": "way/1243789180"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1243791620",
+        "amenity": "school",
+        "name": "Escola Básica do Morro",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.22276,
+          15.1788598
+        ]
+      },
+      "id": "way/1243791620"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244156250",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2072834,
+          15.2100923
+        ]
+      },
+      "id": "way/1244156250"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244171471",
+        "place": "square",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1522953,
+          15.1614131
+        ]
+      },
+      "id": "way/1244171471"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244657516",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1058972,
+          15.209263
+        ]
+      },
+      "id": "way/1244657516"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244657517",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.105175,
+          15.2093905
+        ]
+      },
+      "id": "way/1244657517"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244657518",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1041322,
+          15.2094283
+        ]
+      },
+      "id": "way/1244657518"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244659843",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1100986,
+          15.2129422
+        ]
+      },
+      "id": "way/1244659843"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244659845",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1075047,
+          15.2153301
+        ]
+      },
+      "id": "way/1244659845"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244666023",
+        "intermittent": "yes",
+        "name": "Ribeira Praia da Guarda",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1055425,
+          15.2288579
+        ]
+      },
+      "id": "way/1244666023"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244666024",
+        "intermittent": "yes",
+        "name": "Ribeira Praia da Guarda",
+        "tunnel": "culvert",
+        "waterway": "stream",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1103187,
+          15.2306488
+        ]
+      },
+      "id": "way/1244666024"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244669800",
+        "building": "yes",
+        "name": "steps",
+        "steps": "yes",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1152211,
+          15.2477977
+        ]
+      },
+      "id": "way/1244669800"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244672855",
+        "place": "square",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1159701,
+          15.2473268
+        ]
+      },
+      "id": "way/1244672855"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1244927502",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1141061,
+          15.2097007
+        ]
+      },
+      "id": "way/1244927502"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1246957984",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1876385,
+          15.1746411
+        ]
+      },
+      "id": "way/1246957984"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1250867204",
+        "natural": "bare_rock",
+        "place": "islet",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0895482,
+          15.1737914
+        ]
+      },
+      "id": "way/1250867204"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1250867205",
+        "natural": "bare_rock",
+        "place": "islet",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.090979,
+          15.184735
+        ]
+      },
+      "id": "way/1250867205"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1250867206",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0915576,
+          15.1844333
+        ]
+      },
+      "id": "way/1250867206"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1250901058",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0899583,
+          15.1812976
+        ]
+      },
+      "id": "way/1250901058"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1251084702",
+        "level": "1",
+        "name": "Ilheú Laje Branca",
+        "place": "islet",
+        "surface": "rocky",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1369123,
+          15.3124062
+        ]
+      },
+      "id": "way/1251084702"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1251534860",
+        "name": "dunas",
+        "natural": "scrub",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1352828,
+          15.3068661
+        ]
+      },
+      "id": "way/1251534860"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1251736065",
+        "natural": "bare_rock",
+        "place": "islet",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1369123,
+          15.3124062
+        ]
+      },
+      "id": "way/1251736065"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1251743832",
+        "natural": "rock",
+        "place": "islet",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0906122,
+          15.2034155
+        ]
+      },
+      "id": "way/1251743832"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1255517692",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1389716,
+          15.3077344
+        ]
+      },
+      "id": "way/1255517692"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1255517693",
+        "name": "dunas",
+        "natural": "scrub",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1398933,
+          15.308403
+        ]
+      },
+      "id": "way/1255517693"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1255517695",
+        "name": "dunas",
+        "natural": "scrub",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1399244,
+          15.3091511
+        ]
+      },
+      "id": "way/1255517695"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1255517696",
+        "name": "dunas",
+        "natural": "sand",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1425785,
+          15.3085541
+        ]
+      },
+      "id": "way/1255517696"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1257965615",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1371542,
+          15.151766
+        ]
+      },
+      "id": "way/1257965615"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "way/1257965616",
+        "landuse": "plant_nursery",
+        "name": "reflorestação",
+        "@geometry": "center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1359337,
+          15.1534449
+        ]
+      },
+      "id": "way/1257965616"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1951662276",
+        "alt_name": "Ribona",
+        "is_in:town": "Calheta",
+        "name": "Calheta de Cima",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2128887,
+          15.2300929
+        ]
+      },
+      "id": "node/1951662276"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1951662279",
+        "is_in:municipality": "Maio",
+        "name": "Cascabulho",
+        "place": "village",
+        "wikidata": "Q5048076",
+        "wikipedia": "pt:Cascabulho (Cabo Verde)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1725926,
+          15.269957
+        ]
+      },
+      "id": "node/1951662279"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1951662284",
+        "is_in:municipality": "Maio",
+        "name": "Figueira da Horta",
+        "place": "village",
+        "wikidata": "Q5447976",
+        "wikipedia": "pt:Figueira da Horta"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1515291,
+          15.1601318
+        ]
+      },
+      "id": "node/1951662284"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1951662289",
+        "is_in:municipality": "Maio",
+        "name": "Morrinho",
+        "place": "village",
+        "wikidata": "Q6913557",
+        "wikimedia_commons": "Category:Morrinho",
+        "wikipedia": "pt:Morrinho"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2043873,
+          15.2655865
+        ]
+      },
+      "id": "node/1951662289"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/1951662294",
+        "is_in:municipality": "Maio",
+        "name": "Morro",
+        "place": "village",
+        "wikidata": "Q15256355",
+        "wikipedia": "pt:Morro (Cabo Verde)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2217424,
+          15.1796575
+        ]
+      },
+      "id": "node/1951662294"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2452058390",
+        "is_in:municipality": "Maio",
+        "name": "Pedro Vaz",
+        "place": "village",
+        "wikidata": "Q7159988",
+        "wikipedia": "pt:Pedro Vaz (Cabo Verde)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1158373,
+          15.2473839
+        ]
+      },
+      "id": "node/2452058390"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2452079677",
+        "is_in:municipality": "Maio",
+        "name": "Santo António",
+        "place": "village",
+        "wikidata": "Q7420478",
+        "wikipedia": "pt:Santo António (Maio)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1230088,
+          15.2751226
+        ]
+      },
+      "id": "node/2452079677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2452084818",
+        "is_in:municipality": "Maio",
+        "name": "Alcatraz",
+        "place": "village",
+        "wikidata": "Q4712962",
+        "wikipedia": "pt:Alcatraz (Cabo Verde)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1032877,
+          15.2174703
+        ]
+      },
+      "id": "node/2452084818"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2452087922",
+        "is_in:municipality": "Maio",
+        "name": "Pilão Cão",
+        "place": "village",
+        "wikidata": "Q7194556",
+        "wikipedia": "pt:Pilão Cão"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1051179,
+          15.2091337
+        ]
+      },
+      "id": "node/2452087922"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2453282673",
+        "ele": "436",
+        "name": "Monte Penoso",
+        "natural": "peak",
+        "wikidata": "Q1777761",
+        "wikipedia": "en:Monte Penoso"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1300798,
+          15.2278226
+        ]
+      },
+      "id": "node/2453282673"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2501857803",
+        "ele": "149",
+        "name": "Montinho de Baixo",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1613916,
+          15.1947015
+        ]
+      },
+      "id": "node/2501857803"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2501883548",
+        "ele": "147",
+        "name": "Monte Verinelho",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1727387,
+          15.23654
+        ]
+      },
+      "id": "node/2501883548"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2520003375",
+        "ele": "294",
+        "name": "Monte Batalha",
+        "natural": "peak",
+        "wikidata": "Q6904646",
+        "wikipedia": "en:Monte Batalha"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1858886,
+          15.2019116
+        ]
+      },
+      "id": "node/2520003375"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3231044986",
+        "ele": "265",
+        "name": "Monte Branco",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1218737,
+          15.2017478
+        ]
+      },
+      "id": "node/3231044986"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236305153",
+        "name": "Ponta de Santa Clara",
+        "natural": "bedrock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0924718,
+          15.2160734
+        ]
+      },
+      "id": "node/3236305153"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236311141",
+        "name": "Ponta João Ron",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0978843,
+          15.2517547
+        ]
+      },
+      "id": "node/3236311141"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236312334",
+        "name": "Ponta da Boca da Ribiera",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.0973946,
+          15.2455568
+        ]
+      },
+      "id": "node/3236312334"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236318866",
+        "name": "Ponta da Pontona",
+        "natural": "cape"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1052742,
+          15.2931426
+        ]
+      },
+      "id": "node/3236318866"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236319925",
+        "name": "Ponta Pedrenau",
+        "natural": "cape"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1181336,
+          15.3148364
+        ]
+      },
+      "id": "node/3236319925"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236324884",
+        "name": "Ponta Focinho",
+        "natural": "cape"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1122338,
+          15.3096349
+        ]
+      },
+      "id": "node/3236324884"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236324885",
+        "name": "Ponta Pipa",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1603276,
+          15.3322417
+        ]
+      },
+      "id": "node/3236324885"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236324927",
+        "name": "Ponta Cais",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1798618,
+          15.3375653
+        ]
+      },
+      "id": "node/3236324927"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236325312",
+        "man_made": "survey_point",
+        "name": "Faro Ponta Cais"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1802096,
+          15.3377763
+        ]
+      },
+      "id": "node/3236325312"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236327666",
+        "name": "Ponta Branca",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1876568,
+          15.3247999
+        ]
+      },
+      "id": "node/3236327666"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236327671",
+        "name": "Ponta Rica",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2005528,
+          15.3128587
+        ]
+      },
+      "id": "node/3236327671"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236330854",
+        "name": "Ponta do Pau Seco",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2301176,
+          15.2582025
+        ]
+      },
+      "id": "node/3236330854"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236331561",
+        "name": "Ponta do Morrinho",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2258514,
+          15.2775486
+        ]
+      },
+      "id": "node/3236331561"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236343153",
+        "name": "Ponta Ossa de Baleia",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2256025,
+          15.2195611
+        ]
+      },
+      "id": "node/3236343153"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3236344392",
+        "name": "Ponta do Morro",
+        "natural": "rock"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2328876,
+          15.1818312
+        ]
+      },
+      "id": "node/3236344392"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3240886825",
+        "amenity": "place_of_worship",
+        "denomination": "roman_catholic",
+        "name": "Igreja",
+        "religion": "christian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1515864,
+          15.1598337
+        ]
+      },
+      "id": "node/3240886825"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3241447707",
+        "amenity": "place_of_worship",
+        "denomination": "roman_catholic",
+        "name": "Igreja",
+        "religion": "christian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2111116,
+          15.2288613
+        ]
+      },
+      "id": "node/3241447707"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3241447799",
+        "alt_name": "Baxona",
+        "is_in:town": "Calheta",
+        "name": "Calheta de Baixo",
+        "place": "village"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.215595,
+          15.2258433
+        ]
+      },
+      "id": "node/3241447799"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3241469097",
+        "amenity": "place_of_worship",
+        "denomination": "roman_catholic",
+        "name": "Igreja",
+        "religion": "christian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2043176,
+          15.2656971
+        ]
+      },
+      "id": "node/3241469097"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3246566760",
+        "ele": "99",
+        "name": "Monte Esgovere",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1818969,
+          15.1609419
+        ]
+      },
+      "id": "node/3246566760"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3268251765",
+        "ele": "252",
+        "name": "Monte Santo António",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1309034,
+          15.2822088
+        ]
+      },
+      "id": "node/3268251765"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3404956174",
+        "ele": "305",
+        "name": "Monte Forte",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1491802,
+          15.2132596
+        ]
+      },
+      "id": "node/3404956174"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3404965397",
+        "ele": "124",
+        "name": "Lomba da Vigia",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1145261,
+          15.190088
+        ]
+      },
+      "id": "node/3404965397"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3416243166",
+        "name": "Palmerinha",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2043131,
+          15.1612563
+        ]
+      },
+      "id": "node/3416243166"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3435087252",
+        "amenity": "place_of_worship",
+        "name": "Capela Nossa Senhora de Fátima",
+        "religion": "christian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2211879,
+          15.1793762
+        ]
+      },
+      "id": "node/3435087252"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3679303295",
+        "ele": "202",
+        "name": "Lombo Vermelho",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1189554,
+          15.2140059
+        ]
+      },
+      "id": "node/3679303295"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3679304668",
+        "ele": "289",
+        "name": "Monte Grossa",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1215178,
+          15.2243337
+        ]
+      },
+      "id": "node/3679304668"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4004518875",
+        "addr:city": "Calheta;Ilha do Maio",
+        "addr:postcode": "1234",
+        "email": "torresabinacv@gmail.com",
+        "name": "Torre De Sabina",
+        "phone": "+238 256 12 99",
+        "rooms": "Turm und Kapelle",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2164493,
+          15.2267519
+        ]
+      },
+      "id": "node/4004518875"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4092657338",
+        "ele": "235",
+        "name": "Carqueijo",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1257714,
+          15.2124298
+        ]
+      },
+      "id": "node/4092657338"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4092969959",
+        "ele": "102",
+        "name": "Cruz da Garça",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1225914,
+          15.1851917
+        ]
+      },
+      "id": "node/4092969959"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4095102639",
+        "ele": "207",
+        "name": "Monte Sombreiro",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1419851,
+          15.2785635
+        ]
+      },
+      "id": "node/4095102639"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4095102640",
+        "ele": "163",
+        "name": "Monte Chapeu",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1470026,
+          15.2780928
+        ]
+      },
+      "id": "node/4095102640"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4095102641",
+        "ele": "126",
+        "name": "Monte Água",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1500318,
+          15.2781296
+        ]
+      },
+      "id": "node/4095102641"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/4095102642",
+        "ele": "82",
+        "name": "Monte Vento",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1517779,
+          15.2799814
+        ]
+      },
+      "id": "node/4095102642"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5241625614",
+        "contact:email": "villamariscv@gmail.com",
+        "name": "Villa Maris Eco Village",
+        "phone": "+238 242 26 37",
+        "tourism": "hotel",
+        "website": "https://www.facebook.com/villamarisecolodge/"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2304591,
+          15.178101
+        ]
+      },
+      "id": "node/5241625614"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5243144578",
+        "communication:mobile_phone": "928 876 969",
+        "email": "info@belavistamaio.com",
+        "name": "Hotel Bela Vista",
+        "phone": "256 13 66 / 88",
+        "tourism": "hotel"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2302185,
+          15.1769989
+        ]
+      },
+      "id": "node/5243144578"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5251748690",
+        "name": "palmeira",
+        "natural": "tree"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2099556,
+          15.2285977
+        ]
+      },
+      "id": "node/5251748690"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5252207852",
+        "amenity": "place_of_worship",
+        "denomination": "roman_catholic",
+        "name": "São Pedro",
+        "religion": "christian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1151793,
+          15.2477894
+        ]
+      },
+      "id": "node/5252207852"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5254702076",
+        "amenity": "restaurant",
+        "name": "A Caminhada",
+        "phone": "+238-5956969"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2205695,
+          15.1805545
+        ]
+      },
+      "id": "node/5254702076"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5254702077",
+        "name": "Casa Blanca Supermarket",
+        "shop": "supermarket"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2223934,
+          15.1794906
+        ]
+      },
+      "id": "node/5254702077"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5258152650",
+        "amenity": "bar",
+        "name": "Cala Grande, Lda"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2127315,
+          15.2300249
+        ]
+      },
+      "id": "node/5258152650"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5306870233",
+        "amenity": "bar",
+        "name": "Bar de Lila"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1152607,
+          15.2475921
+        ]
+      },
+      "id": "node/5306870233"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5306870234",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "name": "Posto Sanitário de Pedro Vaz",
+        "phone": "+238 256 20 20"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1155304,
+          15.2473262
+        ]
+      },
+      "id": "node/5306870234"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5312503298",
+        "name": "palmeira",
+        "natural": "tree"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1262177,
+          15.2720523
+        ]
+      },
+      "id": "node/5312503298"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5329877897",
+        "ele": "134",
+        "name": "Malhada Pedra",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1725398,
+          15.1828737
+        ]
+      },
+      "id": "node/5329877897"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/5329877898",
+        "ele": "117",
+        "name": "Alto de Água",
+        "natural": "peak"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1661951,
+          15.1896616
+        ]
+      },
+      "id": "node/5329877898"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6441064935",
+        "name": "Porto Cais",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2232427,
+          15.2726197
+        ]
+      },
+      "id": "node/6441064935"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6927942296",
+        "email": "info.maio@laposte.net",
+        "name": "A Caminhada",
+        "operator": "Bernard Portier",
+        "phone": "+238 987 88 90",
+        "resort": "Bungalow",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2232936,
+          15.1818645
+        ]
+      },
+      "id": "node/6927942296"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/6927975536",
+        "name": "Barracudamaio",
+        "resort": "pension",
+        "smokefree": "yes",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2283945,
+          15.1769321
+        ]
+      },
+      "id": "node/6927975536"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7085257242",
+        "is_in:village": "Figueira",
+        "name": "Figueira Seca",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1448847,
+          15.1558583
+        ]
+      },
+      "id": "node/7085257242"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7085257243",
+        "is_in:village": "Figueira",
+        "name": "Figueira da Horta",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1515582,
+          15.1597077
+        ]
+      },
+      "id": "node/7085257243"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7085257280",
+        "is_in:municipality": "Maio",
+        "name": "Praia Gonçalo",
+        "place": "village",
+        "wikidata": "Q16898753",
+        "wikipedia": "pt:Praia Gonçalo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1141108,
+          15.2673462
+        ]
+      },
+      "id": "node/7085257280"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7085257325",
+        "name": "Calheta",
+        "name:ca": "Calheta",
+        "name:de": "Calheta",
+        "name:en": "Calheta",
+        "name:es": "Calheta",
+        "name:fr": "Calheta",
+        "name:it": "Calheta",
+        "name:mk": "Калхета",
+        "place": "town",
+        "wikidata": "Q5019745",
+        "wikimedia_commons": "Category:Calheta (Cape Verde)",
+        "wikipedia": "pt:Calheta (Cabo Verde)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2112107,
+          15.2292429
+        ]
+      },
+      "id": "node/7085257325"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7085257326",
+        "is_in:town": "Calheta",
+        "name": "Lém Tavares",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.209414,
+          15.2277921
+        ]
+      },
+      "id": "node/7085257326"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7085257327",
+        "is_in:town": "Calheta",
+        "name": "Ribinha",
+        "place": "hamlet"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2165452,
+          15.2270004
+        ]
+      },
+      "id": "node/7085257327"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7085257333",
+        "is_in:municipality": "Maio",
+        "name": "Monte Farenegro",
+        "place": "isolated_dwelling"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1825674,
+          15.2251388
+        ]
+      },
+      "id": "node/7085257333"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7358430530",
+        "addr:city": "Calheta de Baixo",
+        "amenity": "restaurant",
+        "cuisine": "local",
+        "name": "Belorizonte",
+        "outdoor_seating": "yes",
+        "phone": "9924775"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2163383,
+          15.2257961
+        ]
+      },
+      "id": "node/7358430530"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7369680658",
+        "amenity": "place_of_worship",
+        "name": "Capela de São José",
+        "religion": "christian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2112438,
+          15.2296327
+        ]
+      },
+      "id": "node/7369680658"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7369686731",
+        "amenity": "marketplace",
+        "name": "Mercado Municipal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2109274,
+          15.2293174
+        ]
+      },
+      "id": "node/7369686731"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7369688142",
+        "name": "palmeira",
+        "natural": "tree"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2222024,
+          15.1790073
+        ]
+      },
+      "id": "node/7369688142"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7369716966",
+        "amenity": "bar",
+        "name": "Djilo"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1719623,
+          15.2697822
+        ]
+      },
+      "id": "node/7369716966"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7373084119",
+        "amenity": "place_of_worship",
+        "name": "Capela de Sagrada família",
+        "religion": "christian"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1729612,
+          15.2701941
+        ]
+      },
+      "id": "node/7373084119"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/7386376240",
+        "name": "palmeira",
+        "natural": "tree"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2214202,
+          15.1792951
+        ]
+      },
+      "id": "node/7386376240"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/10880951452",
+        "name": "Beach",
+        "tourism": "attraction"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2156255,
+          15.2422255
+        ]
+      },
+      "id": "node/10880951452"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560303771",
+        "amenity": "restaurant",
+        "name": "Restaurante Bar Anita"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2113335,
+          15.2298722
+        ]
+      },
+      "id": "node/11560303771"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560303772",
+        "name": "Pensão Tavares",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2111689,
+          15.2302338
+        ]
+      },
+      "id": "node/11560303772"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560303773",
+        "name": "Barbearia DAD",
+        "shop": "hairdresser"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2123681,
+          15.2300935
+        ]
+      },
+      "id": "node/11560303773"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560303774",
+        "amenity": "restaurant",
+        "name": "Bar Restaurante Vanuza"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2126248,
+          15.2301832
+        ]
+      },
+      "id": "node/11560303774"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560303775",
+        "name": "Mercearia Bar - Lucineno(Moreia Quente)",
+        "shop": "convenience"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2128795,
+          15.2302632
+        ]
+      },
+      "id": "node/11560303775"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560303776",
+        "craft": "photographer",
+        "name": "Foto EDDY"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2104315,
+          15.2298829
+        ]
+      },
+      "id": "node/11560303776"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560771663",
+        "name": "Casa Mira Pau Seco",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2050026,
+          15.2651753
+        ]
+      },
+      "id": "node/11560771663"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560852423",
+        "amenity": "restaurant",
+        "name": "Mariama in Morro - Loja Bert Restaurante"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2217966,
+          15.1804194
+        ]
+      },
+      "id": "node/11560852423"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11560853628",
+        "name": "Casa Evora Calheta - Pescador",
+        "tourism": "guest_house"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.2167068,
+          15.2270772
+        ]
+      },
+      "id": "node/11560853628"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11570039275",
+        "name": "palmeira",
+        "natural": "tree"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1036138,
+          15.2176387
+        ]
+      },
+      "id": "node/11570039275"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11570319546",
+        "amenity": "hospital",
+        "healthcare": "hospital",
+        "name": "Posto De Saude"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1174801,
+          15.2476848
+        ]
+      },
+      "id": "node/11570319546"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11638057772",
+        "abandoned": "yes",
+        "name": "Povoação Penosa",
+        "place": "locality"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -23.1137659,
+          15.2388969
+        ]
+      },
+      "id": "node/11638057772"
+    }
+  ]
+}

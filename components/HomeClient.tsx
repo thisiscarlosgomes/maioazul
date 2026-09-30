@@ -11,7 +11,7 @@ const copy = {
       "Maioazul is an NGO that works toward the progressive construction of Maio Island’s socioeconomic autonomy. We develop initiatives aligned with the island’s reality, strengthening its collective capacity and creating conditions to retain and organize value within the territory.",
     partners: "Partners",
     visitMaio: "Visit Maio",
-    dataPortal: "Data Portal",
+    dataPortal: "Maio Digital",
     campanhaAzul: "Campanha Azul",
     launching: "Adventure. Sustainability. Impact.",
     instagram: "Instagram",
@@ -24,7 +24,7 @@ const copy = {
       "A Maioazul é uma ONG que trabalha para a construção progressiva da autonomia socioeconómica da Ilha do Maio. Desenvolvemos iniciativas alinhadas com a realidade da ilha, reforçando a sua capacidade colectiva e criando condições para reter e organizar valor no território.",
     partners: "Parceiros",
     visitMaio: "Visit Maio",
-    dataPortal: "Portal de Dados",
+    dataPortal: "Maio Digital",
     campanhaAzul: "Campanha Azul",
     launching: "Aventura. Sustentabilidade. Impacto.",
     instagram: "Instagram",
@@ -56,7 +56,9 @@ export default function HomeClient() {
   return (
     <main
       className="relative h-screen w-screen overflow-hidden px-10"
-      style={{ fontFamily: "Mabry, Inter, ui-sans-serif, system-ui, -apple-system" }}
+      style={{
+        fontFamily: "Mabry, Inter, ui-sans-serif, system-ui, -apple-system",
+      }}
     >
       {/* Background image */}
       <img
@@ -122,7 +124,9 @@ export default function HomeClient() {
               {t.visitMaio}
             </Link>
             <Link
-              href="/dashboard"
+              href="https://maio.cv"
+              target="_blank"
+              rel="noreferrer"
               className="border border-white/40 px-8 py-3 rounded-lg text-white/70 text-center inline-block transition hover:text-white hover:border-white"
             >
               {t.dataPortal}
@@ -134,7 +138,6 @@ export default function HomeClient() {
               {t.campanhaAzul}
             </Link>
           </div>
-
         </section>
 
         {/* Footer */}

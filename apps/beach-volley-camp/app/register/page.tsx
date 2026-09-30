@@ -283,6 +283,7 @@ export default function RegisterPage() {
   const t = registerCopy[locale];
   const homeHref = locale === "pt" ? "/" : `/?lang=${locale}`;
   const bolsaHref = locale === "pt" ? "/bolsa" : `/bolsa?lang=${locale}`;
+  const eventEndedLabel = locale === "pt" ? "Evento terminado" : locale === "fr" ? "Événement terminé" : "Event ended";
 
   async function handlePaymentSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -342,12 +343,6 @@ export default function RegisterPage() {
               </a>
               <Link className="transition hover:text-[#CEEC58]" href={bolsaHref}>
                 {t.navBolsa}
-              </Link>
-              <Link
-                className="!hidden !text-black inline-flex items-center justify-center rounded-full border border-white/40 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition"
-                href="/register"
-              >
-                {t.navJoin}
               </Link>
               <Select value={locale} onValueChange={(value) => handleLocaleChange(value as CampLocale)}>
                 <SelectTrigger
@@ -517,11 +512,11 @@ export default function RegisterPage() {
                 <p className="mt-1">{t.refundUserCancel}</p>
               </div>
               <button
-                className="inline-flex items-center justify-center rounded-full bg-[#111111] px-5 py-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex cursor-not-allowed items-center justify-center rounded-full bg-[#d9d9d5] px-5 py-3 text-sm font-semibold text-black/45"
                 type="submit"
-                disabled={paymentStatus === "loading"}
+                disabled
               >
-                {paymentStatus === "loading" ? t.payLoading : t.payCta}
+                {eventEndedLabel}
               </button>
               {paymentStatus === "error" ? <p className="text-sm text-red-600">{t.payError}</p> : null}
             </form>

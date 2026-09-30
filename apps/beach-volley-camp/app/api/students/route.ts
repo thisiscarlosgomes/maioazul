@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
-
-import clientPromise from "@/lib/mongodb";
+const registrationOpen: boolean = false;
 
 export async function POST(request: NextRequest) {
   try {
+    if (!registrationOpen) {
+      return NextResponse.json(
+        { error: "Registration is closed because the event has ended." },
+        { status: 410 }
+      );
+    }
+
     const body = await request.json();
     const name = String(body?.name || "").trim();
     const email = String(body?.email || "").trim();
@@ -43,6 +49,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    const { default: clientPromise } = await import("@/lib/mongodb");
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_DB || "maioazul");
     const collection = db.collection("student_leads");

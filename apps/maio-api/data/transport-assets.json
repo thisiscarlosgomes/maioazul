@@ -1,0 +1,43 @@
+{
+  "source": {
+    "id": "enapor-porto-ingles",
+    "title": "ENAPOR — Porto Inglês",
+    "url": "https://enapor.cv/page/porto-ingles",
+    "attribution": "ENAPOR, Porto Inglês port information",
+    "license": "Not specified by source",
+    "licenseUrl": null,
+    "sourceUpdatedAt": null,
+    "retrievedAt": "2026-09-18T12:35:20.846461Z",
+    "excludedOutsideExtent": 0
+  },
+  "feature": {
+    "id": "porto-ingles",
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -23.2206,
+        15.1386
+      ]
+    },
+    "properties": {
+      "name": "Porto Inglês",
+      "assetType": "port",
+      "sourceRecordUrl": "https://enapor.cv/page/porto-ingles",
+      "locationName": "Vila do Porto Inglês, Maio",
+      "caveats": [
+        "Port identity and location name verified from ENAPOR. Coordinates supplied by the project owner, not ENAPOR; no independent survey verification. No schedules or operational status inferred."
+      ]
+    }
+  },
+  "geometrySource": {
+    "id": "user-porto-ingles-coordinates",
+    "title": "User-provided Porto Inglês coordinates",
+    "attribution": "Coordinates supplied by project owner: 15.1386° N, 23.2206° W",
+    "license": "Not specified by source",
+    "licenseUrl": null,
+    "sourceUpdatedAt": null,
+    "retrievedAt": "2026-09-18T12:36:56.159579Z",
+    "excludedOutsideExtent": 0
+  }
+}

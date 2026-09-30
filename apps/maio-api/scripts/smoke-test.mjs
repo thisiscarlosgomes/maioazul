@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+const origin = process.argv[2];
+if (!origin || !/^https?:\/\//.test(origin)) throw new Error('Usage: node scripts/smoke-test.mjs https://your-api-origin');
+const get = (path, options = {}) => fetch(new URL(path, origin), { ...options, signal: AbortSignal.timeout(30000), redirect: 'manual' });
+const paths = ['/', '/api/v1', '/api/v1/health', '/api/v1/collections', '/api/v1/sources', '/api/v1/datasets', '/api/v1/datasets/energy', '/api/v1/openapi.json'];
+await Promise.all(paths.map(async path => { const r = await get(path); assert.equal(r.status, 200, `${path} must be public and return 200`); if (path.startsWith('/api/')) { assert.equal(r.headers.get('access-control-allow-origin'), '*'); await r.json(); } else assert.match(await r.text(), /A shared foundation/); }));
+const page = await get('/api/v1/collections/beaches/items?limit=2');
+assert.equal(page.status, 200); assert.match(page.headers.get('content-type'), /application\/geo\+json/);
+const data = await page.json(); assert.equal(data.features.length, 2); assert.ok(data.numberMatched > 2);
+assert.equal((await get(`/api/v1/features/${data.features[0].id}`)).status, 200);
+assert.equal((await get(data.links.next)).status, 200);
+assert.equal((await get('/api/v1/features?limit=0')).status, 400);
+assert.equal((await get('/api/v1/features/missing')).status, 404);
+assert.equal((await get('/api/v1/features', { method: 'POST' })).status, 405);
+const preflight = await get('/api/v1/features', { method: 'OPTIONS', headers: { Origin: 'https://example.org', 'Access-Control-Request-Method': 'GET' } });
+assert.equal(preflight.status, 204); assert.equal(preflight.headers.get('access-control-allow-origin'), '*');
+for (const path of ['/api/v1/places', '/api/v1/places/calheta', '/api/v1/places/calheta/features', '/api/v1/places/calheta/infrastructure', '/api/v1/places/calheta/datasets', '/api/v1/datasets/population/records', '/api/v1/datasets/municipal-budget/records?year=2026', '/api/v1/transport', '/api/v1/transport/routes', '/api/v1/transport/schedules', '/api/v1/transport/arrivals', '/api/v1/transport/departures']) {
+  const response = await get(path);
+  assert.equal(response.status, 200, path);
+  assert.equal(response.headers.get('access-control-allow-origin'), '*');
+  const etag = response.headers.get('etag');
+  const body = await response.json();
+  assert.ok(body.revision);
+  assert.equal((await get(path, { headers: { 'If-None-Match': etag } })).status, 304);
+  assert.equal((await get(path, { method: 'HEAD' })).status, 200);
+  assert.equal((await get(path, { method: 'POST' })).status, 405);
+  if (path.startsWith('/api/v1/transport')) assert.equal(body.status, 'planned');
+}
+assert.equal((await get('/api/v1/transport/schedules?date=2026-02-30')).status, 400);
+assert.equal((await get('/api/v1/places/unknown')).status, 404);
+assert.equal((await (await get('/api/v1/openapi.json')).json()).info.version, '1.1.0');
+const health = await (await get('/api/v1/health')).json();
+console.log(JSON.stringify({ origin, status: 'passed', revision: health.revision, features: health.features, datasets: health.datasets, checked: 'public pages, JSON, GeoJSON, pagination, lookup, errors, read-only methods, CORS' }, null, 2));

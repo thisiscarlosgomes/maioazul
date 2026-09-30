@@ -1,0 +1,4677 @@
+{
+  "sourceId": "d3-celestial-constellations",
+  "commit": "7e720a3de062059d4c5400a379146a601d9010e0",
+  "url": "https://github.com/ofrohn/d3-celestial/tree/7e720a3de062059d4c5400a379146a601d9010e0",
+  "retrievedAt": "2026-09-17T16:41:25.002Z",
+  "sourceUpdatedAt": null,
+  "coordinateFrame": "J2000 equatorial",
+  "license": "BSD-3-Clause",
+  "attribution": "Copyright (c) 2015, Olaf Frohn. d3-celestial constellation names/figures; upstream IAU chart credits retained in bundled readme. Calculations use Astronomy Engine by Don Cross (MIT).",
+  "checksums": {
+    "data/constellations.json": "ab4ae692027cbc042c0d6791a84456a65eb7c55656107fd00c58ff6e55d4d8b2",
+    "data/constellations.lines.json": "294f66bef5d5cf50b1e17f16d2efa1d97a15131612c68dd935adef6e7373e13c",
+    "readme.md": "c3d77ea7e64565a31876cd2be3c2bc71919712e0379ecd1d98b490afc68703e2",
+    "LICENSE": "a8c79239001ad4bea243d1796b85084e1fc39309c5c5a663930a1b46320254c6"
+  },
+  "records": [
+    {
+      "id": "and",
+      "abbreviation": "And",
+      "name": "Andromeda",
+      "sourceRecordIds": [
+        "data/constellations.json#features/0",
+        "data/constellations.lines.json#features/0"
+      ],
+      "referencePoints": [
+        {
+          "name": "Andromeda",
+          "rightAscensionHours": 0.05,
+          "declinationDegrees": 43
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 2.064986666666668,
+          "declinationDegrees": 42.3297
+        },
+        {
+          "rightAscensionHours": 1.1621999999999995,
+          "declinationDegrees": 35.6206
+        },
+        {
+          "rightAscensionHours": 0.6554666666666662,
+          "declinationDegrees": 30.861
+        },
+        {
+          "rightAscensionHours": 0.13979333333333369,
+          "declinationDegrees": 29.0904
+        },
+        {
+          "rightAscensionHours": 0.9534466666666656,
+          "declinationDegrees": 23.4176
+        },
+        {
+          "rightAscensionHours": 0.7889799999999999,
+          "declinationDegrees": 24.2672
+        },
+        {
+          "rightAscensionHours": 0.6425933333333319,
+          "declinationDegrees": 29.3118
+        },
+        {
+          "rightAscensionHours": 0.6146799999999984,
+          "declinationDegrees": 33.7193
+        },
+        {
+          "rightAscensionHours": 23.635613333333332,
+          "declinationDegrees": 43.2681
+        },
+        {
+          "rightAscensionHours": 23.03202,
+          "declinationDegrees": 42.326
+        },
+        {
+          "rightAscensionHours": 23.673473333333334,
+          "declinationDegrees": 44.3339
+        },
+        {
+          "rightAscensionHours": 23.626066666666667,
+          "declinationDegrees": 46.4582
+        },
+        {
+          "rightAscensionHours": 0.9458933333333335,
+          "declinationDegrees": 38.4993
+        },
+        {
+          "rightAscensionHours": 0.8302333333333346,
+          "declinationDegrees": 41.0789
+        },
+        {
+          "rightAscensionHours": 1.1583666666666659,
+          "declinationDegrees": 47.2418
+        },
+        {
+          "rightAscensionHours": 1.6332133333333332,
+          "declinationDegrees": 48.6282
+        },
+        {
+          "rightAscensionHours": 23.767233333333333,
+          "declinationDegrees": 46.4203
+        }
+      ]
+    },
+    {
+      "id": "ant",
+      "abbreviation": "Ant",
+      "name": "Antlia",
+      "sourceRecordIds": [
+        "data/constellations.json#features/1",
+        "data/constellations.lines.json#features/1"
+      ],
+      "referencePoints": [
+        {
+          "name": "Antlia",
+          "rightAscensionHours": 10.4,
+          "declinationDegrees": -36
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 9.487419999999997,
+          "declinationDegrees": -35.9513
+        },
+        {
+          "rightAscensionHours": 10.45252666666667,
+          "declinationDegrees": -31.0678
+        },
+        {
+          "rightAscensionHours": 10.945293333333332,
+          "declinationDegrees": -37.1378
+        }
+      ]
+    },
+    {
+      "id": "aps",
+      "abbreviation": "Aps",
+      "name": "Apus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/2",
+        "data/constellations.lines.json#features/2"
+      ],
+      "referencePoints": [
+        {
+          "name": "Apus",
+          "rightAscensionHours": 16,
+          "declinationDegrees": -74
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 14.797699999999999,
+          "declinationDegrees": -79.0448
+        },
+        {
+          "rightAscensionHours": 16.339113333333334,
+          "declinationDegrees": -78.6957
+        },
+        {
+          "rightAscensionHours": 16.71796,
+          "declinationDegrees": -77.5174
+        },
+        {
+          "rightAscensionHours": 16.55752,
+          "declinationDegrees": -78.8971
+        }
+      ]
+    },
+    {
+      "id": "aql",
+      "abbreviation": "Aql",
+      "name": "Aquila",
+      "sourceRecordIds": [
+        "data/constellations.json#features/4",
+        "data/constellations.lines.json#features/4"
+      ],
+      "referencePoints": [
+        {
+          "name": "Aquila",
+          "rightAscensionHours": 19.4,
+          "declinationDegrees": 8
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 19.770993333333333,
+          "declinationDegrees": 10.6133
+        },
+        {
+          "rightAscensionHours": 19.846386666666668,
+          "declinationDegrees": 8.8683
+        },
+        {
+          "rightAscensionHours": 19.92188666666667,
+          "declinationDegrees": 6.4068
+        },
+        {
+          "rightAscensionHours": 20.188413333333333,
+          "declinationDegrees": -0.8215
+        },
+        {
+          "rightAscensionHours": 19.874546666666667,
+          "declinationDegrees": 1.0057
+        },
+        {
+          "rightAscensionHours": 19.424973333333334,
+          "declinationDegrees": 3.1148
+        },
+        {
+          "rightAscensionHours": 19.09016666666667,
+          "declinationDegrees": 13.8635
+        },
+        {
+          "rightAscensionHours": 19.10414666666667,
+          "declinationDegrees": -4.8826
+        }
+      ]
+    },
+    {
+      "id": "aqr",
+      "abbreviation": "Aqr",
+      "name": "Aquarius",
+      "sourceRecordIds": [
+        "data/constellations.json#features/3",
+        "data/constellations.lines.json#features/3"
+      ],
+      "referencePoints": [
+        {
+          "name": "Aquarius",
+          "rightAscensionHours": 22.5,
+          "declinationDegrees": -5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 20.7946,
+          "declinationDegrees": -9.4958
+        },
+        {
+          "rightAscensionHours": 20.877566666666667,
+          "declinationDegrees": -8.9833
+        },
+        {
+          "rightAscensionHours": 21.52598,
+          "declinationDegrees": -5.5712
+        },
+        {
+          "rightAscensionHours": 22.096400000000003,
+          "declinationDegrees": -0.3199
+        },
+        {
+          "rightAscensionHours": 22.360940000000003,
+          "declinationDegrees": -1.3873
+        },
+        {
+          "rightAscensionHours": 22.48053333333333,
+          "declinationDegrees": -0.02
+        },
+        {
+          "rightAscensionHours": 22.58927333333333,
+          "declinationDegrees": -0.1175
+        },
+        {
+          "rightAscensionHours": 22.876906666666667,
+          "declinationDegrees": -7.5796
+        },
+        {
+          "rightAscensionHours": 23.298393333333333,
+          "declinationDegrees": -9.1825
+        },
+        {
+          "rightAscensionHours": 23.157446666666665,
+          "declinationDegrees": -21.1724
+        },
+        {
+          "rightAscensionHours": 22.107286666666667,
+          "declinationDegrees": -13.8697
+        },
+        {
+          "rightAscensionHours": 22.28056666666667,
+          "declinationDegrees": -7.7833
+        },
+        {
+          "rightAscensionHours": 22.421286666666667,
+          "declinationDegrees": 1.3774
+        },
+        {
+          "rightAscensionHours": 23.382839999999998,
+          "declinationDegrees": -20.1006
+        },
+        {
+          "rightAscensionHours": 23.69606,
+          "declinationDegrees": -17.8165
+        }
+      ]
+    },
+    {
+      "id": "ara",
+      "abbreviation": "Ara",
+      "name": "Ara",
+      "sourceRecordIds": [
+        "data/constellations.json#features/5",
+        "data/constellations.lines.json#features/5"
+      ],
+      "referencePoints": [
+        {
+          "name": "Ara",
+          "rightAscensionHours": 17.2,
+          "declinationDegrees": -56
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 17.423240000000003,
+          "declinationDegrees": -56.3777
+        },
+        {
+          "rightAscensionHours": 17.518306666666668,
+          "declinationDegrees": -60.6838
+        },
+        {
+          "rightAscensionHours": 16.829766666666668,
+          "declinationDegrees": -59.0414
+        },
+        {
+          "rightAscensionHours": 16.977,
+          "declinationDegrees": -55.9901
+        },
+        {
+          "rightAscensionHours": 16.993066666666667,
+          "declinationDegrees": -53.1604
+        },
+        {
+          "rightAscensionHours": 17.530693333333332,
+          "declinationDegrees": -49.8761
+        },
+        {
+          "rightAscensionHours": 17.421666666666667,
+          "declinationDegrees": -55.5299
+        }
+      ]
+    },
+    {
+      "id": "ari",
+      "abbreviation": "Ari",
+      "name": "Aries",
+      "sourceRecordIds": [
+        "data/constellations.json#features/6",
+        "data/constellations.lines.json#features/6"
+      ],
+      "referencePoints": [
+        {
+          "name": "Aries",
+          "rightAscensionHours": 2.8,
+          "declinationDegrees": 22
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 2.8330666666666655,
+          "declinationDegrees": 27.2605
+        },
+        {
+          "rightAscensionHours": 2.119560000000001,
+          "declinationDegrees": 23.4624
+        },
+        {
+          "rightAscensionHours": 1.9106666666666683,
+          "declinationDegrees": 20.808
+        },
+        {
+          "rightAscensionHours": 1.892173333333335,
+          "declinationDegrees": 19.2939
+        }
+      ]
+    },
+    {
+      "id": "aur",
+      "abbreviation": "Aur",
+      "name": "Auriga",
+      "sourceRecordIds": [
+        "data/constellations.json#features/7",
+        "data/constellations.lines.json#features/7"
+      ],
+      "referencePoints": [
+        {
+          "name": "Auriga",
+          "rightAscensionHours": 5.5,
+          "declinationDegrees": 37
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 5.992146666666668,
+          "declinationDegrees": 44.9474
+        },
+        {
+          "rightAscensionHours": 5.278153333333334,
+          "declinationDegrees": 45.998
+        },
+        {
+          "rightAscensionHours": 5.108579999999999,
+          "declinationDegrees": 41.2345
+        },
+        {
+          "rightAscensionHours": 4.949893333333334,
+          "declinationDegrees": 33.1661
+        },
+        {
+          "rightAscensionHours": 5.438199999999998,
+          "declinationDegrees": 28.6075
+        },
+        {
+          "rightAscensionHours": 5.995353333333332,
+          "declinationDegrees": 37.2126
+        },
+        {
+          "rightAscensionHours": 5.99212,
+          "declinationDegrees": 54.2847
+        },
+        {
+          "rightAscensionHours": 5.032813333333335,
+          "declinationDegrees": 43.8233
+        },
+        {
+          "rightAscensionHours": 5.0413000000000014,
+          "declinationDegrees": 41.0758
+        }
+      ]
+    },
+    {
+      "id": "boo",
+      "abbreviation": "Boo",
+      "name": "Bootes",
+      "sourceRecordIds": [
+        "data/constellations.json#features/8",
+        "data/constellations.lines.json#features/8"
+      ],
+      "referencePoints": [
+        {
+          "name": "Boötes",
+          "rightAscensionHours": 14.9,
+          "declinationDegrees": 35
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 13.787706666666667,
+          "declinationDegrees": 17.4569
+        },
+        {
+          "rightAscensionHours": 13.911413333333334,
+          "declinationDegrees": 18.3977
+        },
+        {
+          "rightAscensionHours": 14.26102,
+          "declinationDegrees": 19.1824
+        },
+        {
+          "rightAscensionHours": 14.5305,
+          "declinationDegrees": 30.3714
+        },
+        {
+          "rightAscensionHours": 14.534633333333334,
+          "declinationDegrees": 38.3083
+        },
+        {
+          "rightAscensionHours": 15.032433333333334,
+          "declinationDegrees": 40.3906
+        },
+        {
+          "rightAscensionHours": 15.258379999999999,
+          "declinationDegrees": 33.3148
+        },
+        {
+          "rightAscensionHours": 14.74978,
+          "declinationDegrees": 27.0742
+        },
+        {
+          "rightAscensionHours": 14.68582,
+          "declinationDegrees": 13.7283
+        },
+        {
+          "rightAscensionHours": 14.27306,
+          "declinationDegrees": 46.0883
+        },
+        {
+          "rightAscensionHours": 14.224393333333333,
+          "declinationDegrees": 51.7879
+        },
+        {
+          "rightAscensionHours": 14.419946666666668,
+          "declinationDegrees": 51.8507
+        }
+      ]
+    },
+    {
+      "id": "cae",
+      "abbreviation": "Cae",
+      "name": "Caelum",
+      "sourceRecordIds": [
+        "data/constellations.json#features/9",
+        "data/constellations.lines.json#features/9"
+      ],
+      "referencePoints": [
+        {
+          "name": "Caelum",
+          "rightAscensionHours": 4.9,
+          "declinationDegrees": -42
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 4.513913333333335,
+          "declinationDegrees": -44.9537
+        },
+        {
+          "rightAscensionHours": 4.676033333333332,
+          "declinationDegrees": -41.8638
+        },
+        {
+          "rightAscensionHours": 4.700966666666667,
+          "declinationDegrees": -37.1443
+        },
+        {
+          "rightAscensionHours": 5.073446666666666,
+          "declinationDegrees": -35.483
+        }
+      ]
+    },
+    {
+      "id": "cam",
+      "abbreviation": "Cam",
+      "name": "Camelopardalis",
+      "sourceRecordIds": [
+        "data/constellations.json#features/10",
+        "data/constellations.lines.json#features/10"
+      ],
+      "referencePoints": [
+        {
+          "name": "Camelopardalis",
+          "rightAscensionHours": 5.6,
+          "declinationDegrees": 72
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 4.954780000000001,
+          "declinationDegrees": 53.7521
+        },
+        {
+          "rightAscensionHours": 5.056966666666669,
+          "declinationDegrees": 60.4422
+        },
+        {
+          "rightAscensionHours": 4.900833333333333,
+          "declinationDegrees": 66.3427
+        },
+        {
+          "rightAscensionHours": 3.8393066666666678,
+          "declinationDegrees": 71.3323
+        },
+        {
+          "rightAscensionHours": 3.825353333333332,
+          "declinationDegrees": 65.526
+        },
+        {
+          "rightAscensionHours": 3.48448,
+          "declinationDegrees": 59.9403
+        },
+        {
+          "rightAscensionHours": 6.314106666666665,
+          "declinationDegrees": 69.3198
+        },
+        {
+          "rightAscensionHours": 7.001119999999999,
+          "declinationDegrees": 76.9774
+        }
+      ]
+    },
+    {
+      "id": "cap",
+      "abbreviation": "Cap",
+      "name": "Capricornus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/15",
+        "data/constellations.lines.json#features/15"
+      ],
+      "referencePoints": [
+        {
+          "name": "Capricornus",
+          "rightAscensionHours": 21,
+          "declinationDegrees": -22
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 20.29413333333333,
+          "declinationDegrees": -12.5082
+        },
+        {
+          "rightAscensionHours": 20.350186666666666,
+          "declinationDegrees": -14.7814
+        },
+        {
+          "rightAscensionHours": 20.481006666666666,
+          "declinationDegrees": -17.8137
+        },
+        {
+          "rightAscensionHours": 20.76826,
+          "declinationDegrees": -25.2709
+        },
+        {
+          "rightAscensionHours": 20.863693333333334,
+          "declinationDegrees": -26.9191
+        },
+        {
+          "rightAscensionHours": 21.444453333333335,
+          "declinationDegrees": -22.4113
+        },
+        {
+          "rightAscensionHours": 21.784013333333334,
+          "declinationDegrees": -16.1273
+        },
+        {
+          "rightAscensionHours": 21.66818,
+          "declinationDegrees": -16.6623
+        },
+        {
+          "rightAscensionHours": 21.37078,
+          "declinationDegrees": -16.8345
+        },
+        {
+          "rightAscensionHours": 21.099120000000003,
+          "declinationDegrees": -17.2329
+        }
+      ]
+    },
+    {
+      "id": "car",
+      "abbreviation": "Car",
+      "name": "Carina",
+      "sourceRecordIds": [
+        "data/constellations.json#features/16",
+        "data/constellations.lines.json#features/16"
+      ],
+      "referencePoints": [
+        {
+          "name": "Carina",
+          "rightAscensionHours": 9.6,
+          "declinationDegrees": -66
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.629353333333332,
+          "declinationDegrees": -43.1959
+        },
+        {
+          "rightAscensionHours": 6.3991999999999996,
+          "declinationDegrees": -52.6957
+        },
+        {
+          "rightAscensionHours": 9.219993333333331,
+          "declinationDegrees": -69.7172
+        },
+        {
+          "rightAscensionHours": 10.228946666666669,
+          "declinationDegrees": -70.0379
+        },
+        {
+          "rightAscensionHours": 10.715946666666666,
+          "declinationDegrees": -64.3945
+        },
+        {
+          "rightAscensionHours": 10.533740000000003,
+          "declinationDegrees": -61.6853
+        },
+        {
+          "rightAscensionHours": 10.284713333333336,
+          "declinationDegrees": -61.3323
+        },
+        {
+          "rightAscensionHours": 9.284833333333335,
+          "declinationDegrees": -59.2752
+        },
+        {
+          "rightAscensionHours": 8.375233333333336,
+          "declinationDegrees": -59.5095
+        },
+        {
+          "rightAscensionHours": 7.946306666666666,
+          "declinationDegrees": -52.9824
+        },
+        {
+          "rightAscensionHours": 8.158873333333334,
+          "declinationDegrees": -47.3366
+        },
+        {
+          "rightAscensionHours": 8.74506,
+          "declinationDegrees": -54.7088
+        },
+        {
+          "rightAscensionHours": 11.109006666666664,
+          "declinationDegrees": -62.4241
+        },
+        {
+          "rightAscensionHours": 11.14278,
+          "declinationDegrees": -61.9472
+        },
+        {
+          "rightAscensionHours": 11.21000666666667,
+          "declinationDegrees": -60.3176
+        },
+        {
+          "rightAscensionHours": 11.14316666666667,
+          "declinationDegrees": -58.975
+        },
+        {
+          "rightAscensionHours": 10.891573333333334,
+          "declinationDegrees": -58.8532
+        }
+      ]
+    },
+    {
+      "id": "cas",
+      "abbreviation": "Cas",
+      "name": "Cassiopeia",
+      "sourceRecordIds": [
+        "data/constellations.json#features/17",
+        "data/constellations.lines.json#features/17"
+      ],
+      "referencePoints": [
+        {
+          "name": "Cassiopeia",
+          "rightAscensionHours": 23.6,
+          "declinationDegrees": 55.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 1.9065933333333343,
+          "declinationDegrees": 63.6701
+        },
+        {
+          "rightAscensionHours": 1.4302666666666672,
+          "declinationDegrees": 60.2353
+        },
+        {
+          "rightAscensionHours": 0.9451466666666647,
+          "declinationDegrees": 60.7167
+        },
+        {
+          "rightAscensionHours": 0.6751200000000002,
+          "declinationDegrees": 56.5373
+        },
+        {
+          "rightAscensionHours": 0.15296666666666853,
+          "declinationDegrees": 59.1498
+        }
+      ]
+    },
+    {
+      "id": "cen",
+      "abbreviation": "Cen",
+      "name": "Centaurus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/18",
+        "data/constellations.lines.json#features/18"
+      ],
+      "referencePoints": [
+        {
+          "name": "Centaurus",
+          "rightAscensionHours": 13.3,
+          "declinationDegrees": -40
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 11.350113333333335,
+          "declinationDegrees": -54.491
+        },
+        {
+          "rightAscensionHours": 12.139306666666666,
+          "declinationDegrees": -50.7224
+        },
+        {
+          "rightAscensionHours": 12.467326666666667,
+          "declinationDegrees": -50.2306
+        },
+        {
+          "rightAscensionHours": 12.691953333333334,
+          "declinationDegrees": -48.9599
+        },
+        {
+          "rightAscensionHours": 13.664793333333334,
+          "declinationDegrees": -53.4664
+        },
+        {
+          "rightAscensionHours": 13.925659999999999,
+          "declinationDegrees": -47.2884
+        },
+        {
+          "rightAscensionHours": 13.82694,
+          "declinationDegrees": -42.4737
+        },
+        {
+          "rightAscensionHours": 13.825080000000002,
+          "declinationDegrees": -41.6877
+        },
+        {
+          "rightAscensionHours": 14.111373333333335,
+          "declinationDegrees": -36.37
+        },
+        {
+          "rightAscensionHours": 14.591786666666668,
+          "declinationDegrees": -42.1578
+        },
+        {
+          "rightAscensionHours": 14.986026666666667,
+          "declinationDegrees": -42.1042
+        },
+        {
+          "rightAscensionHours": 13.34328,
+          "declinationDegrees": -36.7123
+        },
+        {
+          "rightAscensionHours": 14.659746666666667,
+          "declinationDegrees": -60.8372
+        },
+        {
+          "rightAscensionHours": 14.063726666666668,
+          "declinationDegrees": -60.373
+        },
+        {
+          "rightAscensionHours": 12.1942,
+          "declinationDegrees": -52.3685
+        },
+        {
+          "rightAscensionHours": 11.529466666666668,
+          "declinationDegrees": -59.4421
+        }
+      ]
+    },
+    {
+      "id": "cep",
+      "abbreviation": "Cep",
+      "name": "Cepheus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/19",
+        "data/constellations.lines.json#features/19"
+      ],
+      "referencePoints": [
+        {
+          "name": "Cepheus",
+          "rightAscensionHours": 22.5,
+          "declinationDegrees": 71
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 20.493026666666665,
+          "declinationDegrees": 62.9941
+        },
+        {
+          "rightAscensionHours": 20.754826666666666,
+          "declinationDegrees": 61.8388
+        },
+        {
+          "rightAscensionHours": 21.30966,
+          "declinationDegrees": 62.5856
+        },
+        {
+          "rightAscensionHours": 21.725126666666664,
+          "declinationDegrees": 58.78
+        },
+        {
+          "rightAscensionHours": 22.250606666666666,
+          "declinationDegrees": 57.0436
+        },
+        {
+          "rightAscensionHours": 22.180913333333333,
+          "declinationDegrees": 58.2013
+        },
+        {
+          "rightAscensionHours": 22.486186666666665,
+          "declinationDegrees": 58.4152
+        },
+        {
+          "rightAscensionHours": 22.828006666666667,
+          "declinationDegrees": 66.2004
+        },
+        {
+          "rightAscensionHours": 23.655793333333335,
+          "declinationDegrees": 77.6323
+        },
+        {
+          "rightAscensionHours": 21.477666666666668,
+          "declinationDegrees": 70.5607
+        }
+      ]
+    },
+    {
+      "id": "cet",
+      "abbreviation": "Cet",
+      "name": "Cetus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/20",
+        "data/constellations.lines.json#features/20"
+      ],
+      "referencePoints": [
+        {
+          "name": "Cetus",
+          "rightAscensionHours": 1.9,
+          "declinationDegrees": -5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 2.7216799999999997,
+          "declinationDegrees": 3.2358
+        },
+        {
+          "rightAscensionHours": 2.5979066666666655,
+          "declinationDegrees": 5.5932
+        },
+        {
+          "rightAscensionHours": 2.469320000000001,
+          "declinationDegrees": 8.4601
+        },
+        {
+          "rightAscensionHours": 2.7490399999999986,
+          "declinationDegrees": 10.1141
+        },
+        {
+          "rightAscensionHours": 2.995253333333335,
+          "declinationDegrees": 8.9074
+        },
+        {
+          "rightAscensionHours": 3.0379933333333344,
+          "declinationDegrees": 4.0897
+        },
+        {
+          "rightAscensionHours": 2.6580466666666664,
+          "declinationDegrees": 0.3285
+        },
+        {
+          "rightAscensionHours": 2.3224399999999985,
+          "declinationDegrees": -2.9776
+        },
+        {
+          "rightAscensionHours": 1.8576733333333322,
+          "declinationDegrees": -10.335
+        },
+        {
+          "rightAscensionHours": 1.7344666666666664,
+          "declinationDegrees": -15.9375
+        },
+        {
+          "rightAscensionHours": 0.7264933333333337,
+          "declinationDegrees": -17.9866
+        },
+        {
+          "rightAscensionHours": 0.32380000000000186,
+          "declinationDegrees": -8.8239
+        },
+        {
+          "rightAscensionHours": 1.1431666666666653,
+          "declinationDegrees": -10.1823
+        },
+        {
+          "rightAscensionHours": 1.4003933333333332,
+          "declinationDegrees": -8.1833
+        }
+      ]
+    },
+    {
+      "id": "cha",
+      "abbreviation": "Cha",
+      "name": "Chamaeleon",
+      "sourceRecordIds": [
+        "data/constellations.json#features/21",
+        "data/constellations.lines.json#features/21"
+      ],
+      "referencePoints": [
+        {
+          "name": "Chamaeleon",
+          "rightAscensionHours": 12.6,
+          "declinationDegrees": -81
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 8.308766666666667,
+          "declinationDegrees": -76.9197
+        },
+        {
+          "rightAscensionHours": 10.591139999999996,
+          "declinationDegrees": -78.6078
+        },
+        {
+          "rightAscensionHours": 10.754533333333333,
+          "declinationDegrees": -80.4696
+        },
+        {
+          "rightAscensionHours": 12.305786666666668,
+          "declinationDegrees": -79.3122
+        },
+        {
+          "rightAscensionHours": 11.993773333333335,
+          "declinationDegrees": -78.2218
+        }
+      ]
+    },
+    {
+      "id": "cir",
+      "abbreviation": "Cir",
+      "name": "Circinus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/22",
+        "data/constellations.lines.json#features/22"
+      ],
+      "referencePoints": [
+        {
+          "name": "Circinus",
+          "rightAscensionHours": 14.5,
+          "declinationDegrees": -67
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 15.2919,
+          "declinationDegrees": -58.8012
+        },
+        {
+          "rightAscensionHours": 14.708446666666667,
+          "declinationDegrees": -64.9751
+        },
+        {
+          "rightAscensionHours": 15.389626666666667,
+          "declinationDegrees": -59.3208
+        }
+      ]
+    },
+    {
+      "id": "cma",
+      "abbreviation": "CMa",
+      "name": "Canis Maior",
+      "sourceRecordIds": [
+        "data/constellations.json#features/13",
+        "data/constellations.lines.json#features/13"
+      ],
+      "referencePoints": [
+        {
+          "name": "Canis Major",
+          "rightAscensionHours": 6.5,
+          "declinationDegrees": -26
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.378326666666665,
+          "declinationDegrees": -17.9559
+        },
+        {
+          "rightAscensionHours": 6.752479999999999,
+          "declinationDegrees": -16.7161
+        },
+        {
+          "rightAscensionHours": 7.0504066666666665,
+          "declinationDegrees": -23.8333
+        },
+        {
+          "rightAscensionHours": 7.139859999999999,
+          "declinationDegrees": -26.3932
+        },
+        {
+          "rightAscensionHours": 7.028653333333334,
+          "declinationDegrees": -27.9348
+        },
+        {
+          "rightAscensionHours": 6.977099999999999,
+          "declinationDegrees": -28.9721
+        },
+        {
+          "rightAscensionHours": 6.338553333333334,
+          "declinationDegrees": -30.0634
+        },
+        {
+          "rightAscensionHours": 7.401586666666666,
+          "declinationDegrees": -29.3031
+        },
+        {
+          "rightAscensionHours": 6.935620000000002,
+          "declinationDegrees": -17.0542
+        },
+        {
+          "rightAscensionHours": 7.062639999999999,
+          "declinationDegrees": -15.6333
+        },
+        {
+          "rightAscensionHours": 6.903166666666667,
+          "declinationDegrees": -12.0386
+        }
+      ]
+    },
+    {
+      "id": "cmi",
+      "abbreviation": "CMi",
+      "name": "Canis Minor",
+      "sourceRecordIds": [
+        "data/constellations.json#features/14",
+        "data/constellations.lines.json#features/14"
+      ],
+      "referencePoints": [
+        {
+          "name": "Canis Minor",
+          "rightAscensionHours": 7.3,
+          "declinationDegrees": 5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 7.655033333333336,
+          "declinationDegrees": 5.225
+        },
+        {
+          "rightAscensionHours": 7.452513333333331,
+          "declinationDegrees": 8.2893
+        }
+      ]
+    },
+    {
+      "id": "cnc",
+      "abbreviation": "Cnc",
+      "name": "Cancer",
+      "sourceRecordIds": [
+        "data/constellations.json#features/11",
+        "data/constellations.lines.json#features/11"
+      ],
+      "referencePoints": [
+        {
+          "name": "Cancer",
+          "rightAscensionHours": 8.55,
+          "declinationDegrees": 27
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 8.974786666666667,
+          "declinationDegrees": 11.8577
+        },
+        {
+          "rightAscensionHours": 8.744746666666666,
+          "declinationDegrees": 18.1543
+        },
+        {
+          "rightAscensionHours": 8.72142666666667,
+          "declinationDegrees": 21.4685
+        },
+        {
+          "rightAscensionHours": 8.777773333333334,
+          "declinationDegrees": 28.7651
+        },
+        {
+          "rightAscensionHours": 8.275253333333334,
+          "declinationDegrees": 9.1855
+        }
+      ]
+    },
+    {
+      "id": "col",
+      "abbreviation": "Col",
+      "name": "Columba",
+      "sourceRecordIds": [
+        "data/constellations.json#features/23",
+        "data/constellations.lines.json#features/23"
+      ],
+      "referencePoints": [
+        {
+          "name": "Columba",
+          "rightAscensionHours": 5.7,
+          "declinationDegrees": -39
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.368566666666667,
+          "declinationDegrees": -33.4364
+        },
+        {
+          "rightAscensionHours": 5.849333333333334,
+          "declinationDegrees": -35.7683
+        },
+        {
+          "rightAscensionHours": 5.660813333333333,
+          "declinationDegrees": -34.0741
+        },
+        {
+          "rightAscensionHours": 5.520206666666665,
+          "declinationDegrees": -35.4705
+        },
+        {
+          "rightAscensionHours": 5.98578,
+          "declinationDegrees": -42.8151
+        }
+      ]
+    },
+    {
+      "id": "com",
+      "abbreviation": "Com",
+      "name": "Coma Berenices",
+      "sourceRecordIds": [
+        "data/constellations.json#features/24",
+        "data/constellations.lines.json#features/24"
+      ],
+      "referencePoints": [
+        {
+          "name": "Coma Berenices",
+          "rightAscensionHours": 12.9,
+          "declinationDegrees": 24
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 13.166466666666668,
+          "declinationDegrees": 17.5294
+        },
+        {
+          "rightAscensionHours": 13.197886666666667,
+          "declinationDegrees": 27.8782
+        },
+        {
+          "rightAscensionHours": 12.448966666666667,
+          "declinationDegrees": 28.2684
+        }
+      ]
+    },
+    {
+      "id": "cra",
+      "abbreviation": "CrA",
+      "name": "Corona Australis",
+      "sourceRecordIds": [
+        "data/constellations.json#features/25",
+        "data/constellations.lines.json#features/25"
+      ],
+      "referencePoints": [
+        {
+          "name": "Corona Austrina",
+          "rightAscensionHours": 18.8,
+          "declinationDegrees": -40
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 18.978713333333335,
+          "declinationDegrees": -37.1074
+        },
+        {
+          "rightAscensionHours": 19.106973333333332,
+          "declinationDegrees": -37.0634
+        },
+        {
+          "rightAscensionHours": 19.157873333333335,
+          "declinationDegrees": -37.9045
+        },
+        {
+          "rightAscensionHours": 19.16715333333333,
+          "declinationDegrees": -39.3408
+        },
+        {
+          "rightAscensionHours": 19.13916,
+          "declinationDegrees": -40.4967
+        },
+        {
+          "rightAscensionHours": 19.051913333333335,
+          "declinationDegrees": -42.0951
+        },
+        {
+          "rightAscensionHours": 18.826386666666668,
+          "declinationDegrees": -43.4341
+        },
+        {
+          "rightAscensionHours": 18.558386666666667,
+          "declinationDegrees": -42.3125
+        }
+      ]
+    },
+    {
+      "id": "crb",
+      "abbreviation": "CrB",
+      "name": "Corona Borealis",
+      "sourceRecordIds": [
+        "data/constellations.json#features/26",
+        "data/constellations.lines.json#features/26"
+      ],
+      "referencePoints": [
+        {
+          "name": "Corona Borealis",
+          "rightAscensionHours": 15.9,
+          "declinationDegrees": 32
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 15.548826666666665,
+          "declinationDegrees": 31.3591
+        },
+        {
+          "rightAscensionHours": 15.463813333333333,
+          "declinationDegrees": 29.1057
+        },
+        {
+          "rightAscensionHours": 15.578133333333334,
+          "declinationDegrees": 26.7147
+        },
+        {
+          "rightAscensionHours": 15.71238,
+          "declinationDegrees": 26.2956
+        },
+        {
+          "rightAscensionHours": 15.826566666666668,
+          "declinationDegrees": 26.0684
+        },
+        {
+          "rightAscensionHours": 15.959793333333334,
+          "declinationDegrees": 26.8779
+        },
+        {
+          "rightAscensionHours": 16.024046666666667,
+          "declinationDegrees": 29.8511
+        }
+      ]
+    },
+    {
+      "id": "crt",
+      "abbreviation": "Crt",
+      "name": "Crater",
+      "sourceRecordIds": [
+        "data/constellations.json#features/28",
+        "data/constellations.lines.json#features/28"
+      ],
+      "referencePoints": [
+        {
+          "name": "Crater",
+          "rightAscensionHours": 11.65,
+          "declinationDegrees": -15
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 11.611366666666664,
+          "declinationDegrees": -9.8022
+        },
+        {
+          "rightAscensionHours": 11.410166666666669,
+          "declinationDegrees": -10.8593
+        },
+        {
+          "rightAscensionHours": 11.322346666666666,
+          "declinationDegrees": -14.7785
+        },
+        {
+          "rightAscensionHours": 10.996240000000004,
+          "declinationDegrees": -18.2988
+        },
+        {
+          "rightAscensionHours": 11.194299999999998,
+          "declinationDegrees": -22.8258
+        },
+        {
+          "rightAscensionHours": 11.38941333333333,
+          "declinationDegrees": -18.78
+        },
+        {
+          "rightAscensionHours": 11.414700000000002,
+          "declinationDegrees": -17.684
+        },
+        {
+          "rightAscensionHours": 11.746046666666667,
+          "declinationDegrees": -18.3507
+        },
+        {
+          "rightAscensionHours": 11.933600000000002,
+          "declinationDegrees": -17.1508
+        }
+      ]
+    },
+    {
+      "id": "cru",
+      "abbreviation": "Cru",
+      "name": "Crux",
+      "sourceRecordIds": [
+        "data/constellations.json#features/29",
+        "data/constellations.lines.json#features/29"
+      ],
+      "referencePoints": [
+        {
+          "name": "Crux",
+          "rightAscensionHours": 12.9,
+          "declinationDegrees": -62
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 12.795353333333333,
+          "declinationDegrees": -59.6888
+        },
+        {
+          "rightAscensionHours": 12.25242,
+          "declinationDegrees": -58.7489
+        },
+        {
+          "rightAscensionHours": 12.443306666666667,
+          "declinationDegrees": -63.0991
+        },
+        {
+          "rightAscensionHours": 12.519433333333334,
+          "declinationDegrees": -57.1132
+        }
+      ]
+    },
+    {
+      "id": "crv",
+      "abbreviation": "Crv",
+      "name": "Corvus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/27",
+        "data/constellations.lines.json#features/27"
+      ],
+      "referencePoints": [
+        {
+          "name": "Corvus",
+          "rightAscensionHours": 12.4,
+          "declinationDegrees": -19.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 12.140226666666667,
+          "declinationDegrees": -24.7289
+        },
+        {
+          "rightAscensionHours": 12.168746666666667,
+          "declinationDegrees": -22.6198
+        },
+        {
+          "rightAscensionHours": 12.263433333333333,
+          "declinationDegrees": -17.5419
+        },
+        {
+          "rightAscensionHours": 12.49774,
+          "declinationDegrees": -16.5154
+        },
+        {
+          "rightAscensionHours": 12.57312,
+          "declinationDegrees": -23.3968
+        }
+      ]
+    },
+    {
+      "id": "cvn",
+      "abbreviation": "CVn",
+      "name": "Canes Venatici",
+      "sourceRecordIds": [
+        "data/constellations.json#features/12",
+        "data/constellations.lines.json#features/12"
+      ],
+      "referencePoints": [
+        {
+          "name": "Canes Venatici",
+          "rightAscensionHours": 12.8,
+          "declinationDegrees": 43
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 12.93346,
+          "declinationDegrees": 38.3149
+        },
+        {
+          "rightAscensionHours": 12.562373333333333,
+          "declinationDegrees": 41.3575
+        }
+      ]
+    },
+    {
+      "id": "cyg",
+      "abbreviation": "Cyg",
+      "name": "Cygnus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/30",
+        "data/constellations.lines.json#features/30"
+      ],
+      "referencePoints": [
+        {
+          "name": "Cygnus",
+          "rightAscensionHours": 20.5,
+          "declinationDegrees": 50
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 21.215606666666666,
+          "declinationDegrees": 30.2269
+        },
+        {
+          "rightAscensionHours": 20.770186666666667,
+          "declinationDegrees": 33.9703
+        },
+        {
+          "rightAscensionHours": 20.370473333333333,
+          "declinationDegrees": 40.2567
+        },
+        {
+          "rightAscensionHours": 19.749579999999998,
+          "declinationDegrees": 45.1308
+        },
+        {
+          "rightAscensionHours": 19.4951,
+          "declinationDegrees": 51.7298
+        },
+        {
+          "rightAscensionHours": 19.28504666666667,
+          "declinationDegrees": 53.3685
+        },
+        {
+          "rightAscensionHours": 20.690533333333335,
+          "declinationDegrees": 45.2803
+        },
+        {
+          "rightAscensionHours": 19.938433333333332,
+          "declinationDegrees": 35.0834
+        },
+        {
+          "rightAscensionHours": 19.51202,
+          "declinationDegrees": 27.9597
+        }
+      ]
+    },
+    {
+      "id": "del",
+      "abbreviation": "Del",
+      "name": "Delphinus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/31",
+        "data/constellations.lines.json#features/31"
+      ],
+      "referencePoints": [
+        {
+          "name": "Delphinus",
+          "rightAscensionHours": 20.6,
+          "declinationDegrees": 6
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 20.553546666666666,
+          "declinationDegrees": 11.3033
+        },
+        {
+          "rightAscensionHours": 20.625819999999997,
+          "declinationDegrees": 14.5951
+        },
+        {
+          "rightAscensionHours": 20.660633333333333,
+          "declinationDegrees": 15.9121
+        },
+        {
+          "rightAscensionHours": 20.77746,
+          "declinationDegrees": 16.1241
+        },
+        {
+          "rightAscensionHours": 20.72431333333333,
+          "declinationDegrees": 15.0746
+        }
+      ]
+    },
+    {
+      "id": "dor",
+      "abbreviation": "Dor",
+      "name": "Dorado",
+      "sourceRecordIds": [
+        "data/constellations.json#features/32",
+        "data/constellations.lines.json#features/32"
+      ],
+      "referencePoints": [
+        {
+          "name": "Dorado",
+          "rightAscensionHours": 5.1,
+          "declinationDegrees": -64
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 4.267106666666666,
+          "declinationDegrees": -51.4866
+        },
+        {
+          "rightAscensionHours": 4.566606666666667,
+          "declinationDegrees": -55.045
+        },
+        {
+          "rightAscensionHours": 5.560419999999999,
+          "declinationDegrees": -62.4898
+        },
+        {
+          "rightAscensionHours": 5.7462133333333325,
+          "declinationDegrees": -65.7355
+        },
+        {
+          "rightAscensionHours": 5.901679999999999,
+          "declinationDegrees": -63.0896
+        },
+        {
+          "rightAscensionHours": 5.091846666666667,
+          "declinationDegrees": -57.4727
+        }
+      ]
+    },
+    {
+      "id": "dra",
+      "abbreviation": "Dra",
+      "name": "Draco",
+      "sourceRecordIds": [
+        "data/constellations.json#features/33",
+        "data/constellations.lines.json#features/33"
+      ],
+      "referencePoints": [
+        {
+          "name": "Draco",
+          "rightAscensionHours": 17.9,
+          "declinationDegrees": 64
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 17.89214666666667,
+          "declinationDegrees": 56.8726
+        },
+        {
+          "rightAscensionHours": 17.943433333333335,
+          "declinationDegrees": 51.4889
+        },
+        {
+          "rightAscensionHours": 17.507213333333333,
+          "declinationDegrees": 52.3014
+        },
+        {
+          "rightAscensionHours": 17.537786666666666,
+          "declinationDegrees": 55.173
+        },
+        {
+          "rightAscensionHours": 19.209253333333333,
+          "declinationDegrees": 67.6615
+        },
+        {
+          "rightAscensionHours": 18.345953333333334,
+          "declinationDegrees": 71.3378
+        },
+        {
+          "rightAscensionHours": 17.14644,
+          "declinationDegrees": 65.7147
+        },
+        {
+          "rightAscensionHours": 16.39986,
+          "declinationDegrees": 61.5142
+        },
+        {
+          "rightAscensionHours": 16.03148666666667,
+          "declinationDegrees": 58.5653
+        },
+        {
+          "rightAscensionHours": 15.415493333333334,
+          "declinationDegrees": 58.9661
+        },
+        {
+          "rightAscensionHours": 14.073153333333332,
+          "declinationDegrees": 64.3759
+        },
+        {
+          "rightAscensionHours": 12.55804,
+          "declinationDegrees": 69.7882
+        },
+        {
+          "rightAscensionHours": 11.523393333333335,
+          "declinationDegrees": 69.3311
+        },
+        {
+          "rightAscensionHours": 18.350939999999998,
+          "declinationDegrees": 72.7328
+        },
+        {
+          "rightAscensionHours": 19.80287333333333,
+          "declinationDegrees": 70.2679
+        }
+      ]
+    },
+    {
+      "id": "equ",
+      "abbreviation": "Equ",
+      "name": "Equuleus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/34",
+        "data/constellations.lines.json#features/34"
+      ],
+      "referencePoints": [
+        {
+          "name": "Equuleus",
+          "rightAscensionHours": 21.35,
+          "declinationDegrees": 11.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 21.263733333333334,
+          "declinationDegrees": 5.2478
+        },
+        {
+          "rightAscensionHours": 21.241339999999997,
+          "declinationDegrees": 10.007
+        },
+        {
+          "rightAscensionHours": 21.17236,
+          "declinationDegrees": 10.1316
+        }
+      ]
+    },
+    {
+      "id": "eri",
+      "abbreviation": "Eri",
+      "name": "Eridanus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/35",
+        "data/constellations.lines.json#features/35"
+      ],
+      "referencePoints": [
+        {
+          "name": "Eridanus",
+          "rightAscensionHours": 3.5,
+          "declinationDegrees": -18
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 5.130826666666667,
+          "declinationDegrees": -5.0864
+        },
+        {
+          "rightAscensionHours": 4.758373333333335,
+          "declinationDegrees": -3.2547
+        },
+        {
+          "rightAscensionHours": 4.605319999999998,
+          "declinationDegrees": -3.3525
+        },
+        {
+          "rightAscensionHours": 4.1977600000000015,
+          "declinationDegrees": -6.8376
+        },
+        {
+          "rightAscensionHours": 3.967160000000001,
+          "declinationDegrees": -13.5085
+        },
+        {
+          "rightAscensionHours": 3.769039999999999,
+          "declinationDegrees": -12.1016
+        },
+        {
+          "rightAscensionHours": 3.720806666666666,
+          "declinationDegrees": -9.7634
+        },
+        {
+          "rightAscensionHours": 3.5488466666666683,
+          "declinationDegrees": -9.4583
+        },
+        {
+          "rightAscensionHours": 2.94046,
+          "declinationDegrees": -8.8981
+        },
+        {
+          "rightAscensionHours": 2.735373333333333,
+          "declinationDegrees": -13.8587
+        },
+        {
+          "rightAscensionHours": 2.75172,
+          "declinationDegrees": -18.5726
+        },
+        {
+          "rightAscensionHours": 3.0398599999999987,
+          "declinationDegrees": -23.6245
+        },
+        {
+          "rightAscensionHours": 3.325279999999998,
+          "declinationDegrees": -21.7579
+        },
+        {
+          "rightAscensionHours": 3.5631333333333335,
+          "declinationDegrees": -21.6329
+        },
+        {
+          "rightAscensionHours": 3.7807999999999993,
+          "declinationDegrees": -23.2497
+        },
+        {
+          "rightAscensionHours": 4.592513333333333,
+          "declinationDegrees": -30.5623
+        },
+        {
+          "rightAscensionHours": 4.400613333333335,
+          "declinationDegrees": -34.0168
+        },
+        {
+          "rightAscensionHours": 4.2982400000000025,
+          "declinationDegrees": -33.7983
+        },
+        {
+          "rightAscensionHours": 3.8242333333333325,
+          "declinationDegrees": -36.2003
+        },
+        {
+          "rightAscensionHours": 3.618246666666668,
+          "declinationDegrees": -40.2745
+        },
+        {
+          "rightAscensionHours": 3.3321266666666665,
+          "declinationDegrees": -43.0698
+        },
+        {
+          "rightAscensionHours": 2.9710199999999984,
+          "declinationDegrees": -40.3047
+        },
+        {
+          "rightAscensionHours": 2.6777866666666683,
+          "declinationDegrees": -39.8554
+        },
+        {
+          "rightAscensionHours": 2.4497533333333346,
+          "declinationDegrees": -47.7038
+        },
+        {
+          "rightAscensionHours": 2.2751600000000014,
+          "declinationDegrees": -51.5122
+        },
+        {
+          "rightAscensionHours": 1.9326333333333348,
+          "declinationDegrees": -51.6089
+        },
+        {
+          "rightAscensionHours": 1.6285666666666656,
+          "declinationDegrees": -57.2368
+        }
+      ]
+    },
+    {
+      "id": "for",
+      "abbreviation": "For",
+      "name": "Fornax",
+      "sourceRecordIds": [
+        "data/constellations.json#features/36",
+        "data/constellations.lines.json#features/36"
+      ],
+      "referencePoints": [
+        {
+          "name": "Fornax",
+          "rightAscensionHours": 2.7,
+          "declinationDegrees": -28
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 3.201260000000002,
+          "declinationDegrees": -28.9876
+        },
+        {
+          "rightAscensionHours": 2.818173333333334,
+          "declinationDegrees": -32.4059
+        },
+        {
+          "rightAscensionHours": 2.074846666666667,
+          "declinationDegrees": -29.2968
+        }
+      ]
+    },
+    {
+      "id": "gem",
+      "abbreviation": "Gem",
+      "name": "Gemini",
+      "sourceRecordIds": [
+        "data/constellations.json#features/37",
+        "data/constellations.lines.json#features/37"
+      ],
+      "referencePoints": [
+        {
+          "name": "Gemini",
+          "rightAscensionHours": 7.15,
+          "declinationDegrees": 23.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.247960000000001,
+          "declinationDegrees": 22.5068
+        },
+        {
+          "rightAscensionHours": 6.382673333333332,
+          "declinationDegrees": 22.5136
+        },
+        {
+          "rightAscensionHours": 6.732200000000001,
+          "declinationDegrees": 25.1311
+        },
+        {
+          "rightAscensionHours": 7.1856599999999995,
+          "declinationDegrees": 30.2452
+        },
+        {
+          "rightAscensionHours": 7.576626666666668,
+          "declinationDegrees": 31.8883
+        },
+        {
+          "rightAscensionHours": 7.755266666666667,
+          "declinationDegrees": 28.0262
+        },
+        {
+          "rightAscensionHours": 7.598706666666666,
+          "declinationDegrees": 26.8957
+        },
+        {
+          "rightAscensionHours": 7.335380000000002,
+          "declinationDegrees": 21.9823
+        },
+        {
+          "rightAscensionHours": 7.068479999999999,
+          "declinationDegrees": 20.5703
+        },
+        {
+          "rightAscensionHours": 6.6285266666666685,
+          "declinationDegrees": 16.3993
+        },
+        {
+          "rightAscensionHours": 6.754826666666668,
+          "declinationDegrees": 12.8956
+        },
+        {
+          "rightAscensionHours": 7.301546666666665,
+          "declinationDegrees": 16.5404
+        }
+      ]
+    },
+    {
+      "id": "gru",
+      "abbreviation": "Gru",
+      "name": "Grus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/38",
+        "data/constellations.lines.json#features/38"
+      ],
+      "referencePoints": [
+        {
+          "name": "Grus",
+          "rightAscensionHours": 22.8,
+          "declinationDegrees": -41.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 23.014666666666667,
+          "declinationDegrees": -52.7541
+        },
+        {
+          "rightAscensionHours": 22.809246666666663,
+          "declinationDegrees": -51.3169
+        },
+        {
+          "rightAscensionHours": 22.711126666666665,
+          "declinationDegrees": -46.8846
+        },
+        {
+          "rightAscensionHours": 22.495953333333333,
+          "declinationDegrees": -43.7492
+        },
+        {
+          "rightAscensionHours": 22.13722,
+          "declinationDegrees": -46.961
+        },
+        {
+          "rightAscensionHours": 22.487826666666667,
+          "declinationDegrees": -43.4956
+        },
+        {
+          "rightAscensionHours": 22.26025333333333,
+          "declinationDegrees": -41.3467
+        },
+        {
+          "rightAscensionHours": 22.101913333333336,
+          "declinationDegrees": -39.5434
+        },
+        {
+          "rightAscensionHours": 21.898813333333333,
+          "declinationDegrees": -37.3649
+        }
+      ]
+    },
+    {
+      "id": "her",
+      "abbreviation": "Her",
+      "name": "Hercules",
+      "sourceRecordIds": [
+        "data/constellations.json#features/39",
+        "data/constellations.lines.json#features/39"
+      ],
+      "referencePoints": [
+        {
+          "name": "Hercules",
+          "rightAscensionHours": 16.9,
+          "declinationDegrees": 35
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 16.36534,
+          "declinationDegrees": 19.1531
+        },
+        {
+          "rightAscensionHours": 16.503666666666668,
+          "declinationDegrees": 21.4896
+        },
+        {
+          "rightAscensionHours": 16.688100000000002,
+          "declinationDegrees": 31.6027
+        },
+        {
+          "rightAscensionHours": 16.71493333333333,
+          "declinationDegrees": 38.9223
+        },
+        {
+          "rightAscensionHours": 16.568386666666665,
+          "declinationDegrees": 42.437
+        },
+        {
+          "rightAscensionHours": 16.329013333333332,
+          "declinationDegrees": 46.3134
+        },
+        {
+          "rightAscensionHours": 16.146160000000002,
+          "declinationDegrees": 44.9349
+        },
+        {
+          "rightAscensionHours": 15.877926666666667,
+          "declinationDegrees": 42.4515
+        },
+        {
+          "rightAscensionHours": 17.004826666666666,
+          "declinationDegrees": 30.9264
+        },
+        {
+          "rightAscensionHours": 17.250786666666666,
+          "declinationDegrees": 36.8092
+        },
+        {
+          "rightAscensionHours": 17.937553333333334,
+          "declinationDegrees": 37.2505
+        },
+        {
+          "rightAscensionHours": 17.394706666666664,
+          "declinationDegrees": 37.1459
+        },
+        {
+          "rightAscensionHours": 17.250533333333333,
+          "declinationDegrees": 24.8392
+        },
+        {
+          "rightAscensionHours": 17.774313333333332,
+          "declinationDegrees": 27.7207
+        },
+        {
+          "rightAscensionHours": 17.962746666666664,
+          "declinationDegrees": 29.2479
+        },
+        {
+          "rightAscensionHours": 18.125706666666666,
+          "declinationDegrees": 28.7625
+        },
+        {
+          "rightAscensionHours": 17.244126666666666,
+          "declinationDegrees": 14.3903
+        }
+      ]
+    },
+    {
+      "id": "hor",
+      "abbreviation": "Hor",
+      "name": "Horologium",
+      "sourceRecordIds": [
+        "data/constellations.json#features/40",
+        "data/constellations.lines.json#features/40"
+      ],
+      "referencePoints": [
+        {
+          "name": "Horologium",
+          "rightAscensionHours": 3.4,
+          "declinationDegrees": -52
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 4.233366666666666,
+          "declinationDegrees": -42.2944
+        },
+        {
+          "rightAscensionHours": 2.709293333333335,
+          "declinationDegrees": -50.8003
+        },
+        {
+          "rightAscensionHours": 2.6234333333333324,
+          "declinationDegrees": -52.5431
+        },
+        {
+          "rightAscensionHours": 2.677673333333333,
+          "declinationDegrees": -54.5499
+        },
+        {
+          "rightAscensionHours": 3.060226666666665,
+          "declinationDegrees": -59.7378
+        },
+        {
+          "rightAscensionHours": 2.979946666666668,
+          "declinationDegrees": -64.0713
+        }
+      ]
+    },
+    {
+      "id": "hya",
+      "abbreviation": "Hya",
+      "name": "Hydra",
+      "sourceRecordIds": [
+        "data/constellations.json#features/41",
+        "data/constellations.lines.json#features/41"
+      ],
+      "referencePoints": [
+        {
+          "name": "Hydra",
+          "rightAscensionHours": 10,
+          "declinationDegrees": -22
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 8.779586666666667,
+          "declinationDegrees": 6.4188
+        },
+        {
+          "rightAscensionHours": 8.807213333333333,
+          "declinationDegrees": 5.8378
+        },
+        {
+          "rightAscensionHours": 8.720406666666667,
+          "declinationDegrees": 3.3987
+        },
+        {
+          "rightAscensionHours": 8.645953333333333,
+          "declinationDegrees": 3.3414
+        },
+        {
+          "rightAscensionHours": 8.6276,
+          "declinationDegrees": 5.7038
+        },
+        {
+          "rightAscensionHours": 8.923226666666665,
+          "declinationDegrees": 5.9456
+        },
+        {
+          "rightAscensionHours": 9.239406666666666,
+          "declinationDegrees": 2.3143
+        },
+        {
+          "rightAscensionHours": 9.664266666666666,
+          "declinationDegrees": -1.1428
+        },
+        {
+          "rightAscensionHours": 9.459786666666666,
+          "declinationDegrees": -8.6586
+        },
+        {
+          "rightAscensionHours": 9.857973333333332,
+          "declinationDegrees": -14.8466
+        },
+        {
+          "rightAscensionHours": 10.176466666666663,
+          "declinationDegrees": -12.3541
+        },
+        {
+          "rightAscensionHours": 10.434840000000001,
+          "declinationDegrees": -16.8363
+        },
+        {
+          "rightAscensionHours": 10.82708,
+          "declinationDegrees": -16.1936
+        },
+        {
+          "rightAscensionHours": 11.550033333333333,
+          "declinationDegrees": -31.8576
+        },
+        {
+          "rightAscensionHours": 11.881813333333335,
+          "declinationDegrees": -33.9081
+        },
+        {
+          "rightAscensionHours": 13.31536,
+          "declinationDegrees": -23.1715
+        },
+        {
+          "rightAscensionHours": 14.106193333333332,
+          "declinationDegrees": -26.6824
+        },
+        {
+          "rightAscensionHours": 14.838140000000001,
+          "declinationDegrees": -27.9604
+        }
+      ]
+    },
+    {
+      "id": "hyi",
+      "abbreviation": "Hyi",
+      "name": "Hydrus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/42",
+        "data/constellations.lines.json#features/42"
+      ],
+      "referencePoints": [
+        {
+          "name": "Hydrus",
+          "rightAscensionHours": 2.3,
+          "declinationDegrees": -72
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 0.42918666666666544,
+          "declinationDegrees": -77.2542
+        },
+        {
+          "rightAscensionHours": 3.78732,
+          "declinationDegrees": -74.239
+        },
+        {
+          "rightAscensionHours": 2.659819999999998,
+          "declinationDegrees": -68.2669
+        },
+        {
+          "rightAscensionHours": 2.3624866666666664,
+          "declinationDegrees": -68.6594
+        },
+        {
+          "rightAscensionHours": 1.9155933333333337,
+          "declinationDegrees": -67.6473
+        },
+        {
+          "rightAscensionHours": 1.9794999999999996,
+          "declinationDegrees": -61.5699
+        }
+      ]
+    },
+    {
+      "id": "ind",
+      "abbreviation": "Ind",
+      "name": "Indus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/43",
+        "data/constellations.lines.json#features/43"
+      ],
+      "referencePoints": [
+        {
+          "name": "Indus",
+          "rightAscensionHours": 21.2,
+          "declinationDegrees": -55.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 20.62612,
+          "declinationDegrees": -47.2915
+        },
+        {
+          "rightAscensionHours": 20.73398,
+          "declinationDegrees": -51.921
+        },
+        {
+          "rightAscensionHours": 20.9135,
+          "declinationDegrees": -58.4542
+        },
+        {
+          "rightAscensionHours": 21.965300000000003,
+          "declinationDegrees": -54.9926
+        },
+        {
+          "rightAscensionHours": 21.331106666666663,
+          "declinationDegrees": -53.4494
+        }
+      ]
+    },
+    {
+      "id": "lac",
+      "abbreviation": "Lac",
+      "name": "Lacerta",
+      "sourceRecordIds": [
+        "data/constellations.json#features/44",
+        "data/constellations.lines.json#features/44"
+      ],
+      "referencePoints": [
+        {
+          "name": "Lacerta",
+          "rightAscensionHours": 22.8,
+          "declinationDegrees": 47
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 22.392673333333335,
+          "declinationDegrees": 52.229
+        },
+        {
+          "rightAscensionHours": 22.521526666666666,
+          "declinationDegrees": 50.2825
+        },
+        {
+          "rightAscensionHours": 22.492173333333334,
+          "declinationDegrees": 47.7069
+        },
+        {
+          "rightAscensionHours": 22.350426666666667,
+          "declinationDegrees": 46.5366
+        },
+        {
+          "rightAscensionHours": 22.508126666666666,
+          "declinationDegrees": 43.1234
+        },
+        {
+          "rightAscensionHours": 22.67524,
+          "declinationDegrees": 44.2763
+        },
+        {
+          "rightAscensionHours": 22.408606666666667,
+          "declinationDegrees": 49.4764
+        },
+        {
+          "rightAscensionHours": 22.231313333333333,
+          "declinationDegrees": 39.7149
+        },
+        {
+          "rightAscensionHours": 22.26616,
+          "declinationDegrees": 37.7487
+        }
+      ]
+    },
+    {
+      "id": "leo",
+      "abbreviation": "Leo",
+      "name": "Leo",
+      "sourceRecordIds": [
+        "data/constellations.json#features/45",
+        "data/constellations.lines.json#features/45"
+      ],
+      "referencePoints": [
+        {
+          "name": "Leo",
+          "rightAscensionHours": 10.6,
+          "declinationDegrees": 15
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 10.13953333333333,
+          "declinationDegrees": 11.9672
+        },
+        {
+          "rightAscensionHours": 10.122206666666667,
+          "declinationDegrees": 16.7627
+        },
+        {
+          "rightAscensionHours": 10.332873333333335,
+          "declinationDegrees": 19.8415
+        },
+        {
+          "rightAscensionHours": 11.235140000000001,
+          "declinationDegrees": 20.5237
+        },
+        {
+          "rightAscensionHours": 11.81766,
+          "declinationDegrees": 14.5721
+        },
+        {
+          "rightAscensionHours": 11.23733333333333,
+          "declinationDegrees": 15.4296
+        },
+        {
+          "rightAscensionHours": 10.278173333333333,
+          "declinationDegrees": 23.4173
+        },
+        {
+          "rightAscensionHours": 9.879393333333333,
+          "declinationDegrees": 26.007
+        },
+        {
+          "rightAscensionHours": 9.764186666666667,
+          "declinationDegrees": 23.7743
+        }
+      ]
+    },
+    {
+      "id": "lep",
+      "abbreviation": "Lep",
+      "name": "Lepus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/47",
+        "data/constellations.lines.json#features/47"
+      ],
+      "referencePoints": [
+        {
+          "name": "Lepus",
+          "rightAscensionHours": 5.9,
+          "declinationDegrees": -25
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.1025866666666655,
+          "declinationDegrees": -14.9353
+        },
+        {
+          "rightAscensionHours": 5.94008,
+          "declinationDegrees": -14.1677
+        },
+        {
+          "rightAscensionHours": 5.782593333333334,
+          "declinationDegrees": -14.822
+        },
+        {
+          "rightAscensionHours": 5.5455066666666655,
+          "declinationDegrees": -17.8223
+        },
+        {
+          "rightAscensionHours": 5.215526666666665,
+          "declinationDegrees": -16.2055
+        },
+        {
+          "rightAscensionHours": 5.091019999999999,
+          "declinationDegrees": -22.371
+        },
+        {
+          "rightAscensionHours": 5.4707533333333345,
+          "declinationDegrees": -20.7594
+        },
+        {
+          "rightAscensionHours": 5.741053333333332,
+          "declinationDegrees": -22.4484
+        },
+        {
+          "rightAscensionHours": 5.85536,
+          "declinationDegrees": -20.8791
+        },
+        {
+          "rightAscensionHours": 5.220519999999999,
+          "declinationDegrees": -12.9413
+        },
+        {
+          "rightAscensionHours": 5.326260000000002,
+          "declinationDegrees": -13.1768
+        }
+      ]
+    },
+    {
+      "id": "lib",
+      "abbreviation": "Lib",
+      "name": "Libra",
+      "sourceRecordIds": [
+        "data/constellations.json#features/48",
+        "data/constellations.lines.json#features/48"
+      ],
+      "referencePoints": [
+        {
+          "name": "Libra",
+          "rightAscensionHours": 15.4,
+          "declinationDegrees": -26
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 15.067839999999999,
+          "declinationDegrees": -25.282
+        },
+        {
+          "rightAscensionHours": 14.847973333333334,
+          "declinationDegrees": -16.0418
+        },
+        {
+          "rightAscensionHours": 15.283446666666666,
+          "declinationDegrees": -9.3829
+        },
+        {
+          "rightAscensionHours": 15.592106666666666,
+          "declinationDegrees": -14.7895
+        },
+        {
+          "rightAscensionHours": 15.617066666666666,
+          "declinationDegrees": -28.1351
+        },
+        {
+          "rightAscensionHours": 15.644266666666665,
+          "declinationDegrees": -29.7778
+        }
+      ]
+    },
+    {
+      "id": "lmi",
+      "abbreviation": "LMi",
+      "name": "Leo Minor",
+      "sourceRecordIds": [
+        "data/constellations.json#features/46",
+        "data/constellations.lines.json#features/46"
+      ],
+      "referencePoints": [
+        {
+          "name": "Leo Minor",
+          "rightAscensionHours": 10.5,
+          "declinationDegrees": 30
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 10.12382,
+          "declinationDegrees": 35.2447
+        },
+        {
+          "rightAscensionHours": 10.431893333333331,
+          "declinationDegrees": 33.7961
+        },
+        {
+          "rightAscensionHours": 10.888526666666667,
+          "declinationDegrees": 34.2149
+        },
+        {
+          "rightAscensionHours": 10.464720000000003,
+          "declinationDegrees": 36.7072
+        },
+        {
+          "rightAscensionHours": 9.570386666666666,
+          "declinationDegrees": 36.3976
+        }
+      ]
+    },
+    {
+      "id": "lup",
+      "abbreviation": "Lup",
+      "name": "Lupus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/49",
+        "data/constellations.lines.json#features/49"
+      ],
+      "referencePoints": [
+        {
+          "name": "Lupus",
+          "rightAscensionHours": 15.25,
+          "declinationDegrees": -35
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 15.849313333333333,
+          "declinationDegrees": -33.6272
+        },
+        {
+          "rightAscensionHours": 15.662773333333332,
+          "declinationDegrees": -34.4119
+        },
+        {
+          "rightAscensionHours": 15.363433333333335,
+          "declinationDegrees": -36.2614
+        },
+        {
+          "rightAscensionHours": 15.3562,
+          "declinationDegrees": -40.6475
+        },
+        {
+          "rightAscensionHours": 14.975533333333335,
+          "declinationDegrees": -43.134
+        },
+        {
+          "rightAscensionHours": 14.698820000000001,
+          "declinationDegrees": -47.3882
+        },
+        {
+          "rightAscensionHours": 15.204746666666667,
+          "declinationDegrees": -52.0992
+        },
+        {
+          "rightAscensionHours": 15.308893333333334,
+          "declinationDegrees": -47.8753
+        },
+        {
+          "rightAscensionHours": 15.37802,
+          "declinationDegrees": -44.6896
+        },
+        {
+          "rightAscensionHours": 15.58568,
+          "declinationDegrees": -41.1668
+        },
+        {
+          "rightAscensionHours": 16.002033333333333,
+          "declinationDegrees": -38.3967
+        },
+        {
+          "rightAscensionHours": 16.109873333333333,
+          "declinationDegrees": -36.8023
+        }
+      ]
+    },
+    {
+      "id": "lyn",
+      "abbreviation": "Lyn",
+      "name": "Lynx",
+      "sourceRecordIds": [
+        "data/constellations.json#features/50",
+        "data/constellations.lines.json#features/50"
+      ],
+      "referencePoints": [
+        {
+          "name": "Lynx",
+          "rightAscensionHours": 8.1,
+          "declinationDegrees": 49
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.327053333333334,
+          "declinationDegrees": 59.011
+        },
+        {
+          "rightAscensionHours": 6.954613333333335,
+          "declinationDegrees": 58.4228
+        },
+        {
+          "rightAscensionHours": 7.4452333333333325,
+          "declinationDegrees": 49.2115
+        },
+        {
+          "rightAscensionHours": 8.380586666666666,
+          "declinationDegrees": 43.1881
+        },
+        {
+          "rightAscensionHours": 9.01066,
+          "declinationDegrees": 41.7829
+        },
+        {
+          "rightAscensionHours": 9.314066666666667,
+          "declinationDegrees": 36.8026
+        },
+        {
+          "rightAscensionHours": 9.35092,
+          "declinationDegrees": 34.3926
+        }
+      ]
+    },
+    {
+      "id": "lyr",
+      "abbreviation": "Lyr",
+      "name": "Lyra",
+      "sourceRecordIds": [
+        "data/constellations.json#features/51",
+        "data/constellations.lines.json#features/51"
+      ],
+      "referencePoints": [
+        {
+          "name": "Lyra",
+          "rightAscensionHours": 18.6,
+          "declinationDegrees": 30
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 18.746213333333333,
+          "declinationDegrees": 37.6051
+        },
+        {
+          "rightAscensionHours": 18.73966,
+          "declinationDegrees": 39.6127
+        },
+        {
+          "rightAscensionHours": 18.615646666666667,
+          "declinationDegrees": 38.7837
+        },
+        {
+          "rightAscensionHours": 18.908413333333332,
+          "declinationDegrees": 36.8986
+        },
+        {
+          "rightAscensionHours": 18.982393333333334,
+          "declinationDegrees": 32.6896
+        },
+        {
+          "rightAscensionHours": 18.834666666666667,
+          "declinationDegrees": 33.3627
+        }
+      ]
+    },
+    {
+      "id": "men",
+      "abbreviation": "Men",
+      "name": "Mensa",
+      "sourceRecordIds": [
+        "data/constellations.json#features/52",
+        "data/constellations.lines.json#features/52"
+      ],
+      "referencePoints": [
+        {
+          "name": "Mensa",
+          "rightAscensionHours": 5.5,
+          "declinationDegrees": -80
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.170686666666666,
+          "declinationDegrees": -74.753
+        },
+        {
+          "rightAscensionHours": 5.531393333333336,
+          "declinationDegrees": -76.341
+        },
+        {
+          "rightAscensionHours": 4.919779999999999,
+          "declinationDegrees": -74.9369
+        },
+        {
+          "rightAscensionHours": 5.045279999999999,
+          "declinationDegrees": -71.3143
+        }
+      ]
+    },
+    {
+      "id": "mic",
+      "abbreviation": "Mic",
+      "name": "Microscopium",
+      "sourceRecordIds": [
+        "data/constellations.json#features/53",
+        "data/constellations.lines.json#features/53"
+      ],
+      "referencePoints": [
+        {
+          "name": "Microscopium",
+          "rightAscensionHours": 21.1,
+          "declinationDegrees": -37
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 20.832800000000002,
+          "declinationDegrees": -33.7797
+        },
+        {
+          "rightAscensionHours": 20.808093333333332,
+          "declinationDegrees": -43.9885
+        },
+        {
+          "rightAscensionHours": 21.346013333333335,
+          "declinationDegrees": -40.8095
+        },
+        {
+          "rightAscensionHours": 21.29896666666667,
+          "declinationDegrees": -32.1725
+        },
+        {
+          "rightAscensionHours": 21.021520000000002,
+          "declinationDegrees": -32.2578
+        }
+      ]
+    },
+    {
+      "id": "mon",
+      "abbreviation": "Mon",
+      "name": "Monoceros",
+      "sourceRecordIds": [
+        "data/constellations.json#features/54",
+        "data/constellations.lines.json#features/54"
+      ],
+      "referencePoints": [
+        {
+          "name": "Monoceros",
+          "rightAscensionHours": 7.65,
+          "declinationDegrees": -6
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 7.687453333333334,
+          "declinationDegrees": -9.5511
+        },
+        {
+          "rightAscensionHours": 8.143233333333335,
+          "declinationDegrees": -2.9838
+        },
+        {
+          "rightAscensionHours": 7.197739999999999,
+          "declinationDegrees": -0.4928
+        },
+        {
+          "rightAscensionHours": 6.4803,
+          "declinationDegrees": -7.0331
+        },
+        {
+          "rightAscensionHours": 6.247593333333331,
+          "declinationDegrees": -6.2748
+        },
+        {
+          "rightAscensionHours": 6.797679999999999,
+          "declinationDegrees": 2.4122
+        },
+        {
+          "rightAscensionHours": 6.396133333333334,
+          "declinationDegrees": 4.5929
+        },
+        {
+          "rightAscensionHours": 6.548393333333335,
+          "declinationDegrees": 7.333
+        },
+        {
+          "rightAscensionHours": 6.682959999999999,
+          "declinationDegrees": 9.8958
+        }
+      ]
+    },
+    {
+      "id": "mus",
+      "abbreviation": "Mus",
+      "name": "Musca",
+      "sourceRecordIds": [
+        "data/constellations.json#features/55",
+        "data/constellations.lines.json#features/55"
+      ],
+      "referencePoints": [
+        {
+          "name": "Musca",
+          "rightAscensionHours": 13,
+          "declinationDegrees": -73
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 11.760113333333333,
+          "declinationDegrees": -66.7288
+        },
+        {
+          "rightAscensionHours": 12.292853333333333,
+          "declinationDegrees": -67.9607
+        },
+        {
+          "rightAscensionHours": 12.619726666666667,
+          "declinationDegrees": -69.1356
+        },
+        {
+          "rightAscensionHours": 12.771333333333333,
+          "declinationDegrees": -68.1081
+        },
+        {
+          "rightAscensionHours": 13.037853333333334,
+          "declinationDegrees": -71.5489
+        },
+        {
+          "rightAscensionHours": 12.541113333333334,
+          "declinationDegrees": -72.133
+        }
+      ]
+    },
+    {
+      "id": "nor",
+      "abbreviation": "Nor",
+      "name": "Norma",
+      "sourceRecordIds": [
+        "data/constellations.json#features/56",
+        "data/constellations.lines.json#features/56"
+      ],
+      "referencePoints": [
+        {
+          "name": "Norma",
+          "rightAscensionHours": 16.2,
+          "declinationDegrees": -52
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 16.10818,
+          "declinationDegrees": -45.1732
+        },
+        {
+          "rightAscensionHours": 16.453066666666665,
+          "declinationDegrees": -47.5548
+        },
+        {
+          "rightAscensionHours": 16.330673333333333,
+          "declinationDegrees": -50.1555
+        },
+        {
+          "rightAscensionHours": 16.05358,
+          "declinationDegrees": -49.2297
+        }
+      ]
+    },
+    {
+      "id": "oct",
+      "abbreviation": "Oct",
+      "name": "Octans",
+      "sourceRecordIds": [
+        "data/constellations.json#features/57",
+        "data/constellations.lines.json#features/57"
+      ],
+      "referencePoints": [
+        {
+          "name": "Octans",
+          "rightAscensionHours": 20,
+          "declinationDegrees": -80
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 14.448673333333334,
+          "declinationDegrees": -83.6679
+        },
+        {
+          "rightAscensionHours": 22.767639999999997,
+          "declinationDegrees": -81.3816
+        },
+        {
+          "rightAscensionHours": 21.69129333333333,
+          "declinationDegrees": -77.39
+        }
+      ]
+    },
+    {
+      "id": "oph",
+      "abbreviation": "Oph",
+      "name": "Ophiuchus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/58",
+        "data/constellations.lines.json#features/58"
+      ],
+      "referencePoints": [
+        {
+          "name": "Ophiuchus",
+          "rightAscensionHours": 17.2,
+          "declinationDegrees": 3
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 17.983773333333332,
+          "declinationDegrees": -9.7736
+        },
+        {
+          "rightAscensionHours": 17.798213333333333,
+          "declinationDegrees": 2.7073
+        },
+        {
+          "rightAscensionHours": 17.72454,
+          "declinationDegrees": 4.5673
+        },
+        {
+          "rightAscensionHours": 17.582240000000002,
+          "declinationDegrees": 12.56
+        },
+        {
+          "rightAscensionHours": 16.96114,
+          "declinationDegrees": 9.375
+        },
+        {
+          "rightAscensionHours": 16.515226666666667,
+          "declinationDegrees": 1.9839
+        },
+        {
+          "rightAscensionHours": 16.239093333333333,
+          "declinationDegrees": -3.6943
+        },
+        {
+          "rightAscensionHours": 16.30536,
+          "declinationDegrees": -4.6925
+        },
+        {
+          "rightAscensionHours": 16.61931333333333,
+          "declinationDegrees": -10.5671
+        },
+        {
+          "rightAscensionHours": 17.172966666666664,
+          "declinationDegrees": -15.7249
+        },
+        {
+          "rightAscensionHours": 16.518993333333334,
+          "declinationDegrees": -16.6127
+        },
+        {
+          "rightAscensionHours": 16.4504,
+          "declinationDegrees": -18.4563
+        },
+        {
+          "rightAscensionHours": 16.40172,
+          "declinationDegrees": -20.0373
+        },
+        {
+          "rightAscensionHours": 16.42642,
+          "declinationDegrees": -23.4472
+        },
+        {
+          "rightAscensionHours": 17.366826666666665,
+          "declinationDegrees": -24.9995
+        },
+        {
+          "rightAscensionHours": 17.455906666666667,
+          "declinationDegrees": -29.867
+        }
+      ]
+    },
+    {
+      "id": "ori",
+      "abbreviation": "Ori",
+      "name": "Orion",
+      "sourceRecordIds": [
+        "data/constellations.json#features/59",
+        "data/constellations.lines.json#features/59"
+      ],
+      "referencePoints": [
+        {
+          "name": "Orion",
+          "rightAscensionHours": 5.6,
+          "declinationDegrees": 13
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.126200000000002,
+          "declinationDegrees": 14.7685
+        },
+        {
+          "rightAscensionHours": 5.906386666666666,
+          "declinationDegrees": 20.2762
+        },
+        {
+          "rightAscensionHours": 6.065326666666666,
+          "declinationDegrees": 20.1385
+        },
+        {
+          "rightAscensionHours": 6.199000000000001,
+          "declinationDegrees": 14.2088
+        },
+        {
+          "rightAscensionHours": 6.03972,
+          "declinationDegrees": 9.6473
+        },
+        {
+          "rightAscensionHours": 5.919526666666669,
+          "declinationDegrees": 7.4071
+        },
+        {
+          "rightAscensionHours": 5.418853333333334,
+          "declinationDegrees": 6.3497
+        },
+        {
+          "rightAscensionHours": 4.914926666666668,
+          "declinationDegrees": 10.1508
+        },
+        {
+          "rightAscensionHours": 4.975806666666669,
+          "declinationDegrees": 1.714
+        },
+        {
+          "rightAscensionHours": 4.9041933333333345,
+          "declinationDegrees": 2.4407
+        },
+        {
+          "rightAscensionHours": 4.853433333333336,
+          "declinationDegrees": 5.6051
+        },
+        {
+          "rightAscensionHours": 4.830666666666665,
+          "declinationDegrees": 6.9613
+        },
+        {
+          "rightAscensionHours": 4.843533333333335,
+          "declinationDegrees": 8.9002
+        },
+        {
+          "rightAscensionHours": 4.939520000000001,
+          "declinationDegrees": 13.5145
+        },
+        {
+          "rightAscensionHours": 5.076153333333332,
+          "declinationDegrees": 15.4041
+        },
+        {
+          "rightAscensionHours": 5.161653333333334,
+          "declinationDegrees": 15.5972
+        },
+        {
+          "rightAscensionHours": 5.2423,
+          "declinationDegrees": -8.2016
+        },
+        {
+          "rightAscensionHours": 5.407946666666665,
+          "declinationDegrees": -2.3971
+        },
+        {
+          "rightAscensionHours": 5.533446666666668,
+          "declinationDegrees": -0.2991
+        },
+        {
+          "rightAscensionHours": 5.585633333333332,
+          "declinationDegrees": 9.9342
+        },
+        {
+          "rightAscensionHours": 5.679313333333335,
+          "declinationDegrees": -1.9426
+        },
+        {
+          "rightAscensionHours": 5.79594,
+          "declinationDegrees": -9.6696
+        },
+        {
+          "rightAscensionHours": 5.603560000000001,
+          "declinationDegrees": -1.2019
+        }
+      ]
+    },
+    {
+      "id": "pav",
+      "abbreviation": "Pav",
+      "name": "Pavo",
+      "sourceRecordIds": [
+        "data/constellations.json#features/60",
+        "data/constellations.lines.json#features/60"
+      ],
+      "referencePoints": [
+        {
+          "name": "Pavo",
+          "rightAscensionHours": 19.8,
+          "declinationDegrees": -62
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 20.42746,
+          "declinationDegrees": -56.7351
+        },
+        {
+          "rightAscensionHours": 20.749306666666666,
+          "declinationDegrees": -66.2032
+        },
+        {
+          "rightAscensionHours": 20.145446666666665,
+          "declinationDegrees": -66.1821
+        },
+        {
+          "rightAscensionHours": 18.87028666666667,
+          "declinationDegrees": -62.1876
+        },
+        {
+          "rightAscensionHours": 18.38712,
+          "declinationDegrees": -61.4939
+        },
+        {
+          "rightAscensionHours": 18.14300666666667,
+          "declinationDegrees": -63.6686
+        },
+        {
+          "rightAscensionHours": 17.762220000000003,
+          "declinationDegrees": -64.7239
+        },
+        {
+          "rightAscensionHours": 18.71726,
+          "declinationDegrees": -71.4281
+        },
+        {
+          "rightAscensionHours": 20.009873333333335,
+          "declinationDegrees": -72.9105
+        },
+        {
+          "rightAscensionHours": 21.440726666666666,
+          "declinationDegrees": -65.3662
+        }
+      ]
+    },
+    {
+      "id": "peg",
+      "abbreviation": "Peg",
+      "name": "Pegasus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/61",
+        "data/constellations.lines.json#features/61"
+      ],
+      "referencePoints": [
+        {
+          "name": "Pegasus",
+          "rightAscensionHours": 22.3,
+          "declinationDegrees": 16
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 22.166459999999997,
+          "declinationDegrees": 33.1782
+        },
+        {
+          "rightAscensionHours": 22.716706666666667,
+          "declinationDegrees": 30.2212
+        },
+        {
+          "rightAscensionHours": 23.062906666666667,
+          "declinationDegrees": 28.0828
+        },
+        {
+          "rightAscensionHours": 0.13979333333333369,
+          "declinationDegrees": 29.0904
+        },
+        {
+          "rightAscensionHours": 0.22060000000000174,
+          "declinationDegrees": 15.1836
+        },
+        {
+          "rightAscensionHours": 23.079346666666666,
+          "declinationDegrees": 15.2053
+        },
+        {
+          "rightAscensionHours": 22.778219999999997,
+          "declinationDegrees": 12.1729
+        },
+        {
+          "rightAscensionHours": 22.691033333333333,
+          "declinationDegrees": 10.8314
+        },
+        {
+          "rightAscensionHours": 22.16999333333333,
+          "declinationDegrees": 6.1979
+        },
+        {
+          "rightAscensionHours": 21.73643333333333,
+          "declinationDegrees": 9.875
+        },
+        {
+          "rightAscensionHours": 22.83338666666667,
+          "declinationDegrees": 24.6016
+        },
+        {
+          "rightAscensionHours": 22.775519999999997,
+          "declinationDegrees": 23.5657
+        },
+        {
+          "rightAscensionHours": 22.11685333333333,
+          "declinationDegrees": 25.3451
+        },
+        {
+          "rightAscensionHours": 21.744093333333335,
+          "declinationDegrees": 25.645
+        }
+      ]
+    },
+    {
+      "id": "per",
+      "abbreviation": "Per",
+      "name": "Perseus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/62",
+        "data/constellations.lines.json#features/62"
+      ],
+      "referencePoints": [
+        {
+          "name": "Perseus",
+          "rightAscensionHours": 4.4,
+          "declinationDegrees": 45
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 3.738646666666667,
+          "declinationDegrees": 32.2882
+        },
+        {
+          "rightAscensionHours": 3.902200000000001,
+          "declinationDegrees": 31.8836
+        },
+        {
+          "rightAscensionHours": 3.982753333333335,
+          "declinationDegrees": 35.791
+        },
+        {
+          "rightAscensionHours": 3.964233333333334,
+          "declinationDegrees": 40.0102
+        },
+        {
+          "rightAscensionHours": 3.7532333333333328,
+          "declinationDegrees": 42.5785
+        },
+        {
+          "rightAscensionHours": 3.7154199999999986,
+          "declinationDegrees": 47.7876
+        },
+        {
+          "rightAscensionHours": 3.608159999999998,
+          "declinationDegrees": 48.1926
+        },
+        {
+          "rightAscensionHours": 3.4053799999999987,
+          "declinationDegrees": 49.8612
+        },
+        {
+          "rightAscensionHours": 3.0799399999999992,
+          "declinationDegrees": 53.5064
+        },
+        {
+          "rightAscensionHours": 2.8449466666666656,
+          "declinationDegrees": 55.8955
+        },
+        {
+          "rightAscensionHours": 2.904293333333332,
+          "declinationDegrees": 52.7625
+        },
+        {
+          "rightAscensionHours": 3.1511133333333343,
+          "declinationDegrees": 49.6133
+        },
+        {
+          "rightAscensionHours": 3.1582666666666683,
+          "declinationDegrees": 44.8575
+        },
+        {
+          "rightAscensionHours": 3.1361466666666655,
+          "declinationDegrees": 40.9556
+        },
+        {
+          "rightAscensionHours": 3.188160000000001,
+          "declinationDegrees": 39.6116
+        },
+        {
+          "rightAscensionHours": 3.086273333333334,
+          "declinationDegrees": 38.8403
+        },
+        {
+          "rightAscensionHours": 2.9793533333333317,
+          "declinationDegrees": 39.6627
+        },
+        {
+          "rightAscensionHours": 2.9944133333333336,
+          "declinationDegrees": 41.0329
+        },
+        {
+          "rightAscensionHours": 4.109733333333335,
+          "declinationDegrees": 50.3513
+        },
+        {
+          "rightAscensionHours": 4.248293333333334,
+          "declinationDegrees": 48.4093
+        },
+        {
+          "rightAscensionHours": 4.144359999999998,
+          "declinationDegrees": 47.7125
+        },
+        {
+          "rightAscensionHours": 2.7366599999999988,
+          "declinationDegrees": 49.2284
+        },
+        {
+          "rightAscensionHours": 1.7276800000000019,
+          "declinationDegrees": 50.6887
+        }
+      ]
+    },
+    {
+      "id": "phe",
+      "abbreviation": "Phe",
+      "name": "Phoenix",
+      "sourceRecordIds": [
+        "data/constellations.json#features/63",
+        "data/constellations.lines.json#features/63"
+      ],
+      "referencePoints": [
+        {
+          "name": "Phoenix",
+          "rightAscensionHours": 1.1,
+          "declinationDegrees": -43
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 0.43806666666666844,
+          "declinationDegrees": -42.306
+        },
+        {
+          "rightAscensionHours": 1.101400000000001,
+          "declinationDegrees": -46.7184
+        },
+        {
+          "rightAscensionHours": 1.4727600000000014,
+          "declinationDegrees": -43.3182
+        },
+        {
+          "rightAscensionHours": 1.520860000000001,
+          "declinationDegrees": -49.0727
+        },
+        {
+          "rightAscensionHours": 1.1397466666666674,
+          "declinationDegrees": -55.2458
+        },
+        {
+          "rightAscensionHours": 0.15684666666666847,
+          "declinationDegrees": -45.7474
+        }
+      ]
+    },
+    {
+      "id": "pic",
+      "abbreviation": "Pic",
+      "name": "Pictor",
+      "sourceRecordIds": [
+        "data/constellations.json#features/64",
+        "data/constellations.lines.json#features/64"
+      ],
+      "referencePoints": [
+        {
+          "name": "Pictor",
+          "rightAscensionHours": 5.5,
+          "declinationDegrees": -50
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.803180000000001,
+          "declinationDegrees": -61.9414
+        },
+        {
+          "rightAscensionHours": 5.830460000000001,
+          "declinationDegrees": -56.1667
+        },
+        {
+          "rightAscensionHours": 5.788079999999998,
+          "declinationDegrees": -51.0665
+        }
+      ]
+    },
+    {
+      "id": "psa",
+      "abbreviation": "PsA",
+      "name": "Piscis Austrinus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/66",
+        "data/constellations.lines.json#features/66"
+      ],
+      "referencePoints": [
+        {
+          "name": "Piscis Austrinus",
+          "rightAscensionHours": 22.2,
+          "declinationDegrees": -29
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 22.677593333333334,
+          "declinationDegrees": -27.0436
+        },
+        {
+          "rightAscensionHours": 22.960846666666665,
+          "declinationDegrees": -29.6222
+        },
+        {
+          "rightAscensionHours": 22.932473333333334,
+          "declinationDegrees": -32.5396
+        },
+        {
+          "rightAscensionHours": 22.875426666666666,
+          "declinationDegrees": -32.8755
+        },
+        {
+          "rightAscensionHours": 22.525093333333334,
+          "declinationDegrees": -32.3461
+        },
+        {
+          "rightAscensionHours": 22.139726666666668,
+          "declinationDegrees": -32.9885
+        },
+        {
+          "rightAscensionHours": 21.749113333333334,
+          "declinationDegrees": -33.0258
+        },
+        {
+          "rightAscensionHours": 21.795599999999997,
+          "declinationDegrees": -30.8983
+        }
+      ]
+    },
+    {
+      "id": "psc",
+      "abbreviation": "Psc",
+      "name": "Pisces",
+      "sourceRecordIds": [
+        "data/constellations.json#features/65",
+        "data/constellations.lines.json#features/65"
+      ],
+      "referencePoints": [
+        {
+          "name": "Pisces",
+          "rightAscensionHours": 1.3,
+          "declinationDegrees": 15
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 1.2291533333333329,
+          "declinationDegrees": 24.5837
+        },
+        {
+          "rightAscensionHours": 1.1943466666666684,
+          "declinationDegrees": 30.0896
+        },
+        {
+          "rightAscensionHours": 1.3244400000000003,
+          "declinationDegrees": 27.2641
+        },
+        {
+          "rightAscensionHours": 1.1908933333333342,
+          "declinationDegrees": 21.0347
+        },
+        {
+          "rightAscensionHours": 1.524726666666667,
+          "declinationDegrees": 15.3458
+        },
+        {
+          "rightAscensionHours": 1.7565666666666668,
+          "declinationDegrees": 9.1577
+        },
+        {
+          "rightAscensionHours": 2.0341199999999997,
+          "declinationDegrees": 2.7638
+        },
+        {
+          "rightAscensionHours": 1.8926000000000007,
+          "declinationDegrees": 3.1875
+        },
+        {
+          "rightAscensionHours": 1.6905266666666647,
+          "declinationDegrees": 5.4876
+        },
+        {
+          "rightAscensionHours": 1.503086666666665,
+          "declinationDegrees": 6.1438
+        },
+        {
+          "rightAscensionHours": 1.2288600000000012,
+          "declinationDegrees": 7.5754
+        },
+        {
+          "rightAscensionHours": 1.049060000000001,
+          "declinationDegrees": 7.8901
+        },
+        {
+          "rightAscensionHours": 0.811373333333332,
+          "declinationDegrees": 7.5851
+        },
+        {
+          "rightAscensionHours": 23.988526666666665,
+          "declinationDegrees": 6.8633
+        },
+        {
+          "rightAscensionHours": 23.665846666666667,
+          "declinationDegrees": 5.6263
+        },
+        {
+          "rightAscensionHours": 23.46614,
+          "declinationDegrees": 6.379
+        },
+        {
+          "rightAscensionHours": 23.339053333333332,
+          "declinationDegrees": 5.3813
+        },
+        {
+          "rightAscensionHours": 23.286093333333334,
+          "declinationDegrees": 3.2823
+        },
+        {
+          "rightAscensionHours": 23.44887333333333,
+          "declinationDegrees": 1.2556
+        },
+        {
+          "rightAscensionHours": 23.70078,
+          "declinationDegrees": 1.78
+        },
+        {
+          "rightAscensionHours": 23.7732,
+          "declinationDegrees": 3.4868
+        },
+        {
+          "rightAscensionHours": 23.064613333333334,
+          "declinationDegrees": 3.82
+        }
+      ]
+    },
+    {
+      "id": "pup",
+      "abbreviation": "Pup",
+      "name": "Puppis",
+      "sourceRecordIds": [
+        "data/constellations.json#features/67",
+        "data/constellations.lines.json#features/67"
+      ],
+      "referencePoints": [
+        {
+          "name": "Puppis",
+          "rightAscensionHours": 7.4,
+          "declinationDegrees": -46
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 6.629353333333332,
+          "declinationDegrees": -43.1959
+        },
+        {
+          "rightAscensionHours": 7.285713333333335,
+          "declinationDegrees": -37.0975
+        },
+        {
+          "rightAscensionHours": 7.589693333333332,
+          "declinationDegrees": -28.3693
+        },
+        {
+          "rightAscensionHours": 7.647186666666668,
+          "declinationDegrees": -26.8038
+        },
+        {
+          "rightAscensionHours": 7.821573333333333,
+          "declinationDegrees": -24.8598
+        },
+        {
+          "rightAscensionHours": 7.9476466666666665,
+          "declinationDegrees": -22.8801
+        },
+        {
+          "rightAscensionHours": 8.125733333333331,
+          "declinationDegrees": -24.3043
+        },
+        {
+          "rightAscensionHours": 8.059733333333334,
+          "declinationDegrees": -40.0031
+        },
+        {
+          "rightAscensionHours": 8.158873333333334,
+          "declinationDegrees": -47.3366
+        },
+        {
+          "rightAscensionHours": 7.801433333333334,
+          "declinationDegrees": -25.9372
+        },
+        {
+          "rightAscensionHours": 7.730133333333333,
+          "declinationDegrees": -28.9548
+        }
+      ]
+    },
+    {
+      "id": "pyx",
+      "abbreviation": "Pyx",
+      "name": "Pyxis",
+      "sourceRecordIds": [
+        "data/constellations.json#features/68",
+        "data/constellations.lines.json#features/68"
+      ],
+      "referencePoints": [
+        {
+          "name": "Pyxis",
+          "rightAscensionHours": 8.8,
+          "declinationDegrees": -24
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 8.059733333333334,
+          "declinationDegrees": -40.0031
+        },
+        {
+          "rightAscensionHours": 8.668373333333333,
+          "declinationDegrees": -35.3084
+        },
+        {
+          "rightAscensionHours": 8.72654,
+          "declinationDegrees": -33.1864
+        },
+        {
+          "rightAscensionHours": 8.842200000000002,
+          "declinationDegrees": -27.7098
+        }
+      ]
+    },
+    {
+      "id": "ret",
+      "abbreviation": "Ret",
+      "name": "Reticulum",
+      "sourceRecordIds": [
+        "data/constellations.json#features/69",
+        "data/constellations.lines.json#features/69"
+      ],
+      "referencePoints": [
+        {
+          "name": "Reticulum",
+          "rightAscensionHours": 3.7,
+          "declinationDegrees": -61
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 4.240413333333334,
+          "declinationDegrees": -62.4739
+        },
+        {
+          "rightAscensionHours": 4.274733333333332,
+          "declinationDegrees": -59.3022
+        },
+        {
+          "rightAscensionHours": 3.9791000000000016,
+          "declinationDegrees": -61.4002
+        },
+        {
+          "rightAscensionHours": 3.7366599999999988,
+          "declinationDegrees": -64.8069
+        }
+      ]
+    },
+    {
+      "id": "scl",
+      "abbreviation": "Scl",
+      "name": "Sculptor",
+      "sourceRecordIds": [
+        "data/constellations.json#features/73",
+        "data/constellations.lines.json#features/73"
+      ],
+      "referencePoints": [
+        {
+          "name": "Sculptor",
+          "rightAscensionHours": 0.1,
+          "declinationDegrees": -33
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 0.9767666666666666,
+          "declinationDegrees": -29.3574
+        },
+        {
+          "rightAscensionHours": 23.815426666666667,
+          "declinationDegrees": -28.1303
+        },
+        {
+          "rightAscensionHours": 23.313733333333335,
+          "declinationDegrees": -32.532
+        },
+        {
+          "rightAscensionHours": 23.549513333333334,
+          "declinationDegrees": -37.8183
+        }
+      ]
+    },
+    {
+      "id": "sco",
+      "abbreviation": "Sco",
+      "name": "Scorpius",
+      "sourceRecordIds": [
+        "data/constellations.json#features/72",
+        "data/constellations.lines.json#features/72"
+      ],
+      "referencePoints": [
+        {
+          "name": "Scorpius",
+          "rightAscensionHours": 16.6,
+          "declinationDegrees": -38
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 15.980866666666666,
+          "declinationDegrees": -26.1141
+        },
+        {
+          "rightAscensionHours": 16.00556,
+          "declinationDegrees": -22.6217
+        },
+        {
+          "rightAscensionHours": 16.09062,
+          "declinationDegrees": -19.8055
+        },
+        {
+          "rightAscensionHours": 16.353146666666667,
+          "declinationDegrees": -25.5928
+        },
+        {
+          "rightAscensionHours": 16.490126666666665,
+          "declinationDegrees": -26.432
+        },
+        {
+          "rightAscensionHours": 16.59804,
+          "declinationDegrees": -28.216
+        },
+        {
+          "rightAscensionHours": 16.83606,
+          "declinationDegrees": -34.2932
+        },
+        {
+          "rightAscensionHours": 16.864506666666667,
+          "declinationDegrees": -38.0474
+        },
+        {
+          "rightAscensionHours": 16.909726666666664,
+          "declinationDegrees": -42.3613
+        },
+        {
+          "rightAscensionHours": 17.202553333333334,
+          "declinationDegrees": -43.2392
+        },
+        {
+          "rightAscensionHours": 17.62198,
+          "declinationDegrees": -42.9978
+        },
+        {
+          "rightAscensionHours": 17.79308,
+          "declinationDegrees": -40.127
+        },
+        {
+          "rightAscensionHours": 17.708133333333333,
+          "declinationDegrees": -39.03
+        },
+        {
+          "rightAscensionHours": 17.560146666666665,
+          "declinationDegrees": -37.1038
+        }
+      ]
+    },
+    {
+      "id": "sct",
+      "abbreviation": "Sct",
+      "name": "Scutum",
+      "sourceRecordIds": [
+        "data/constellations.json#features/74",
+        "data/constellations.lines.json#features/74"
+      ],
+      "referencePoints": [
+        {
+          "name": "Scutum",
+          "rightAscensionHours": 18.8,
+          "declinationDegrees": -12.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 18.58678666666667,
+          "declinationDegrees": -8.2441
+        },
+        {
+          "rightAscensionHours": 18.78624,
+          "declinationDegrees": -4.7479
+        },
+        {
+          "rightAscensionHours": 18.70456,
+          "declinationDegrees": -9.0525
+        },
+        {
+          "rightAscensionHours": 18.486626666666666,
+          "declinationDegrees": -14.5658
+        }
+      ]
+    },
+    {
+      "id": "ser",
+      "abbreviation": "Ser",
+      "name": "Serpens",
+      "sourceRecordIds": [
+        "data/constellations.json#features/75",
+        "data/constellations.json#features/76",
+        "data/constellations.lines.json#features/75",
+        "data/constellations.lines.json#features/76"
+      ],
+      "referencePoints": [
+        {
+          "name": "Serpens Caput",
+          "rightAscensionHours": 15.5,
+          "declinationDegrees": 5
+        },
+        {
+          "name": "Serpens Cauda",
+          "rightAscensionHours": 18.7,
+          "declinationDegrees": 3
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 15.769793333333332,
+          "declinationDegrees": 15.4218
+        },
+        {
+          "rightAscensionHours": 15.692513333333332,
+          "declinationDegrees": 19.6704
+        },
+        {
+          "rightAscensionHours": 15.812326666666667,
+          "declinationDegrees": 18.1416
+        },
+        {
+          "rightAscensionHours": 15.940886666666666,
+          "declinationDegrees": 15.6616
+        },
+        {
+          "rightAscensionHours": 15.58004,
+          "declinationDegrees": 10.5389
+        },
+        {
+          "rightAscensionHours": 15.7378,
+          "declinationDegrees": 6.4256
+        },
+        {
+          "rightAscensionHours": 15.846933333333334,
+          "declinationDegrees": 4.4777
+        },
+        {
+          "rightAscensionHours": 16.239093333333333,
+          "declinationDegrees": -3.6943
+        },
+        {
+          "rightAscensionHours": 17.172966666666664,
+          "declinationDegrees": -15.7249
+        },
+        {
+          "rightAscensionHours": 17.626446666666666,
+          "declinationDegrees": -15.3986
+        },
+        {
+          "rightAscensionHours": 17.983773333333332,
+          "declinationDegrees": -9.7736
+        },
+        {
+          "rightAscensionHours": 18.051366666666663,
+          "declinationDegrees": -8.1803
+        },
+        {
+          "rightAscensionHours": 18.355166666666666,
+          "declinationDegrees": -2.8988
+        },
+        {
+          "rightAscensionHours": 18.93699333333333,
+          "declinationDegrees": 4.2036
+        }
+      ]
+    },
+    {
+      "id": "sex",
+      "abbreviation": "Sex",
+      "name": "Sextans",
+      "sourceRecordIds": [
+        "data/constellations.json#features/77",
+        "data/constellations.lines.json#features/77"
+      ],
+      "referencePoints": [
+        {
+          "name": "Sextans",
+          "rightAscensionHours": 10.5,
+          "declinationDegrees": -7
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 10.132300000000003,
+          "declinationDegrees": -0.3716
+        },
+        {
+          "rightAscensionHours": 9.87512,
+          "declinationDegrees": -8.105
+        },
+        {
+          "rightAscensionHours": 10.491306666666667,
+          "declinationDegrees": -2.7391
+        },
+        {
+          "rightAscensionHours": 10.504853333333335,
+          "declinationDegrees": -0.637
+        }
+      ]
+    },
+    {
+      "id": "sge",
+      "abbreviation": "Sge",
+      "name": "Sagitta",
+      "sourceRecordIds": [
+        "data/constellations.json#features/70",
+        "data/constellations.lines.json#features/70"
+      ],
+      "referencePoints": [
+        {
+          "name": "Sagitta",
+          "rightAscensionHours": 19.4,
+          "declinationDegrees": 18
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 19.66827333333333,
+          "declinationDegrees": 18.0139
+        },
+        {
+          "rightAscensionHours": 19.789793333333332,
+          "declinationDegrees": 18.5343
+        },
+        {
+          "rightAscensionHours": 19.979286666666667,
+          "declinationDegrees": 19.4921
+        },
+        {
+          "rightAscensionHours": 19.684146666666667,
+          "declinationDegrees": 17.476
+        }
+      ]
+    },
+    {
+      "id": "sgr",
+      "abbreviation": "Sgr",
+      "name": "Sagittarius",
+      "sourceRecordIds": [
+        "data/constellations.json#features/71",
+        "data/constellations.lines.json#features/71"
+      ],
+      "referencePoints": [
+        {
+          "name": "Sagittarius",
+          "rightAscensionHours": 19.5,
+          "declinationDegrees": -34
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 18.293786666666666,
+          "declinationDegrees": -36.7617
+        },
+        {
+          "rightAscensionHours": 18.402866666666668,
+          "declinationDegrees": -34.3846
+        },
+        {
+          "rightAscensionHours": 18.3499,
+          "declinationDegrees": -29.8281
+        },
+        {
+          "rightAscensionHours": 18.46618,
+          "declinationDegrees": -25.4217
+        },
+        {
+          "rightAscensionHours": 18.229393333333334,
+          "declinationDegrees": -21.0588
+        },
+        {
+          "rightAscensionHours": 19.377306666666666,
+          "declinationDegrees": -44.459
+        },
+        {
+          "rightAscensionHours": 19.398106666666664,
+          "declinationDegrees": -40.6159
+        },
+        {
+          "rightAscensionHours": 19.043533333333336,
+          "declinationDegrees": -29.8801
+        },
+        {
+          "rightAscensionHours": 18.76094,
+          "declinationDegrees": -26.9908
+        },
+        {
+          "rightAscensionHours": 19.921026666666666,
+          "declinationDegrees": -41.8683
+        },
+        {
+          "rightAscensionHours": 19.995606666666667,
+          "declinationDegrees": -35.2763
+        },
+        {
+          "rightAscensionHours": 19.930653333333332,
+          "declinationDegrees": -26.2995
+        },
+        {
+          "rightAscensionHours": 19.611786666666667,
+          "declinationDegrees": -24.8836
+        },
+        {
+          "rightAscensionHours": 19.42124666666667,
+          "declinationDegrees": -24.5086
+        },
+        {
+          "rightAscensionHours": 19.259006666666664,
+          "declinationDegrees": -25.2567
+        },
+        {
+          "rightAscensionHours": 18.92109333333333,
+          "declinationDegrees": -26.2967
+        },
+        {
+          "rightAscensionHours": 18.096799999999998,
+          "declinationDegrees": -30.4241
+        },
+        {
+          "rightAscensionHours": 19.115666666666666,
+          "declinationDegrees": -27.6704
+        },
+        {
+          "rightAscensionHours": 19.078053333333333,
+          "declinationDegrees": -21.7415
+        },
+        {
+          "rightAscensionHours": 19.162733333333335,
+          "declinationDegrees": -21.0236
+        },
+        {
+          "rightAscensionHours": 19.293913333333332,
+          "declinationDegrees": -18.9529
+        },
+        {
+          "rightAscensionHours": 19.361213333333335,
+          "declinationDegrees": -17.8472
+        },
+        {
+          "rightAscensionHours": 19.36212,
+          "declinationDegrees": -15.955
+        },
+        {
+          "rightAscensionHours": 18.96216666666667,
+          "declinationDegrees": -21.1067
+        },
+        {
+          "rightAscensionHours": 18.902826666666666,
+          "declinationDegrees": -22.7448
+        }
+      ]
+    },
+    {
+      "id": "tau",
+      "abbreviation": "Tau",
+      "name": "Taurus",
+      "sourceRecordIds": [
+        "data/constellations.json#features/78",
+        "data/constellations.lines.json#features/78"
+      ],
+      "referencePoints": [
+        {
+          "name": "Taurus",
+          "rightAscensionHours": 3.6,
+          "declinationDegrees": 15
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 5.627413333333334,
+          "declinationDegrees": 21.1425
+        },
+        {
+          "rightAscensionHours": 4.598679999999998,
+          "declinationDegrees": 16.5093
+        },
+        {
+          "rightAscensionHours": 4.477706666666665,
+          "declinationDegrees": 15.8709
+        },
+        {
+          "rightAscensionHours": 4.329886666666668,
+          "declinationDegrees": 15.6276
+        },
+        {
+          "rightAscensionHours": 4.382246666666666,
+          "declinationDegrees": 17.5425
+        },
+        {
+          "rightAscensionHours": 4.476946666666667,
+          "declinationDegrees": 19.1804
+        },
+        {
+          "rightAscensionHours": 5.438199999999998,
+          "declinationDegrees": 28.6075
+        },
+        {
+          "rightAscensionHours": 4.01134,
+          "declinationDegrees": 12.4903
+        },
+        {
+          "rightAscensionHours": 3.452820000000001,
+          "declinationDegrees": 9.7327
+        },
+        {
+          "rightAscensionHours": 4.052606666666668,
+          "declinationDegrees": 5.9893
+        },
+        {
+          "rightAscensionHours": 3.413553333333334,
+          "declinationDegrees": 9.0289
+        },
+        {
+          "rightAscensionHours": 3.6145533333333333,
+          "declinationDegrees": 0.4017
+        }
+      ]
+    },
+    {
+      "id": "tel",
+      "abbreviation": "Tel",
+      "name": "Telescopium",
+      "sourceRecordIds": [
+        "data/constellations.json#features/79",
+        "data/constellations.lines.json#features/79"
+      ],
+      "referencePoints": [
+        {
+          "name": "Telescopium",
+          "rightAscensionHours": 18.5,
+          "declinationDegrees": -54
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 18.187153333333335,
+          "declinationDegrees": -45.9544
+        },
+        {
+          "rightAscensionHours": 18.44956,
+          "declinationDegrees": -45.9685
+        },
+        {
+          "rightAscensionHours": 18.48051333333333,
+          "declinationDegrees": -49.0706
+        }
+      ]
+    },
+    {
+      "id": "tra",
+      "abbreviation": "TrA",
+      "name": "Triangulum Australe",
+      "sourceRecordIds": [
+        "data/constellations.json#features/81",
+        "data/constellations.lines.json#features/81"
+      ],
+      "referencePoints": [
+        {
+          "name": "Triangulum Australe",
+          "rightAscensionHours": 16,
+          "declinationDegrees": -67.5
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 16.81108,
+          "declinationDegrees": -69.0277
+        },
+        {
+          "rightAscensionHours": 15.919046666666668,
+          "declinationDegrees": -63.4307
+        },
+        {
+          "rightAscensionHours": 15.315159999999999,
+          "declinationDegrees": -68.6795
+        }
+      ]
+    },
+    {
+      "id": "tri",
+      "abbreviation": "Tri",
+      "name": "Triangulum",
+      "sourceRecordIds": [
+        "data/constellations.json#features/80",
+        "data/constellations.lines.json#features/80"
+      ],
+      "referencePoints": [
+        {
+          "name": "Triangulum",
+          "rightAscensionHours": 1.8,
+          "declinationDegrees": 34
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 1.884693333333333,
+          "declinationDegrees": 29.5788
+        },
+        {
+          "rightAscensionHours": 2.1590599999999993,
+          "declinationDegrees": 34.9873
+        },
+        {
+          "rightAscensionHours": 2.288573333333333,
+          "declinationDegrees": 33.8472
+        }
+      ]
+    },
+    {
+      "id": "tuc",
+      "abbreviation": "Tuc",
+      "name": "Tucana",
+      "sourceRecordIds": [
+        "data/constellations.json#features/82",
+        "data/constellations.lines.json#features/82"
+      ],
+      "referencePoints": [
+        {
+          "name": "Tucana",
+          "rightAscensionHours": 23.2,
+          "declinationDegrees": -64
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 22.30836,
+          "declinationDegrees": -60.2596
+        },
+        {
+          "rightAscensionHours": 23.290493333333334,
+          "declinationDegrees": -58.2357
+        },
+        {
+          "rightAscensionHours": 0.52574,
+          "declinationDegrees": -62.9582
+        },
+        {
+          "rightAscensionHours": 0.3345200000000015,
+          "declinationDegrees": -64.8748
+        },
+        {
+          "rightAscensionHours": 23.998606666666667,
+          "declinationDegrees": -65.5771
+        },
+        {
+          "rightAscensionHours": 22.455546666666667,
+          "declinationDegrees": -64.9664
+        }
+      ]
+    },
+    {
+      "id": "uma",
+      "abbreviation": "UMa",
+      "name": "Ursa Maior",
+      "sourceRecordIds": [
+        "data/constellations.json#features/83",
+        "data/constellations.lines.json#features/83"
+      ],
+      "referencePoints": [
+        {
+          "name": "Ursa Major",
+          "rightAscensionHours": 11,
+          "declinationDegrees": 48
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 12.257100000000001,
+          "declinationDegrees": 57.0326
+        },
+        {
+          "rightAscensionHours": 11.062133333333334,
+          "declinationDegrees": 61.751
+        },
+        {
+          "rightAscensionHours": 11.030686666666664,
+          "declinationDegrees": 56.3824
+        },
+        {
+          "rightAscensionHours": 11.897179999999995,
+          "declinationDegrees": 53.6948
+        },
+        {
+          "rightAscensionHours": 12.900486666666666,
+          "declinationDegrees": 55.9598
+        },
+        {
+          "rightAscensionHours": 13.398760000000001,
+          "declinationDegrees": 54.9254
+        },
+        {
+          "rightAscensionHours": 13.792346666666667,
+          "declinationDegrees": 49.3133
+        },
+        {
+          "rightAscensionHours": 11.767506666666668,
+          "declinationDegrees": 47.7794
+        },
+        {
+          "rightAscensionHours": 11.307979999999997,
+          "declinationDegrees": 33.0943
+        },
+        {
+          "rightAscensionHours": 11.303119999999998,
+          "declinationDegrees": 31.5308
+        },
+        {
+          "rightAscensionHours": 11.161059999999997,
+          "declinationDegrees": 44.4985
+        },
+        {
+          "rightAscensionHours": 10.372153333333335,
+          "declinationDegrees": 41.4995
+        },
+        {
+          "rightAscensionHours": 10.284939999999999,
+          "declinationDegrees": 42.9144
+        },
+        {
+          "rightAscensionHours": 9.525473333333336,
+          "declinationDegrees": 63.0619
+        },
+        {
+          "rightAscensionHours": 8.504406666666666,
+          "declinationDegrees": 60.7182
+        },
+        {
+          "rightAscensionHours": 9.84982,
+          "declinationDegrees": 59.0387
+        },
+        {
+          "rightAscensionHours": 9.868433333333334,
+          "declinationDegrees": 54.0643
+        },
+        {
+          "rightAscensionHours": 9.547619999999998,
+          "declinationDegrees": 51.6773
+        },
+        {
+          "rightAscensionHours": 8.986793333333333,
+          "declinationDegrees": 48.0418
+        },
+        {
+          "rightAscensionHours": 9.060426666666665,
+          "declinationDegrees": 47.1565
+        }
+      ]
+    },
+    {
+      "id": "umi",
+      "abbreviation": "UMi",
+      "name": "Ursa Minor",
+      "sourceRecordIds": [
+        "data/constellations.json#features/84",
+        "data/constellations.lines.json#features/84"
+      ],
+      "referencePoints": [
+        {
+          "name": "Ursa Minor",
+          "rightAscensionHours": 15.1,
+          "declinationDegrees": 68
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 15.734313333333334,
+          "declinationDegrees": 77.7945
+        },
+        {
+          "rightAscensionHours": 16.291746666666665,
+          "declinationDegrees": 75.7553
+        },
+        {
+          "rightAscensionHours": 15.345473333333333,
+          "declinationDegrees": 71.834
+        },
+        {
+          "rightAscensionHours": 14.845093333333333,
+          "declinationDegrees": 74.1555
+        },
+        {
+          "rightAscensionHours": 16.766180000000002,
+          "declinationDegrees": 82.0373
+        },
+        {
+          "rightAscensionHours": 17.536946666666665,
+          "declinationDegrees": 86.5865
+        },
+        {
+          "rightAscensionHours": 2.5302999999999995,
+          "declinationDegrees": 89.2641
+        }
+      ]
+    },
+    {
+      "id": "vel",
+      "abbreviation": "Vel",
+      "name": "Vela",
+      "sourceRecordIds": [
+        "data/constellations.json#features/85",
+        "data/constellations.lines.json#features/85"
+      ],
+      "referencePoints": [
+        {
+          "name": "Vela",
+          "rightAscensionHours": 9.55,
+          "declinationDegrees": -46
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 8.74506,
+          "declinationDegrees": -54.7088
+        },
+        {
+          "rightAscensionHours": 9.368560000000002,
+          "declinationDegrees": -55.0107
+        },
+        {
+          "rightAscensionHours": 9.947706666666667,
+          "declinationDegrees": -54.5678
+        },
+        {
+          "rightAscensionHours": 10.779493333333335,
+          "declinationDegrees": -49.4203
+        },
+        {
+          "rightAscensionHours": 10.245599999999998,
+          "declinationDegrees": -42.1219
+        },
+        {
+          "rightAscensionHours": 9.511666666666667,
+          "declinationDegrees": -40.4668
+        },
+        {
+          "rightAscensionHours": 9.133266666666668,
+          "declinationDegrees": -43.4326
+        },
+        {
+          "rightAscensionHours": 8.158873333333334,
+          "declinationDegrees": -47.3366
+        }
+      ]
+    },
+    {
+      "id": "vir",
+      "abbreviation": "Vir",
+      "name": "Virgo",
+      "sourceRecordIds": [
+        "data/constellations.json#features/86",
+        "data/constellations.lines.json#features/86"
+      ],
+      "referencePoints": [
+        {
+          "name": "Virgo",
+          "rightAscensionHours": 13.3,
+          "declinationDegrees": -4
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 11.764319999999998,
+          "declinationDegrees": 6.5294
+        },
+        {
+          "rightAscensionHours": 11.844920000000002,
+          "declinationDegrees": 1.7647
+        },
+        {
+          "rightAscensionHours": 12.331766666666665,
+          "declinationDegrees": -0.6668
+        },
+        {
+          "rightAscensionHours": 12.694346666666666,
+          "declinationDegrees": -1.4494
+        },
+        {
+          "rightAscensionHours": 13.165833333333333,
+          "declinationDegrees": -5.539
+        },
+        {
+          "rightAscensionHours": 13.419880000000001,
+          "declinationDegrees": -11.1613
+        },
+        {
+          "rightAscensionHours": 14.266906666666667,
+          "declinationDegrees": -6.0005
+        },
+        {
+          "rightAscensionHours": 14.717673333333332,
+          "declinationDegrees": -5.6582
+        },
+        {
+          "rightAscensionHours": 13.03628,
+          "declinationDegrees": 10.9592
+        },
+        {
+          "rightAscensionHours": 12.926726666666667,
+          "declinationDegrees": 3.3975
+        },
+        {
+          "rightAscensionHours": 13.57822,
+          "declinationDegrees": -0.5958
+        },
+        {
+          "rightAscensionHours": 14.02744,
+          "declinationDegrees": 1.5445
+        },
+        {
+          "rightAscensionHours": 14.770813333333333,
+          "declinationDegrees": 1.8929
+        }
+      ]
+    },
+    {
+      "id": "vol",
+      "abbreviation": "Vol",
+      "name": "Volans",
+      "sourceRecordIds": [
+        "data/constellations.json#features/87",
+        "data/constellations.lines.json#features/87"
+      ],
+      "referencePoints": [
+        {
+          "name": "Volans",
+          "rightAscensionHours": 7.4,
+          "declinationDegrees": -73
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 9.040773333333334,
+          "declinationDegrees": -66.3961
+        },
+        {
+          "rightAscensionHours": 8.42894,
+          "declinationDegrees": -66.1369
+        },
+        {
+          "rightAscensionHours": 8.132166666666668,
+          "declinationDegrees": -68.6171
+        },
+        {
+          "rightAscensionHours": 7.280506666666668,
+          "declinationDegrees": -67.9572
+        },
+        {
+          "rightAscensionHours": 7.145793333333332,
+          "declinationDegrees": -70.4989
+        }
+      ]
+    },
+    {
+      "id": "vul",
+      "abbreviation": "Vul",
+      "name": "Vulpecula",
+      "sourceRecordIds": [
+        "data/constellations.json#features/88",
+        "data/constellations.lines.json#features/88"
+      ],
+      "referencePoints": [
+        {
+          "name": "Vulpecula",
+          "rightAscensionHours": 19.7,
+          "declinationDegrees": 21
+        }
+      ],
+      "figureStars": [
+        {
+          "rightAscensionHours": 19.270286666666667,
+          "declinationDegrees": 21.3904
+        },
+        {
+          "rightAscensionHours": 19.478426666666667,
+          "declinationDegrees": 24.6649
+        },
+        {
+          "rightAscensionHours": 19.89102666666667,
+          "declinationDegrees": 24.0796
+        },
+        {
+          "rightAscensionHours": 20.018346666666666,
+          "declinationDegrees": 27.7536
+        },
+        {
+          "rightAscensionHours": 20.262813333333334,
+          "declinationDegrees": 27.8142
+        }
+      ]
+    }
+  ]
+}

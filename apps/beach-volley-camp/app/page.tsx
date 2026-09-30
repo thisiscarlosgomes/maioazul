@@ -560,8 +560,8 @@ export default function CampPage() {
   }
 
   const t = campCopy[locale];
-  const registerHref = locale === "pt" ? "/register" : `/register?lang=${locale}`;
   const bolsaHref = locale === "pt" ? "/bolsa" : `/bolsa?lang=${locale}`;
+  const eventEndedLabel = locale === "pt" ? "Evento terminado" : locale === "fr" ? "Événement terminé" : "Event ended";
 
   return (
     <div className="bg-white text-[#111111]">
@@ -602,12 +602,13 @@ export default function CampPage() {
               <a className="transition hover:text-[#CEEC58]" href={bolsaHref}>
                 {t.navBolsa}
               </a>
-              <a
-                className="!text-black inline-flex items-center justify-center rounded-full border border-white/40 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition"
-                href={registerHref}
+              <button
+                className="inline-flex cursor-not-allowed items-center justify-center rounded-full border border-white/30 bg-white/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-black/60"
+                type="button"
+                disabled
               >
-                {t.navJoin}
-              </a>
+                {eventEndedLabel}
+              </button>
               <Select value={locale} onValueChange={(value) => handleLocaleChange(value as CampLocale)}>
                 <SelectTrigger
                   aria-label="Select language"
@@ -666,12 +667,13 @@ export default function CampPage() {
                 <a className="transition hover:text-[#111111]" href={bolsaHref}>
                   {t.navBolsa}
                 </a>
-                <a
-                  className="inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-4 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-black"
-                  href={registerHref}
+                <button
+                  className="inline-flex cursor-not-allowed items-center justify-center rounded-full bg-[#e3e3df] px-4 py-3 text-xs font-semibold uppercase tracking-[0.1em] text-black/50"
+                  type="button"
+                  disabled
                 >
-                  {t.navOpenRegistration}
-                </a>
+                  {eventEndedLabel}
+                </button>
               </nav>
             </div>
           </div>
@@ -839,12 +841,13 @@ export default function CampPage() {
           </div>
 
           <div className="mt-8 flex justify-center">
-            <a
-              className="inline-flex w-full items-center justify-center rounded-full bg-[#CEEC58] px-7 py-3 text-sm font-semibold text-[#111111] sm:w-auto"
-              href={registerHref}
+            <button
+              className="inline-flex w-full cursor-not-allowed items-center justify-center rounded-full bg-[#e3e3df] px-7 py-3 text-sm font-semibold text-black/50 sm:w-auto"
+              type="button"
+              disabled
             >
-              {t.openRegistrationCta}
-            </a>
+              {eventEndedLabel}
+            </button>
           </div>
         </div>
       </section>
@@ -903,14 +906,13 @@ export default function CampPage() {
           <h2 className="mt-5 text-3xl tracking-[-0.02em] sm:text-4xl">{t.helpTitle}</h2>
           <p className="mt-3 max-w-xl text-[rgba(17,17,17,0.68)]">{t.helpText}</p>
           <p className="mt-5 text-lg font-semibold text-[#111111]">💬 WhatsApp: {t.helpWhatsapp}</p>
-          <a
-            href="https://wa.me/8615072414348"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-5 inline-flex items-center justify-center rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:scale-[1.02] hover:bg-[#20bd5a] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#25D366]/30"
+          <button
+            type="button"
+            disabled
+            className="mt-5 inline-flex cursor-not-allowed items-center justify-center rounded-full bg-[#d9ddd8] px-6 py-3 text-sm font-semibold text-black/45"
           >
-            {t.helpCta}
-          </a>
+            {eventEndedLabel}
+          </button>
         </div>
       </section>
 
@@ -981,9 +983,7 @@ export default function CampPage() {
           <a className="transition hover:text-[#111111]" href={bolsaHref}>
             {t.navBolsa}
           </a>
-          <a className="transition hover:text-[#111111]" href={registerHref}>
-            {t.footerJoin}
-          </a>
+          <span className="cursor-not-allowed text-[#111111]/35" aria-disabled="true">{eventEndedLabel}</span>
         </div>
       </footer>
     </div>

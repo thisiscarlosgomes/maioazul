@@ -302,8 +302,8 @@ export default function BolsaPage() {
 
   const t = registerCopy[locale];
   const homeHref = locale === "pt" ? "/" : `/?lang=${locale}`;
-  const registerHref = locale === "pt" ? "/register" : `/register?lang=${locale}`;
   const bolsaHref = locale === "pt" ? "/bolsa" : `/bolsa?lang=${locale}`;
+  const eventEndedLabel = locale === "pt" ? "Evento terminado" : locale === "fr" ? "Événement terminé" : "Event ended";
 
   async function handleStudentSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -376,12 +376,6 @@ export default function BolsaPage() {
               </a>
               <Link className="transition hover:text-[#CEEC58]" href={bolsaHref}>
                 {t.navBolsa}
-              </Link>
-              <Link
-                className="!hidden !text-black inline-flex items-center justify-center rounded-full border border-white/40 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] transition"
-                href={registerHref}
-              >
-                {t.navJoin}
               </Link>
               <Select value={locale} onValueChange={(value) => handleLocaleChange(value as CampLocale)}>
                 <SelectTrigger
@@ -505,10 +499,11 @@ export default function BolsaPage() {
                   <span>{t.leadMaioConfirm}</span>
                 </label>
                 <button
-                  className="inline-flex items-center justify-center rounded-full bg-[#CEEC58] px-5 py-3 text-sm font-semibold text-[#111111]"
+                  className="inline-flex cursor-not-allowed items-center justify-center rounded-full bg-[#d9d9d5] px-5 py-3 text-sm font-semibold text-black/45"
                   type="submit"
+                  disabled
                 >
-                  {t.leadCta}
+                  {eventEndedLabel}
                 </button>
                 {studentStatus === "success" ? <p className="text-sm text-emerald-600">{t.leadSuccess}</p> : null}
                 {studentStatus === "error" ? <p className="text-sm text-red-600">{studentError || t.leadError}</p> : null}

@@ -1,0 +1,70 @@
+import fs from "fs";
+import path from "path";
+import type { MetadataRoute } from "next";
+import { listBlogPosts } from "@/lib/blog/repository";
+
+const baseUrl = "https://www.maioazul.com";
+
+const dataPath = path.join(
+  process.cwd(),
+  "public",
+  "data",
+  "maio_places_with_coords.json"
+);
+
+type Place = { id: string };
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  let places: Place[] = [];
+  try {
+    const raw = fs.readFileSync(dataPath, "utf8");
+    places = JSON.parse(raw) as Place[];
+  } catch {
+    places = [];
+  }
+
+  let posts: Awaited<ReturnType<typeof listBlogPosts>> = [];
+  try {
+    posts = await listBlogPosts({ status: "published", limit: 1000 });
+  } catch (error) {
+    console.error("[sitemap] failed to load blog posts", error);
+    posts = [];
+  }
+
+  const staticRoutes = [
+    "",
+    "/feed",
+    "/blog",
+    "/places",
+    "/favorites",
+    "/directory",
+    "/admin",
+    "/dashboard",
+    "/finance",
+    "/orcamento",
+    "/documentos",
+    "/chat",
+    "/mcp-guide",
+  ];
+
+  return [
+    ...staticRoutes.map((route) => ({
+      url: `${baseUrl}${route}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: route === "" ? 1 : 0.7,
+    })),
+    ...places.map((place) => ({
+      url: `${baseUrl}/places/${place.id}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+    ...posts.map((post) => ({
+      url: `${baseUrl}/blog/${post.slug}`,
+      lastModified: new Date(post.updatedAt || post.publishedAt || Date.now()),
+      changeFrequency: "weekly" as const,
+      priority: 0.75,
+    })),
+  ];
+}

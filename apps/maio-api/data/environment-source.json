@@ -1,0 +1,100 @@
+{
+  "entries": [
+    {
+      "sourceId": "open-meteo-weather",
+      "url": "https://api.open-meteo.com/v1/forecast?latitude=15.25&longitude=-23.15&current=temperature_2m%2Crain%2Cprecipitation%2Crelative_humidity_2m%2Cwind_speed_10m%2Cwind_direction_10m%2Csurface_pressure&timezone=GMT&timeformat=unixtime&forecast_days=1",
+      "retrievedAt": "2026-09-17T14:31:51.233Z",
+      "payload": {
+        "latitude": 15.219684,
+        "longitude": -23.174133,
+        "generationtime_ms": 1.7752647399902344,
+        "utc_offset_seconds": 0,
+        "timezone": "GMT",
+        "timezone_abbreviation": "GMT",
+        "elevation": 39,
+        "current_units": {
+          "time": "unixtime",
+          "interval": "seconds",
+          "temperature_2m": "°C",
+          "rain": "mm",
+          "precipitation": "mm",
+          "relative_humidity_2m": "%",
+          "wind_speed_10m": "km/h",
+          "wind_direction_10m": "°",
+          "surface_pressure": "hPa"
+        },
+        "current": {
+          "time": 1789655400,
+          "interval": 900,
+          "temperature_2m": 32.8,
+          "rain": 0,
+          "precipitation": 0,
+          "relative_humidity_2m": 57,
+          "wind_speed_10m": 19,
+          "wind_direction_10m": 329,
+          "surface_pressure": 1010.1
+        }
+      }
+    },
+    {
+      "sourceId": "open-meteo-marine",
+      "url": "https://marine-api.open-meteo.com/v1/marine?latitude=15.25&longitude=-23.15&current=sea_surface_temperature%2Cwave_height%2Cwave_period&timezone=GMT&timeformat=unixtime&forecast_days=1",
+      "retrievedAt": "2026-09-17T14:31:51.241Z",
+      "payload": {
+        "latitude": 15.291664,
+        "longitude": -23.124985,
+        "generationtime_ms": 0.2002716064453125,
+        "utc_offset_seconds": 0,
+        "timezone": "GMT",
+        "timezone_abbreviation": "GMT",
+        "elevation": 39,
+        "current_units": {
+          "time": "unixtime",
+          "interval": "seconds",
+          "sea_surface_temperature": "°C",
+          "wave_height": "m",
+          "wave_period": "s"
+        },
+        "current": {
+          "time": 1789655400,
+          "interval": 900,
+          "sea_surface_temperature": 29,
+          "wave_height": 0.82,
+          "wave_period": 8.45
+        }
+      }
+    },
+    {
+      "sourceId": "open-meteo-air",
+      "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=15.25&longitude=-23.15&current=pm2_5%2Cpm10%2Ccarbon_monoxide%2Cnitrogen_dioxide%2Cozone&timezone=GMT&timeformat=unixtime&forecast_days=1",
+      "retrievedAt": "2026-09-17T14:31:51.318Z",
+      "payload": {
+        "latitude": 15.300003,
+        "longitude": -23.09999,
+        "generationtime_ms": 0.3725290298461914,
+        "utc_offset_seconds": 0,
+        "timezone": "GMT",
+        "timezone_abbreviation": "GMT",
+        "elevation": 39,
+        "current_units": {
+          "time": "unixtime",
+          "interval": "seconds",
+          "pm2_5": "μg/m³",
+          "pm10": "μg/m³",
+          "carbon_monoxide": "μg/m³",
+          "nitrogen_dioxide": "μg/m³",
+          "ozone": "μg/m³"
+        },
+        "current": {
+          "time": 1789653600,
+          "interval": 3600,
+          "pm2_5": 33.2,
+          "pm10": 99.9,
+          "carbon_monoxide": 96,
+          "nitrogen_dioxide": 0.2,
+          "ozone": 55
+        }
+      }
+    }
+  ]
+}

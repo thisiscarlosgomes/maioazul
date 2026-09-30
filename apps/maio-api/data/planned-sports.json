@@ -1,0 +1,46 @@
+[
+  {
+    "id": "bitche-rotcha",
+    "name": "Bitche Rotcha",
+    "locationFeatureId": "visit-maio-praia-bitche-rotcha",
+    "lifecycleStatus": "planned",
+    "activities": [
+      "surfing",
+      "beach-volleyball",
+      "water-sports"
+    ],
+    "plannedAt": "2026-09-17",
+    "planningSource": "MaioAzul editorial planning request",
+    "locationVerification": "existing-curated-location",
+    "locationNote": "Approximate representative beach point from Visit Maio / Maio Guide; not a surveyed sports facility.",
+    "statusNote": "Proposed sports use; no operating facility, construction approval or opening date is asserted."
+  },
+  {
+    "id": "ponta-preta",
+    "name": "Ponta Preta",
+    "locationFeatureId": "visit-maio-praia-ponta-preta",
+    "lifecycleStatus": "planned",
+    "activities": [
+      "surfing"
+    ],
+    "plannedAt": "2026-09-17",
+    "planningSource": "MaioAzul editorial planning request",
+    "locationVerification": "existing-curated-location",
+    "locationNote": "Approximate representative beach point from Visit Maio / Maio Guide; not a surveyed sports facility.",
+    "statusNote": "Proposed sports use; no operating facility, construction approval or opening date is asserted."
+  },
+  {
+    "id": "boa-lagoa",
+    "name": "Boa Lagoa (provisional: Boca Lagoa)",
+    "locationFeatureId": "visit-maio-praias-boca-lagoa-seada",
+    "lifecycleStatus": "planned",
+    "activities": [
+      "surfing"
+    ],
+    "plannedAt": "2026-09-17",
+    "planningSource": "MaioAzul editorial planning request",
+    "locationVerification": "name-confirmation-pending",
+    "locationNote": "Provisional match to Boca Lagoa; point represents the combined Boca Lagoa and Seada beaches, not a surveyed surf break. Requested name: Boa Lagoa.",
+    "statusNote": "Proposed sports use; no operating facility, construction approval or opening date is asserted."
+  }
+]

@@ -1,0 +1,266 @@
+[
+  {
+    "id": "povoacao-penosa",
+    "name": "Povoação Penosa",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-11638057772"
+    ]
+  },
+  {
+    "id": "barreiro",
+    "name": "Barreiro",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-1951662272"
+    ]
+  },
+  {
+    "id": "calheta-de-cima",
+    "name": "Calheta de Cima",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-1951662276",
+      "visit-maio-ribona-lem-tavares"
+    ]
+  },
+  {
+    "id": "cascabulho",
+    "name": "Cascabulho",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-1951662279",
+      "visit-maio-cascabulho"
+    ]
+  },
+  {
+    "id": "morrinho",
+    "name": "Morrinho",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-1951662289",
+      "visit-maio-morrinho"
+    ],
+    "relatedFeatures": [
+      {
+        "featureId": "osm-way-1243789180",
+        "basis": "Source facility name explicitly identifies Morrinho. Source records are not assumed to be distinct facilities."
+      }
+    ]
+  },
+  {
+    "id": "morro",
+    "name": "Morro",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-1951662294",
+      "visit-maio-morro-village"
+    ],
+    "relatedFeatures": [
+      {
+        "featureId": "osm-way-1243791620",
+        "basis": "Source facility name explicitly identifies Morro. Source records are not assumed to be distinct facilities."
+      }
+    ]
+  },
+  {
+    "id": "pedro-vaz",
+    "name": "Pedro Vaz",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-2452058390",
+      "visit-maio-pedro-vaz"
+    ],
+    "relatedFeatures": [
+      {
+        "featureId": "osm-node-5306870234",
+        "basis": "Source facility name explicitly identifies Pedro Vaz. Source records are not assumed to be distinct facilities."
+      },
+      {
+        "featureId": "osm-way-543310653",
+        "basis": "Source facility name explicitly identifies Pedro Vaz. Source records are not assumed to be distinct facilities."
+      }
+    ]
+  },
+  {
+    "id": "santo-antonio",
+    "name": "Santo António",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-2452079677"
+    ]
+  },
+  {
+    "id": "alcatraz",
+    "name": "Alcatraz",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-2452084818"
+    ]
+  },
+  {
+    "id": "pilao-cao",
+    "name": "Pilão Cão",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-2452087922"
+    ]
+  },
+  {
+    "id": "ribeira-dom-joao",
+    "name": "Ribeira Dom João",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-2452089702",
+      "visit-maio-conjunto-urbano-ribeira-d-joao"
+    ]
+  },
+  {
+    "id": "calheta-de-baixo",
+    "name": "Calheta de Baixo",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-3241447799",
+      "visit-maio-baxona-ribinha"
+    ]
+  },
+  {
+    "id": "calhetinha",
+    "name": "Calhetinha",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-5283443683"
+    ]
+  },
+  {
+    "id": "ponta-preta",
+    "name": "Ponta Preta",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-5283443684"
+    ]
+  },
+  {
+    "id": "fontona",
+    "name": "Fontona",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-5283885374"
+    ]
+  },
+  {
+    "id": "porto-cais",
+    "name": "Porto Cais",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-6441064935"
+    ]
+  },
+  {
+    "id": "banda-riba",
+    "name": "Banda Riba",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085256919",
+      "visit-maio-banda-riba-village"
+    ]
+  },
+  {
+    "id": "figueira-seca",
+    "name": "Figueira Seca",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257242",
+      "visit-maio-figueira-seca-village"
+    ]
+  },
+  {
+    "id": "figueira-horta",
+    "name": "Figueira Horta",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257243",
+      "osm-node-1951662284",
+      "visit-maio-figueira-horta-village"
+    ]
+  },
+  {
+    "id": "lagoa",
+    "name": "Lagoa",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257244"
+    ]
+  },
+  {
+    "id": "praia-goncalo",
+    "name": "Praia Gonçalo",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257280"
+    ]
+  },
+  {
+    "id": "calheta",
+    "name": "Calheta",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257325"
+    ],
+    "relatedFeatures": [
+      {
+        "featureId": "osm-way-1243757224",
+        "basis": "Source facility name explicitly identifies Calheta. Source records are not assumed to be distinct facilities."
+      }
+    ]
+  },
+  {
+    "id": "lem-tavares",
+    "name": "Lém Tavares",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257326"
+    ]
+  },
+  {
+    "id": "ribinha",
+    "name": "Ribinha",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257327"
+    ]
+  },
+  {
+    "id": "cidade-do-porto-ingles",
+    "name": "Cidade do Porto Inglês",
+    "type": "locality",
+    "featureIds": [
+      "osm-node-7085257602",
+      "visit-maio-cidade-porto-ingles"
+    ]
+  },
+  {
+    "id": "alcatraz-pilao-cao",
+    "name": "Alcatraz e Pilão Cão",
+    "type": "locality-group",
+    "featureIds": [
+      "visit-maio-alcatraz-pilao-cao"
+    ]
+  },
+  {
+    "id": "lem-varela-village",
+    "name": "Barreiro Lém Varela",
+    "type": "locality",
+    "featureIds": [
+      "visit-maio-lem-varela-village"
+    ]
+  },
+  {
+    "id": "praia-goncalo-santo-antonio",
+    "name": "Praia Gonçalo e Santo António",
+    "type": "locality-group",
+    "featureIds": [
+      "visit-maio-praia-goncalo-santo-antonio"
+    ]
+  }
+]

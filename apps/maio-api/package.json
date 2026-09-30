@@ -1,0 +1,30 @@
+{
+  "name": "maio-open-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3004",
+    "build": "next build",
+    "start": "next start --port 3004",
+    "data:sync": "node scripts/sync-data.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "data:refresh-environment": "node scripts/refresh-environment.mjs",
+    "data:import-ine": "node scripts/import-ine.mjs",
+    "data:import-agriculture": "python3 scripts/import-ingt-agriculture.py"
+  },
+  "dependencies": {
+    "astronomy-engine": "2.1.19",
+    "lucide-react": "^0.562.0",
+    "next": "16.3.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5"
+  }
+}

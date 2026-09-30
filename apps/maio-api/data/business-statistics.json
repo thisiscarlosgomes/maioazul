@@ -1,0 +1,2169 @@
+{
+  "source": {
+    "id": "iae-2024-user-workbook",
+    "title": "INE Cabo Verde — Inquérito Anual às Empresas 2024 (supplied workbook)",
+    "file": "Inquérito Anual Empresas - 2024.xls",
+    "url": null,
+    "attribution": "Fonte: INE, IAE 2024 (attribution in supplied workbook)",
+    "license": "Not specified by source",
+    "licenseUrl": null,
+    "sourceUpdatedAt": null,
+    "retrievedAt": "2026-09-18T12:21:59.950282Z",
+    "checksum": "215863705711c35211b9e2a793637810ccb2968a69667912ebb38d19b81ea9d4",
+    "excludedOutsideExtent": 0
+  },
+  "referenceYear": 2024,
+  "caveats": [
+    "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+    "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+    "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+    "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+  ],
+  "methodology": [
+    "Cobertura: Nível Nacional (Todos os Concelhos do País)",
+    "Tipo de Operação: Inquérito por Amostragem (Reaçar que para as empresas com organização de contabilidade, o inquérito foi exaustivo)",
+    "Tipo de Amostra: Amostra Aleatória Estratificada",
+    "Variavéis de Estratificação: 1. Localização Geográfica; 2. Tipo de Organização de Contabilidade; 3. Forma Juridica; 4. Atividades Económicas; 5. Número de Pessoas Empregadas",
+    "Nível de Confiança: 95%",
+    "Margem de Erro: 5%",
+    "Método de Recolha: Entrevista Direta ",
+    "Tratamento dos Dados: SPSS "
+  ],
+  "records": [
+    {
+      "id": "iae-2024-maio-active-enterprises-accounting-not-organized",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 268.9999919999999,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela5 '!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "accounting",
+        "category": "not-organized",
+        "sourceLabel": "Sem Contabilidade Organizada"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela5 ",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 268.9999919999999
+      },
+      "displayName": "Active companies · Sem Contabilidade Organizada · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-accounting-organized",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 39.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela5 '!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "accounting",
+        "category": "organized",
+        "sourceLabel": "Com Contabilidade Organizada"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela5 ",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 39.0
+      },
+      "displayName": "Active companies · Com Contabilidade Organizada · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-a",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G5",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "a",
+        "sourceLabel": "A - Agricultura, Produção Animal, Caça, Floresta e Pesca"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G5",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · A - Agricultura, Produção Animal, Caça, Floresta e Pesca · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-b",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G6",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "b",
+        "sourceLabel": "B - Indústria Extractiva"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G6",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · B - Indústria Extractiva · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-c",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 13.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G7",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "c",
+        "sourceLabel": "C - Indústria Transformadora"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G7",
+        "numberFormat": "#,##0",
+        "rawValue": 13.0
+      },
+      "displayName": "Active companies · C - Indústria Transformadora · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-d",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 0.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G8",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "d",
+        "sourceLabel": "D - Electricidade, Gás, Vapor, Água Quente e Fria e Ar Frio"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G8",
+        "numberFormat": "#,##0",
+        "rawValue": 0.0
+      },
+      "displayName": "Active companies · D - Electricidade, Gás, Vapor, Água Quente e Fria e Ar Frio · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-e",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G9",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "e",
+        "sourceLabel": "E - Captação, Tratamento e Distribuição de Água, Saneamento, Gestão de Resíduos"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G9",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · E - Captação, Tratamento e Distribuição de Água, Saneamento, Gestão de Resíduos · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-f",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 30.306877,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G10",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "f",
+        "sourceLabel": "F - Construção"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G10",
+        "numberFormat": "#,##0",
+        "rawValue": 30.306877
+      },
+      "displayName": "Active companies · F - Construção · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-g",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 113.88359500000001,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G11",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "g",
+        "sourceLabel": "G - Comércio por Grosso e a Retalho, Reparação de Veículos Automóveis e Motociclos"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G11",
+        "numberFormat": "#,##0",
+        "rawValue": 113.88359500000001
+      },
+      "displayName": "Active companies · G - Comércio por Grosso e a Retalho, Reparação de Veículos Automóveis e Motociclos · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-h",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 31.809520000000003,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G12",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "h",
+        "sourceLabel": "H - Transportes e Armazenagem"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G12",
+        "numberFormat": "#,##0",
+        "rawValue": 31.809520000000003
+      },
+      "displayName": "Active companies · H - Transportes e Armazenagem · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-i",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 62.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "i",
+        "sourceLabel": "I - Alojamento e Restauração"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G13",
+        "numberFormat": "#,##0",
+        "rawValue": 62.0
+      },
+      "displayName": "Active companies · I - Alojamento e Restauração · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-j",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 4.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G14",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "j",
+        "sourceLabel": "J - Actividades de Informação e Comunicação"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G14",
+        "numberFormat": "#,##0",
+        "rawValue": 4.0
+      },
+      "displayName": "Active companies · J - Actividades de Informação e Comunicação · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-k",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 0.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G15",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "k",
+        "sourceLabel": "K - Actividades Financeiras e de Seguros"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G15",
+        "numberFormat": "#,##0",
+        "rawValue": 0.0
+      },
+      "displayName": "Active companies · K - Actividades Financeiras e de Seguros · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-l",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 4.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G16",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "l",
+        "sourceLabel": "L - Actividades Imobiliárias"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G16",
+        "numberFormat": "#,##0",
+        "rawValue": 4.0
+      },
+      "displayName": "Active companies · L - Actividades Imobiliárias · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-m",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G17",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "m",
+        "sourceLabel": "M - Actividades de Consultoria, Científicas, Técnicas e Similares"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G17",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · M - Actividades de Consultoria, Científicas, Técnicas e Similares · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-n",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G18",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "n",
+        "sourceLabel": "N - Actividades Administrativas e dos Serviços de Apoio"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G18",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · N - Actividades Administrativas e dos Serviços de Apoio · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-p",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 0.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G19",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "p",
+        "sourceLabel": "P - Educação"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G19",
+        "numberFormat": "#,##0",
+        "rawValue": 0.0
+      },
+      "displayName": "Active companies · P - Educação · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-q",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G20",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "q",
+        "sourceLabel": "Q - Saúde Humana e Acção Social"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G20",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · Q - Saúde Humana e Acção Social · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-r",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 0.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G21",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "r",
+        "sourceLabel": "R - Actividades Artísticas, de Espetáculos, Desportivas e Recreativas"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G21",
+        "numberFormat": "#,##0",
+        "rawValue": 0.0
+      },
+      "displayName": "Active companies · R - Actividades Artísticas, de Espetáculos, Desportivas e Recreativas · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-activity-s",
+      "year": 2024,
+      "geographicScope": "island:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 40.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela8'!G22",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "activity",
+        "category": "s",
+        "sourceLabel": "S - Outras Actividades de Serviços"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela8",
+        "cell": "G22",
+        "numberFormat": "#,##0",
+        "rawValue": 40.0
+      },
+      "displayName": "Active companies · S - Outras Actividades de Serviços · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-chief-sex-female",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 145.06084299999998,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela7'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "chief-sex",
+        "category": "female",
+        "sourceLabel": "Feminino"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela7",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 145.06084299999998
+      },
+      "displayName": "Active companies · Feminino · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-chief-sex-male",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 162.93914900000001,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela7'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "chief-sex",
+        "category": "male",
+        "sourceLabel": "Masculino"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela7",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 162.93914900000001
+      },
+      "displayName": "Active companies · Masculino · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-legal-form-individual-or-single-member",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 237.99999199999996,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela4'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "individual-or-single-member",
+        "sourceLabel": "Empresas Nome Individual & Soc. Unipessoal por Quota."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela4",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 237.99999199999996
+      },
+      "displayName": "Active companies · Empresas Nome Individual & Soc. Unipessoal por Quota. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-legal-form-joint-stock-and-other",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 4.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela4'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "joint-stock-and-other",
+        "sourceLabel": "Sociedades Anónimas & Outras."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela4",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 4.0
+      },
+      "displayName": "Active companies · Sociedades Anónimas & Outras. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-legal-form-limited-liability",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 66.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela4'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "limited-liability",
+        "sourceLabel": "Sociedades Por Quotas."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela4",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 66.0
+      },
+      "displayName": "Active companies · Sociedades Por Quotas. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-sector-primary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela20'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "primary",
+        "sourceLabel": "Setor primário"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela20",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · Setor primário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-sector-secondary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 45.306877,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela20'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "secondary",
+        "sourceLabel": "Setor secundário"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela20",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 45.306877
+      },
+      "displayName": "Active companies · Setor secundário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-sector-tertiary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 261.6931149999999,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela20'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "tertiary",
+        "sourceLabel": "Setor terciário"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela20",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 261.6931149999999
+      },
+      "displayName": "Active companies · Setor terciário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-size-large",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": null,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela6'!E13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "large",
+        "sourceLabel": "Grande empresa"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela6",
+        "cell": "E13",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Active companies · Grande empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-size-medium",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 8.0,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela6'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "medium",
+        "sourceLabel": "Média empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela6",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 8.0
+      },
+      "displayName": "Active companies · Média empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-size-micro",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 279.107134,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela6'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "micro",
+        "sourceLabel": "Microempresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela6",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 279.107134
+      },
+      "displayName": "Active companies · Microempresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-size-small",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 20.892858,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela6'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "small",
+        "sourceLabel": "Pequena empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela6",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 20.892858
+      },
+      "displayName": "Active companies · Pequena empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-active-enterprises-total-total",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "active-enterprises",
+      "value": 307.9999919999999,
+      "unit": "enterprises",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela1_Cabo Verde_Empresas'!G15",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "total",
+        "category": "total",
+        "sourceLabel": "Total"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela1_Cabo Verde_Empresas",
+        "cell": "G15",
+        "numberFormat": "#,##0",
+        "rawValue": 307.9999919999999
+      },
+      "displayName": "Active companies · Total · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-accounting-not-organized",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 566.698416,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela12'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "accounting",
+        "category": "not-organized",
+        "sourceLabel": "Sem Contabilidade Organizada"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela12",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 566.698416
+      },
+      "displayName": "Persons employed · Sem Contabilidade Organizada · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-accounting-organized",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 167.00000000000003,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela12'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "accounting",
+        "category": "organized",
+        "sourceLabel": "Com Contabilidade Organizada"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela12",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 167.00000000000003
+      },
+      "displayName": "Persons employed · Com Contabilidade Organizada · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-employee-sex-female",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 377.49074,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela14'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "employee-sex",
+        "category": "female",
+        "sourceLabel": "Feminino"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela14",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 377.49074
+      },
+      "displayName": "Persons employed · Feminino · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-employee-sex-male",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 356.20767599999994,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela14'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "employee-sex",
+        "category": "male",
+        "sourceLabel": "Masculino"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela14",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 356.20767599999994
+      },
+      "displayName": "Persons employed · Masculino · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-legal-form-individual-or-single-member",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 509.69841599999995,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela11'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "individual-or-single-member",
+        "sourceLabel": "Empresa Nome Individual & Soc. Unipessoal por Quota."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela11",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 509.69841599999995
+      },
+      "displayName": "Persons employed · Empresa Nome Individual & Soc. Unipessoal por Quota. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-legal-form-joint-stock-and-other",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 38.0,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela11'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "joint-stock-and-other",
+        "sourceLabel": "Sociedades Anónimas & Outras."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela11",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 38.0
+      },
+      "displayName": "Persons employed · Sociedades Anónimas & Outras. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-legal-form-limited-liability",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 186.0,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela11'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "limited-liability",
+        "sourceLabel": "Sociedades Por Quotas."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela11",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 186.0
+      },
+      "displayName": "Persons employed · Sociedades Por Quotas. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-sector-primary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": null,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela21'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "primary",
+        "sourceLabel": "Setor primário"
+      },
+      "valueStatus": "missing",
+      "sourceCell": {
+        "sheet": "Tabela21",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": "---"
+      },
+      "displayName": "Persons employed · Setor primário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-sector-secondary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 184.968259,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela21'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "secondary",
+        "sourceLabel": "Setor secundário"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela21",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 184.968259
+      },
+      "displayName": "Persons employed · Setor secundário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-sector-tertiary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 547.7301569999995,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela21'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "tertiary",
+        "sourceLabel": "Setor terciário"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela21",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 547.7301569999995
+      },
+      "displayName": "Persons employed · Setor terciário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-size-large",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 0.0,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela13'!E13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "large",
+        "sourceLabel": "Grande empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela13",
+        "cell": "E13",
+        "numberFormat": "#,##0",
+        "rawValue": 0.0
+      },
+      "displayName": "Persons employed · Grande empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-size-medium",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 72.0,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela13'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "medium",
+        "sourceLabel": "Média empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela13",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 72.0
+      },
+      "displayName": "Persons employed · Média empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-size-micro",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 528.5555519999998,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela13'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "micro",
+        "sourceLabel": "Microempresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela13",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 528.5555519999998
+      },
+      "displayName": "Persons employed · Microempresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-size-small",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 133.142864,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela13'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "small",
+        "sourceLabel": "Pequena empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela13",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 133.142864
+      },
+      "displayName": "Persons employed · Pequena empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-persons-employed-total-total",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "persons-employed",
+      "value": 733.6984159999997,
+      "unit": "persons",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela2_Cabo Verde_NPS'!G15",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "total",
+        "category": "total",
+        "sourceLabel": "Total"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela2_Cabo Verde_NPS",
+        "cell": "G15",
+        "numberFormat": "#,##0",
+        "rawValue": 733.6984159999997
+      },
+      "displayName": "Persons employed · Total · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-accounting-not-organized",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 298628.6761422619,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela17'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "accounting",
+        "category": "not-organized",
+        "sourceLabel": "Sem Contabilidade Organizada"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela17",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 298628.6761422619
+      },
+      "displayName": "Turnover · Sem Contabilidade Organizada · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-accounting-organized",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 380617.8019999999,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela17'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "accounting",
+        "category": "organized",
+        "sourceLabel": "Com Contabilidade Organizada"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela17",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 380617.8019999999
+      },
+      "displayName": "Turnover · Com Contabilidade Organizada · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-legal-form-individual-or-single-member",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 419136.07414226193,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela16'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "individual-or-single-member",
+        "sourceLabel": "Empresas Nome Individual & Soc. Unipessoal por Quota."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela16",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 419136.07414226193
+      },
+      "displayName": "Turnover · Empresas Nome Individual & Soc. Unipessoal por Quota. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-legal-form-joint-stock-and-other",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 76354.258,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela16'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "joint-stock-and-other",
+        "sourceLabel": "Sociedades Anónimas & Outras."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela16",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 76354.258
+      },
+      "displayName": "Turnover · Sociedades Anónimas & Outras. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-legal-form-limited-liability",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 183756.146,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela16'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "legal-form",
+        "category": "limited-liability",
+        "sourceLabel": "Sociedades Por Quotas."
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela16",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 183756.146
+      },
+      "displayName": "Turnover · Sociedades Por Quotas. · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-sector-primary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 787.5,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela22'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "primary",
+        "sourceLabel": "Setor primário"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela22",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 787.5
+      },
+      "displayName": "Turnover · Setor primário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-sector-secondary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 194890.45866674,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela22'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "secondary",
+        "sourceLabel": "Setor secundário"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela22",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 194890.45866674
+      },
+      "displayName": "Turnover · Setor secundário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-sector-tertiary",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 483568.51947552216,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela22'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "sector",
+        "category": "tertiary",
+        "sourceLabel": "Setor terciário"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela22",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 483568.51947552216
+      },
+      "displayName": "Turnover · Setor terciário · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-size-large",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 0.0,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela18'!E13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "large",
+        "sourceLabel": "Grande empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela18",
+        "cell": "E13",
+        "numberFormat": "#,##0",
+        "rawValue": 0.0
+      },
+      "displayName": "Turnover · Grande empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-size-medium",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 333885.699,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela18'!D13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "medium",
+        "sourceLabel": "Média empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela18",
+        "cell": "D13",
+        "numberFormat": "#,##0",
+        "rawValue": 333885.699
+      },
+      "displayName": "Turnover · Média empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-size-micro",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 252146.27169426196,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela18'!B13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "micro",
+        "sourceLabel": "Microempresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela18",
+        "cell": "B13",
+        "numberFormat": "#,##0",
+        "rawValue": 252146.27169426196
+      },
+      "displayName": "Turnover · Microempresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-size-small",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 93214.50744800002,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela18'!C13",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "size",
+        "category": "small",
+        "sourceLabel": "Pequena empresa"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela18",
+        "cell": "C13",
+        "numberFormat": "#,##0",
+        "rawValue": 93214.50744800002
+      },
+      "displayName": "Turnover · Pequena empresa · 2024"
+    },
+    {
+      "id": "iae-2024-maio-turnover-total-total",
+      "year": 2024,
+      "geographicScope": "municipality:maio",
+      "locality": null,
+      "placeId": null,
+      "indicator": "turnover",
+      "value": 679246.4781422619,
+      "unit": "thousand-CVE",
+      "sourceId": "iae-2024-user-workbook",
+      "sourceRecordId": "'Tabela3_Cabo Verde_VVN'!G15",
+      "referencePeriod": "2024",
+      "updatedAt": null,
+      "retrievedAt": "2026-09-18T12:21:59.950282Z",
+      "quality": "survey-estimate-workbook-extract",
+      "caveats": [
+        "Survey estimates; raw numeric precision is preserved. Displayed whole numbers are rounded, not exact counts.",
+        "Workbook attributed to INE Cabo Verde; exact upstream publication URL and reuse license have not been verified.",
+        "The marker --- is preserved as null; its meaning is not defined in the inspected workbook text. Never interpret it as zero.",
+        "Municipality/island aggregates, not individual companies or locality estimates. Breakdowns must not be added to totals."
+      ],
+      "dimensions": {
+        "breakdown": "total",
+        "category": "total",
+        "sourceLabel": "Total"
+      },
+      "valueStatus": "reported",
+      "sourceCell": {
+        "sheet": "Tabela3_Cabo Verde_VVN",
+        "cell": "G15",
+        "numberFormat": "#,##0",
+        "rawValue": 679246.4781422619
+      },
+      "displayName": "Turnover · Total · 2024"
+    }
+  ]
+}
