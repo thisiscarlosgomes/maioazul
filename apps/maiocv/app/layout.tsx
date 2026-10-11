@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "../../../packages/maio-ui/maio-ui.css";
 import { SITE_URL, description, htmlLang, pageMetadata, siteSchema } from "../lib/seo";
 const sans = localFont({
   src: [

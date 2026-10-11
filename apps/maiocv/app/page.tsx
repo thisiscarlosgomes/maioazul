@@ -1,3 +1,4 @@
+import { Button, Card, Section, SkipLink } from "maio-ui";
 import { HeadlineIcon } from "../components/headline-icon";
 import { MaioSlideshow } from "../components/maio-slideshow";
 import Link from "next/link";
@@ -20,12 +21,10 @@ const previews = {
 export default function Home() {
   return (
     <>
-      <a className="skip-link" href="#conteudo">
-        {t("skip.content")}
-      </a>
+      <SkipLink href="#conteudo">{t("skip.content")}</SkipLink>
       <Header />
       <main id="conteudo">
-        <section className="home-hero wrap">
+        <Section className="home-hero wrap">
           <Reveal>
             <h1 className="context-headline">
               <span className="headline-line">
@@ -40,16 +39,14 @@ export default function Home() {
               Para conhecer a ilha, investigar e aprender — de onde estiver.
             </p>
             <div className="button-row">
-              <a href="#iniciativas" className="button">
-                Explorar iniciativas
-              </a>
-              <Link href="/mcp" className="button button-light">
+              <Button href="#iniciativas">Explorar iniciativas</Button>
+              <Button href="/mcp" variant="light">
                 Perguntar sobre o Maio
-              </Link>
+              </Button>
             </div>
           </Reveal>
-        </section>
-        <section
+        </Section>
+        <Section
           className="showcase wrap"
           aria-label="Uma ilha, várias formas de descobrir"
         >
@@ -67,8 +64,8 @@ export default function Home() {
               conhecer <i /> investigar <i /> aprender <i /> construir
             </p>
           </div>
-        </section>
-        <section className="story-section mission-section wrap" id="sobre">
+        </Section>
+        <Section className="story-section mission-section wrap" id="sobre">
           <Reveal>
             <h2 className="mission-statement">
               Usamos IA <HeadlineIcon kind="ai" /> para criar ferramentas que
@@ -77,8 +74,8 @@ export default function Home() {
               <HeadlineIcon kind="book" />{ " " }e aprender mais sobre a ilha.
             </h2>
           </Reveal>
-        </section>
-        <section className="initiatives-section wrap" id="iniciativas">
+        </Section>
+        <Section className="initiatives-section wrap" id="iniciativas">
           <Reveal className="section-heading">
             <div>
               <h2>
@@ -96,26 +93,25 @@ export default function Home() {
               const Preview = previews[item.id as keyof typeof previews];
               return (
                 <Reveal key={item.id} delay={(i % 2) * 0.08}>
-                  <HoverCard
-                    href={item.href}
-                    className={`initiative-card initiative-${item.id}`}
-                  >
-                    <div className="initiative-visual">
-                      <Preview />
-                    </div>
-                    <div className="initiative-text">
-                      <div className="initiative-title">
-                        <h3>{item.name}</h3>
+                  <HoverCard href={item.href} className={`initiative-card initiative-${item.id}`}>
+                    <Card>
+                      <div className="initiative-visual">
+                        <Preview />
                       </div>
-                      <p>{item.description}</p>
-                    </div>
+                      <div className="initiative-text">
+                        <div className="initiative-title">
+                          <h3>{item.name}</h3>
+                        </div>
+                        <p>{item.description}</p>
+                      </div>
+                    </Card>
                   </HoverCard>
                 </Reveal>
               );
             })}
           </div>
-        </section>
-        <section className="mcp-feature">
+        </Section>
+        <Section className="mcp-feature">
           <div className="wrap mcp-feature-grid">
             <Reveal>
               <h2>
@@ -128,9 +124,9 @@ export default function Home() {
                 ilha.
               </p>
               <div className="button-row">
-                <a href="/chat" className="button button-white">
+                <Button href="/chat" variant="white">
                   {t("cta.ask")}
-                </a>
+                </Button>
                 <Link href="/mcp" className="feature-link">
                   Ver como funciona
                 </Link>
@@ -140,22 +136,20 @@ export default function Home() {
               <McpPreview />
             </Reveal>
           </div>
-        </section>
-        <section className="closing wrap">
+        </Section>
+        <Section className="closing wrap">
           <Reveal>
             <h2>
               O Maio é de todos. <br />O conhecimento também.
             </h2>
             <div className="button-row">
-              <a className="button" href="#iniciativas">
-                Explorar as ferramentas
-              </a>
-              <a className="button button-light" href="https://visitmaio.com">
+              <Button href="#iniciativas">Explorar as ferramentas</Button>
+              <Button href="https://visitmaio.com" variant="light">
                 Conhecer a ilha
-              </a>
+              </Button>
             </div>
           </Reveal>
-        </section>
+        </Section>
       </main>
       <Footer />
     </>
