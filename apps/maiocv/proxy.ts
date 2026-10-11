@@ -15,6 +15,12 @@ export function proxy(request: NextRequest) {
   const prefixed = localeFromPath(pathname);
 
   if (prefixed) {
+    const slug = stripLocale(pathname).replace(/^\/|\/$/g, "");
+    if (essentialsPages.has(slug) && slug !== essentialsSlug[prefixed]) {
+      const canonical = request.nextUrl.clone();
+      canonical.pathname = `/${prefixed}/${essentialsSlug[prefixed]}`;
+      return NextResponse.redirect(canonical, 308);
+    }
     const url = request.nextUrl.clone();
     url.pathname = internalPath(pathname);
     const headers = new Headers(request.headers);
@@ -30,13 +36,9 @@ export function proxy(request: NextRequest) {
   }
 
   const destination = request.nextUrl.clone();
-  if (pathname === "/") {
-    const cookie = request.cookies.get(LANG_COOKIE)?.value;
-    const locale = isLocale(cookie) ? cookie : preferredLocale(request.headers.get("accept-language"));
-    destination.pathname = localize(locale, "/");
-  } else {
-    destination.pathname = localize("pt", pathname);
-  }
+  const cookie = request.cookies.get(LANG_COOKIE)?.value;
+  const locale = isLocale(cookie) ? cookie : preferredLocale(request.headers.get("accept-language"));
+  destination.pathname = pathname === "/" ? localize(locale, "/") : localize(locale, pathname);
   const response = NextResponse.redirect(destination, 307);
   response.headers.set("Vary", "Accept-Language, Cookie");
   return response;

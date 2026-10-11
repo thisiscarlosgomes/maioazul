@@ -4,7 +4,7 @@ import "./globals.css";
 import "../../../packages/maio-ui/maio-ui.css";
 import { currentLocale } from "../lib/request-locale";
 import { localeHtmlLang } from "../lib/locale";
-import { SITE_URL, siteSchema } from "../lib/seo";
+import { SITE_URL, siteSchemaFor } from "../lib/seo";
 const sans = localFont({
   src: [
     { path: "../../../packages/maio-tokens/fonts/PPNeueMontreal-Regular.woff2", weight: "400", style: "normal" },
@@ -29,7 +29,7 @@ export default async function RootLayout({
   return (
     <html lang={localeHtmlLang(locale)} className={sans.variable}>
       <body>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema).replace(/</g, "\\u003c") }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchemaFor(locale)).replace(/</g, "\\u003c") }} />
         {children}
       </body>
     </html>

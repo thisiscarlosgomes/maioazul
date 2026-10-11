@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
 import { EMERGENCY } from "../lib/emergency.ts";
-import { loadEssentials, paymentCount, sailingsForToday, scheduleSource } from "../lib/essentials.ts";
+import { flightRouteLabel, loadEssentials, paymentCount, sailingsForToday, scheduleSource, verifiedDate, visibleCaveat } from "../lib/essentials.ts";
 
 test("emergency links are the decided numbers", () => {
   assert.deepEqual(EMERGENCY.map((item) => item.href), ["tel:132", "tel:+2382551130", "tel:130"]);
@@ -17,6 +17,10 @@ test("a ferry label shows the kind, the retrieved time, and the caveats", () => 
   assert.match(source.line, /Published timetable · CV Interilhas · Retrieved 18:30/);
   assert.doesNotMatch(source.line, /updated/i);
   assert.deepEqual(source.caveats, ["Only the published day is listed."]);
+  assert.match(visibleCaveat("Only the explicitly selected source day is parsed. Date-picker options are not confirmed sailing dates.", "fr"), /Seul le jour/);
+  assert.doesNotMatch(visibleCaveat("Only the explicitly selected source day is parsed. Date-picker options are not confirmed sailing dates.", "pt"), /Only the explicitly/);
+  assert.notEqual(flightRouteLabel("rai_mmo", "en"), flightRouteLabel("mmo_rai", "en"));
+  assert.equal(verifiedDate("2026-10-11", "en"), "11 October 2026");
 });
 
 test("yesterday's sailings are not today's", () => {
