@@ -26,11 +26,13 @@ function formatDate(value: string | null | undefined) {
 
 export default async function BlogPage() {
   let posts: Awaited<ReturnType<typeof listBlogPosts>> = [];
+  let loadError = false;
   try {
     posts = await listBlogPosts({ status: "published", limit: 24 });
   } catch (error) {
     console.error("[blog-page] failed to load posts", error);
     posts = [];
+    loadError = true;
   }
 
   return (
@@ -40,7 +42,11 @@ export default async function BlogPage() {
           <h1 className="text-lg font-semibold">Destaques</h1>
         </div>
 
-        {posts.length ? (
+        {loadError ? (
+          <div className="rounded-xl border border-border bg-card p-4 text-sm text-muted-foreground">
+            Não foi possível carregar os artigos.
+          </div>
+        ) : posts.length ? (
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {posts.map((post) => (
               <Link
