@@ -2,6 +2,7 @@
   --ink: #171817;
   --muted: #71736f;
   --paper: #fbfbf8;
+  --background: var(--paper);
   --line: #e6e7e1;
   --blue: #243fb8;
   --lime: #dff58a;
@@ -2561,7 +2562,7 @@ h2,
 .openui-place-detail { margin-top: auto; color: #52614b; font-size: 13px; line-height: 1.35; }
 .chat-message p { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 19px; line-height: 1.65; margin: 0; }
 .chat-status, .chat-error { color: #626b5c; padding: 12px 0; }
-.chat-composer-wrap { position: sticky; bottom: 0; background: var(--background, #fafbf7); padding: 16px 0 max(16px, env(safe-area-inset-bottom)); }
+.chat-composer-wrap { position: sticky; bottom: 0; background: var(--background); padding: 16px 0 max(16px, env(safe-area-inset-bottom)); }
 .chat-composer { display: flex; align-items: flex-end; gap: 12px; padding: 18px; border: 1px solid #dce2d3; border-radius: 26px; background: #f6f7f2; }
 .chat-composer:focus-within { border-color: #7c9164; }
 .chat-composer textarea { flex: 1; min-width: 0; border: 0; background: transparent; resize: vertical; max-height: 220px; font: inherit; font-size: 19px; line-height: 1.5; outline: none; }
