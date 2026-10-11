@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
-import { localize, preferredLocale, stripLocale, switchPath } from "../lib/locale.ts";
+import { essentialsPath, localize, preferredLocale, routeAlias, stripLocale, switchPath } from "../lib/locale.ts";
 
 test("the home redirect follows Accept-Language only when no cookie is involved", () => {
   assert.equal(preferredLocale(null), "pt");
@@ -15,6 +15,18 @@ test("the language switch uses the canonical essentials path", () => {
   assert.equal(switchPath("pt", "/fr/essentiels"), "/pt/essenciais");
   assert.equal(switchPath("en", "/pt/chat"), "/en/chat");
   assert.equal(switchPath("en", "/pt/search?q=praia"), "/en/search?q=praia");
+});
+
+test("visit and search aliases point at the canonical pages", () => {
+  assert.equal(routeAlias.visitar, "essentials");
+  assert.equal(routeAlias.visit, "essentials");
+  assert.equal(routeAlias.visiter, "essentials");
+  assert.equal(routeAlias.pesquisar, "search");
+  assert.equal(routeAlias.pesquisa, "search");
+  assert.equal(routeAlias.recherche, "search");
+  assert.equal(essentialsPath("pt"), "/pt/essenciais");
+  assert.equal(essentialsPath("en"), "/en/essentials");
+  assert.equal(essentialsPath("fr"), "/fr/essentiels");
 });
 
 test("locale links keep the page and drop a previous prefix", () => {

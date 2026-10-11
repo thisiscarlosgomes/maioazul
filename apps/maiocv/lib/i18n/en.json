@@ -297,5 +297,10 @@
   "slideshow.pontapreta": "Ponta Preta, Maio island",
   "slideshow.bocalagoa": "Boca Lagoa, Maio island",
   "preview.portal.data": "data",
-  "search.submit": "Search"
+  "search.submit": "Search",
+  "notFound.title": "Page not found",
+  "notFound.body": "That address does not exist. Try one of these.",
+  "error.title": "Something went wrong",
+  "error.body": "This page could not be shown.",
+  "error.retry": "Try again"
 }
