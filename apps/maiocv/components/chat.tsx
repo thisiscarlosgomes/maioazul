@@ -74,7 +74,7 @@ export function Chat({ locale = "pt", contactUrl = "https://instagram.com/maio__
   async function send(question = draft) {
     const text = question.trim();
     if (!text || active.current) return;
-    const greeting = publicChatGreeting(text);
+    const greeting = publicChatGreeting(text, locale);
     if (greeting) {
       scrollToQuestion.current = messages.length;
       setMessages([...messages, { role: "user", content: text }, { role: "assistant", content: greeting, example: true, uncited: true }]);

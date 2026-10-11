@@ -8,7 +8,7 @@ import { searchFeatures, sourceName } from "../../lib/search";
 
 export async function generateMetadata() {
   const locale = await currentLocale();
-  return pageMetadata(t("search.placeholder", undefined, locale), t("search.placeholder", undefined, locale), localize(locale, "/search"), locale);
+  return pageMetadata(t("search.title", undefined, locale), t("search.placeholder", undefined, locale), localize(locale, "/search"), locale);
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -26,9 +26,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <>
       <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
-      <Header />
+      <Header active="search" />
       <main id="conteudo" className="wrap search-page">
-        <h1>{t("search.placeholder", undefined, locale)}</h1>
+        <h1>{t("search.title", undefined, locale)}</h1>
         <form action={localize(locale, "/search")}>
           <label className="sr-only" htmlFor="q">{t("search.placeholder", undefined, locale)}</label>
           <input id="q" name="q" type="search" enterKeyHint="search" autoComplete="off" defaultValue={query} />

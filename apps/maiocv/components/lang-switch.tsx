@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { t } from "../lib/i18n";
 import { LOCALES, switchPath, type Locale } from "../lib/locale";
 
@@ -11,11 +11,19 @@ const ownName: Record<Locale, "lang.pt" | "lang.en" | "lang.fr"> = {
 };
 
 export function LangSwitch({ locale, path }: { locale: Locale; path: string }) {
+  const menu = useRef<HTMLDetailsElement>(null);
   const [extra, setExtra] = useState("");
   useEffect(() => {
     const search = path.includes("?") ? "" : window.location.search;
     setExtra(search + window.location.hash);
   }, [path]);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") menu.current?.removeAttribute("open");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   const links = LOCALES.map((code) => ({
     code,
@@ -38,8 +46,8 @@ export function LangSwitch({ locale, path }: { locale: Locale; path: string }) {
           </a>
         ))}
       </nav>
-      <details className="lang-switch-menu">
-        <summary aria-label={t("lang.current", { lang: t(ownName[locale], undefined, locale) }, locale)}>
+      <details className="lang-switch-menu" ref={menu}>
+        <summary aria-label={`${locale.toUpperCase()}, ${t("lang.switch.label", undefined, locale)}`}>
           {locale.toUpperCase()}
         </summary>
         <div role="group" aria-label={t("lang.switch.label", undefined, locale)}>

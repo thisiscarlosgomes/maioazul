@@ -3,7 +3,7 @@ import { HeadlineIcon } from "../components/headline-icon";
 import { MaioSlideshow } from "../components/maio-slideshow";
 import Link from "next/link";
 import { NowStrip } from "../components/now-strip";
-import { Header, Footer, Untranslated } from "../components/site-shell";
+import { Header, Footer } from "../components/site-shell";
 import { Reveal, HoverCard } from "../components/motion";
 import {
   PortalPreview,
@@ -11,17 +11,23 @@ import {
   VisitPreview,
   McpPreview,
 } from "../components/previews";
-import { initiatives } from "../lib/content";
-import { t } from "../lib/i18n";
+import { initiatives, type InitiativeId } from "../lib/content";
+import { t, type MessageKey } from "../lib/i18n";
 import { localize } from "../lib/locale";
 import { currentLocale } from "../lib/request-locale";
 import { pageMetadata } from "../lib/seo";
+
 const previews = {
   visit: VisitPreview,
   portal: PortalPreview,
   api: ApiPreview,
   mcp: McpPreview,
 };
+
+function initiativeText(id: InitiativeId, field: "name" | "description" | "action", locale: Awaited<ReturnType<typeof currentLocale>>) {
+  return t(`initiative.${id}.${field}` as MessageKey, undefined, locale);
+}
+
 export async function generateMetadata() {
   const locale = await currentLocale();
   return pageMetadata(
@@ -34,61 +40,54 @@ export async function generateMetadata() {
 
 export default async function Home() {
   const locale = await currentLocale();
+  const copy = (key: MessageKey) => t(key, undefined, locale);
   return (
     <>
-      <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
+      <SkipLink href="#conteudo">{copy("skip.content")}</SkipLink>
       <Header />
-      <main id="conteudo" lang={locale === "pt" ? undefined : "pt"}>
-        <Untranslated />
+      <main id="conteudo">
         <Section className="home-hero wrap">
           <Reveal>
             <h1 className="context-headline">
               <span className="headline-line">
-                Maio <HeadlineIcon kind="island" /> no digital.
+                {copy("home.name")} <HeadlineIcon kind="island" locale={locale} /> {copy("home.h1.digital")}
               </span>
               <span className="headline-line">
-                Conhecimento <HeadlineIcon kind="data" /> para todos.
+                {copy("home.h1.knowledge")} <HeadlineIcon kind="data" locale={locale} /> {copy("home.h1.forAll")}
               </span>
             </h1>
-            <p className="hero-description">
-              Usamos inteligência artificial e dados abertos para criar ferramentas digitais para o Maio, Cabo Verde.
-              Para conhecer a ilha, investigar e aprender — de onde estiver.
-            </p>
+            <p className="hero-description">{copy("home.hero")}</p>
             <div className="button-row">
-              <Button href="#iniciativas">Explorar iniciativas</Button>
+              <Button href="#iniciativas">{copy("home.explore")}</Button>
               <Button href={localize(locale, "/mcp")} variant="light">
-                Perguntar sobre o Maio
+                {copy("cta.ask")}
               </Button>
             </div>
           </Reveal>
         </Section>
         <NowStrip locale={locale} />
-        <Section
-          className="showcase wrap"
-          aria-label="Uma ilha, várias formas de descobrir"
-        >
+        <Section className="showcase wrap" label={copy("home.showcase")}>
           <Reveal className="showcase-grid">
             <div className="showcase-side">
-              <PortalPreview />
+              <PortalPreview locale={locale} />
             </div>
-            <MaioSlideshow />
+            <MaioSlideshow locale={locale} />
             <div className="showcase-side">
-              <McpPreview />
+              <McpPreview locale={locale} />
             </div>
           </Reveal>
           <div className="ecosystem-label">
             <p>
-              conhecer <i /> investigar <i /> aprender <i /> construir
+              {copy("home.eco.know")} <i /> {copy("home.eco.research")} <i /> {copy("home.eco.learn")} <i /> {copy("home.eco.build")}
             </p>
           </div>
         </Section>
         <Section className="story-section mission-section wrap" id="sobre">
           <Reveal>
             <h2 className="mission-statement">
-              Usamos IA <HeadlineIcon kind="ai" /> para criar ferramentas que
-              colocam o Maio <HeadlineIcon kind="map" /> ao alcance de todos.
-              Para explorar lugares, compreender dados{" "}
-              <HeadlineIcon kind="book" />{ " " }e aprender mais sobre a ilha.
+              {copy("home.mission.a")} <HeadlineIcon kind="ai" locale={locale} /> {copy("home.mission.b")}{" "}
+              <HeadlineIcon kind="map" locale={locale} /> {copy("home.mission.c")}{" "}
+              <HeadlineIcon kind="book" locale={locale} /> {copy("home.mission.d")}
             </h2>
           </Reveal>
         </Section>
@@ -96,30 +95,31 @@ export default async function Home() {
           <Reveal className="section-heading">
             <div>
               <h2>
-                O que pode <br />
-                descobrir aqui.
+                {copy("home.discover.line1")} <br />
+                {copy("home.discover.line2")}
               </h2>
             </div>
             <p>
-              Para explorar lugares, pesquisar dados <br />e transformar
-              perguntas em conhecimento.
+              {copy("home.discover.text1")} <br />
+              {copy("home.discover.text2")}
             </p>
           </Reveal>
           <div className="initiative-grid">
             {initiatives.map((item, i) => {
-              const Preview = previews[item.id as keyof typeof previews];
+              const Preview = previews[item.id];
+              const href = item.href.startsWith("/") ? localize(locale, item.href) : item.href;
               return (
                 <Reveal key={item.id} delay={(i % 2) * 0.08}>
-                  <HoverCard href={item.href} className={`initiative-card initiative-${item.id}`}>
+                  <HoverCard href={href} locale={locale} className={`initiative-card initiative-${item.id}`}>
                     <Card>
                       <div className="initiative-visual">
-                        <Preview />
+                        <Preview locale={locale} />
                       </div>
                       <div className="initiative-text">
                         <div className="initiative-title">
-                          <h3>{item.name}</h3>
+                          <h3>{initiativeText(item.id, "name", locale)}</h3>
                         </div>
-                        <p>{item.description}</p>
+                        <p>{initiativeText(item.id, "description", locale)}</p>
                       </div>
                     </Card>
                   </HoverCard>
@@ -132,37 +132,34 @@ export default async function Home() {
           <div className="wrap mcp-feature-grid">
             <Reveal>
               <h2>
-                A curiosidade <br />
-                abre a conversa.
+                {copy("home.curiosity.line1")} <br />
+                {copy("home.curiosity.line2")}
               </h2>
-              <p>
-                A IA também ajuda a explorar a informação. Pergunte sobre o Maio
-                nas suas palavras e encontre respostas com base nos dados da
-                ilha.
-              </p>
+              <p>{copy("home.curiosity.text")}</p>
               <div className="button-row">
                 <Button href={localize(locale, "/chat")} variant="white">
-                  {t("cta.ask", undefined, locale)}
+                  {copy("cta.ask")}
                 </Button>
                 <Link href={localize(locale, "/mcp")} className="feature-link">
-                  Ver como funciona
+                  {copy("home.how")}
                 </Link>
               </div>
             </Reveal>
             <Reveal delay={0.12}>
-              <McpPreview />
+              <McpPreview locale={locale} />
             </Reveal>
           </div>
         </Section>
         <Section className="closing wrap">
           <Reveal>
             <h2>
-              O Maio é de todos. <br />O conhecimento também.
+              {copy("home.closing.line1")} <br />
+              {copy("home.closing.line2")}
             </h2>
             <div className="button-row">
-              <Button href="#iniciativas">Explorar as ferramentas</Button>
+              <Button href="#iniciativas">{copy("home.tools")}</Button>
               <Button href="https://visitmaio.com" variant="light">
-                Conhecer a ilha
+                {copy("home.island")}
               </Button>
             </div>
           </Reveal>
