@@ -1,7 +1,7 @@
 import Image from "next/image";
 export function PortalPreview() {
   return (
-    <div className="portal-preview">
+    <div className="portal-preview" aria-hidden="true">
       <div className="preview-toolbar">
         <strong>
           maio<span>dados</span>
@@ -25,7 +25,7 @@ export function PortalPreview() {
 }
 export function ApiPreview() {
   return (
-    <div className="api-preview">
+    <div className="api-preview" aria-hidden="true">
       <div className="preview-toolbar">
         <span>
           <i className="status-dot" /> Maio Open Data
@@ -65,7 +65,7 @@ export function VisitPreview() {
 }
 export function McpPreview() {
   return (
-    <div className="mcp-preview">
+    <div className="mcp-preview" aria-hidden="true">
       <div className="mini-chat-top">
         <strong>Maio × ChatGPT</strong>
         <span className="tiny-badge">MCP</span>
