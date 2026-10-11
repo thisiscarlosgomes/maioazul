@@ -34,7 +34,11 @@ export function mayStoreNavigation(url, response) {
 
 export function evictionUrls(requestUrls, limit, pinned) {
   const keep = new Set(pinned);
-  const evictable = requestUrls.filter((url) => !keep.has(new URL(url).pathname));
+  const evictable = requestUrls.filter((url) => {
+    const parsed = new URL(url);
+    if (parsed.search) return true;
+    return !keep.has(parsed.pathname);
+  });
   const overflow = evictable.length - limit;
   return overflow > 0 ? evictable.slice(0, overflow) : [];
 }

@@ -41,6 +41,8 @@ test("only a successful same-origin page is cached, and offline copy shows when 
     ...Array.from({ length: 9 }, (_, index) => `https://maio.cv/en/page-${index}`),
   ];
   assert.deepEqual(evictionUrls(cached, 8, ["/pt", "/offline.html"]), ["https://maio.cv/en/page-0"]);
+  const withCampaign = ["https://maio.cv/pt?utm=campaign", ...cached];
+  assert.equal(evictionUrls(withCampaign, 8, ["/pt", "/offline.html"])[0], "https://maio.cv/pt?utm=campaign");
   const worker = readFileSync(new URL("../public/sw.js", import.meta.url), "utf8");
   assert.match(worker, /mayStoreNavigation/);
   assert.match(worker, /evictionUrls/);
