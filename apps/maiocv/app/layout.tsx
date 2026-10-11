@@ -1,12 +1,45 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-const sans = localFont({ src: "../public/fonts/PPNeueMontreal-Regular.woff2", variable: "--font-sans", display: "swap" });
+import "../../../packages/maio-ui/maio-ui.css";
+import { RegisterServiceWorker } from "../components/register-sw";
+import { t } from "../lib/i18n";
+import { currentBandwidth, currentLocale, currentPath } from "../lib/request-locale";
+import { localeHtmlLang } from "../lib/locale";
+import { SITE_URL, siteSchema } from "../lib/seo";
+const sans = localFont({
+  src: [
+    { path: "../../../packages/maio-tokens/fonts/PPNeueMontreal-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../../packages/maio-tokens/fonts/PPNeueMontreal-Medium.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-pp",
+  display: "swap",
+});
 export const metadata: Metadata = {
-  title: "MaioCV — Uma ilha. Novas possibilidades.",
-  description: "Conheça as iniciativas digitais da ilha do Maio: dados abertos, Portal de Dados e VisitMaio. Informação que aproxima a ilha do mundo.",
-  openGraph: { title: "MaioCV — Iniciativas digitais do Maio", description: "Uma ilha. Novas possibilidades. Explore os dados, conheça o território e descubra o Maio.", locale: "pt_PT", type: "website" },
+  metadataBase: new URL(SITE_URL),
+  manifest: "/manifest.webmanifest",
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 } },
 };
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="pt" className={sans.variable}><body>{children}</body></html>;
+export default async function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
+  const locale = await currentLocale();
+  const bandwidth = await currentBandwidth();
+  const path = await currentPath();
+  const returnTo = encodeURIComponent(path === "/" ? `/${locale}` : `/${locale}${path}`);
+  return (
+    <html lang={localeHtmlLang(locale)} className={sans.variable} data-bandwidth={bandwidth}>
+      <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema).replace(/</g, "\\u003c") }} />
+        {bandwidth === "low" ? (
+          <p className="lite-banner" role="status">
+            {t("lite.autoBanner", undefined, locale)}{" "}
+            <a href={`/api/bandwidth?mode=off&return=${returnTo}`}>{t("lite.disable", undefined, locale)}</a>
+          </p>
+        ) : null}
+        {children}
+        <RegisterServiceWorker />
+      </body>
+    </html>
+  );
 }
