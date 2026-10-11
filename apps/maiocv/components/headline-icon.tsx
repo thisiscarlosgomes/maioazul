@@ -2,39 +2,29 @@
 
 import { useId, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { t, type MessageKey } from "../lib/i18n";
+import type { Locale } from "../lib/locale";
 
 type IconKind = "island" | "beach" | "data" | "people" | "tools" | "chat" | "map" | "book" | "research" | "ai";
 const placeIcons: IconKind[] = ["island", "beach", "map"];
 const communityIcons: IconKind[] = ["data", "book", "research", "people", "tools", "ai", "chat"];
-const labels = {
-  island: "Ilha",
-  beach: "Praias",
-  data: "Dados",
-  people: "Pessoas",
-  tools: "Ferramentas",
-  chat: "Conversa",
-  map: "Lugares conectados",
-  book: "Aprender",
-  research: "Investigar",
-  ai: "Inteligência artificial",
-};
+type HeadlineIconProps = { kind: IconKind; locale?: Locale };
 
-type HeadlineIconProps = { kind: IconKind };
-
-export function HeadlineIcon({ kind }: HeadlineIconProps) {
+export function HeadlineIcon({ kind, locale = "pt" }: HeadlineIconProps) {
   const id = useId().replace(/:/g, "");
   const paint = (name: string) => `url(#${id}-${name})`;
   const [current, setCurrent] = useState<IconKind>(kind);
   const icons = placeIcons.includes(kind) ? placeIcons : communityIcons;
   const reducedMotion = useReducedMotion();
   const next = icons[(icons.indexOf(current) + 1) % icons.length];
+  const iconLabel = (icon: IconKind) => t(`icon.${icon}` as MessageKey, undefined, locale);
   return (
     <motion.button
       type="button"
       className={`headline-icon headline-icon-${current}`}
       onClick={() => setCurrent(next)}
-      aria-label={`${labels[current]}: mudar para ${labels[next]}`}
-      title="Clique para mudar o ícone"
+      aria-label={t("icon.switch", { current: iconLabel(current), next: iconLabel(next) }, locale)}
+      title={t("icon.title", undefined, locale)}
       whileHover={reducedMotion ? undefined : { scale: 1.06 }}
       whileTap={reducedMotion ? undefined : { scale: 0.94 }}
     >

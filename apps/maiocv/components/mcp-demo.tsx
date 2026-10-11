@@ -5,15 +5,17 @@ import Image from "next/image";
 import { Button } from "maio-ui";
 import { CHATGPT_URL } from "../lib/content";
 import { publicChatAnswer } from "../lib/chat-answer";
+import { t, type MessageKey } from "../lib/i18n";
+import { localize, type Locale } from "../lib/locale";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-const examples = [
-  { label: "Praias", prompt: "Que praias posso conhecer no Maio?" },
-  { label: "Economia", prompt: "Quantas empresas existem no Maio?" },
-  { label: "Turismo", prompt: "Como foi o turismo no Maio em 2024?" },
-];
-
-export function McpDemo() {
+export function McpDemo({ locale = "pt" }: { locale?: Locale }) {
+  const copy = (key: MessageKey, values?: Record<string, string | number>) => t(key, values, locale);
+  const examples = [
+    { label: copy("demo.beaches"), prompt: copy("chat.suggest.beaches"), answer: copy("demo.answer.beaches") },
+    { label: copy("demo.economy"), prompt: copy("chat.suggest.business"), answer: copy("demo.answer.business") },
+    { label: copy("demo.tourism"), prompt: copy("chat.suggest.tourism"), answer: copy("demo.answer.tourism") },
+  ];
   const [question, setQuestion] = useState(examples[0].prompt);
   const [reply, setReply] = useState("");
   const [preset, setPreset] = useState<number | null>(null);
@@ -70,11 +72,7 @@ export function McpDemo() {
         question.trim().toLocaleLowerCase(),
     );
     if (match >= 0) {
-      const answer = [
-        "Bitxe Rotcha, Ponta Preta e Boca Lagoa. Confirme as condições do mar.",
-        "IAE 2024: cerca de 308 empresas ativas; 114 no comércio, 62 no alojamento e restauração e 40 noutros serviços. Estimativas arredondadas.",
-        "INE Turismo 2024: 1 932 hóspedes e 7 553 dormidas nos alojamentos abrangidos no Maio; média calculada de 3,9 noites.",
-      ][match];
+      const answer = examples[match].answer;
       setPreset(match);
       setReply(answer);
       setSubmitted(true);
@@ -107,33 +105,31 @@ export function McpDemo() {
             ...history.current.slice(-6),
             {
               role: "user",
-              content: `${question.trim()}\n\nResponde em português, em texto simples, com no máximo 60 palavras ou 3 pontos curtos. Usa as ferramentas do Maio e indica a fonte e o período quando houver dados. Não inventes informação.`,
+              content: `${question.trim()}\n\n${copy("demo.instruction")}`,
             },
           ],
-          context: { surface: "mcp-guide" },
+          context: { surface: "mcp-guide", lang: locale },
         }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         const dailyQuota = response.status === 429 && typeof data.limit === "number" && typeof data.windowHours === "number";
         throw new Error(dailyQuota
-          ? `A API ainda aplica um limite de ${data.limit} perguntas por ${data.windowHours} horas. O limite desta sessão foi atingido.`
+          ? copy("demo.quota", { limit: data.limit, hours: data.windowHours })
           : response.status === 429
-            ? "O serviço está temporariamente ocupado. Tente novamente dentro de instantes."
-            : "Não foi possível consultar o Maio. Tente novamente.");
+            ? copy("demo.error.busy")
+            : copy("chat.error.answer"));
       }
       if (
         Array.isArray(data.toolEvents) &&
         data.toolEvents.some((event: { ok?: boolean }) => event.ok === false)
       ) {
-        throw new Error(
-          "Uma das fontes não respondeu. Tente novamente ou pergunte sobre outro tema.",
-        );
+        throw new Error(copy("demo.error.source"));
       }
       if (typeof data.message !== "string" || !data.message.trim())
-        throw new Error("Não recebemos uma resposta. Tente novamente.");
+        throw new Error(copy("chat.error.empty"));
       const publicAnswer = publicChatAnswer(data.message, question.trim());
-      if (!publicAnswer) throw new Error("Não recebemos uma resposta. Tente novamente.");
+      if (!publicAnswer) throw new Error(copy("chat.error.empty"));
       if (pending.current === controller) {
         setReply(publicAnswer.replace(/\*\*/g, ""));
         history.current = [
@@ -146,10 +142,10 @@ export function McpDemo() {
       if (pending.current === controller)
         setError(
           controller.signal.aborted
-            ? "A consulta demorou demasiado. Tente novamente."
+            ? copy("chat.error.timeout")
             : cause instanceof Error
               ? cause.message
-              : "Não foi possível consultar o Maio.",
+              : copy("chat.error.generic"),
         );
     } finally {
       window.clearTimeout(timeout);
@@ -165,7 +161,7 @@ export function McpDemo() {
       <div
         className="question-suggestions"
         role="group"
-        aria-label="Perguntas de exemplo"
+        aria-label={copy("demo.examples")}
       >
         {examples.map((item, index) => (
           <button
@@ -179,7 +175,7 @@ export function McpDemo() {
       </div>
       <form className="question-box" onSubmit={submit}>
         <label className="sr-only" htmlFor="maio-question">
-          A sua pergunta sobre o Maio
+          {copy("chat.label")}
         </label>
         <div className="typing-input">
           {!editing && !reduced && (
@@ -199,7 +195,7 @@ export function McpDemo() {
               resetReply();
               setQuestion(event.target.value);
             }}
-            placeholder="O que quer saber sobre o Maio?"
+            placeholder={copy("demo.placeholder")}
             onKeyDown={(event) => {
               if (
                 event.key === "Enter" &&
@@ -216,7 +212,7 @@ export function McpDemo() {
           type="submit"
           disabled={!question.trim() || loading}
           className="demo-send"
-          aria-label={loading ? "A consultar o Maio" : "Enviar pergunta"}
+          aria-label={loading ? copy("chat.sending") : copy("chat.send")}
         >
           {loading ? <span className="chat-spinner" aria-hidden="true" /> : (
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -241,7 +237,7 @@ export function McpDemo() {
               <div>
                 {loading ? (
                   <p role="status" className="live-thinking">
-                    A consultar os dados do Maio…
+                    {copy("demo.thinking")}
                   </p>
                 ) : error ? (
                   <p role="alert">{error}</p>
@@ -276,19 +272,19 @@ export function McpDemo() {
                 ) : preset !== null ? (
                   <div>
                     {preset === 1 && (
-                      <p>Cerca de 308 empresas ativas em 2024.</p>
+                      <p>{copy("demo.business.lead")}</p>
                     )}
                     <div className="answer-points data-results">
                       {(preset === 1
                         ? [
-                            ["114", "Comércio e reparação"],
-                            ["62", "Alojamento e restauração"],
-                            ["40", "Outros serviços"],
+                            ["114", copy("demo.business.commerce")],
+                            ["62", copy("demo.business.stay")],
+                            ["40", copy("demo.business.other")],
                           ]
                         : [
-                            ["1 932", "Hóspedes"],
-                            ["7 553", "Dormidas"],
-                            ["3,9 noites", "Média por hóspede"],
+                            ["1 932", copy("demo.tourism.guests")],
+                            ["7 553", copy("demo.tourism.nights")],
+                            ["3,9", copy("demo.tourism.avg")],
                           ]
                       ).map(([value, label], i) => (
                         <motion.div
@@ -304,8 +300,8 @@ export function McpDemo() {
                     </div>
                     <p className="answer-takeaway">
                       {preset === 1
-                        ? "IAE 2024 · Estimativas arredondadas via API Maio; fonte original por verificar."
-                        : "INE · 2024 · Alojamentos abrangidos. Média calculada."}
+                        ? copy("demo.business.source")
+                        : copy("demo.tourism.source")}
                     </p>
                   </div>
                 ) : (
@@ -325,9 +321,9 @@ export function McpDemo() {
       </div>
       <div className="button-row demo-chat-actions">
         <Button href={CHATGPT_URL} variant="light">
-          Abrir no ChatGPT
+          {copy("footer.chatgpt")}
         </Button>
-        <Button href="/chat">Conversar aqui</Button>
+        <Button href={localize(locale, "/chat")}>{copy("demo.here")}</Button>
       </div>
     </div>
   );

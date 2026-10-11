@@ -42,13 +42,9 @@ export function proxy(request: NextRequest) {
   }
 
   const destination = request.nextUrl.clone();
-  if (pathname === "/") {
-    const cookie = request.cookies.get(LANG_COOKIE)?.value;
-    const locale = isLocale(cookie) ? cookie : preferredLocale(request.headers.get("accept-language"));
-    destination.pathname = localize(locale, "/");
-  } else {
-    destination.pathname = localize("pt", pathname);
-  }
+  const cookie = request.cookies.get(LANG_COOKIE)?.value;
+  const locale = isLocale(cookie) ? cookie : preferredLocale(request.headers.get("accept-language"));
+  destination.pathname = pathname === "/" ? localize(locale, "/") : localize(locale, pathname);
   const response = NextResponse.redirect(destination, 307);
   response.headers.set("Vary", "Accept-Language, Cookie");
   return response;

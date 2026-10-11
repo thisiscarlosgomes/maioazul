@@ -15,7 +15,7 @@ export function Logo() {
   );
 }
 
-export async function Header({ active = "home" }: { active?: "home" | "mcp" }) {
+export async function Header({ active = "home" }: { active?: "home" | "mcp" | "essentials" | "search" | "chat" }) {
   const locale = await currentLocale();
   const path = await currentPath();
   const copy = (key: Parameters<typeof t>[0]) => t(key, undefined, locale);
@@ -29,10 +29,10 @@ export async function Header({ active = "home" }: { active?: "home" | "mcp" }) {
       label={copy("nav.primary")}
       links={[
         { href: `${localize(locale, "/")}#iniciativas`, label: copy("nav.initiatives"), compact: "hide" },
-        { href: essentialsPath(locale), label: copy("nav.visit") },
-        { href: localize(locale, "/search"), label: copy("nav.search") },
+        { href: essentialsPath(locale), label: copy("nav.visit"), current: active === "essentials" },
+        { href: localize(locale, "/search"), label: copy("nav.search"), current: active === "search" },
         { href: localize(locale, "/mcp"), label: copy("nav.about"), current: active === "mcp" },
-        { href: localize(locale, "/chat"), label: copy("nav.chat") },
+        { href: localize(locale, "/chat"), label: copy("nav.chat"), current: active === "chat" },
       ]}
       tools={<LangSwitch locale={locale} path={path} />}
       action={{ href: localize(locale, "/chat"), label: copy("cta.ask") }}
@@ -77,12 +77,3 @@ export async function Footer() {
   );
 }
 
-export async function Untranslated() {
-  const locale = await currentLocale();
-  if (locale === "pt") return null;
-  return (
-    <p className="untranslated-note" role="note">
-      {t("i18n.notTranslated", undefined, locale)}
-    </p>
-  );
-}
