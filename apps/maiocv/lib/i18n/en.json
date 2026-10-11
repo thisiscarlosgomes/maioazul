@@ -132,5 +132,11 @@
   "chat.noSource": "No source",
   "chat.example": "Example answer",
   "chat.human": "Talk to a person",
-  "chat.emergency": "In an emergency call:"
+  "chat.emergency": "In an emergency call:",
+  "search.placeholder": "Search Maio: beaches, trails, places…",
+  "search.results": "{n} results for “{q}”",
+  "search.none": "Nothing found for “{q}”. Try another word or clear filters.",
+  "search.unmapped": "No location on the map",
+  "search.noSource": "Source link missing",
+  "nav.search": "Search"
 }

@@ -132,5 +132,11 @@
   "chat.noSource": "Sem fonte",
   "chat.example": "Resposta de exemplo",
   "chat.human": "Falar com uma pessoa",
-  "chat.emergency": "Em caso de emergência ligue:"
+  "chat.emergency": "Em caso de emergência ligue:",
+  "search.placeholder": "Pesquisar no Maio: praias, trilhos, lugares…",
+  "search.results": "{n} resultados para «{q}»",
+  "search.none": "Nada encontrado para «{q}». Tente outra palavra ou limpe os filtros.",
+  "search.unmapped": "Sem localização no mapa",
+  "search.noSource": "Ligação à fonte em falta",
+  "nav.search": "Pesquisar"
 }

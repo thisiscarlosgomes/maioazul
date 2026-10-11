@@ -30,6 +30,7 @@ export async function Header({ active = "home" }: { active?: "home" | "mcp" }) {
       links={[
         { href: `${localize(locale, "/")}#iniciativas`, label: copy("nav.initiatives"), compact: "hide" },
         { href: essentialsPath(locale), label: copy("nav.visit") },
+        { href: localize(locale, "/search"), label: copy("nav.search") },
         { href: localize(locale, "/mcp"), label: copy("nav.about"), current: active === "mcp" },
         { href: localize(locale, "/chat"), label: copy("nav.chat") },
       ]}
