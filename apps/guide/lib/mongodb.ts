@@ -34,11 +34,8 @@ export async function getMongoClient(): Promise<MongoClient | null> {
   return cache._mongoClientPromise;
 }
 
-const clientPromise = {
-  then(
-    onFulfilled?: ((value: MongoClient) => unknown) | null,
-    onRejected?: ((reason: unknown) => unknown) | null,
-  ) {
+const clientPromise: PromiseLike<MongoClient> = {
+  then(onFulfilled, onRejected) {
     return getMongoClient()
       .then((client) => {
         if (!client) {
@@ -50,4 +47,4 @@ const clientPromise = {
   },
 };
 
-export default clientPromise as Promise<MongoClient>;
+export default clientPromise;
