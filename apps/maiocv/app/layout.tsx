@@ -6,7 +6,7 @@ import { RegisterServiceWorker } from "../components/register-sw";
 import { t } from "../lib/i18n";
 import { currentBandwidth, currentLocale, currentPath } from "../lib/request-locale";
 import { localeHtmlLang } from "../lib/locale";
-import { SITE_URL, siteSchema } from "../lib/seo";
+import { SITE_URL, siteSchemaFor } from "../lib/seo";
 const sans = localFont({
   src: [
     { path: "../../../packages/maio-tokens/fonts/PPNeueMontreal-Regular.woff2", weight: "400", style: "normal" },
@@ -30,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang={localeHtmlLang(locale)} className={sans.variable} data-bandwidth={bandwidth}>
       <body>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema).replace(/</g, "\\u003c") }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchemaFor(locale)).replace(/</g, "\\u003c") }} />
         {bandwidth === "low" ? (
           <p className="lite-banner" role="status">
             {t("lite.autoBanner", undefined, locale)}{" "}

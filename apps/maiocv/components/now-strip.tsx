@@ -28,7 +28,7 @@ export async function NowStrip({ locale }: { locale: Locale }) {
         <h2 id="maio-agora">{t("agora.title", undefined, locale)}</h2>
         <p>{t("agora.tz", undefined, locale)}</p>
       </div>
-      <div className="now-strip-row" tabIndex={0}>
+      <div className="now-strip-row" role="group" aria-label={t("agora.title", undefined, locale)} tabIndex={0}>
         {cards.map((card) => (
           <dl key={card.id} className="now-card">
             <dt>{card.label}</dt>

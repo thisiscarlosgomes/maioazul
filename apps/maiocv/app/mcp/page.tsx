@@ -1,12 +1,13 @@
 import { Button, Section, SkipLink } from "maio-ui";
 import { HeadlineIcon } from "../../components/headline-icon";
 import { pageMetadata } from "../../lib/seo";
-import { Header, Footer, Untranslated } from "../../components/site-shell";
+import { Header, Footer } from "../../components/site-shell";
 import { Reveal } from "../../components/motion";
 import { McpDemo } from "../../components/mcp-demo";
-import { t } from "../../lib/i18n";
+import { t, type MessageKey } from "../../lib/i18n";
 import { localize } from "../../lib/locale";
 import { currentLocale } from "../../lib/request-locale";
+
 export async function generateMetadata() {
   const locale = await currentLocale();
   return pageMetadata(
@@ -16,70 +17,57 @@ export async function generateMetadata() {
     locale,
   );
 }
+
 export default async function McpPage() {
   const locale = await currentLocale();
+  const copy = (key: MessageKey) => t(key, undefined, locale);
+  const steps = [1, 2, 3] as const;
+  const tips = [1, 2, 3] as const;
+  const faqs = [1, 2, 3, 4, 5, 6] as const;
   return (
     <>
-      <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
+      <SkipLink href="#conteudo">{copy("skip.content")}</SkipLink>
       <Header active="mcp" />
-      <main id="conteudo" lang={locale === "pt" ? undefined : "pt"}>
-        <Untranslated />
+      <main id="conteudo">
         <Section className="mcp-hero wrap">
           <Reveal>
             <h1 className="context-headline">
               <span className="headline-line">
-                Uma <HeadlineIcon kind="chat" /> pergunta.
+                {copy("mcp.h1.one")} <HeadlineIcon kind="chat" locale={locale} /> {copy("mcp.h1.question")}
               </span>
               <span className="headline-line muted-heading">
-                Uma ilha <HeadlineIcon kind="island" /> de respostas.
+                {copy("mcp.h1.island")} <HeadlineIcon kind="island" locale={locale} /> {copy("mcp.h1.answers")}
               </span>
             </h1>
-            <p className="hero-description">
-              Uma das ferramentas que criamos com IA para aproximar o Maio de
-              todos. Pergunte, investigue e aprenda sobre a ilha nas suas
-              palavras.
-            </p>
+            <p className="hero-description">{copy("mcp.hero")}</p>
           </Reveal>
         </Section>
         <Section className="demo-section wrap" id="demonstracao">
           <Reveal>
-            <McpDemo />
+            <McpDemo locale={locale} />
           </Reveal>
         </Section>
         <Section className="how-section wrap" id="como-funciona">
           <Reveal className="section-heading">
             <div>
               <h2>
-                Conheça melhor <br />a sua ilha.
+                {copy("mcp.how.line1")} <br />
+                {copy("mcp.how.line2")}
               </h2>
             </div>
             <p>
-              Para quem vive aqui, visita <br />
-              ou quer saber mais.
+              {copy("mcp.how.lead")}
             </p>
           </Reveal>
           <div className="how-grid">
-            {[
-              {
-                title: "Descubra lugares.",
-                text: "Quer conhecer as praias da ilha? Pergunte onde ficam e peça os links para saber mais.",
-              },
-              {
-                title: "Entenda os números.",
-                text: "Como varia o turismo ao longo do ano? Explore os dados e peça uma explicação simples.",
-              },
-              {
-                title: "Continue a descobrir.",
-                text: "Uma resposta despertou a sua curiosidade? Peça mais detalhes, compare ou faça outra pergunta.",
-              },
-            ].map((s, i) => (
-              <Reveal key={s.title} delay={i * 0.08}>
+            {steps.map((step, i) => (
+              <Reveal key={step} delay={i * 0.08}>
                 <article className="how-card">
                   <div>
-                    <span>0{i + 1}</span>
+                    <span>0{step}</span>
                   </div>
-                  <h3>{s.title}</h3>
-                  <p>{s.text}</p>
+                  <h3>{copy(`mcp.step${step}.title` as MessageKey)}</h3>
+                  <p>{copy(`mcp.step${step}.text` as MessageKey)}</p>
                 </article>
               </Reveal>
             ))}
@@ -89,96 +77,53 @@ export default async function McpPage() {
           <Reveal className="context-grid">
             <div>
               <h2>
-                Como obter <br />
-                uma resposta útil.
+                {copy("mcp.useful.line1")} <br />
+                {copy("mcp.useful.line2")}
               </h2>
-              <p>
-                Não precisa de saber termos técnicos. Diga o que quer descobrir
-                e peça ajuda para perceber a resposta.
-              </p>
+              <p>{copy("mcp.useful.lead")}</p>
             </div>
             <div className="context-list">
-              <article>
-                <span>01</span>
-                <div>
-                  <h3>Diga o que procura.</h3>
-                  <p>
-                    Experimente: “Quero conhecer as praias do Maio. Onde posso
-                    encontrar informação sobre cada uma?”
-                  </p>
-                </div>
-              </article>
-              <article>
-                <span>02</span>
-                <div>
-                  <h3>Peça a origem da informação.</h3>
-                  <p>
-                    Pergunte “De onde vêm estes números?” ou “De que ano são?”.
-                    Abra os links para conhecer a fonte.
-                  </p>
-                </div>
-              </article>
-              <article>
-                <span>03</span>
-                <div>
-                  <h3>Peça uma explicação mais simples.</h3>
-                  <p>
-                    Se algo não ficou claro, diga “Explica melhor” ou “Dá-me um
-                    exemplo”. A conversa pode continuar.
-                  </p>
-                </div>
-              </article>
+              {tips.map((tip) => (
+                <article key={tip}>
+                  <span>0{tip}</span>
+                  <div>
+                    <h3>{copy(`mcp.tip${tip}.title` as MessageKey)}</h3>
+                    <p>{copy(`mcp.tip${tip}.text` as MessageKey)}</p>
+                  </div>
+                </article>
+              ))}
             </div>
           </Reveal>
         </Section>
         <Section className="faq-section wrap" id="perguntas">
           <Reveal>
-            <h2>Perguntas frequentes.</h2>
+            <h2>{copy("mcp.faq.title")}</h2>
             <div className="faq-list">
-              {[
-                [
-                  "O que é o Maio no ChatGPT?",
-                  "É uma forma de conhecer a ilha através de uma conversa. Pode fazer perguntas no ChatGPT e consultar informação pública sobre lugares, turismo e economia do Maio.",
-                ],
-                [
-                  "O que posso perguntar?",
-                  "Pode perguntar sobre praias e lugares, empresas ou turismo. Por exemplo: “Que dados existem sobre as empresas do Maio?” Nem todos os temas ou anos têm informação disponível; peça ao ChatGPT para confirmar o que encontrou.",
-                ],
-                [
-                  "As respostas usam dados reais?",
-                  "As três perguntas sugeridas mostram respostas preparadas. Para outras perguntas, o assistente consulta as ferramentas de dados do Maio. Confirme as fontes e as datas indicadas. Se faltar informação, peça mais contexto.",
-                ],
-                [
-                  "É preciso saber usar tecnologia?",
-                  "Basta escrever uma pergunta e clicar em Enviar. Não precisa de programar nem de conhecer os termos usados nos dados.",
-                ],
-                [
-                  "Como começo?",
-                  t("faq.start", { cta: t("cta.ask", undefined, locale) }, locale),
-                ],
-                [
-                  "A informação está sempre atualizada?",
-                  "Depende de quem publica a informação. Pergunte a que ano ou período se refere e consulte a fonte. Se estiver a preparar uma visita, confirme também os acessos e as condições locais.",
-                ],
-              ].map(([q, a]) => (
-                <details key={q}>
-                  <summary>
-                    {q}
-                    <span>+</span>
-                  </summary>
-                  <p>{a}</p>
-                </details>
-              ))}
+              {faqs.map((item) => {
+                const question = copy(`mcp.faq.${item}.q` as MessageKey);
+                const answer = item === 5
+                  ? t("faq.start", { cta: copy("cta.ask") }, locale)
+                  : copy(`mcp.faq.${item}.a` as MessageKey);
+                return (
+                  <details key={question}>
+                    <summary>
+                      {question}
+                      <span>+</span>
+                    </summary>
+                    <p>{answer}</p>
+                  </details>
+                );
+              })}
             </div>
           </Reveal>
         </Section>
         <Section className="closing wrap">
           <Reveal>
             <h2>
-              O que quer saber <br />
-              sobre o Maio?
+              {copy("mcp.closing.line1")} <br />
+              {copy("mcp.closing.line2")}
             </h2>
-            <Button href={localize(locale, "/chat")}>Conversar sobre o Maio</Button>
+            <Button href={localize(locale, "/chat")}>{copy("mcp.closing.cta")}</Button>
           </Reveal>
         </Section>
       </main>

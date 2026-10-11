@@ -11,6 +11,9 @@ test("greets visitors with supported MaioCV topics only", () => {
   assert.match(scope ?? "", /praias e património, turismo, empresas/);
   assert.doesNotMatch(scope ?? "", /barcos|voos|transportes|tempo|surf/);
   assert.equal(publicChatGreeting("Que dados de turismo posso consultar?"), null);
+  assert.match(publicChatGreeting("hi", "en") ?? "", /beaches/);
+  assert.doesNotMatch(publicChatGreeting("hi", "en") ?? "", /praias/);
+  assert.match(publicChatGreeting("hi", "fr") ?? "", /plages/);
 });
 
 test("keeps the public source but removes internal dataset and workbook details", () => {
