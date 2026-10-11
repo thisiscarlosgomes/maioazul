@@ -2389,7 +2389,7 @@ h2,
   padding: 16px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: #f2f5ec;
+  background: var(--maio-surface-data);
 }
 .now-card-value {
   font-size: 28px;

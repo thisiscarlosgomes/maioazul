@@ -1,7 +1,7 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
 import { loadAgora } from "../lib/agora.ts";
-import { formatMaioTime, nowCards, retrievedLabel } from "../lib/now-view.ts";
+import { formatMaioTime, nowCards, retrievedLabel, weatherLabel } from "../lib/now-view.ts";
 
 const now = new Date("2026-10-11T19:30:00.000Z");
 
@@ -10,6 +10,26 @@ test("astronomy UTC timestamps render in Atlantic/Cape_Verde", () => {
   const label = retrievedLabel("2026-10-11T19:30:00.000Z", "en");
   assert.match(label, /Retrieved 18:30/);
   assert.doesNotMatch(label, /updated/i);
+});
+
+test("weather words come from the catalog in each language", () => {
+  const codes = [0, 1, 2, 3, 45, 48, 51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86, 95, 96, 99];
+  for (const code of codes) {
+    const en = weatherLabel(code, "en");
+    const pt = weatherLabel(code, "pt");
+    const fr = weatherLabel(code, "fr");
+    assert.notEqual(en, "");
+    assert.doesNotMatch(en, /WMO/);
+    assert.doesNotMatch(pt, /WMO/);
+    assert.doesNotMatch(fr, /WMO/);
+    assert.notEqual(pt, en);
+    assert.notEqual(fr, en);
+  }
+  assert.equal(weatherLabel(1, "en"), "Mainly clear");
+  assert.equal(weatherLabel(51, "pt"), "Chuvisco fraco");
+  assert.equal(weatherLabel(51, "fr"), "Bruine légère");
+  assert.equal(weatherLabel(100, "en"), "Weather code 100");
+  assert.equal(weatherLabel(null, "en"), "");
 });
 
 test("every agora value keeps a source line", async () => {

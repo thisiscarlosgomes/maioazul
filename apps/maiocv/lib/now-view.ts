@@ -42,19 +42,14 @@ function compass(degrees: number, locale: Locale): string {
   return t(`wind.dir.${name}` as MessageKey, undefined, locale);
 }
 
-function weatherWords(code: number | null): string {
-  const words: Record<number, string> = {
-    0: "Clear",
-    1: "Mainly clear",
-    2: "Partly cloudy",
-    3: "Overcast",
-    45: "Fog",
-    61: "Rain",
-    80: "Showers",
-    95: "Thunderstorm",
-  };
+const WEATHER_CODES = [0, 1, 2, 3, 45, 48, 51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86, 95, 96, 99] as const;
+
+export function weatherLabel(code: number | null, locale: Locale): string {
   if (code === null) return "";
-  return words[code] ?? `WMO ${code}`;
+  if ((WEATHER_CODES as readonly number[]).includes(code)) {
+    return t(`agora.wx.${code}` as MessageKey, undefined, locale);
+  }
+  return t("agora.wx.other", { code }, locale);
 }
 
 export function nowCards(body: AgoraBody, locale: Locale): NowCardView[] {
@@ -75,7 +70,7 @@ export function nowCards(body: AgoraBody, locale: Locale): NowCardView[] {
       label: t("agora.weather", undefined, locale),
       primary: weather?.temperature == null
         ? t("agora.error.card", undefined, locale)
-        : `${weatherWords(weather.weather_code)} ${Math.round(weather.temperature)}°C`.trim(),
+        : `${weatherLabel(weather.weather_code, locale)} ${Math.round(weather.temperature)}°C`.trim(),
       secondary: weather?.temperature_min == null || weather.temperature_max == null
         ? ""
         : t("agora.range", { min: Math.round(weather.temperature_min), max: Math.round(weather.temperature_max) }, locale),
