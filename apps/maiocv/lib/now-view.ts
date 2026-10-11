@@ -11,6 +11,7 @@ export type NowCardView = {
   primary: string;
   secondary: string;
   source: string;
+  failed: boolean;
 };
 
 export function formatMaioTime(iso: string, locale: Locale): string {
@@ -68,6 +69,7 @@ export function nowCards(body: AgoraBody, locale: Locale): NowCardView[] {
     {
       id: "weather",
       label: t("agora.weather", undefined, locale),
+      failed: weather?.temperature == null,
       primary: weather?.temperature == null
         ? t("agora.error.card", undefined, locale)
         : `${weatherLabel(weather.weather_code, locale)} ${Math.round(weather.temperature)}°C`.trim(),
@@ -79,6 +81,7 @@ export function nowCards(body: AgoraBody, locale: Locale): NowCardView[] {
     {
       id: "sea",
       label: t("agora.sea", undefined, locale),
+      failed: sea?.wave_height == null,
       primary: sea?.wave_height == null
         ? t("agora.error.sea", undefined, locale)
         : t("agora.wave", { h: sea.wave_height }, locale),
@@ -88,6 +91,7 @@ export function nowCards(body: AgoraBody, locale: Locale): NowCardView[] {
     {
       id: "wind",
       label: t("agora.wind", undefined, locale),
+      failed: wind?.speed == null,
       primary: wind?.speed == null ? t("agora.error.card", undefined, locale) : `${Math.round(wind.speed)} ${wind.unit || t("unit.kmh", undefined, locale)}`,
       secondary: wind?.direction == null ? "" : `${compass(wind.direction, locale)} (${Math.round(wind.direction)}°)`,
       source: sourceLine(body.wind, locale),
@@ -95,6 +99,7 @@ export function nowCards(body: AgoraBody, locale: Locale): NowCardView[] {
     {
       id: "sky",
       label: t("agora.sky", undefined, locale),
+      failed: typeof sunset !== "string",
       primary: typeof sunset === "string"
         ? t("agora.sunset", { time: formatMaioTime(sunset, locale) }, locale)
         : t("agora.error.card", undefined, locale),
