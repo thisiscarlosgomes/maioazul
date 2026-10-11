@@ -1,6 +1,6 @@
 import { SkipLink } from "maio-ui";
 import { Header, Footer } from "../../components/site-shell";
-import { loadEssentials, scheduleSource } from "../../lib/essentials";
+import { flightRouteLabel, loadEssentials, scheduleSource, verifiedDate, visibleCaveat } from "../../lib/essentials";
 import { EMERGENCY, EMERGENCY_VERIFIED_AT, humanContactUrl } from "../../lib/emergency";
 import { t, type MessageKey } from "../../lib/i18n";
 import { essentialsPath, type Locale } from "../../lib/locale";
@@ -25,7 +25,7 @@ export default async function EssentialsPage() {
   return (
     <>
       <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
-      <Header />
+      <Header active="essentials" />
       <main id="conteudo" className="wrap essentials">
         <h1>{t("ess.title", undefined, locale)}</h1>
         <section aria-labelledby="emergency">
@@ -40,7 +40,7 @@ export default async function EssentialsPage() {
               </li>
             ))}
           </ul>
-          <p>{t("ess.verified", { date: EMERGENCY_VERIFIED_AT }, locale)} · MaioAzul</p>
+          <p>{t("ess.verified", { date: verifiedDate(EMERGENCY_VERIFIED_AT, locale) }, locale)}</p>
         </section>
         <section aria-labelledby="arrive">
           <h2 id="arrive">{t("ess.arrive", undefined, locale)}</h2>
@@ -53,8 +53,8 @@ export default async function EssentialsPage() {
           {body.flight.status === "available" ? null : <p>{t("ess.none", undefined, locale)}</p>}
           <p>{t("ess.flight.thirdParty", undefined, locale)}</p>
           <ul>
-            {(body.flight.data?.sourceUrls ?? []).map((url) => (
-              <li key={url}><a href={url}>{body.flight.source.name}</a></li>
+            {(body.flight.data?.sourceUrls ?? []).map((route) => (
+              <li key={route.url}><a href={route.url}>{flightRouteLabel(route.id, locale)}</a></li>
             ))}
           </ul>
         </section>
@@ -90,7 +90,7 @@ function Provenance({
   return (
     <>
       <p>{source.line}</p>
-      {source.caveats.map((caveat) => <p key={caveat}>{caveat}</p>)}
+      {source.caveats.map((caveat) => <p key={caveat}>{visibleCaveat(caveat, locale)}</p>)}
     </>
   );
 }
@@ -105,7 +105,7 @@ function Schedule({ locale, sailings, status }: { locale: Locale; sailings: { fr
           {" "}{sailing.from} → {sailing.to}
         </li>
       ))}
-      {status === "partial" ? <li>{t("ess.none", undefined, locale)}</li> : null}
+      {status === "partial" ? <li>{t("ess.partial", undefined, locale)}</li> : null}
     </ul>
   );
 }
