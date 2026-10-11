@@ -128,5 +128,9 @@
   "lite.on": "On",
   "lite.off": "Off",
   "lite.autoBanner": "Lite mode is on to save data.",
-  "lite.disable": "Turn off"
+  "lite.disable": "Turn off",
+  "chat.noSource": "No source",
+  "chat.example": "Example answer",
+  "chat.human": "Talk to a person",
+  "chat.emergency": "In an emergency call:"
 }
