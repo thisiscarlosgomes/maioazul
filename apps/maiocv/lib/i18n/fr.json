@@ -92,5 +92,11 @@
   "ess.pay.source": "INE et SISP, {year}",
   "ess.pay.cashTip": "L'accès aux espèces est limité. Prévoyez des espèces.",
   "ess.pay.venues.empty": "Où payer par carte : liste en cours.",
-  "ess.pay.suggest": "Suggérer un lieu"
+  "ess.pay.suggest": "Suggérer un lieu",
+  "lite.label": "Mode léger",
+  "lite.auto": "Auto",
+  "lite.on": "Activé",
+  "lite.off": "Désactivé",
+  "lite.autoBanner": "Le mode léger est activé pour économiser des données.",
+  "lite.disable": "Désactiver"
 }

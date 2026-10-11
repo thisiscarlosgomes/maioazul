@@ -2406,6 +2406,20 @@ h2,
   min-height: 56px;
   border-bottom: 1px solid var(--line);
 }
+html[data-bandwidth="low"] body {
+  font-family: system-ui, Arial, sans-serif;
+}
+html[data-bandwidth="low"] .home-hero img,
+html[data-bandwidth="low"] .slideshow-frame,
+html[data-bandwidth="low"] .maio-slideshow {
+  display: none;
+}
+.lite-banner {
+  margin: 0;
+  padding: 12px 24px;
+  background: #f2f5ec;
+  font-size: 14px;
+}
 @media (max-width: 700px) {
   .now-strip-row {
     display: flex;

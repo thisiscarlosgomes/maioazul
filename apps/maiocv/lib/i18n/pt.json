@@ -92,5 +92,11 @@
   "ess.pay.source": "INE e SISP, {year}",
   "ess.pay.cashTip": "O acesso a dinheiro é limitado. Planeie e leve algum numerário.",
   "ess.pay.venues.empty": "Onde aceitam cartão: lista em construção.",
-  "ess.pay.suggest": "Sugerir um local"
+  "ess.pay.suggest": "Sugerir um local",
+  "lite.label": "Modo leve",
+  "lite.auto": "Auto",
+  "lite.on": "Ligado",
+  "lite.off": "Desligado",
+  "lite.autoBanner": "O modo leve está ativo para poupar dados.",
+  "lite.disable": "Desativar"
 }

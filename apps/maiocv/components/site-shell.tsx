@@ -41,6 +41,7 @@ export async function Header({ active = "home" }: { active?: "home" | "mcp" }) {
 
 export async function Footer() {
   const locale = await currentLocale();
+  const path = await currentPath();
   const copy = (key: Parameters<typeof t>[0], values?: Record<string, string | number>) => t(key, values, locale);
   return (
     <SiteFooter
@@ -64,6 +65,11 @@ export async function Footer() {
           {copy("footer.credit")}
           <br />
           <a href="https://maioazul.com">{copy("footer.studio")}</a>
+          <br />
+          <span>{copy("lite.label")}</span>{" "}
+          <a href={`/api/bandwidth?mode=auto&return=${encodeURIComponent(localize(locale, path))}`}>{copy("lite.auto")}</a>{" "}
+          <a href={`/api/bandwidth?mode=on&return=${encodeURIComponent(localize(locale, path))}`}>{copy("lite.on")}</a>{" "}
+          <a href={`/api/bandwidth?mode=off&return=${encodeURIComponent(localize(locale, path))}`}>{copy("lite.off")}</a>
         </>
       }
     />
