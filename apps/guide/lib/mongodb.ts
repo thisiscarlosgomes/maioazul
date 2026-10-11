@@ -1,34 +1,50 @@
-// lib/mongodb.ts
-import { MongoClient } from "mongodb";
+import { MongoClient, type MongoClientOptions } from "mongodb";
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
-}
-
-const uri = process.env.MONGODB_URI;
-const options = {
+const options: MongoClientOptions = {
   serverSelectionTimeoutMS: Number(process.env.MONGODB_SERVER_SELECTION_TIMEOUT_MS || 3000),
   connectTimeoutMS: Number(process.env.MONGODB_CONNECT_TIMEOUT_MS || 3000),
   socketTimeoutMS: Number(process.env.MONGODB_SOCKET_TIMEOUT_MS || 10000),
 };
 
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
+type MongoCache = typeof globalThis & {
+  _mongoClientPromise?: Promise<MongoClient>;
+};
 
-if (process.env.NODE_ENV === "development") {
-  const globalWithMongo = global as typeof globalThis & {
-    _mongoClientPromise?: Promise<MongoClient>;
-  };
+function mongoUri(): string | null {
+  const uri = process.env.MONGODB_URI?.trim();
+  return uri ? uri : null;
+}
 
-  if (!globalWithMongo._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+export async function getMongoClient(): Promise<MongoClient | null> {
+  const uri = mongoUri();
+  if (!uri) return null;
+
+  const cache = globalThis as MongoCache;
+  if (!cache._mongoClientPromise) {
+    const client = new MongoClient(uri, options);
+    const pending = client.connect();
+    cache._mongoClientPromise = pending;
+    pending.catch(() => {
+      if (cache._mongoClientPromise === pending) {
+        cache._mongoClientPromise = undefined;
+      }
+    });
   }
 
-  clientPromise = globalWithMongo._mongoClientPromise!;
-} else {
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+  return cache._mongoClientPromise;
 }
+
+const clientPromise: PromiseLike<MongoClient> = {
+  then(onFulfilled, onRejected) {
+    return getMongoClient()
+      .then((client) => {
+        if (!client) {
+          throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
+        }
+        return client;
+      })
+      .then(onFulfilled, onRejected);
+  },
+};
 
 export default clientPromise;
