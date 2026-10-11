@@ -1,5 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { LANG_COOKIE, isLocale, localize, localeFromPath, preferredLocale, stripLocale } from "./lib/locale";
+import { essentialsSlug, LANG_COOKIE, isLocale, localize, localeFromPath, preferredLocale, stripLocale } from "./lib/locale";
+
+const essentialsPages = new Set(Object.values(essentialsSlug));
+
+function internalPath(pathname: string): string {
+  const bare = stripLocale(pathname);
+  const slug = bare.replace(/^\//, "");
+  if (essentialsPages.has(slug)) return "/essentials";
+  return bare;
+}
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -7,7 +16,7 @@ export function proxy(request: NextRequest) {
 
   if (prefixed) {
     const url = request.nextUrl.clone();
-    url.pathname = stripLocale(pathname);
+    url.pathname = internalPath(pathname);
     const headers = new Headers(request.headers);
     headers.set("x-maio-lang", prefixed);
     headers.set("x-maio-path", pathname);

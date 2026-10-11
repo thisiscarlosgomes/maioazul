@@ -2395,6 +2395,17 @@ h2,
   font-size: 28px;
   margin: 8px 0;
 }
+.emergency-list {
+  list-style: none;
+  padding: 0;
+}
+.emergency-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 56px;
+  border-bottom: 1px solid var(--line);
+}
 @media (max-width: 700px) {
   .now-strip-row {
     display: flex;
