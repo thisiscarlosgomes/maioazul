@@ -10,6 +10,7 @@ import {
   McpPreview,
 } from "../components/previews";
 import { initiatives } from "../lib/content";
+import { t } from "../lib/i18n";
 const previews = {
   visit: VisitPreview,
   portal: PortalPreview,
@@ -20,7 +21,7 @@ export default function Home() {
   return (
     <>
       <a className="skip-link" href="#conteudo">
-        Saltar para o conteúdo
+        {t("skip.content")}
       </a>
       <Header />
       <main id="conteudo">
@@ -128,7 +129,7 @@ export default function Home() {
               </p>
               <div className="button-row">
                 <a href="/chat" className="button button-white">
-                  Ask a question
+                  {t("cta.ask")}
                 </a>
                 <Link href="/mcp" className="feature-link">
                   Ver como funciona

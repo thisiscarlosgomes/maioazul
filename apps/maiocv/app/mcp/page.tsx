@@ -3,6 +3,7 @@ import { pageMetadata } from "../../lib/seo";
 import { Header, Footer } from "../../components/site-shell";
 import { Reveal } from "../../components/motion";
 import { McpDemo } from "../../components/mcp-demo";
+import { t } from "../../lib/i18n";
 export const metadata = pageMetadata(
   "Maio no ChatGPT — IA para explorar Cabo Verde | MaioCV",
   "Pergunte sobre praias, turismo e economia do Maio, Cabo Verde. Conheça as ferramentas de IA e a ligação MCP aos dados da ilha, com respostas curtas e fontes.",
@@ -12,7 +13,7 @@ export default function McpPage() {
   return (
     <>
       <a className="skip-link" href="#conteudo">
-        Saltar para o conteúdo
+        {t("skip.content")}
       </a>
       <Header active="mcp" />
       <main id="conteudo">
@@ -146,7 +147,7 @@ export default function McpPage() {
                 ],
                 [
                   "Como começo?",
-                  "Clique em “Ask a question” e escreva a sua pergunta. Pode continuar a conversa com novas perguntas, sem sair do MaioCV.",
+                  t("faq.start", { cta: t("cta.ask") }),
                 ],
                 [
                   "A informação está sempre atualizada?",
