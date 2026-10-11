@@ -5,6 +5,8 @@
   --line: #e6e7e1;
   --blue: #243fb8;
   --lime: #dff58a;
+  --maio-focus: #4969f2;
+  --maio-focus-on-blue: #dff58a;
 }
 * {
   box-sizing: border-box;
@@ -39,7 +41,7 @@ button {
 a:focus-visible,
 button:focus-visible,
 summary:focus-visible {
-  outline: 3px solid #4969f2;
+  outline: 3px solid var(--maio-focus);
   outline-offset: 5px;
 }
 button:disabled {
@@ -2206,7 +2208,7 @@ button.headline-icon {
   cursor: pointer;
 }
 button.headline-icon:focus-visible {
-  outline: 3px solid #315be0;
+  outline: 3px solid var(--maio-focus);
   outline-offset: 5px;
 }
 
@@ -2661,4 +2663,7 @@ h2,
 .question-box textarea::placeholder {
   color: #71736f;
   opacity: 1;
+}
+.mcp-feature :is(a, button, summary):focus-visible {
+  outline-color: var(--maio-focus-on-blue);
 }
