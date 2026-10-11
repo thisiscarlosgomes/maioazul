@@ -291,7 +291,7 @@ h1 {
 .ecosystem-label > span {
   font-size: 9px;
   letter-spacing: 1.7px;
-  color: #858781;
+  color: #71736f;
 }
 .ecosystem-label p {
   margin-top: 16px;
@@ -434,7 +434,7 @@ h2 {
   gap: 8px;
 }
 .initiative-bottom > span:last-child {
-  color: #80857a;
+  color: #71736f;
   font-size: 10px;
 }
 .preview-toolbar {
@@ -516,7 +516,7 @@ h2 {
   justify-content: space-between;
   gap: 5px;
   font-size: 7px;
-  color: #7b8274;
+  color: #71736f;
   line-height: 1.5;
 }
 .api-preview {
@@ -669,7 +669,7 @@ h2 {
 }
 .mini-answer .micro {
   font-size: 7px;
-  color: #868b81;
+  color: #71736f;
 }
 .mini-composer {
   display: flex;
@@ -678,7 +678,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 30px;
   font-size: 10px;
-  color: #92968d;
+  color: #71736f;
   padding: 10px 10px 10px 14px;
   margin-top: 22px;
 }
@@ -819,11 +819,11 @@ h2 {
   padding-bottom: 55px;
 }
 .muted-heading {
-  color: #838a7b;
+  color: #71736f;
 }
 .hero-note {
   font-size: 11px;
-  color: #94998e;
+  color: #71736f;
   margin-top: 22px;
 }
 .demo-section {
@@ -885,7 +885,7 @@ h2 {
 .demo-label {
   font-size: 8px;
   letter-spacing: 1px;
-  color: #747d6a;
+  color: #71736f;
   display: flex;
   gap: 6px;
   align-items: center;
@@ -1078,7 +1078,7 @@ h2 {
 }
 .places-result p {
   font-size: 9px;
-  color: #929989;
+  color: #71736f;
   margin: 0 0 14px;
 }
 .places-result a {
@@ -1207,7 +1207,7 @@ h2 {
   padding: 5px 8px;
   border-radius: 20px;
   background: #e8eddf;
-  color: #6c7b59;
+  color: #606f4d;
 }
 .economy-result dl {
   margin: 17px 0 0;
@@ -1390,7 +1390,7 @@ h2 {
 }
 .faq-list summary span {
   font-size: 20px;
-  color: #919886;
+  color: #71736f;
 }
 .faq-list details[open] summary span {
   transform: rotate(45deg);
@@ -2629,3 +2629,36 @@ h2,
 }
 
 .question-box .demo-send { width: 48px; height: 48px; min-width: 48px; padding: 0; border-radius: 50%; flex-shrink: 0; display: grid; place-items: center; }
+
+.eyebrow,
+.initiative-text .eyebrow,
+.demo-sidebar > .eyebrow,
+.mcp-hero .hero-note,
+.hero-note,
+.source-chip,
+.estimate-pill,
+.tool-trace,
+.chart-caption,
+.micro,
+.mini-answer .micro,
+.tiny-badge,
+.photo-label > span,
+.demo-label,
+.new-pill,
+.ecosystem-label > span,
+.places-result p,
+.white-pill,
+.metric-labels > span,
+.showcase .metric-labels > span,
+.initiative-bottom > span:last-child,
+.follow-up > span,
+.user-message > span,
+.simple-demo-footer,
+.simple-demo-footer a {
+  font-size: 12px;
+}
+.chat-composer textarea::placeholder,
+.question-box textarea::placeholder {
+  color: #71736f;
+  opacity: 1;
+}
