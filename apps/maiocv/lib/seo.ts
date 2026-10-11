@@ -4,7 +4,7 @@ import { essentialsPath, LOCALES, localize, localeHreflang, localeOpenGraph, typ
 export const SITE_URL = "https://www.maio.cv";
 export const description = "Iniciativas digitais para a ilha do Maio, Cabo Verde: inteligência artificial, dados abertos, turismo e ferramentas para conhecer, investigar e aprender.";
 
-const pagePaths = ["/", "/mcp", "/chat", "/essentials"] as const;
+const pagePaths = ["/", "/mcp", "/chat", "/essentials", "/search"] as const;
 
 function localizedPath(locale: Locale, path: string): string {
   if (path === "/essentials") return essentialsPath(locale);
