@@ -158,5 +158,10 @@
   "search.source.visit-maio": "Lieux Visit Maio",
   "search.source.zoning_special": "Zones d'aménagement",
   "search.source.other": "Données ouvertes de Maio",
-  "nav.search": "Rechercher"
+  "nav.search": "Rechercher",
+  "notFound.title": "Page introuvable",
+  "notFound.body": "Cette adresse n’existe pas. Essayez l’une de celles-ci.",
+  "error.title": "Un problème est survenu",
+  "error.body": "Cette page n’a pas pu s’afficher.",
+  "error.retry": "Réessayer"
 }

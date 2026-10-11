@@ -158,5 +158,10 @@
   "search.source.visit-maio": "Lugares do Visit Maio",
   "search.source.zoning_special": "Zonas de planeamento",
   "search.source.other": "Dados abertos do Maio",
-  "nav.search": "Pesquisar"
+  "nav.search": "Pesquisar",
+  "notFound.title": "Página não encontrada",
+  "notFound.body": "Esse endereço não existe. Experimente um destes.",
+  "error.title": "Algo correu mal",
+  "error.body": "Não foi possível mostrar esta página.",
+  "error.retry": "Tentar de novo"
 }

@@ -158,5 +158,10 @@
   "search.source.visit-maio": "Visit Maio curated places",
   "search.source.zoning_special": "Planning zones",
   "search.source.other": "Maio open data",
-  "nav.search": "Search"
+  "nav.search": "Search",
+  "notFound.title": "Page not found",
+  "notFound.body": "That address does not exist. Try one of these.",
+  "error.title": "Something went wrong",
+  "error.body": "This page could not be shown.",
+  "error.retry": "Try again"
 }
