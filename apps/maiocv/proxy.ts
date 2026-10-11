@@ -1,5 +1,4 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { BANDWIDTH_COOKIE, bandwidthMode } from "./lib/bandwidth";
 import { essentialsPath, essentialsSlug, LANG_COOKIE, isLocale, localize, localeFromPath, preferredLocale, routeAlias, stripLocale } from "./lib/locale";
 
 const essentialsPages = new Set(Object.values(essentialsSlug));
@@ -28,10 +27,6 @@ export function proxy(request: NextRequest) {
     const headers = new Headers(request.headers);
     headers.set("x-maio-lang", prefixed);
     headers.set("x-maio-path", `${pathname}${request.nextUrl.search}`);
-    headers.set(
-      "x-maio-bandwidth",
-      bandwidthMode(request.cookies.get(BANDWIDTH_COOKIE)?.value, request.headers.get("save-data")),
-    );
     const response = NextResponse.rewrite(url, { request: { headers } });
     response.cookies.set(LANG_COOKIE, prefixed, {
       path: "/",
