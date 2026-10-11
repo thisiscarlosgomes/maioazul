@@ -1,2 +1,17 @@
-console.error("maiocv now serves /api/agora, so this static export step cannot be the production build. Run next build, then next start.");
-process.exit(1);
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const source = await readFile(path.join(root, "next.config.ts"), "utf8");
+
+if (/output:\s*["']export["']/.test(source)) {
+  console.error(
+    'maiocv production is a Next server build. Remove output: "export" before deploying.',
+  );
+  process.exit(1);
+}
+
+console.log(
+  "maiocv production build is `npm run build`. Vercel publishes `.next` (see vercel.json).",
+);
