@@ -133,7 +133,7 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
         try {
           const source = await fetch(BUSINESS_DATA_URL, { signal: controller.signal });
           if (source.ok) {
-            const program = businessMetricProgram(await source.json());
+            const program = businessMetricProgram(await source.json(), locale);
             if (program) visual = { kind: "business", program };
           }
         } catch {
@@ -149,7 +149,7 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
           try {
             const source = await fetch(placeDataUrl(collection), { signal: controller.signal });
             if (source.ok) {
-              const program = placeVisualProgram(await source.json(), publicAnswer, collection);
+              const program = placeVisualProgram(await source.json(), publicAnswer, collection, locale);
               if (program) visual = { kind: "places", program };
             }
           } catch {
@@ -209,7 +209,7 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
               initial={reduced ? false : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
               {message.visual?.kind === "business" && <OpenUIBusiness program={message.visual.program} />}
-              {message.visual?.kind === "places" && <OpenUIPlaces program={message.visual.program} />}
+              {message.visual?.kind === "places" && <OpenUIPlaces program={message.visual.program} locale={locale} />}
               {!message.visual && <p>{message.content.replace(/\*\*/g, "")}</p>}
               {message.example ? <p className="chat-example">{copy("chat.example")}</p> : null}
               {message.uncited ? <p className="chat-no-source">{copy("chat.noSource")}</p> : null}

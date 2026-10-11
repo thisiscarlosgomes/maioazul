@@ -295,12 +295,15 @@
   "error.title": "Un problème est survenu",
   "error.body": "Cette page n’a pas pu s’afficher.",
   "error.retry": "Réessayer",
-  "lite.label": "Mode léger",
-  "lite.auto": "Auto",
-  "lite.on": "Activé",
-  "lite.off": "Désactivé",
-  "lite.autoBanner": "Le mode léger est activé pour économiser des données.",
-  "lite.disable": "Désactiver",
-  "chat.human": "Parler à quelqu'un",
-  "chat.emergency": "En cas d'urgence, appelez :"
+  "openui.business.active": "Entreprises actives à Maio",
+  "openui.business.source": "Enquête annuelle auprès des entreprises · INE Cabo Verde",
+  "openui.business.caveat": "Estimation d'enquête ; valeur arrondie.",
+  "openui.places.beaches": "Plages à Maio",
+  "openui.places.beach": "Plage",
+  "openui.places.heritage": "Patrimoine à Maio",
+  "openui.places.heritageKind": "Patrimoine",
+  "openui.places.beachesMapped": "{n} plages cartographiées",
+  "openui.places.placesMapped": "{n} lieux cartographiés",
+  "openui.places.mapped": "Lieux cartographiés",
+  "openui.places.source": "Maio Open Data"
 }

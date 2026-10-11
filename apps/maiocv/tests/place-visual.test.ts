@@ -44,6 +44,32 @@ test("image-backed beach records win over duplicate map records", () => {
   assert.ok(!program?.includes("api.maio.cv/api/v1/features/osm"));
 });
 
+test("place card chrome follows the page language", () => {
+  const answer = "Conheça Praia da Salina, Praia de Ponta Preta e Praia de Lagoa.";
+  const portuguese = placeVisualProgram(payload, answer, "beaches", "pt");
+  const english = placeVisualProgram(payload, answer, "beaches", "en");
+  const french = placeVisualProgram(payload, answer, "beaches", "fr");
+  assert.ok(portuguese?.includes("Praias no Maio"));
+  assert.ok(portuguese?.includes("44 praias mapeadas"));
+  assert.ok(english?.includes("Beaches on Maio"));
+  assert.ok(english?.includes("44 mapped beaches"));
+  assert.ok(!english?.includes("Praias no Maio"));
+  assert.ok(!english?.includes("praias mapeadas"));
+  assert.ok(french?.includes("Plages à Maio"));
+  assert.ok(french?.includes("44 plages cartographiées"));
+  const heritage = placeVisualProgram({ numberMatched: 2, features: [
+    { id: "chapel", properties: { name: "Capela do Cristo Rei" } },
+  ] }, "Capela do Cristo Rei", "heritage", "en");
+  assert.ok(heritage?.includes("Heritage on Maio"));
+  assert.ok(heritage?.includes("2 mapped places"));
+  assert.match(heritage ?? "", /detail\\":\\"Heritage\\"/);
+  const uncounted = placeVisualProgram({ features: [
+    { id: "chapel", properties: { name: "Capela do Cristo Rei" } },
+  ] }, "Capela do Cristo Rei", "heritage", "fr");
+  assert.ok(uncounted?.includes("Lieux cartographiés"));
+  assert.ok(uncounted?.includes("Patrimoine à Maio"));
+});
+
 test("untrusted image URLs are excluded", () => {
   const program = placeVisualProgram({ numberMatched: 1, features: [
     { id: "place", properties: { name: "Praia de Lagoa", attributes: { image_url: "https://example.com/other.jpg" } } },

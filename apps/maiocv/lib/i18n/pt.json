@@ -295,12 +295,15 @@
   "error.title": "Algo correu mal",
   "error.body": "Não foi possível mostrar esta página.",
   "error.retry": "Tentar de novo",
-  "lite.label": "Modo leve",
-  "lite.auto": "Auto",
-  "lite.on": "Ligado",
-  "lite.off": "Desligado",
-  "lite.autoBanner": "O modo leve está ativo para poupar dados.",
-  "lite.disable": "Desativar",
-  "chat.human": "Falar com uma pessoa",
-  "chat.emergency": "Em caso de emergência ligue:"
+  "openui.business.active": "Empresas ativas no Maio",
+  "openui.business.source": "Inquérito Anual às Empresas · INE Cabo Verde",
+  "openui.business.caveat": "Estimativa de inquérito; valor arredondado.",
+  "openui.places.beaches": "Praias no Maio",
+  "openui.places.beach": "Praia",
+  "openui.places.heritage": "Património no Maio",
+  "openui.places.heritageKind": "Património",
+  "openui.places.beachesMapped": "{n} praias mapeadas",
+  "openui.places.placesMapped": "{n} locais mapeados",
+  "openui.places.mapped": "Locais mapeados",
+  "openui.places.source": "Maio Open Data"
 }
