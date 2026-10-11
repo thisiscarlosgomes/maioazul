@@ -3,7 +3,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SITE_URL, description, pageMetadata, siteSchema } from "../lib/seo";
 const sans = localFont({
-  src: "../public/fonts/PPNeueMontreal-Regular.woff2",
+  src: [
+    { path: "../public/fonts/PPNeueMontreal-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/PPNeueMontreal-Medium.woff2", weight: "500", style: "normal" },
+  ],
   variable: "--font-sans",
   display: "swap",
 });
