@@ -360,7 +360,7 @@ Not run, and why:
 
 ## How this audit was done
 
-Skills read from the local pstack plugin and followed for this pass: poteto-mode (investigation), how, blast-radius, benchmark-checklist, and interrogate. `~/.cursor/rules/pstack-models.mdc` was not in this environment. Explorer and reviewer model defaults from those skills were used instead. The Task tool has no read-only switch, so those agents were instructed not to edit.
+Skills read from the local pstack plugin and used to structure this pass: poteto-mode (investigation), how, blast-radius, benchmark-checklist, and interrogate. `~/.cursor/rules/pstack-models.mdc` was not in this environment. Read-only explorers and two adversarial reviewers were started with the skill default models. The findings in this file are the ones reproduced by the commands above. Reviewer notes that were not re-run are not included.
 
 The safety claim this audit checked by running code: a missing `MONGODB_URI` throws during import, so static importers never reach their fallbacks. `next build` and the live `/blog` and `/api/places` responses fail in that way. The budget route, which imports inside try/catch, does fall back. That split is why the fix belongs in `lib/mongodb.ts` and not in another empty-state message.
 
