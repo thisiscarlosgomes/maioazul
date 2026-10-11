@@ -4,7 +4,7 @@
 }
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 110px;
+  scroll-padding-top: var(--header-h);
 }
 body {
   margin: 0;
@@ -2214,7 +2214,7 @@ h2,
   line-height: 1.12;
   letter-spacing: -0.025em;
 }
-.chat-page { max-width: 900px; margin: 0 auto; padding: 0 24px; min-height: calc(100dvh - 100px); display: flex; flex-direction: column; }
+.chat-page { max-width: 900px; margin: 0 auto; padding: 0 24px; min-height: calc(100dvh - var(--header-h)); display: flex; flex-direction: column; }
 .chat-toolbar { display: flex; justify-content: space-between; padding: 20px 0; font-size: 15px; color: #626b5c; }
 .chat-toolbar button { background: none; border: 0; font: inherit; cursor: pointer; }
 .chat-conversation { flex: 1; padding: 24px 0; }
@@ -2338,7 +2338,7 @@ h2,
 }
 
 .lang-switch-segmented,
-.lang-switch-menu div {
+.lang-switch-menu[open] div {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -2437,6 +2437,13 @@ html[data-bandwidth="low"] .maio-slideshow {
     scroll-snap-align: start;
   }
 }
+@media (min-width: 701px) and (max-width: 1100px) {
+  .lang-switch-segmented a {
+    padding: 0 4px;
+    min-width: 44px;
+    font-size: 13px;
+  }
+}
 .lang-switch-segmented a,
 .lang-switch-menu a {
   display: inline-flex;
@@ -2451,6 +2458,8 @@ html[data-bandwidth="low"] .maio-slideshow {
 .lang-switch-segmented a[aria-current="true"],
 .lang-switch-menu a[aria-current="true"] {
   color: var(--blue);
+  font-weight: 500;
+  text-decoration: underline;
 }
 .lang-switch-menu {
   display: none;
@@ -2460,18 +2469,31 @@ html[data-bandwidth="low"] .maio-slideshow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 6px;
   min-width: 44px;
   min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   list-style: none;
+}
+.lang-switch-menu summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-1px);
 }
 .lang-switch-menu summary::-webkit-details-marker {
   display: none;
 }
 .lang-switch-menu div {
+  display: none;
   position: absolute;
   right: 16px;
-  top: 72px;
+  top: calc(var(--header-h) - 4px);
   flex-direction: column;
   align-items: stretch;
   background: var(--paper);
@@ -2485,7 +2507,7 @@ html[data-bandwidth="low"] .maio-slideshow {
   font-size: 14px;
 }
 @media (max-width: 700px) {
-  .lang-switch-segmented { display: none; }
+  .maio-header .lang-switch-segmented { display: none; }
   .lang-switch-menu { display: block; }
   .maio-header > .maio-button { display: none; }
 }
