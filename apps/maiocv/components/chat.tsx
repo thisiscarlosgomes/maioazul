@@ -7,14 +7,23 @@ import { BUSINESS_DATA_URL, businessMetricProgram } from "../lib/business-visual
 import { PLACE_COLLECTIONS, placeDataUrl, placeVisualProgram } from "../lib/place-visual";
 import { publicChatAnswer, publicChatGreeting } from "../lib/chat-answer";
 import { isPopulationTotalQuestion, populationAnswer, POPULATION_DATA_URL } from "../lib/population-answer";
+import { citationsFrom, type Citation } from "../lib/chat-citations";
+import { ContactSlot } from "./contact-slot";
 import { t, type MessageKey } from "../lib/i18n";
 import type { Locale } from "../lib/locale";
 
 const OpenUIBusiness = dynamic(() => import("./openui-business").then(module => module.OpenUIBusiness));
 const OpenUIPlaces = dynamic(() => import("./openui-places").then(module => module.OpenUIPlaces));
 
-type Message = { role: "user" | "assistant"; content: string; visual?: { kind: "business" | "places"; program: string } };
-export function Chat({ locale = "pt" }: { locale?: Locale }) {
+type Message = {
+  role: "user" | "assistant";
+  content: string;
+  visual?: { kind: "business" | "places"; program: string };
+  citations?: Citation[];
+  uncited?: boolean;
+  example?: boolean;
+};
+export function Chat({ locale = "pt", contactUrl = "https://instagram.com/maio__azul" }: { locale?: Locale; contactUrl?: string }) {
   const copy = (key: MessageKey, values?: Record<string, string | number>) => t(key, values, locale);
   const suggestions = [
     copy("chat.suggest.beaches"),
@@ -68,7 +77,7 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
     const greeting = publicChatGreeting(text);
     if (greeting) {
       scrollToQuestion.current = messages.length;
-      setMessages([...messages, { role: "user", content: text }, { role: "assistant", content: greeting }]);
+      setMessages([...messages, { role: "user", content: text }, { role: "assistant", content: greeting, example: true, uncited: true }]);
       setDraft(""); setError("");
       return;
     }
@@ -85,7 +94,7 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
         const answer = populationAnswer(await source.json(), text);
         if (!answer) throw new Error(copy("chat.error.populationValue"));
         if (active.current === controller)
-          setMessages([...conversation, { role: "assistant", content: answer }]);
+          setMessages([...conversation, { role: "assistant", content: answer, uncited: true }]);
         return;
       }
       const outbound = conversation.slice(-12).map(({ role, content }) => ({ role, content }));
@@ -148,8 +157,17 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
           }
         }
       }
-      if (active.current === controller)
-        setMessages([...conversation, { role: "assistant", content: publicAnswer, visual }]);
+      if (active.current === controller) {
+        const citations = citationsFrom(data);
+        setMessages([...conversation, {
+          role: "assistant",
+          content: publicAnswer,
+          visual,
+          citations,
+          uncited: citations.length === 0,
+          example: data.prepared === true,
+        }]);
+      }
     } catch (cause) {
       if (active.current === controller) {
         scrollToQuestion.current = null;
@@ -193,6 +211,14 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
               {message.visual?.kind === "business" && <OpenUIBusiness program={message.visual.program} />}
               {message.visual?.kind === "places" && <OpenUIPlaces program={message.visual.program} />}
               {!message.visual && <p>{message.content.replace(/\*\*/g, "")}</p>}
+              {message.example ? <p className="chat-example">{copy("chat.example")}</p> : null}
+              {message.uncited ? <p className="chat-no-source">{copy("chat.noSource")}</p> : null}
+              {message.citations?.map((citation) => (
+                <p key={citation.name}>
+                  {citation.href ? <a href={citation.href}>{citation.name}</a> : citation.name}
+                  {citation.kind ? ` · ${citation.kind}` : ""}
+                </p>
+              ))}
             </motion.article>
           ))}
         </div>
@@ -223,6 +249,7 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
           </button>
         </form>
         <p className="chat-note">{copy("chat.note")}</p>
+        <ContactSlot locale={locale} contactUrl={contactUrl} />
       </div>
     </main>
   );

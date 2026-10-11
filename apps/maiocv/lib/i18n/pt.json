@@ -98,5 +98,9 @@
   "lite.on": "Ligado",
   "lite.off": "Desligado",
   "lite.autoBanner": "O modo leve está ativo para poupar dados.",
-  "lite.disable": "Desativar"
+  "lite.disable": "Desativar",
+  "chat.noSource": "Sem fonte",
+  "chat.example": "Resposta de exemplo",
+  "chat.human": "Falar com uma pessoa",
+  "chat.emergency": "Em caso de emergência ligue:"
 }

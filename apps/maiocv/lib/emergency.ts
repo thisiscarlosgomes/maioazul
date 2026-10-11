@@ -6,6 +6,7 @@ export const EMERGENCY = [
 
 export const EMERGENCY_VERIFIED_AT = "2026-10-11";
 
-export function humanContactUrl(): string {
-  return process.env.NEXT_PUBLIC_HUMAN_CONTACT_URL?.trim() || "https://instagram.com/maio__azul";
+export function humanContactUrl(value = process.env.NEXT_PUBLIC_HUMAN_CONTACT_URL): string {
+  if (value === undefined) return "https://instagram.com/maio__azul";
+  return value.trim();
 }
