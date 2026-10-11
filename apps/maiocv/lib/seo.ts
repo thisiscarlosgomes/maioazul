@@ -1,48 +1,53 @@
 import type { Metadata } from "next";
+import { LOCALES, localize, localeHreflang, localeOpenGraph, type Locale } from "./locale.ts";
 
 export const SITE_URL = "https://www.maio.cv";
 export const description = "Iniciativas digitais para a ilha do Maio, Cabo Verde: inteligência artificial, dados abertos, turismo e ferramentas para conhecer, investigar e aprender.";
 
-export const publicRoutes = [
-  { path: "/", lang: "pt" },
-  { path: "/mcp", lang: "pt" },
-  { path: "/chat", lang: "pt" },
-] as const;
+const pagePaths = ["/", "/mcp", "/chat"] as const;
 
-export const htmlLang = "pt" satisfies (typeof publicRoutes)[number]["lang"];
+export const publicRoutes = LOCALES.flatMap((lang) =>
+  pagePaths.map((path) => ({ path: localize(lang, path), lang })),
+);
 
-const hreflang: Record<string, string> = {
-  pt: "pt-PT",
-};
+export const htmlLang = "pt";
 
-export function languageAlternates(path: string, lang: "pt" = "pt") {
-  const url = new URL(path, SITE_URL).href;
-  return {
-    [hreflang[lang]]: url,
-    "x-default": url,
+export function languageAlternates(path: string) {
+  const languages: Record<string, string> = {
+    "x-default": new URL(localize("pt", path), SITE_URL).href,
   };
+  for (const locale of LOCALES) {
+    languages[localeHreflang(locale)] = new URL(localize(locale, path), SITE_URL).href;
+  }
+  return languages;
 }
 
 export function sitemapEntries() {
   return publicRoutes.map((route) => ({
     url: new URL(route.path, SITE_URL).href,
-    alternates: { languages: languageAlternates(route.path, route.lang) },
+    alternates: { languages: languageAlternates(route.path) },
   }));
 }
 
-export function pageMetadata(title: string, summary: string, path: string, lang: "pt" = "pt"): Metadata {
+export function pageMetadata(title: string, summary: string, path: string, lang: Locale = "pt"): Metadata {
   const url = new URL(path, SITE_URL).href;
   return {
     title,
     description: summary,
-    alternates: { canonical: url, languages: languageAlternates(path, lang) },
+    alternates: { canonical: url, languages: languageAlternates(path) },
     openGraph: {
-      title, description: summary, url, siteName: "MaioCV",
-      locale: "pt_PT", type: "website",
+      title,
+      description: summary,
+      url,
+      siteName: "MaioCV",
+      locale: localeOpenGraph(lang),
+      type: "website",
       images: [{ url: `${SITE_URL}/slideshow/rotcha.png`, alt: "Praia da Bitxe Rotcha na ilha do Maio, Cabo Verde" }],
     },
     twitter: {
-      card: "summary_large_image", title, description: summary,
+      card: "summary_large_image",
+      title,
+      description: summary,
       images: [`${SITE_URL}/slideshow/rotcha.png`],
     },
   };
@@ -52,12 +57,18 @@ export const siteSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization", "@id": `${SITE_URL}/#organization`,
-      name: "MaioAzul", url: "https://maioazul.com",
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "MaioAzul",
+      url: "https://maioazul.com",
     },
     {
-      "@type": "WebSite", "@id": `${SITE_URL}/#website`,
-      name: "MaioCV", url: SITE_URL, description, inLanguage: htmlLang,
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: "MaioCV",
+      url: SITE_URL,
+      description,
+      inLanguage: htmlLang,
       publisher: { "@id": `${SITE_URL}/#organization` },
       about: { "@type": "Place", name: "Ilha do Maio, Cabo Verde" },
     },

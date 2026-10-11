@@ -12,11 +12,13 @@ export function SiteHeader({
   brand,
   label,
   links,
+  tools,
   action,
 }: {
   brand: ReactNode;
   label: string;
   links: HeaderLink[];
+  tools?: ReactNode;
   action?: { href: string; label: string };
 }) {
   return (
@@ -29,6 +31,7 @@ export function SiteHeader({
           </a>
         ))}
       </nav>
+      {tools}
       {action ? (
         <Button href={action.href} size="small">
           {action.label}

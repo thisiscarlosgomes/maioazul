@@ -2,7 +2,7 @@ import { Button, Card, Section, SkipLink } from "maio-ui";
 import { HeadlineIcon } from "../components/headline-icon";
 import { MaioSlideshow } from "../components/maio-slideshow";
 import Link from "next/link";
-import { Header, Footer } from "../components/site-shell";
+import { Header, Footer, Untranslated } from "../components/site-shell";
 import { Reveal, HoverCard } from "../components/motion";
 import {
   PortalPreview,
@@ -12,18 +12,33 @@ import {
 } from "../components/previews";
 import { initiatives } from "../lib/content";
 import { t } from "../lib/i18n";
+import { localize } from "../lib/locale";
+import { currentLocale } from "../lib/request-locale";
+import { pageMetadata } from "../lib/seo";
 const previews = {
   visit: VisitPreview,
   portal: PortalPreview,
   api: ApiPreview,
   mcp: McpPreview,
 };
-export default function Home() {
+export async function generateMetadata() {
+  const locale = await currentLocale();
+  return pageMetadata(
+    t("meta.title.home", undefined, locale),
+    t("meta.description.home", undefined, locale),
+    localize(locale, "/"),
+    locale,
+  );
+}
+
+export default async function Home() {
+  const locale = await currentLocale();
   return (
     <>
-      <SkipLink href="#conteudo">{t("skip.content")}</SkipLink>
+      <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
       <Header />
-      <main id="conteudo">
+      <main id="conteudo" lang={locale === "pt" ? undefined : "pt"}>
+        <Untranslated />
         <Section className="home-hero wrap">
           <Reveal>
             <h1 className="context-headline">
@@ -40,7 +55,7 @@ export default function Home() {
             </p>
             <div className="button-row">
               <Button href="#iniciativas">Explorar iniciativas</Button>
-              <Button href="/mcp" variant="light">
+              <Button href={localize(locale, "/mcp")} variant="light">
                 Perguntar sobre o Maio
               </Button>
             </div>
@@ -124,10 +139,10 @@ export default function Home() {
                 ilha.
               </p>
               <div className="button-row">
-                <Button href="/chat" variant="white">
-                  {t("cta.ask")}
+                <Button href={localize(locale, "/chat")} variant="white">
+                  {t("cta.ask", undefined, locale)}
                 </Button>
-                <Link href="/mcp" className="feature-link">
+                <Link href={localize(locale, "/mcp")} className="feature-link">
                   Ver como funciona
                 </Link>
               </div>

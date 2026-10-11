@@ -33,5 +33,17 @@
   "chat.error.empty": "Não recebemos uma resposta. Tente novamente.",
   "chat.error.timeout": "A consulta demorou demasiado. Pode tentar novamente.",
   "chat.error.generic": "Não foi possível consultar o Maio.",
-  "faq.start": "Clique em “{cta}” e escreva a sua pergunta. Pode continuar a conversa com novas perguntas, sem sair do MaioCV."
+  "faq.start": "Clique em “{cta}” e escreva a sua pergunta. Pode continuar a conversa com novas perguntas, sem sair do MaioCV.",
+  "lang.switch.label": "Idioma",
+  "lang.pt": "Português",
+  "lang.en": "English",
+  "lang.fr": "Français",
+  "lang.current": "Idioma atual: {lang}",
+  "i18n.notTranslated": "Esta secção só está disponível em português.",
+  "meta.title.home": "MaioCV — IA e iniciativas digitais no Maio, Cabo Verde",
+  "meta.title.chat": "Pergunte sobre o Maio — Chat com IA | MaioCV",
+  "meta.title.about": "Maio no ChatGPT — IA para explorar Cabo Verde | MaioCV",
+  "meta.description.home": "Iniciativas digitais para a ilha do Maio, Cabo Verde: inteligência artificial, dados abertos, turismo e ferramentas para conhecer, investigar e aprender.",
+  "meta.description.chat": "Converse sobre praias, turismo, economia e dados da ilha do Maio, Cabo Verde.",
+  "meta.description.about": "Pergunte sobre praias, turismo e economia do Maio, Cabo Verde."
 }
