@@ -97,7 +97,9 @@ export async function searchFeatures(fetchImpl: typeof fetch, query: string, loc
   const url = new URL("https://api.maio.cv/api/v1/features");
   url.searchParams.set("q", query.slice(0, 200));
   url.searchParams.set("limit", "25");
-  const payload = await (await fetchImpl(url)).json() as { features?: Feature[] };
+  const response = await fetchImpl(url, { signal: AbortSignal.timeout(5000) });
+  if (!response.ok) throw new Error(`search ${response.status}`);
+  const payload = await response.json() as { features?: Feature[] };
   const features = Array.isArray(payload.features) ? payload.features : [];
   return features.flatMap((feature) => {
     const hit = toHit(feature, locale);

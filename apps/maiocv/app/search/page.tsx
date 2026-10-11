@@ -1,4 +1,4 @@
-import { SkipLink } from "maio-ui";
+import { Button, SkipLink } from "maio-ui";
 import { Header, Footer } from "../../components/site-shell";
 import { t } from "../../lib/i18n";
 import { localize } from "../../lib/locale";
@@ -31,10 +31,11 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
         <h1>{t("search.placeholder", undefined, locale)}</h1>
         <form action={localize(locale, "/search")}>
           <label className="sr-only" htmlFor="q">{t("search.placeholder", undefined, locale)}</label>
-          <input id="q" name="q" defaultValue={query} />
+          <input id="q" name="q" type="search" enterKeyHint="search" autoComplete="off" defaultValue={query} />
+          <Button type="submit" size="small">{t("search.submit", undefined, locale)}</Button>
         </form>
         {failed ? (
-          <p role="alert">
+          <p role="alert" className="search-error">
             {t("search.error", undefined, locale)}{" "}
             <a href={`${localize(locale, "/search")}?q=${encodeURIComponent(query)}`}>{t("search.retry", undefined, locale)}</a>
           </p>
@@ -46,7 +47,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
               <strong>{hit.name}</strong>
               {hit.description ? <p>{hit.description}</p> : null}
               {hit.unmapped ? <p>{t("search.unmapped", undefined, locale)}</p> : null}
-              <p>{hit.source ? sourceName(hit.source, locale) : t("search.noSource", undefined, locale)}</p>
+              <p className="search-source">{hit.source ? sourceName(hit.source, locale) : t("search.noSource", undefined, locale)}</p>
             </li>
           ))}
         </ul>

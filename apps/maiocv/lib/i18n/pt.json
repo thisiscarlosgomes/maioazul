@@ -158,5 +158,6 @@
   "search.source.visit-maio": "Lugares do Visit Maio",
   "search.source.zoning_special": "Zonas de planeamento",
   "search.source.other": "Dados abertos do Maio",
-  "nav.search": "Pesquisar"
+  "nav.search": "Pesquisar",
+  "search.submit": "Pesquisar"
 }

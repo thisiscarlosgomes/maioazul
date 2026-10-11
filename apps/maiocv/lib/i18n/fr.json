@@ -158,5 +158,6 @@
   "search.source.visit-maio": "Lieux Visit Maio",
   "search.source.zoning_special": "Zones d'aménagement",
   "search.source.other": "Données ouvertes de Maio",
-  "nav.search": "Rechercher"
+  "nav.search": "Rechercher",
+  "search.submit": "Rechercher"
 }

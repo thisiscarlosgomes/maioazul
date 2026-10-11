@@ -20,7 +20,7 @@ export function proxy(request: NextRequest) {
     url.pathname = internalPath(pathname);
     const headers = new Headers(request.headers);
     headers.set("x-maio-lang", prefixed);
-    headers.set("x-maio-path", pathname);
+    headers.set("x-maio-path", `${pathname}${request.nextUrl.search}`);
     headers.set(
       "x-maio-bandwidth",
       bandwidthMode(request.cookies.get(BANDWIDTH_COOKIE)?.value, request.headers.get("save-data")),

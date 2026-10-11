@@ -13,7 +13,8 @@ const ownName: Record<Locale, "lang.pt" | "lang.en" | "lang.fr"> = {
 export function LangSwitch({ locale, path }: { locale: Locale; path: string }) {
   const [extra, setExtra] = useState("");
   useEffect(() => {
-    setExtra(window.location.search + window.location.hash);
+    const search = path.includes("?") ? "" : window.location.search;
+    setExtra(search + window.location.hash);
   }, [path]);
 
   const links = LOCALES.map((code) => ({

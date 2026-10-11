@@ -158,5 +158,6 @@
   "search.source.visit-maio": "Visit Maio curated places",
   "search.source.zoning_special": "Planning zones",
   "search.source.other": "Maio open data",
-  "nav.search": "Search"
+  "nav.search": "Search",
+  "search.submit": "Search"
 }

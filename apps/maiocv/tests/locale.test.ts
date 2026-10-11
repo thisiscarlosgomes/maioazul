@@ -14,6 +14,7 @@ test("the language switch uses the canonical essentials path", () => {
   assert.equal(switchPath("fr", "/en/essentials"), "/fr/essentiels");
   assert.equal(switchPath("pt", "/fr/essentiels"), "/pt/essenciais");
   assert.equal(switchPath("en", "/pt/chat"), "/en/chat");
+  assert.equal(switchPath("en", "/pt/search?q=praia"), "/en/search?q=praia");
 });
 
 test("locale links keep the page and drop a previous prefix", () => {
