@@ -58,6 +58,13 @@ export function pageMetadata(title: string, summary: string, path: string, lang:
   };
 }
 
+export function siteSchemaFor(locale: Locale) {
+  const schema = structuredClone(siteSchema);
+  const website = schema["@graph"].find((node) => node["@type"] === "WebSite");
+  if (website) website.inLanguage = locale;
+  return schema;
+}
+
 export const siteSchema = {
   "@context": "https://schema.org",
   "@graph": [

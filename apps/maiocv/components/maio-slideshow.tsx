@@ -1,12 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { t, type MessageKey } from "../lib/i18n";
+import type { Locale } from "../lib/locale";
 
-const frames = [
-  { name: "rotcha", alt: "Praia da Bitxe Rotcha, ilha do Maio" },
-  { name: "pontapreta", alt: "Ponta Preta, ilha do Maio" },
-  { name: "bocalagoa", alt: "Boca Lagoa, ilha do Maio" },
-] as const;
+const frames = ["rotcha", "pontapreta", "bocalagoa"] as const;
 
 const sizes = "(max-width: 700px) 90vw, 40vw";
 
@@ -18,7 +16,7 @@ function frameSources(name: string) {
   };
 }
 
-export function MaioSlideshow() {
+export function MaioSlideshow({ locale = "pt" }: { locale?: Locale }) {
   const [count, setCount] = useState(1);
   const [index, setIndex] = useState(0);
 
@@ -39,18 +37,19 @@ export function MaioSlideshow() {
   return (
     <div className="showcase-photo maio-slideshow">
       {frames.slice(0, count).map((frame, frameIndex) => {
-        const sources = frameSources(frame.name);
+        const sources = frameSources(frame);
         return (
           <picture
-            key={frame.name}
+            key={frame}
             className="slideshow-frame"
             style={{ opacity: frameIndex === index ? 1 : 0 }}
+            aria-hidden={frameIndex === index ? undefined : true}
           >
             <source type="image/avif" srcSet={sources.avif} sizes={sizes} />
             <source type="image/webp" srcSet={sources.webp} sizes={sizes} />
             <img
               src={sources.fallback}
-              alt={frame.alt}
+              alt={t(`slideshow.${frame}` as MessageKey, undefined, locale)}
               sizes={sizes}
               width={640}
               height={400}
