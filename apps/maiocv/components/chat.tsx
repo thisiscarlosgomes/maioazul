@@ -8,7 +8,6 @@ import { PLACE_COLLECTIONS, placeDataUrl, placeVisualProgram } from "../lib/plac
 import { publicChatAnswer, publicChatGreeting } from "../lib/chat-answer";
 import { isPopulationTotalQuestion, populationAnswer, POPULATION_DATA_URL } from "../lib/population-answer";
 import { declaredCitations, type Citation } from "../lib/chat-citations";
-import { ContactSlot } from "./contact-slot";
 import { t, type MessageKey } from "../lib/i18n";
 import type { Locale } from "../lib/locale";
 
@@ -23,7 +22,7 @@ type Message = {
   uncited?: boolean;
   example?: boolean;
 };
-export function Chat({ locale = "pt", contactUrl = "https://instagram.com/maio__azul" }: { locale?: Locale; contactUrl?: string }) {
+export function Chat({ locale = "pt" }: { locale?: Locale }) {
   const copy = (key: MessageKey, values?: Record<string, string | number>) => t(key, values, locale);
   const suggestions = [
     copy("chat.suggest.beaches"),
@@ -190,6 +189,7 @@ export function Chat({ locale = "pt", contactUrl = "https://instagram.com/maio__
     <main className="chat-page" id="conteudo">
       <div className={`chat-conversation${!messages.length && !busy ? " chat-conversation-empty" : ""}`}
         style={scrollPad ? { paddingBottom: `${24 + scrollPad}px` } : undefined}>
+        {messages.length || busy ? <h1 className="sr-only">{copy("chat.welcome")}</h1> : null}
         {!messages.length && !busy && (
           <div className="chat-welcome">
             <h1>{copy("chat.welcome")}</h1>
@@ -249,7 +249,6 @@ export function Chat({ locale = "pt", contactUrl = "https://instagram.com/maio__
           </button>
         </form>
         <p className="chat-note">{copy("chat.note")}</p>
-        <ContactSlot locale={locale} contactUrl={contactUrl} />
       </div>
     </main>
   );

@@ -131,8 +131,6 @@
   "lite.disable": "Désactiver",
   "chat.noSource": "Sans source",
   "chat.example": "Réponse d'exemple",
-  "chat.human": "Parler à quelqu'un",
-  "chat.emergency": "En cas d'urgence, appelez :",
   "search.placeholder": "Rechercher à Maio : plages, sentiers, lieux…",
   "search.results": "{n} résultats pour « {q} »",
   "search.none": "Aucun résultat pour « {q} ». Essayez un autre mot.",
