@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import { Button, Card, Section, SkipLink } from "maio-ui";
 import { HeadlineIcon } from "../components/headline-icon";
 import { MaioSlideshow } from "../components/maio-slideshow";
 import Link from "next/link";
-import { NowStrip } from "../components/now-strip";
+import { NowStrip, NowStripSkeleton } from "../components/now-strip";
 import { Header, Footer, Untranslated } from "../components/site-shell";
 import { Reveal, HoverCard } from "../components/motion";
 import {
@@ -62,7 +63,9 @@ export default async function Home() {
             </div>
           </Reveal>
         </Section>
-        <NowStrip locale={locale} />
+        <Suspense fallback={<NowStripSkeleton locale={locale} />}>
+          <NowStrip locale={locale} />
+        </Suspense>
         <Section
           className="showcase wrap"
           aria-label="Uma ilha, várias formas de descobrir"

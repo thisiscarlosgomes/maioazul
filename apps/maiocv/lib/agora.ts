@@ -103,7 +103,7 @@ export async function loadAgora(fetchImpl: typeof fetch, now = new Date()): Prom
 async function loadWeather(fetchImpl: typeof fetch, retrievedAt: string): Promise<Envelope<WeatherData>> {
   try {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,weathercode&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
-    const data = asRecord(await readJson(await fetchImpl(url)));
+    const data = asRecord(await readJson(await fetchImpl(url, { signal: AbortSignal.timeout(4000), next: { revalidate: 600 } })));
     const current = asRecord(data.current);
     const daily = asRecord(data.daily);
     const dates = Array.isArray(daily.time) ? daily.time as string[] : [];
@@ -137,7 +137,7 @@ async function loadWeather(fetchImpl: typeof fetch, retrievedAt: string): Promis
 async function loadSea(fetchImpl: typeof fetch, retrievedAt: string): Promise<Envelope<SeaData>> {
   try {
     const url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lon}&current=wave_height,sea_surface_temperature`;
-    const data = asRecord(await readJson(await fetchImpl(url)));
+    const data = asRecord(await readJson(await fetchImpl(url, { signal: AbortSignal.timeout(4000), next: { revalidate: 600 } })));
     const current = asRecord(data.current);
     return {
       kind: "model-estimate",
@@ -159,7 +159,7 @@ async function loadSea(fetchImpl: typeof fetch, retrievedAt: string): Promise<En
 async function loadWind(fetchImpl: typeof fetch, retrievedAt: string): Promise<Envelope<WindData>> {
   try {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=kmh`;
-    const data = asRecord(await readJson(await fetchImpl(url)));
+    const data = asRecord(await readJson(await fetchImpl(url, { signal: AbortSignal.timeout(4000), next: { revalidate: 600 } })));
     const current = asRecord(data.current);
     const units = asRecord(data.current_units);
     const unit = typeof units.wind_speed_10m === "string" ? units.wind_speed_10m : "";
@@ -190,12 +190,12 @@ async function loadSky(
   const skyUrl = `https://api.maio.cv/api/v1/astronomy/sky?date=${clock.date}&time=${clock.time}`;
   const moonUrl = `https://api.maio.cv/api/v1/astronomy/moon?date=${clock.date}`;
   try {
-    const skyResponse = await fetchImpl(skyUrl);
+    const skyResponse = await fetchImpl(skyUrl, { signal: AbortSignal.timeout(4000), next: { revalidate: 600 } });
     const sky = asRecord(await readJson(skyResponse));
     let moonPayload: Record<string, unknown> | null = null;
     let moonFailed = false;
     try {
-      moonPayload = asRecord(await readJson(await fetchImpl(moonUrl)));
+      moonPayload = asRecord(await readJson(await fetchImpl(moonUrl, { signal: AbortSignal.timeout(4000), next: { revalidate: 600 } })));
     } catch {
       moonFailed = true;
     }
