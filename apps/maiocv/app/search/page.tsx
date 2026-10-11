@@ -34,7 +34,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           <input id="q" name="q" defaultValue={query} />
         </form>
         {failed ? (
-          <p role="alert">
+          <p role="alert" className="search-error">
             {t("search.error", undefined, locale)}{" "}
             <a href={`${localize(locale, "/search")}?q=${encodeURIComponent(query)}`}>{t("search.retry", undefined, locale)}</a>
           </p>

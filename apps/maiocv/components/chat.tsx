@@ -215,7 +215,7 @@ export function Chat({ locale = "pt", contactUrl = "https://instagram.com/maio__
               {message.uncited ? <p className="chat-no-source">{copy("chat.noSource")}</p> : null}
               {message.citations?.map((citation) => (
                 <p key={citation.name}>
-                  {citation.href ? <a href={citation.href}>{citation.name}</a> : citation.name}
+                  {citation.href ? <a className="chat-citation" href={citation.href}>{citation.name}</a> : citation.name}
                   {citation.kind ? ` · ${citation.kind}` : ""}
                 </p>
               ))}
