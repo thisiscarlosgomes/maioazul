@@ -290,5 +290,10 @@
   "slideshow.rotcha": "Praia da Bitxe Rotcha, ilha do Maio",
   "slideshow.pontapreta": "Ponta Preta, ilha do Maio",
   "slideshow.bocalagoa": "Boca Lagoa, ilha do Maio",
-  "preview.portal.data": "dados"
+  "preview.portal.data": "dados",
+  "notFound.title": "Página não encontrada",
+  "notFound.body": "Esse endereço não existe. Experimente um destes.",
+  "error.title": "Algo correu mal",
+  "error.body": "Não foi possível mostrar esta página.",
+  "error.retry": "Tentar de novo"
 }
