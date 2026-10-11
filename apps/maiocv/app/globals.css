@@ -2367,6 +2367,45 @@ h2,
 .lang-switch-segmented {
   margin-left: auto;
 }
+.now-strip-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: baseline;
+}
+.now-strip-head h2,
+.now-card dt,
+.now-card-source {
+  font-size: 12px;
+}
+.now-strip-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  min-height: 148px;
+}
+.now-card {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #f2f5ec;
+}
+.now-card-value {
+  font-size: 28px;
+  margin: 8px 0;
+}
+@media (max-width: 700px) {
+  .now-strip-row {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+  .now-card {
+    flex: 0 0 78vw;
+    scroll-snap-align: start;
+  }
+}
 .lang-switch-segmented a,
 .lang-switch-menu a {
   display: inline-flex;
