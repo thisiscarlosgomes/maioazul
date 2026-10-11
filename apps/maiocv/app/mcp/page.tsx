@@ -1,3 +1,4 @@
+import { Button, Section, SkipLink } from "maio-ui";
 import { HeadlineIcon } from "../../components/headline-icon";
 import { pageMetadata } from "../../lib/seo";
 import { Header, Footer } from "../../components/site-shell";
@@ -12,12 +13,10 @@ export const metadata = pageMetadata(
 export default function McpPage() {
   return (
     <>
-      <a className="skip-link" href="#conteudo">
-        {t("skip.content")}
-      </a>
+      <SkipLink href="#conteudo">{t("skip.content")}</SkipLink>
       <Header active="mcp" />
       <main id="conteudo">
-        <section className="mcp-hero wrap">
+        <Section className="mcp-hero wrap">
           <Reveal>
             <h1 className="context-headline">
               <span className="headline-line">
@@ -33,13 +32,13 @@ export default function McpPage() {
               palavras.
             </p>
           </Reveal>
-        </section>
-        <section className="demo-section wrap" id="demonstracao">
+        </Section>
+        <Section className="demo-section wrap" id="demonstracao">
           <Reveal>
             <McpDemo />
           </Reveal>
-        </section>
-        <section className="how-section wrap" id="como-funciona">
+        </Section>
+        <Section className="how-section wrap" id="como-funciona">
           <Reveal className="section-heading">
             <div>
               <h2>
@@ -77,8 +76,8 @@ export default function McpPage() {
               </Reveal>
             ))}
           </div>
-        </section>
-        <section className="context-section wrap">
+        </Section>
+        <Section className="context-section wrap">
           <Reveal className="context-grid">
             <div>
               <h2>
@@ -123,8 +122,8 @@ export default function McpPage() {
               </article>
             </div>
           </Reveal>
-        </section>
-        <section className="faq-section wrap" id="perguntas">
+        </Section>
+        <Section className="faq-section wrap" id="perguntas">
           <Reveal>
             <h2>Perguntas frequentes.</h2>
             <div className="faq-list">
@@ -164,18 +163,16 @@ export default function McpPage() {
               ))}
             </div>
           </Reveal>
-        </section>
-        <section className="closing wrap">
+        </Section>
+        <Section className="closing wrap">
           <Reveal>
             <h2>
               O que quer saber <br />
               sobre o Maio?
             </h2>
-            <a className="button" href="/chat">
-              Conversar sobre o Maio
-            </a>
+            <Button href="/chat">Conversar sobre o Maio</Button>
           </Reveal>
-        </section>
+        </Section>
       </main>
       <Footer />
     </>
