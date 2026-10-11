@@ -2,7 +2,7 @@
 
 Date: 11 October 2026. Repo: `thisiscarlosgomes/maioazul`. Commit reviewed: `ba636de` (`latest`) on `main`. This is an audit only. No application code was changed.
 
-The public site is the Next.js app at the repo root (`package.json` name `my-app`, Next `16.1.1`, React `19.2.3`). `apps/maio-dashboard` is a second copy of that app. `apps/guide` and `apps/beach-volley-camp` carry further copies of the same Mongo client. `apps/maio-api` is a separate open-data API with a real test suite. `apps/stargazing` and `apps/maiocv` are smaller Next apps.
+The public site is the Next.js app at the repo root (`package.json` name `my-app`, Next `16.1.1`, React `19.2.3`). `apps/maio-dashboard` is a second copy of that app. `apps/guide` and `apps/beach-volley-camp` carry further copies of the same Mongo client. `apps/maio-api` is a separate open-data API with a real test suite. `apps/stargazing` is a smaller Next app. `apps/maiocv` is the intended visual base for the other apps. It is one static page, not a shared package yet. See [MaioCV as the shared foundation](#maiocv-as-the-shared-foundation).
 
 **Revoke a committed key before the code fixes.** `scripts/tacv_aviationstack.sh` line 4 sets `AVIATIONSTACK_KEY` to a string literal. The live flight route does not read that script. `docs/mcp-0.4.md` says unverified Aviationstack cache files are no longer consumed. The value is already in git history, so deleting the line is not enough. Revoke it in the Aviationstack account, then delete the script or read the key from the environment. Do not paste the old value into a commit or into chat.
 
@@ -133,7 +133,7 @@ Root `app/page.tsx` renders `HomeClient`. `apps/maio-dashboard/app/page.tsx` red
 1. Pick npm or pnpm. Put that choice in `packageManager`. Delete the other lockfile. Generate one lock that includes every workspace you still ship. `npm ci` or `pnpm install --frozen-lockfile` must exit 0. Do not keep both locks.
 2. Add a root `test` script that runs `node --test tests/tourism-baseline.test.mjs` and `npm test --workspace maio-open-api` and `npm test --workspace maio-stargazing`.
 3. Add one GitHub Actions workflow on push and pull request. Steps: frozen install, `npx tsc --noEmit`, `npm run lint`, `npm test`, `npx next build` with a dummy `MONGODB_URI` only after item 1 is fixed so the build does not need a real database. Fail the job on eslint errors.
-4. Stop editing both trees. Either make `apps/maio-dashboard` a thin wrapper that imports the root app, or delete it and deploy the root app. Until that lands, any Codex edit under `app/`, `lib/`, `components/`, or `scripts/` must be repeated under `apps/maio-dashboard/` or it will drift. The whitespace-only `HomeClient.tsx` diff shows the drift has already started.
+4. Stop editing both trees. Make `apps/maio-dashboard` a thin wrapper that imports the root app, or delete it and deploy the root app. Do not point that wrapper at `apps/maiocv`. MaioCV is a one-page static export and the visual reference, not the product. Extract its tokens and chrome into a package only after this copy is gone, in the order in [MaioCV as the shared foundation](#maiocv-as-the-shared-foundation). Until the copy is gone, any Codex edit under `app/`, `lib/`, `components/`, or `scripts/` must be repeated under `apps/maio-dashboard/` or it will drift. The whitespace-only `HomeClient.tsx` diff shows the drift has already started.
 5. For `any`, start at the route handlers ESLint already flags (`app/api/transparencia/**`, `app/api/places/[id]/route.ts`). Parse Mongo documents with Zod at the boundary. Do not add `any` casts to silence the rule. Leave `apps/guide/app/map/page.tsx` for its own pass. It is a separate product surface.
 
 **Effort.** Small for the lockfile choice, the test script, and a minimal workflow. Large for collapsing the dashboard copy. Medium for typing the root API handlers.
@@ -160,12 +160,91 @@ One Lighthouse run against the dev server, mobile, simulated throttling, 11 Octo
 
 1. Bump root `next` and `eslint-config-next` from 16.1.1 to 16.4.0 or newer in the same 16.x line. Re-run `npm audit` and `npx next build`. Align `apps/maio-api` (`next@16.3.5`) and `apps/stargazing` (`next@^16.3.5`) so one install does not hoist a different `@next/swc`. A contaminated install during this audit produced `Mismatching @next/swc version, detected: 16.3.5 while Next.js is on 16.1.1` and `Missing field isPersistentCachingEnabled`. A clean root-only reinstall did not show that mismatch. The workspace version split is what creates it.
 2. Plan the MapLibre 6 upgrade in its own change. Read the 6.x changelog, then bump to at least 6.13.0. Do not combine it with the Next bump.
-3. In `app/layout.tsx`, delete `maximumScale` and the raw viewport meta. Keep `width=device-width, initial-scale=1`. When `useLang` changes language, set `document.documentElement.lang` to `pt` or `en`.
+3. In `app/layout.tsx`, delete `maximumScale` and the raw viewport meta. Keep `width=device-width, initial-scale=1`. That is the viewport `apps/maiocv` already ships (`apps/maiocv/out/index.html`, and `GET /` on port 3007). When `useLang` changes language, set `document.documentElement.lang` to `pt` or `en`. MaioCV sets `lang="pt"` on `<html>` and does not lock zoom.
 4. Convert `public/image.png` to AVIF or WebP, set `width` and `height` on the home `<img>`, and serve a smaller display size. 1.4 MB is the file today.
 
 **Effort.** Small for the viewport and the Next bump. Medium for MapLibre 6 and the image.
 
 **Impact.** The published Next DoS fixes land. Visitors can zoom. The home image stops shipping a 1.4 MB PNG. The 6.7 s figure should be remeasured on `next start` after the image change before you treat speed as done.
+
+## MaioCV as the shared foundation
+
+`apps/maiocv` is the visual base going forward. It is not a component library today. The app is `apps/maiocv/app/page.tsx` (5,358 bytes), `apps/maiocv/app/layout.tsx` (861 bytes), and `apps/maiocv/app/globals.css` (7,669 bytes). There is no `components/` directory, no `lib/`, and no `packages/` directory in the repo. `next.config.ts` sets `output: "export"`. The page has no data fetching, no error boundary, and no offline cache. Keep the dashboard, the guide, and the API as their own apps. Share the colors, the type, and the page chrome. Do not move those products into this static export.
+
+This does not change the order of the five items above. Items 1 to 3 stay first. A shared header on a route that 500s during import does not help. Item 4's fix changes: collapse `apps/maio-dashboard` before any reskin, and do not wrap MaioCV as the product app. Item 5's viewport fix is the one MaioCV already uses.
+
+### What ran
+
+Node v22.14.0. Next 16.1.1 was already installed at the repo root from `npm install --workspaces=false`. No `.env`. Commands from `/workspace`.
+
+| Command | Result |
+| --- | --- |
+| `npm --workspace apps/maiocv run typecheck` | Pass. `tsc --noEmit`, exit 0. |
+| `npm --workspace apps/maiocv run build` | Pass. Next 16.1.1 Turbopack compiled in 2.4 s. The route table lists `/`, `/_not-found`, and `/icon.svg`. The build log counted 4 static pages. Output is `apps/maiocv/out`. `out/index.html` is 22,757 bytes and includes the coast photo and `404.html`. |
+| `npm --workspace apps/maiocv run dev` | Listening on `http://127.0.0.1:3007`. `GET /` returned 200 (63,167 bytes in dev). The HTML has `lang="pt"`, the skip link "Saltar para o conteúdo", the heading "Uma ilha.", and `PPNeueMontreal`. The viewport meta is `width=device-width, initial-scale=1`. It does not set `user-scalable` or `maximum-scale`. |
+
+### What to extract
+
+Put these in a new package, `packages/maio-ui`. Leave product data in the app that owns it.
+
+**Tokens.** `apps/maiocv/app/globals.css` line 1 is the source of truth:
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--blue` | `#142eae` | Wordmark, headings, buttons, footer |
+| `--ink` | `#17213c` | Body text |
+| `--paper` | `#f6f4ec` | Page background |
+| `--lime` | `#e2fa85` | Data card, selection, skip-link background |
+| focus | `#ec731f` | `a:focus-visible` outline, 3 px, offset 6 px |
+
+The other apps already use the same words for different colors. Do not import two of these stylesheets into one page.
+
+| File | What it calls ink, paper, or blue |
+| --- | --- |
+| `app/globals.css` line 109 | `--maio-blue: #10069f`, plus a shadcn set of oklch variables (`--background`, `--primary`, and the rest). `--font-sans` is Inter (line 124). |
+| `apps/maio-dashboard/app/globals.css` | Same file as the root stylesheet (`diff` exit 0). |
+| `apps/guide/app/globals.css` | Starts from that Tailwind theme, then diverges (228-line diff against the root file). |
+| `apps/beach-volley-camp/app/globals.css` | `--ink: #111111`, `--paper: #ffffff`. |
+| `apps/maio-api/app/globals.css` | `--ink: #153653`, `--paper: #f4f8fc`. |
+| `apps/stargazing/app/globals.css` | Dark theme. DM Sans and Manrope. No MaioCV tokens. |
+
+**Type.** `apps/maiocv/app/layout.tsx` line 4 loads `../public/fonts/PPNeueMontreal-Regular.woff2` through `next/font/local` with `display: "swap"`. That path is `apps/maiocv/public/fonts/PPNeueMontreal-Regular.woff2`. It matches the repo-root `public/fonts/PPNeueMontreal-Regular.woff2` byte for byte (48,172 bytes). The root app also declares `PPNeueMontreal` in `app/globals.css` lines 49 to 63, including a Medium cut MaioCV does not ship, and `app/layout.tsx` still loads a Google font stylesheet. The package should own the woff2 and the `next/font` call. Keep Arial as the fallback, which MaioCV already does.
+
+**Chrome, as components that take props.** These are class names inside one page today, not components. Extract them with a `label` and an `href`. Do not hard-code the three initiative URLs inside the package. Those URLs stay in `apps/maiocv/app/page.tsx` (`https://api.maio.cv`, `https://portal.maio.cv`, `https://visitmaio.com`).
+
+- Skip link. `apps/maiocv/app/page.tsx` line 11. CSS class `.skip-link`. It is off-screen until focused.
+- Wordmark. `maio` / `cv` / the ✳ mark.
+- Header. Nav plus the "Ilha do Maio" line.
+- Eyebrow, section heading, three-column card, tags, round arrow.
+- Footer.
+
+**Accessibility behaviors to copy with the chrome.** `lang="pt"` on `<html>`. Zoom left on. `:focus-visible`. The skip link. The last rule in `globals.css`, `@media (prefers-reduced-motion: reduce)`, turns off smooth scroll and transitions. The root layout does the opposite on zoom, and `ThemeProvider` hides the first paint. An app that adopts the package adopts these four behaviors in the same change.
+
+**Do not extract these from MaioCV. They are not in it.**
+
+- Data fetching. No `fetch`, no SWR, no React Query. Each product app keeps calling its own routes.
+- Error states. No `error.tsx`. The build only emits the default `/_not-found` page. The empty-object bug in `lib/offline.ts` is item 2, and it does not live here.
+- Offline handling. No service worker and no cache. Do not move `fetchJsonOfflineFirst` into this package until it rejects on failure. Packaging it now copies the `{}` bug into every app.
+- Dark theme. There is no `.dark` class and no `ThemeProvider`. The root provider returns `null` until `localStorage` is read (second pass). Do not promote that provider. MaioCV is one light palette.
+
+### What blocks reuse
+
+1. Nothing is shared yet. `packages/` does not exist. Root workspaces are `apps/*` only. Importing `apps/maiocv` from another app couples that app to `output: "export"` and to the Vercel root in `apps/maiocv/next.config.ts`.
+2. `apps/maio-dashboard` is a second full copy of the root app. Item 4 has the `diff -rq` result. `app/globals.css` matches the root file. Restyling the shell means editing two trees until that copy is gone.
+3. The Mongo client is copied, not shared: `lib/mongodb.ts`, `apps/maio-dashboard/lib/mongodb.ts`, `apps/guide/lib/mongodb.ts`, and `apps/beach-volley-camp/lib/mongodb.ts`. The guide and camp files differ from the root by an 8-line diff and still throw when `MONGODB_URI` is missing. A UI package does not fix that. Item 1 does.
+4. Adopting `--blue` and `--paper` on the root app changes every page that uses `--maio-blue` and the oklch variables. Do that on the shell (header, page background, buttons). Do not start inside `app/dashboard/page.tsx`.
+5. The lockfile does not list `maiocv@0.1.0` (item 4). A new `packages/maio-ui` will be missing from the lock until you regenerate it. Add the package in the same change as the lockfile, or `npm ci` stays broken.
+6. Root `tsconfig.json` excludes `apps/**/*`. Give the package its own `tsconfig`. Do not remove the apps exclude to typecheck one package. That would pull the duplicate trees into `tsc`.
+7. The coast and vila photos in `apps/maiocv/public/` are local files. `apps/maiocv/README.md` says they were copied from `apps/guide/public/places/`. Changing the guide photo does not update MaioCV.
+
+### Order
+
+1. **Collapse the dashboard copy.** Effort: large. Impact: high. This is item 4, step 4. A thin wrapper around the root app is the right shape. A thin wrapper around `apps/maiocv` is the wrong shape. MaioCV has no API routes.
+2. **Add `packages/maio-ui` with the tokens and the font only.** Effort: small. Impact: high once an app imports it, and none before that. Four color variables, the focus color, the woff2, and one CSS file. No React yet. Point `apps/maiocv/app/globals.css` at that file so the landing page is the proof. Re-run `npm --workspace apps/maiocv run build`.
+3. **Move the chrome into that package.** Effort: medium. Impact: medium. `SkipLink`, `Wordmark`, `SiteHeader`, `SectionHeading`, `InitiativeCard`, and `SiteFooter`, each taking labels and hrefs. Leave the initiative list in `apps/maiocv/app/page.tsx`. Re-run the MaioCV build and open `http://127.0.0.1:3007/`. The page should look the same.
+4. **Use the package on the root shell only.** Effort: medium. Impact: high. In `app/layout.tsx`, drop `maximumScale` and `user-scalable=no` (item 5), set `lang` from the active language, render children on the server (the `ThemeProvider` note in the second pass), and apply `--paper`, `--ink`, and `--blue` to the shell. Do not restyle `app/dashboard/page.tsx` in that change. Repeat the layout edit under `apps/maio-dashboard` only if step 1 has not landed.
+5. **Leave fetching, errors, and offline in the product app.** Effort: already counted in items 1 and 2. Impact: high, and it is not a UI-package task. After `getMongoClient()` returns null and `fetchJsonOfflineFirst` rejects, add `app/error.tsx` in the root app. Do not put Mongo or the offline helper in `packages/maio-ui`.
+6. **Guide, the camp app, the API, and stargazing each get their own change.** Effort: medium per app. Impact: medium. Guide's stylesheet is a divergent copy of the root theme. The camp app and the API reuse the names `--ink` and `--paper` with different hex values, so the import will change their colors. Stargazing is a separate dark UI. Do not force it onto `--paper` in the same change as the public site.
 
 ## Quick wins
 
@@ -207,7 +286,7 @@ Each of these is a single Codex prompt. Do them after item 1 if they touch Mongo
 | `apps/maio-dashboard` | Copy of the root app. Home redirects to `/dashboard`. |
 | `apps/guide` | Visitor guide, including a very large `app/map/page.tsx`. |
 | `apps/stargazing` | Sky UI. Its unit tests pass without extra installs. |
-| `apps/maiocv` | Small Next app on port 3007. Not run in this audit. |
+| `apps/maiocv` | Intended visual base. One static page on port 3007. Typecheck, static build, and `GET /` passed. Not a component library yet. |
 | `apps/beach-volley-camp` | Registration site with Stripe. Not run. It has the same Mongo throw. |
 | `docs/mcp-0.4.md` | MCP notes. Not an app README. |
 
@@ -352,12 +431,15 @@ Environment: Node v22.14.0, npm 10.9.9, pnpm present, 4 cores. No `.env` file an
 | `npx next build` after a clean root install | Compile succeeded in 8.8 s. Failed collecting page data for `/api/places/[id]` because of the Mongo throw. |
 | `npm audit` | 3 critical, 12 high, 5 moderate, 1 low. See item 5. |
 | `GET /this-route-does-not-exist` | 404. |
+| `npm --workspace apps/maiocv run typecheck` | Pass. |
+| `npm --workspace apps/maiocv run build` | Pass. Static export, four pages. Details in the MaioCV section. |
+| `npm --workspace apps/maiocv run dev` then `GET /` on port 3007 | 200. Skip link, `lang="pt"`, zoom allowed. |
 
 Not run, and why:
 
 - `npm ci` cannot succeed until the lockfile is regenerated. A full workspace install was not used for the build that counts, because mixing `next@16.1.1` and `next@16.3.5` hoisted a mismatched `@next/swc` and broke an earlier build. That earlier failure is discarded.
 - `next start` was not run. The production build did not finish, so there is no production server to measure.
-- `apps/guide`, `apps/beach-volley-camp`, and `apps/maiocv` dev servers were not started. Their Mongo client has the same throw. Guide's map page was not clicked through.
+- `apps/guide` and `apps/beach-volley-camp` dev servers were not started. Their Mongo client has the same throw. Guide's map page was not clicked through. `apps/maiocv` was typechecked, built, and opened on port 3007. It has no Mongo client.
 - Stripe, Cloudinary, ElevenLabs, and OpenAI were not called. The voice and chat routes were only checked up to the missing-key response.
 - `pnpm install --frozen-lockfile` was not run. The lockfile's importer list has no workspaces, so a frozen pnpm install is not a credible clean path either.
 - GitHub Actions does not exist, so there was no CI run to inspect.
