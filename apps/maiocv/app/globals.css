@@ -18,7 +18,16 @@ a {
   color: inherit;
   text-decoration: none;
 }
-button, input {
+main :where(p, li) a:not([class]),
+.maio-footer-credit a,
+.chat-citation {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+button,
+input {
   font: inherit;
 }
 button, a {
@@ -888,7 +897,9 @@ h2 {
   background: #f7f8f3;
 }
 .question-box:focus-within {
-  border-color: #809569;
+  outline: 3px solid var(--maio-focus);
+  outline-offset: 3px;
+  border-color: var(--ink);
 }
 .question-box textarea {
   flex: 1;
@@ -1307,10 +1318,11 @@ h1, h2, h3, h4 { letter-spacing: -0.025em; }
 .openui-place-detail { margin-top: auto; color: var(--maio-text-data); font-size: 13px; line-height: 1.35; }
 .chat-message p { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 19px; line-height: 1.65; margin: 0; }
 .chat-status { color: var(--maio-muted); padding: 12px 0; }
-.chat-error { color: #626b5c; padding: 12px 0; }
+.chat-error, .search-error { color: var(--maio-error); border-left: 3px solid var(--maio-error); padding-left: 12px; }
+.chat-message .chat-no-source, .chat-message .chat-example { font-size: 13px; color: var(--maio-text-data); margin-top: 8px; }
 .chat-composer-wrap { position: sticky; bottom: 0; background: var(--background); padding: 16px 0 max(16px, env(safe-area-inset-bottom)); }
 .chat-composer { display: flex; align-items: flex-end; gap: 12px; padding: 18px; border: 1px solid #dce2d3; border-radius: 26px; background: #f6f7f2; }
-.chat-composer:focus-within { border-color: #7c9164; }
+.chat-composer:focus-within { outline: 3px solid var(--maio-focus); outline-offset: 3px; border-color: var(--ink); }
 .chat-composer textarea { flex: 1; min-width: 0; border: 0; background: transparent; resize: vertical; max-height: 220px; font: inherit; font-size: 19px; line-height: 1.5; outline: none; }
 .chat-composer button { border: 0; border-radius: 30px; padding: 14px 24px; background: #304324; color: white; font: inherit; cursor: pointer; }
 .chat-composer button:disabled { opacity: .5; cursor: default; }
@@ -1442,18 +1454,6 @@ h1, h2, h3, h4 { letter-spacing: -0.025em; }
   align-items: center;
   min-height: 56px;
   border-bottom: 1px solid var(--line);
-}
-html[data-bandwidth="low"] body {
-  font-family: system-ui, Arial, sans-serif;
-}
-html[data-bandwidth="low"] .home-hero img, html[data-bandwidth="low"] .slideshow-frame, html[data-bandwidth="low"] .maio-slideshow {
-  display: none;
-}
-.lite-banner {
-  margin: 0;
-  padding: 12px 24px;
-  background: var(--maio-surface-data);
-  font-size: 14px;
 }
 @media (min-width: 701px) and (max-width: 1050px) {
   .now-strip-row {

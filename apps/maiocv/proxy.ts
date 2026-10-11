@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { BANDWIDTH_COOKIE, bandwidthMode } from "./lib/bandwidth";
-import { essentialsSlug, LANG_COOKIE, isLocale, localize, localeFromPath, preferredLocale, stripLocale } from "./lib/locale";
+import { essentialsPath, essentialsSlug, LANG_COOKIE, isLocale, localize, localeFromPath, preferredLocale, routeAlias, stripLocale } from "./lib/locale";
 
 const essentialsPages = new Set(Object.values(essentialsSlug));
 
@@ -17,20 +16,17 @@ export function proxy(request: NextRequest) {
 
   if (prefixed) {
     const slug = stripLocale(pathname).replace(/^\/|\/$/g, "");
-    if (essentialsPages.has(slug) && slug !== essentialsSlug[prefixed]) {
-      const canonical = request.nextUrl.clone();
-      canonical.pathname = `/${prefixed}/${essentialsSlug[prefixed]}`;
-      return NextResponse.redirect(canonical, 308);
+    const target = routeAlias[slug] ?? (essentialsPages.has(slug) && slug !== essentialsSlug[prefixed] ? "essentials" : null);
+    if (target) {
+      const to = request.nextUrl.clone();
+      to.pathname = target === "essentials" ? essentialsPath(prefixed) : localize(prefixed, "/search");
+      return NextResponse.redirect(to, 308);
     }
     const url = request.nextUrl.clone();
     url.pathname = internalPath(pathname);
     const headers = new Headers(request.headers);
     headers.set("x-maio-lang", prefixed);
     headers.set("x-maio-path", pathname);
-    headers.set(
-      "x-maio-bandwidth",
-      bandwidthMode(request.cookies.get(BANDWIDTH_COOKIE)?.value, request.headers.get("save-data")),
-    );
     const response = NextResponse.rewrite(url, { request: { headers } });
     response.cookies.set(LANG_COOKIE, prefixed, {
       path: "/",
