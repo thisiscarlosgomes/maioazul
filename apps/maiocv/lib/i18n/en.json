@@ -305,5 +305,6 @@
   "openui.places.beachesMapped": "{n} mapped beaches",
   "openui.places.placesMapped": "{n} mapped places",
   "openui.places.mapped": "Mapped places",
-  "openui.places.source": "Maio Open Data"
+  "openui.places.source": "Maio Open Data",
+  "chat.businessSource": "The source is the Annual enterprise survey from INE Cabo Verde. The number of businesses on Maio is a rounded statistical estimate, not an administrative count."
 }

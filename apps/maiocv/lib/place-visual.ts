@@ -12,15 +12,38 @@ export function placeDataUrl(collection: string) {
   return `https://api.maio.cv/api/v1/collections/${collection}/items?limit=100`;
 }
 
-function localized(value: unknown, locale: Locale): string | null {
-  if (typeof value === "string" && value.trim()) return value.trim();
-  if (!value || typeof value !== "object") return null;
-  const record = value as Record<string, unknown>;
-  for (const key of [locale, "pt"]) {
-    const text = record[key];
-    if (typeof text === "string" && text.trim()) return text.trim();
+function languageText(value: unknown, locale: Locale): string | null {
+  if (typeof value === "string") {
+    const text = value.trim();
+    return text && locale === "pt" ? text : null;
   }
-  return null;
+  if (!value || typeof value !== "object") return null;
+  const text = (value as Record<string, unknown>)[locale];
+  return typeof text === "string" && text.trim() ? text.trim() : null;
+}
+
+function placeLabel(value: unknown, locale: Locale): { display: string | null; keys: string[] } {
+  const localeName = locale === "pt" ? null : languageText(value, locale);
+  const portuguese = languageText(value, "pt");
+  return {
+    display: localeName ?? portuguese,
+    keys: [portuguese, localeName].filter((item): item is string => Boolean(item)),
+  };
+}
+
+function localized(value: unknown, locale: Locale): string | null {
+  return placeLabel(value, locale).display;
+}
+
+function matchPosition(answer: string, keys: string[]): number {
+  let position = -1;
+  for (const key of keys) {
+    const normalized = normalize(key);
+    if (!normalized) continue;
+    const index = answer.indexOf(normalized);
+    if (index >= 0 && (position < 0 || index < position)) position = index;
+  }
+  return position;
 }
 
 function normalize(value: string) {
@@ -45,10 +68,10 @@ export function placeVisualProgram(payload: unknown, answer: string, collection:
   const candidates = data.features.flatMap((item): Array<PlaceCard & { position: number }> => {
     if (!item || typeof item !== "object") return [];
     const feature = item as { id?: unknown; properties?: { name?: unknown; displayName?: unknown; attributes?: { location?: unknown; coordinates?: unknown; image_url?: unknown } } };
-    const name = localized(feature.properties?.displayName, locale) ?? localized(feature.properties?.name, locale);
+    const labels = [feature.properties?.displayName, feature.properties?.name].map(value => placeLabel(value, locale));
+    const name = labels[0]?.display ?? labels[1]?.display;
     if (!name || typeof feature.id !== "string") return [];
-    const key = normalize(name);
-    const position = normalizedAnswer.indexOf(key);
+    const position = matchPosition(normalizedAnswer, labels.flatMap(label => label.keys));
     if (position < 0) return [];
     const coordinates = feature.properties?.attributes?.coordinates;
     const validCoordinates = Array.isArray(coordinates) && coordinates.length >= 2 &&

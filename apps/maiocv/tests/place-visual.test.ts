@@ -70,6 +70,31 @@ test("place card chrome follows the page language", () => {
   assert.ok(uncounted?.includes("Patrimoine à Maio"));
 });
 
+test("bilingual place names match Portuguese or the page language and display the page language", () => {
+  const bilingual = {
+    numberMatched: 1,
+    features: [{ id: "cadjetinha", properties: { name: { pt: "Praia de Cadjetinha", en: "Cadjetinha Beach" } } }],
+  };
+  const englishFromPortuguese = placeVisualProgram(bilingual, "You can visit Praia de Cadjetinha.", "beaches", "en");
+  assert.ok(englishFromPortuguese?.includes("Cadjetinha Beach"));
+  assert.ok(!englishFromPortuguese?.includes("Praia de Cadjetinha"));
+  const englishFromEnglish = placeVisualProgram(bilingual, "You can visit Cadjetinha Beach.", "beaches", "en");
+  assert.ok(englishFromEnglish?.includes("Cadjetinha Beach"));
+  assert.ok(!englishFromEnglish?.includes("Praia de Cadjetinha"));
+  const portuguese = placeVisualProgram(bilingual, "Pode visitar a Praia de Cadjetinha.", "beaches", "pt");
+  assert.ok(portuguese?.includes("Praia de Cadjetinha"));
+  assert.ok(!portuguese?.includes("Cadjetinha Beach"));
+  const french = placeVisualProgram(bilingual, "Vous pouvez visiter Praia de Cadjetinha.", "beaches", "fr");
+  assert.ok(french?.includes("Praia de Cadjetinha"));
+  assert.ok(french?.includes("Plages à Maio"));
+  assert.ok(!french?.includes("Cadjetinha Beach"));
+  const accented = {
+    numberMatched: 1,
+    features: [{ id: "sao", properties: { name: { pt: "Praia de São Francisco", en: "São Francisco Beach" } } }],
+  };
+  assert.ok(placeVisualProgram(accented, "See PRAIA DE SAO FRANCISCO.", "beaches", "en")?.includes("São Francisco Beach"));
+});
+
 test("untrusted image URLs are excluded", () => {
   const program = placeVisualProgram({ numberMatched: 1, features: [
     { id: "place", properties: { name: "Praia de Lagoa", attributes: { image_url: "https://example.com/other.jpg" } } },

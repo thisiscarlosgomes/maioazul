@@ -120,7 +120,7 @@ export function Chat({ locale = "pt" }: { locale?: Locale }) {
         throw new Error(copy("chat.error.source"));
       if (typeof data.message !== "string" || !data.message.trim())
         throw new Error(copy("chat.error.empty"));
-      const publicAnswer = publicChatAnswer(data.message, text);
+      const publicAnswer = publicChatAnswer(data.message, text, locale);
       if (!publicAnswer) throw new Error(copy("chat.error.empty"));
       let visual: Message["visual"];
       const pilotEnabled = new URLSearchParams(window.location.search).get("openui") === "1";

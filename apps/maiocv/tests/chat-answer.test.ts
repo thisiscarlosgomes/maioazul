@@ -42,4 +42,10 @@ test("answers a business source question without exposing tools or catalog keys"
   const result = publicChatAnswer(answer, "Qual é a fonte do número de empresas no Maio?");
   assert.match(result, /Inquérito Anual às Empresas do INE Cabo Verde/);
   assert.doesNotMatch(result, /business-demography|get_open_data_dataset|get_maio_core_metrics|view=/);
+  const english = publicChatAnswer(answer, "What is the source of the businesses on Maio?", "en");
+  assert.match(english, /Annual enterprise survey from INE Cabo Verde/);
+  assert.doesNotMatch(english, /Inquérito Anual/);
+  const french = publicChatAnswer(answer, "Quelle est la source des entreprises à Maio ?", "fr");
+  assert.match(french, /enquête annuelle auprès des entreprises de l'INE Cabo Verde/);
+  assert.equal(publicChatAnswer(answer, "Where are the businesses on Maio?", "en"), publicChatAnswer(answer));
 });

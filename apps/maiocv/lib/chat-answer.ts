@@ -16,11 +16,23 @@ export function publicChatGreeting(question: string, locale: Locale = "pt"): str
   return null;
 }
 
-export function publicChatAnswer(answer: string, question = ""): string {
-  const askedForBusinessSource = /\b(fonte|origem|de onde)\b/.test(plain(question)) &&
-    /\b(empresas?|negocios?)\b/.test(plain(question));
-  if (askedForBusinessSource && /business-demography|get_open_data_dataset|inquérito anual|INE Cabo Verde/i.test(answer)) {
-    return "A fonte é o Inquérito Anual às Empresas do INE Cabo Verde. O número de empresas no Maio é uma estimativa estatística arredondada, não uma contagem administrativa.";
+const asksForSource: Record<Locale, RegExp> = {
+  pt: /\b(?:fonte|origem|de onde)\b/,
+  en: /\b(?:source|origin)\b|\bwhere\b.+\bfrom\b/,
+  fr: /\b(?:source|origine)\b|\bd['’]ou\b/,
+};
+
+const asksForBusiness: Record<Locale, RegExp> = {
+  pt: /\b(?:empresas?|negocios?)\b/,
+  en: /\b(?:business(?:es)?|compan(?:y|ies)|enterprises?)\b/,
+  fr: /\bentreprises?\b/,
+};
+
+export function publicChatAnswer(answer: string, question = "", locale: Locale = "pt"): string {
+  const asked = plain(question);
+  const askedForBusinessSource = asksForSource[locale].test(asked) && asksForBusiness[locale].test(asked);
+  if (askedForBusinessSource && /business-demography|get_open_data_dataset|inqu[eé]rito anual|annual enterprise survey|enqu[eê]te annuelle|INE Cabo Verde/i.test(answer)) {
+    return t("chat.businessSource", undefined, locale);
   }
   return answer.split("\n").filter(line => !internalLine.test(line)).map(line => {
     // Keep the public institution while removing the catalog key from a source line.
