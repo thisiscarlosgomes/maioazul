@@ -93,6 +93,7 @@
   "agora.wx.other": "Code météo {code}",
   "kind.model": "Estimation modélisée",
   "kind.calculated": "Calculé",
+  "kind.published-schedule": "Horaire publié",
   "unit.kmh": "km/h",
   "wind.dir.N": "N",
   "wind.dir.NE": "NE",

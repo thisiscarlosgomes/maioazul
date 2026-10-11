@@ -1,6 +1,6 @@
 import { SkipLink } from "maio-ui";
 import { Header, Footer } from "../../components/site-shell";
-import { loadEssentials } from "../../lib/essentials";
+import { loadEssentials, scheduleSource } from "../../lib/essentials";
 import { EMERGENCY, EMERGENCY_VERIFIED_AT, humanContactUrl } from "../../lib/emergency";
 import { t, type MessageKey } from "../../lib/i18n";
 import { essentialsPath, type Locale } from "../../lib/locale";
@@ -45,10 +45,11 @@ export default async function EssentialsPage() {
         <section aria-labelledby="arrive">
           <h2 id="arrive">{t("ess.arrive", undefined, locale)}</h2>
           <h3>{t("ess.ferry", undefined, locale)}</h3>
+          <Provenance locale={locale} envelope={body.ferry} />
           <Schedule locale={locale} sailings={body.ferry.data ?? []} status={body.ferry.status} />
           <p>{t("ess.ferry.confirm", undefined, locale)}</p>
-          <p>{body.ferry.source.name}</p>
           <h3>{t("ess.flight", undefined, locale)}</h3>
+          <Provenance locale={locale} envelope={body.flight} />
           {body.flight.status === "available" ? null : <p>{t("ess.none", undefined, locale)}</p>}
           <p>{t("ess.flight.thirdParty", undefined, locale)}</p>
           <ul>
@@ -74,6 +75,22 @@ export default async function EssentialsPage() {
         </section>
       </main>
       <Footer />
+    </>
+  );
+}
+
+function Provenance({
+  locale,
+  envelope,
+}: {
+  locale: Locale;
+  envelope: { kind: string; source: { name: string }; retrievedAt: string; caveats: string[] };
+}) {
+  const source = scheduleSource(envelope, locale);
+  return (
+    <>
+      <p>{source.line}</p>
+      {source.caveats.map((caveat) => <p key={caveat}>{caveat}</p>)}
     </>
   );
 }

@@ -1,10 +1,22 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
 import { EMERGENCY } from "../lib/emergency.ts";
-import { loadEssentials, paymentCount, sailingsForToday } from "../lib/essentials.ts";
+import { loadEssentials, paymentCount, sailingsForToday, scheduleSource } from "../lib/essentials.ts";
 
 test("emergency links are the decided numbers", () => {
   assert.deepEqual(EMERGENCY.map((item) => item.href), ["tel:132", "tel:+2382551130", "tel:130"]);
+});
+
+test("a ferry label shows the kind, the retrieved time, and the caveats", () => {
+  const source = scheduleSource({
+    kind: "published-schedule",
+    source: { name: "CV Interilhas" },
+    retrievedAt: "2026-10-11T19:30:00.000Z",
+    caveats: ["Only the published day is listed."],
+  }, "en");
+  assert.match(source.line, /Published timetable · CV Interilhas · Retrieved 18:30/);
+  assert.doesNotMatch(source.line, /updated/i);
+  assert.deepEqual(source.caveats, ["Only the published day is listed."]);
 });
 
 test("yesterday's sailings are not today's", () => {

@@ -93,6 +93,7 @@
   "agora.wx.other": "Weather code {code}",
   "kind.model": "Model estimate",
   "kind.calculated": "Calculated",
+  "kind.published-schedule": "Published timetable",
   "unit.kmh": "km/h",
   "wind.dir.N": "N",
   "wind.dir.NE": "NE",

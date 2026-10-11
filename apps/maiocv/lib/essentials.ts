@@ -1,5 +1,8 @@
 import type { Envelope } from "./agora.ts";
 import { maioClock } from "./agora.ts";
+import { t } from "./i18n.ts";
+import type { Locale } from "./locale.ts";
+import { retrievedLabel } from "./now-view.ts";
 
 const boatsSource = {
   id: "cv-interilhas",
@@ -34,6 +37,19 @@ function unavailable<T>(kind: Envelope<T>["kind"], source: Envelope<T>["source"]
 
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === "object" ? value as Record<string, unknown> : {};
+}
+
+export function scheduleSource(
+  envelope: { kind: string; source: { name: string }; retrievedAt: string; caveats: string[] },
+  locale: Locale,
+): { line: string; caveats: string[] } {
+  const kind = envelope.kind === "published-schedule"
+    ? t("kind.published-schedule", undefined, locale)
+    : envelope.kind;
+  return {
+    line: `${kind} · ${envelope.source.name} · ${retrievedLabel(envelope.retrievedAt, locale)}`,
+    caveats: envelope.caveats,
+  };
 }
 
 export function sailingsForToday(payload: unknown, today: string): Sailing[] {

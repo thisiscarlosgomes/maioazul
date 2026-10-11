@@ -93,6 +93,7 @@
   "agora.wx.other": "Código do tempo {code}",
   "kind.model": "Estimativa de modelo",
   "kind.calculated": "Calculado",
+  "kind.published-schedule": "Horário publicado",
   "unit.kmh": "km/h",
   "wind.dir.N": "N",
   "wind.dir.NE": "NE",
