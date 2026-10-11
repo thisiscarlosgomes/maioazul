@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-AVIATIONSTACK_KEY="ee3be296d597b2f2de4cc32e6df9aae0"
+if [[ -z "${AVIATIONSTACK_KEY:-}" ]]; then
+  echo "Error: AVIATIONSTACK_KEY is not set." >&2
+  exit 1
+fi
 
 ROUTES=("RAI:MMO" "MMO:RAI")
 
