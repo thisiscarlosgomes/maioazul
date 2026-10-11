@@ -16,8 +16,27 @@ const copy = {
   },
 };
 
+export const NAVIGATION_CACHE_LIMIT = 8;
+
 export function mayCacheNavigation(response) {
   return Boolean(response) && response.ok === true && response.redirected === false && response.type === "basic";
+}
+
+export function isSearchQuery(url) {
+  const path = url.pathname.replace(/\/$/, "") || "/";
+  const searchPage = path === "/search" || path.endsWith("/search");
+  return searchPage && url.searchParams.has("q");
+}
+
+export function mayStoreNavigation(url, response) {
+  return mayCacheNavigation(response) && !isSearchQuery(url);
+}
+
+export function evictionUrls(requestUrls, limit, pinned) {
+  const keep = new Set(pinned);
+  const evictable = requestUrls.filter((url) => !keep.has(new URL(url).pathname));
+  const overflow = evictable.length - limit;
+  return overflow > 0 ? evictable.slice(0, overflow) : [];
 }
 
 export function offlineLocale(pathname) {
@@ -26,19 +45,36 @@ export function offlineLocale(pathname) {
   return "pt";
 }
 
-export function formatSavedAt(iso, locale) {
+function maioDay(date) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Atlantic/Cape_Verde",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
+export function formatSavedAt(iso, locale, now = new Date()) {
   const tag = locale === "en" ? "en-GB" : locale === "fr" ? "fr-FR" : "pt-PT";
-  return new Intl.DateTimeFormat(tag, {
+  const saved = new Date(iso);
+  const time = new Intl.DateTimeFormat(tag, {
     timeZone: "Atlantic/Cape_Verde",
     hour: "2-digit",
     minute: "2-digit",
     hourCycle: "h23",
-  }).format(new Date(iso));
+  }).format(saved);
+  if (maioDay(saved) === maioDay(now)) return time;
+  const date = new Intl.DateTimeFormat(tag, {
+    timeZone: "Atlantic/Cape_Verde",
+    day: "numeric",
+    month: "short",
+  }).format(saved);
+  return `${date} ${time}`;
 }
 
-export function offlineBanner(pathname, savedAtIso) {
+export function offlineBanner(pathname, savedAtIso, now = new Date()) {
   const locale = offlineLocale(pathname);
   const text = copy[locale];
-  const saved = savedAtIso ? `<p>${text.saved.replace("{time}", formatSavedAt(savedAtIso, locale))}</p>` : "";
+  const saved = savedAtIso ? `<p>${text.saved.replace("{time}", formatSavedAt(savedAtIso, locale, now))}</p>` : "";
   return `<div role="status" class="lite-banner" data-maio-offline><p>${text.banner}</p>${saved}<p>${text.stale}</p></div>`;
 }

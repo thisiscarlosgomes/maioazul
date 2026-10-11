@@ -1,4 +1,4 @@
-import { mayCacheNavigation, offlineBanner } from "./sw-policy.mjs";
+import { evictionUrls, mayStoreNavigation, NAVIGATION_CACHE_LIMIT, offlineBanner } from "./sw-policy.mjs";
 
 const SHELL = "maiocv-shell-v2";
 
@@ -27,7 +27,7 @@ self.addEventListener("fetch", (event) => {
 async function fromNetwork(request) {
   try {
     const response = await fetch(request);
-    if (mayCacheNavigation(response)) {
+    if (mayStoreNavigation(new URL(request.url), response)) {
       const headers = new Headers(response.headers);
       headers.set("X-Maio-Saved-At", new Date().toISOString());
       const stored = new Response(await response.clone().arrayBuffer(), {
@@ -37,6 +37,9 @@ async function fromNetwork(request) {
       });
       const cache = await caches.open(SHELL);
       await cache.put(request, stored);
+      const keys = await cache.keys();
+      const drop = evictionUrls(keys.map((key) => key.url), NAVIGATION_CACHE_LIMIT, ["/pt", "/offline.html"]);
+      for (const url of drop) await cache.delete(url);
     }
     return response;
   } catch {
