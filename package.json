@@ -2,6 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "npm@10.9.9",
   "workspaces": [
     "apps/*"
   ],
@@ -10,6 +11,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "lint:ci": "eslint lib/mongodb.ts app/blog/page.tsx app/api/blog/admin/generate/route.ts app/api/voice/route.ts app/api/transparencia/admin/route.ts apps/maio-dashboard/lib/mongodb.ts apps/maio-dashboard/app/blog/page.tsx apps/maio-dashboard/app/api/blog/admin/generate/route.ts apps/maio-dashboard/app/api/voice/route.ts apps/maio-dashboard/app/api/transparencia/admin/route.ts apps/guide/lib/mongodb.ts apps/guide/app/api/voice/route.ts apps/beach-volley-camp/lib/mongodb.ts",
+    "test": "node --test tests/tourism-baseline.test.mjs && npm test --workspace maio-open-api && npm test --workspace maio-stargazing",
     "chat:stats": "node scripts/chat-stats.mjs",
     "chat:reset-limits": "node scripts/reset-chat-limits.mjs",
     "validate:budgets": "node scripts/validate-budget-datasets.mjs",
