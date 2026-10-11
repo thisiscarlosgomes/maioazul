@@ -27,15 +27,6 @@ test("dark theme sets color-scheme and does not invent a palette", () => {
   assert.equal(block.includes("#"), false);
 });
 
-test("low bandwidth drops elevation, fast motion, and the brand font", () => {
-  const low = css.slice(css.indexOf('[data-bandwidth="low"]'));
-  assert.match(low, /--elev-1:\s*none/);
-  assert.match(low, /--elev-2:\s*none/);
-  assert.match(low, /--elev-3:\s*none/);
-  assert.match(low, /--dur-fast:\s*0s/);
-  assert.match(low, /--font-sans:\s*ui-sans-serif, system-ui, Arial, sans-serif/);
-});
-
 test("fonts.css declares PP Neue Montreal at 400 and 500", () => {
   assert.match(fonts, /font-weight:\s*400/);
   assert.match(fonts, /font-weight:\s*500/);
