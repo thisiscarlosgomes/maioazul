@@ -1,5 +1,6 @@
 import { Chat } from "../../components/chat";
-import { Header } from "../../components/site-shell";
+import { Header, Footer } from "../../components/site-shell";
+import { t } from "../../lib/i18n";
 import { pageMetadata } from "../../lib/seo";
 
 export const metadata = pageMetadata(
@@ -9,5 +10,14 @@ export const metadata = pageMetadata(
 );
 
 export default function ChatPage() {
-  return <><Header /><Chat /></>;
+  return (
+    <>
+      <a className="skip-link" href="#conteudo">
+        {t("skip.content")}
+      </a>
+      <Header />
+      <Chat />
+      <Footer />
+    </>
+  );
 }
