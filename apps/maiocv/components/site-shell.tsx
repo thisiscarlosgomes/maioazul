@@ -4,7 +4,7 @@ import { Reveal } from "./motion";
 import { LangSwitch } from "./lang-switch";
 import { CHATGPT_URL } from "../lib/content";
 import { t } from "../lib/i18n";
-import { localize } from "../lib/locale";
+import { essentialsPath, localize } from "../lib/locale";
 import { currentLocale, currentPath } from "../lib/request-locale";
 
 export function Logo() {
@@ -29,6 +29,7 @@ export async function Header({ active = "home" }: { active?: "home" | "mcp" }) {
       label={copy("nav.primary")}
       links={[
         { href: `${localize(locale, "/")}#iniciativas`, label: copy("nav.initiatives"), compact: "hide" },
+        { href: essentialsPath(locale), label: copy("nav.visit") },
         { href: localize(locale, "/mcp"), label: copy("nav.about"), current: active === "mcp" },
         { href: localize(locale, "/chat"), label: copy("nav.chat") },
       ]}

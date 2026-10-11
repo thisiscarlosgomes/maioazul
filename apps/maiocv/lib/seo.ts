@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { LOCALES, localize, localeHreflang, localeOpenGraph, type Locale } from "./locale.ts";
+import { essentialsPath, LOCALES, localize, localeHreflang, localeOpenGraph, type Locale } from "./locale.ts";
 
 export const SITE_URL = "https://www.maio.cv";
 export const description = "Iniciativas digitais para a ilha do Maio, Cabo Verde: inteligência artificial, dados abertos, turismo e ferramentas para conhecer, investigar e aprender.";
 
-const pagePaths = ["/", "/mcp", "/chat"] as const;
+const pagePaths = ["/", "/mcp", "/chat", "/essentials"] as const;
+
+function localizedPath(locale: Locale, path: string): string {
+  if (path === "/essentials") return essentialsPath(locale);
+  return localize(locale, path);
+}
 
 export const publicRoutes = LOCALES.flatMap((lang) =>
-  pagePaths.map((path) => ({ path: localize(lang, path), lang })),
+  pagePaths.map((path) => ({ path: localizedPath(lang, path), lang })),
 );
 
 export const htmlLang = "pt";
 
 export function languageAlternates(path: string) {
   const languages: Record<string, string> = {
-    "x-default": new URL(localize("pt", path), SITE_URL).href,
+    "x-default": new URL(localizedPath("pt", path), SITE_URL).href,
   };
   for (const locale of LOCALES) {
-    languages[localeHreflang(locale)] = new URL(localize(locale, path), SITE_URL).href;
+    languages[localeHreflang(locale)] = new URL(localizedPath(locale, path), SITE_URL).href;
   }
   return languages;
 }
