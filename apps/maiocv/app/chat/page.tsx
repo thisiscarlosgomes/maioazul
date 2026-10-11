@@ -2,20 +2,27 @@ import { SkipLink } from "maio-ui";
 import { Chat } from "../../components/chat";
 import { Header, Footer } from "../../components/site-shell";
 import { t } from "../../lib/i18n";
+import { localize } from "../../lib/locale";
+import { currentLocale } from "../../lib/request-locale";
 import { pageMetadata } from "../../lib/seo";
 
-export const metadata = pageMetadata(
-  "Pergunte sobre o Maio — Chat com IA | MaioCV",
-  "Converse sobre praias, turismo, economia e dados da ilha do Maio, Cabo Verde. Faça perguntas e explore as fontes numa conversa simples.",
-  "/chat",
-);
+export async function generateMetadata() {
+  const locale = await currentLocale();
+  return pageMetadata(
+    t("meta.title.chat", undefined, locale),
+    t("meta.description.chat", undefined, locale),
+    localize(locale, "/chat"),
+    locale,
+  );
+}
 
-export default function ChatPage() {
+export default async function ChatPage() {
+  const locale = await currentLocale();
   return (
     <>
-      <SkipLink href="#conteudo">{t("skip.content")}</SkipLink>
+      <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
       <Header />
-      <Chat />
+      <Chat locale={locale} />
       <Footer />
     </>
   );

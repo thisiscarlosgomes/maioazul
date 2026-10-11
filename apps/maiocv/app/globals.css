@@ -2357,3 +2357,65 @@ h2,
 .mcp-feature :is(a, button, summary):focus-visible {
   outline-color: var(--maio-focus-on-blue);
 }
+
+.lang-switch-segmented,
+.lang-switch-menu div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lang-switch-segmented {
+  margin-left: auto;
+}
+.lang-switch-segmented a,
+.lang-switch-menu a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+}
+.lang-switch-segmented a[aria-current="true"],
+.lang-switch-menu a[aria-current="true"] {
+  color: var(--blue);
+}
+.lang-switch-menu {
+  display: none;
+  margin-left: auto;
+}
+.lang-switch-menu summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+}
+.lang-switch-menu summary::-webkit-details-marker {
+  display: none;
+}
+.lang-switch-menu div {
+  position: absolute;
+  right: 16px;
+  top: 72px;
+  flex-direction: column;
+  align-items: stretch;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 8px;
+}
+.untranslated-note {
+  margin: 16px auto 0;
+  max-width: 720px;
+  font-size: 14px;
+}
+@media (max-width: 700px) {
+  .lang-switch-segmented { display: none; }
+  .lang-switch-menu { display: block; }
+  .maio-header > .maio-button { display: none; }
+}

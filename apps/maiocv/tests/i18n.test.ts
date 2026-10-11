@@ -12,4 +12,8 @@ test("header, footer, and chat copy come from the Portuguese catalog", () => {
   assert.equal(t("faq.start", { cta: t("cta.ask") }), "Clique em “Perguntar sobre o Maio” e escreva a sua pergunta. Pode continuar a conversa com novas perguntas, sem sair do MaioCV.");
   assert.doesNotMatch(t("cta.ask"), /Ask a question/);
   assert.doesNotMatch(t("chat.thinking"), /Thinking/);
+  assert.equal(t("cta.ask", undefined, "en"), "Ask about Maio");
+  assert.equal(t("cta.ask", undefined, "fr"), "Poser une question sur Maio");
+  assert.equal(t("lang.fr", undefined, "en"), "Français");
+  assert.equal(t("i18n.notTranslated", undefined, "fr"), "Cette section n'est disponible qu'en portugais.");
 });
