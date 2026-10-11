@@ -1,18 +1,22 @@
 import Image from "next/image";
-export function PortalPreview() {
+import { t, type MessageKey } from "../lib/i18n";
+import type { Locale } from "../lib/locale";
+
+export function PortalPreview({ locale = "pt" }: { locale?: Locale }) {
+  const copy = (key: MessageKey) => t(key, undefined, locale);
   return (
     <div className="portal-preview">
       <div className="preview-toolbar">
         <strong>
-          maio<span>dados</span>
+          maio<span>{copy("preview.portal.data")}</span>
         </strong>
       </div>
       <div className="preview-body">
-        <h4>Uma ilha, muitas perspetivas.</h4>
+        <h4>{copy("preview.portal.title")}</h4>
         <div className="metric-labels">
-          <span>Turismo</span>
-          <span>Economia</span>
-          <span>Território</span>
+          <span>{copy("preview.portal.tourism")}</span>
+          <span>{copy("preview.portal.economy")}</span>
+          <span>{copy("preview.portal.territory")}</span>
         </div>
         <div className="preview-chart" aria-hidden="true">
           {[30, 42, 38, 56, 50, 68, 62, 78, 70, 90, 81, 95].map((v, i) => (
@@ -23,7 +27,7 @@ export function PortalPreview() {
     </div>
   );
 }
-export function ApiPreview() {
+export function ApiPreview({ locale: _locale = "pt" }: { locale?: Locale }) {
   return (
     <div className="api-preview">
       <div className="preview-toolbar">
@@ -50,12 +54,12 @@ export function ApiPreview() {
     </div>
   );
 }
-export function VisitPreview() {
+export function VisitPreview({ locale = "pt" }: { locale?: Locale }) {
   return (
     <div className="visit-preview">
       <Image
         src="/maio-vila.jpg"
-        alt="Barcos na praia da cidade do Porto Inglês, Maio"
+        alt={t("preview.visit.alt", undefined, locale)}
         fill
         sizes="(max-width: 700px) 100vw, 50vw"
       />
@@ -63,25 +67,26 @@ export function VisitPreview() {
     </div>
   );
 }
-export function McpPreview() {
+export function McpPreview({ locale = "pt" }: { locale?: Locale }) {
+  const copy = (key: MessageKey) => t(key, undefined, locale);
   return (
     <div className="mcp-preview">
       <div className="mini-chat-top">
         <strong>Maio × ChatGPT</strong>
         <span className="tiny-badge">MCP</span>
       </div>
-      <div className="mini-question">Que dados existem sobre o Maio?</div>
+      <div className="mini-question">{copy("preview.mcp.question")}</div>
       <div className="mini-answer">
         <div>
-          <p>Comecemos pelo que quer descobrir.</p>
+          <p>{copy("preview.mcp.answer")}</p>
           <div className="mini-topics">
-            <span>Território</span>
-            <span> Economia</span>
-            <span>Turismo</span>
+            <span>{copy("preview.portal.territory")}</span>
+            <span> {copy("preview.portal.economy")}</span>
+            <span>{copy("preview.portal.tourism")}</span>
           </div>
         </div>
       </div>
-      <div className="mini-composer">Pergunte sobre a ilha…</div>
+      <div className="mini-composer">{copy("preview.mcp.composer")}</div>
     </div>
   );
 }
