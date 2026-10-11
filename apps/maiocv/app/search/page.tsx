@@ -4,7 +4,7 @@ import { t } from "../../lib/i18n";
 import { localize } from "../../lib/locale";
 import { currentLocale } from "../../lib/request-locale";
 import { pageMetadata } from "../../lib/seo";
-import { searchFeatures } from "../../lib/search";
+import { searchFeatures, sourceName } from "../../lib/search";
 
 export async function generateMetadata() {
   const locale = await currentLocale();
@@ -33,7 +33,12 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           <label className="sr-only" htmlFor="q">{t("search.placeholder", undefined, locale)}</label>
           <input id="q" name="q" defaultValue={query} />
         </form>
-        {failed ? <p role="alert">{t("agora.retry", undefined, locale)}</p> : null}
+        {failed ? (
+          <p role="alert">
+            {t("search.error", undefined, locale)}{" "}
+            <a href={`${localize(locale, "/search")}?q=${encodeURIComponent(query)}`}>{t("search.retry", undefined, locale)}</a>
+          </p>
+        ) : null}
         {query && !failed ? <p role="status">{t("search.results", { n: hits.length, q: query }, locale)}</p> : null}
         <ul>
           {hits.map((hit) => (
@@ -41,7 +46,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
               <strong>{hit.name}</strong>
               {hit.description ? <p>{hit.description}</p> : null}
               {hit.unmapped ? <p>{t("search.unmapped", undefined, locale)}</p> : null}
-              <p>{hit.source ? hit.source : t("search.noSource", undefined, locale)}</p>
+              <p>{hit.source ? sourceName(hit.source, locale) : t("search.noSource", undefined, locale)}</p>
             </li>
           ))}
         </ul>

@@ -1,3 +1,4 @@
+import { t, type MessageKey } from "./i18n.ts";
 import type { Locale } from "./locale.ts";
 
 export type SearchHit = {
@@ -65,6 +66,31 @@ export function toHit(feature: Feature, locale: Locale): SearchHit | null {
     unmapped: feature.geometry == null,
     source: sources[0] ?? "",
   };
+}
+
+const sourceKeys: Record<string, MessageKey> = {
+  beaches_osm: "search.source.beaches_osm",
+  "enapor-porto-ingles": "search.source.enapor-porto-ingles",
+  "guide-offroad": "search.source.guide-offroad",
+  "guide-places": "search.source.guide-places",
+  "guide-settlements": "search.source.guide-settlements",
+  hydrology: "search.source.hydrology",
+  "iae-2024-user-workbook": "search.source.iae-2024-user-workbook",
+  "ingt-carta-agricola-maio": "search.source.ingt-carta-agricola-maio",
+  "maio-guide": "search.source.maio-guide",
+  natural_features: "search.source.natural_features",
+  places_osm_raw: "search.source.places_osm_raw",
+  "planned-sports": "search.source.planned-sports",
+  protected_areas: "search.source.protected_areas",
+  settlements: "search.source.settlements",
+  "user-porto-ingles-coordinates": "search.source.user-porto-ingles-coordinates",
+  "visit-maio": "search.source.visit-maio",
+  zoning_special: "search.source.zoning_special",
+};
+
+export function sourceName(id: string, locale: Locale): string {
+  const key = sourceKeys[id];
+  return key ? t(key, undefined, locale) : t("search.source.other", undefined, locale);
 }
 
 export async function searchFeatures(fetchImpl: typeof fetch, query: string, locale: Locale): Promise<SearchHit[]> {
