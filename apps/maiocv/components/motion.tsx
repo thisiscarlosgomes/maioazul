@@ -1,6 +1,8 @@
 "use client";
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
+import { t } from "../lib/i18n";
+import type { Locale } from "../lib/locale";
 export function Reveal({
   children,
   className = "",
@@ -33,23 +35,27 @@ export function HoverCard({
   children,
   href,
   className = "",
+  locale = "pt",
 }: {
   children: ReactNode;
   href: string;
   className?: string;
+  locale?: Locale;
 }) {
   const reduced = useReducedMotion();
+  const external = /^https?:\/\//i.test(href);
   return (
     <motion.a
       href={href}
-      target="_blank"
-      rel="noopener noreferrer"
+      target={external ? "_blank" : undefined}
+      rel={external ? "noopener noreferrer" : undefined}
       className={className}
       whileHover={reduced ? undefined : { y: -6 }}
       whileTap={reduced ? undefined : { scale: 0.985 }}
       transition={{ duration: 0.25 }}
     >
       {children}
+      {external ? <span className="sr-only"> {t("link.newTab", undefined, locale)}</span> : null}
     </motion.a>
   );
 }

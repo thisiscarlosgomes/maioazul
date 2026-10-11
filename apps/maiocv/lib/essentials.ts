@@ -2,6 +2,7 @@ import type { Envelope } from "./agora.ts";
 import { maioClock } from "./agora.ts";
 import { t } from "./i18n.ts";
 import type { Locale } from "./locale.ts";
+import type { MessageKey } from "./i18n.ts";
 import { retrievedLabel } from "./now-view.ts";
 
 const boatsSource = {
@@ -27,7 +28,7 @@ export type PaymentCount = { year: string; value: number };
 
 export type EssentialsBody = {
   ferry: Envelope<Sailing[]>;
-  flight: Envelope<{ status: string; sourceUrls: string[] }>;
+  flight: Envelope<{ status: string; sourceUrls: { id: string; url: string }[] }>;
   payments: Envelope<{ atms: PaymentCount; pos: PaymentCount }>;
 };
 
@@ -37,6 +38,44 @@ function unavailable<T>(kind: Envelope<T>["kind"], source: Envelope<T>["source"]
 
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === "object" ? value as Record<string, unknown> : {};
+}
+
+const caveatKeys: Record<string, MessageKey> = {
+  "Only the explicitly selected source day is parsed. Date-picker options are not confirmed sailing dates.": "ess.caveat.ferry.day",
+  "No fallback, extrapolated sailings, vessel names, arrivals or live status. Confirm travel with the operator.": "ess.caveat.ferry.operator",
+  "updated_at is null because operator publication time is unknown; retrievedAt is fetch time.": "ess.caveat.timeUnknown",
+  "Third-party published timetable, not live operations or airline confirmation.": "ess.caveat.flight.third",
+  "Only explicit weekday rows whose published validity includes today are returned. Expired, future-only and undated rows are excluded. No current records does not mean no flights.": "ess.caveat.flight.rows",
+  "Unverified local cache files are not used. updated_at is null: publication time is unknown.": "ess.caveat.flight.cache",
+};
+
+export function visibleCaveat(text: string, locale: Locale): string {
+  const key = caveatKeys[text];
+  return key ? t(key, undefined, locale) : text;
+}
+
+const verifiedIntl: Record<Locale, string> = { pt: "pt-PT", en: "en-GB", fr: "fr-FR" };
+
+export function verifiedDate(isoDate: string, locale: Locale): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate);
+  if (!match) return isoDate;
+  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
+  return new Intl.DateTimeFormat(verifiedIntl[locale], {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}
+
+const flightRouteKeys: Record<string, MessageKey> = {
+  rai_mmo: "ess.flight.route.rai_mmo",
+  mmo_rai: "ess.flight.route.mmo_rai",
+};
+
+export function flightRouteLabel(id: string, locale: Locale): string {
+  const key = flightRouteKeys[id];
+  return key ? t(key, undefined, locale) : id.replace(/[_-]+/g, " ");
 }
 
 export function scheduleSource(
@@ -102,11 +141,11 @@ async function loadFerry(fetchImpl: typeof fetch, retrievedAt: string, today: st
   }
 }
 
-async function loadFlight(fetchImpl: typeof fetch, retrievedAt: string): Promise<Envelope<{ status: string; sourceUrls: string[] }>> {
+async function loadFlight(fetchImpl: typeof fetch, retrievedAt: string): Promise<Envelope<{ status: string; sourceUrls: { id: string; url: string }[] }>> {
   try {
     const payload = asRecord(await (await fetchImpl(`${portal}/api/schedules/flights`)).json());
     const urls = asRecord(payload.sourceUrls);
-    const sourceUrls = Object.values(urls).filter((item): item is string => typeof item === "string");
+    const sourceUrls = Object.entries(urls).flatMap(([id, url]) => (typeof url === "string" ? [{ id, url }] : []));
     const routes = asRecord(payload.routes);
     const hasRows = Object.values(routes).some((rows) => Array.isArray(rows) && rows.length > 0);
     return {

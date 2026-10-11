@@ -1,15 +1,18 @@
+import { t } from "./i18n.ts";
+import type { Locale } from "./locale.ts";
+
 const internalLine = /^\s*(?:[-*•]\s*)?(?:dataset\s+(?:usado|utilizado|used)|fonte\s+t[eé]cnica|technical\s+source)\s*:/i;
 
 function plain(value: string): string {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
-export function publicChatGreeting(question: string): string | null {
+export function publicChatGreeting(question: string, locale: Locale = "pt"): string | null {
   const normalized = plain(question.trim()).replace(/[!?.,]+$/g, "").trim();
-  if (/^(?:oi|ola|hello|hi|hey|bom dia|boa tarde|boa noite)$/.test(normalized))
-    return "Olá! Pode perguntar sobre praias e lugares, empresas, turismo ou orçamento municipal do Maio. O que gostaria de saber?";
+  if (/^(?:oi|ola|hello|hi|hey|bonjour|salut|bom dia|boa tarde|boa noite)$/.test(normalized))
+    return t("chat.greeting", undefined, locale);
   if (/^(?:que dados (?:posso consultar|estao disponiveis|tens|temos)(?: aqui)?|o que (?:posso perguntar|podes responder|sabes fazer|sabes sobre o maio)|em que (?:podes|consegues) ajudar(?:-me)?|que temas (?:posso consultar|cobres))(?: no maio)?$/.test(normalized))
-    return "Pode explorar praias e património, turismo, empresas, população, orçamento municipal e energia do Maio. Para cada resposta, confirme o período e a fonte; alguns temas ainda não têm dados publicados.";
+    return t("chat.capabilities", undefined, locale);
   return null;
 }
 
