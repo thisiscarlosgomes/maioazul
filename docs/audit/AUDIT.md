@@ -4,6 +4,8 @@ Date: 11 October 2026. Repo: `thisiscarlosgomes/maioazul`. Commit reviewed: `ba6
 
 The public site is the Next.js app at the repo root (`package.json` name `my-app`, Next `16.1.1`, React `19.2.3`). `apps/maio-dashboard` is a second copy of that app. `apps/guide` and `apps/beach-volley-camp` carry further copies of the same Mongo client. `apps/maio-api` is a separate open-data API with a real test suite. `apps/stargazing` and `apps/maiocv` are smaller Next apps.
 
+**Revoke a committed key before the code fixes.** `scripts/tacv_aviationstack.sh` line 4 sets `AVIATIONSTACK_KEY` to a string literal. The live flight route does not read that script. `docs/mcp-0.4.md` says unverified Aviationstack cache files are no longer consumed. The value is already in git history, so deleting the line is not enough. Revoke it in the Aviationstack account, then delete the script or read the key from the environment. Do not paste the old value into a commit or into chat.
+
 ## Do these first
 
 ### 1. Stop throwing when Mongo is missing
@@ -124,7 +126,7 @@ diff -rq scripts apps/maio-dashboard/scripts  # no differences
 diff -rq data apps/maio-dashboard/data        # no differences
 ```
 
-Root `app/page.tsx` renders `HomeClient`. `apps/maio-dashboard/app/page.tsx` redirects to `/dashboard`. Both trees are 157 TypeScript files. `apps/guide` is a third large app with its own `lib/mongodb.ts` and many of the same API routes. It is not byte-identical.
+Root `app/page.tsx` renders `HomeClient`. `apps/maio-dashboard/app/page.tsx` redirects to `/dashboard`. `lib/`, `data/`, `public/`, `scripts/`, and `tests/` match byte for byte. `components/HomeClient.tsx` differs by whitespace. Project metadata does not match. Dashboard `next.config.ts` traces `./data`, `./public/data`, and `./public/docs` into the serverless bundle and points Turbopack at the repo root when `node_modules/next` exists there. Root `next.config.ts` only sets `turbopack.root` to `process.cwd()`. Dashboard `package.json` adds `typecheck`, pins port 3006, and sets `engines.node`. `apps/maio-dashboard/README.md` says changes to the original app do not sync. `apps/guide` is a third large app with its own `lib/mongodb.ts` and many of the same API routes. It is not byte-identical.
 
 **Fix.**
 
@@ -179,6 +181,9 @@ Each of these is a single Codex prompt. Do them after item 1 if they touch Mongo
 8. Add `package.json` script `"test": "node --test tests/tourism-baseline.test.mjs"`.
 9. Add `.env.example` with empty values for `MONGODB_URI`, `MONGODB_DB`, `ADMIN_PASSWORD`, `ADMIN_SESSION_SECRET`, `OPENAI_API_KEY`, `OPENAI_MODEL`, `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `BLOG_CRON_SECRET`, `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`. Do not commit real values. `.gitignore` already ignores `.env*`.
 10. Replace the create-next-app body of `README.md` with the real start command, the env file, and which app is the public site. Keep the admin note, and say the session secret is required.
+11. Revoke the Aviationstack key in `scripts/tacv_aviationstack.sh` and delete the literal. See the note under the title.
+12. In `app/api/blog/route.ts` and `app/api/blog/[slug]/route.ts`, return only `published` posts unless the admin cookie is valid.
+13. Remove the `POST /api/partners` call or add the route. Remove `https://wa.me/XXXXXXXX` from `app/x/[slug]/page.tsx`.
 
 ## Architecture
 
@@ -357,6 +362,24 @@ Not run, and why:
 - `pnpm install --frozen-lockfile` was not run. The lockfile's importer list has no workspaces, so a frozen pnpm install is not a credible clean path either.
 - GitHub Actions does not exist, so there was no CI run to inspect.
 - Lighthouse was one run on the dev server. Boat and weather timings were not profiled with a CPU profiler, so no production speedup or regression is claimed.
+
+## Second pass
+
+These items were checked against the files after the first write-up. They do not replace the five items above.
+
+**One database name.** Seeds and some routes do not use the same Mongo database. `scripts/upsert-maio-energy-core.mjs` line 41 defaults `MONGODB_DB` to `maioazul` and line 124 calls `client.db(MONGODB_DB)`. `app/api/transparencia/municipal/maio/energia/route.ts` line 123 calls `client.db()` with no name, which is the database in the URI path, or `test` when the URI has none. Tourism routes and the tourism upserts both use `client.db()`, so they stay aligned with each other. Energy, transport, places, and blog do not. Put one `getDb()` next to `getMongoClient()` from item 1 and use it in every route and seed. Also drop a cached connection promise when `connect()` rejects. `lib/mongodb.ts` lines 18 to 31 keep that promise on `global` in development, so one failed boot stays failed until the process restarts.
+
+**Missing numbers are stored as zero.** `app/api/transparencia/turismo/overview/route.ts` lines 135 to 137 set `occupancy_rate` from `occupancyMap[island] ?? 0`. A missing rate becomes `0.0` on a 200 response. The same pattern shows up for municipal pressure when population is missing, and `app/api/eleicoes/resultados-maio/route.ts` can return a zero-filled body with HTTP 200 when the snapshot is missing. Item 2 stops the client from hiding a 500. It does not stop a 200 that means "we invented a zero." Return `null` and a `missing` flag. Keep `0` only when the source document says zero.
+
+**Draft posts are on the public API.** `app/api/blog/route.ts` lines 18 to 30 accept `?status=draft`, `approved`, and `all` with no admin check. `lib/blog/repository.ts` lines 119 to 125 load any slug, and `app/api/blog/[slug]/route.ts` returns that document. The HTML page at `app/blog/[slug]/page.tsx` lines 85 to 87 calls `notFound()` when status is not `published`, but `generateMetadata` lines 39 to 44 still emit the draft title and summary. Filter both API handlers to `published` unless `isAdminAuthenticatedRequest` is true.
+
+**Broken forms and links.** `app/partners/page.tsx` line 170 POSTs `/api/partners`. There is no `app/api/partners/route.ts`. The camp app has that route. The root form cannot submit. `app/directory/page.tsx` links to `/experiences/[slug]`. That route does not exist. The placeholder experience page is `app/x/[slug]/page.tsx`, and it links to `https://wa.me/XXXXXXXX`. Point the directory at a real page or remove the links. Remove the fake WhatsApp number.
+
+**First paint is empty.** `app/theme-provider.tsx` returns `null` until a `useEffect` reads `localStorage`. `LayoutShell` and the page sit under that provider, so the server HTML does not include them. Render the children on the server and apply the theme in the effect without unmounting the tree.
+
+**The MCP test command in the docs does not match the root package.** `docs/mcp-0.4.md` line 16 says `tsx --test tests/mcp-updates.test.ts`. `tsx` is not a root dependency. The same doc says `tsc --noEmit` and `npm run build` passed. This audit's `npx next build`, with no `MONGODB_URI`, failed while collecting `/api/places/[id]`.
+
+**Gitlinks with no submodule config.** `apps/offroad-maio`, `datagouv-mcp-inspect`, `mcp-ts-sdk-inspect`, and `mcp-ts-sdk-inspect2` are gitlinks (mode 160000). There is no `.gitmodules`. The working trees are empty. Delete the gitlinks or add the submodule URLs. Do not treat the empty folders as apps.
 
 ## How this audit was done
 
