@@ -2517,3 +2517,15 @@ h2,
   .lang-switch-menu { display: block; }
   .maio-header > .maio-button { display: none; }
 }
+.essentials, .search-page { padding-top: var(--space-48); padding-bottom: var(--space-88); max-width: 760px; }
+.essentials h1, .search-page h1 { font-size: var(--fs-title); line-height: 1.1; margin-bottom: var(--space-32); }
+.essentials h2 { font-size: 28px; line-height: 1.2; margin: var(--space-48) 0 var(--space-12); }
+.essentials h3 { font-size: 20px; font-weight: 500; margin: var(--space-24) 0 var(--space-8); }
+.essentials p, .essentials li, .search-page li p { max-width: 62ch; line-height: 1.55; }
+.essentials p + p { margin-top: var(--space-8); }
+.essentials ul:not(.emergency-list), .search-page ul { padding-left: 1.1em; margin: var(--space-12) 0; }
+.search-page form { display: flex; gap: 12px; align-items: center; margin-bottom: var(--space-24); }
+.search-page input { width: 100%; min-width: 0; min-height: 52px; padding: 0 20px; border: 2px solid var(--ink); border-radius: var(--radius-pill); background: #fff; font-size: 17px; }
+.search-page form input { flex: 1; }
+.search-page li { padding: var(--space-16) 0; border-bottom: 1px solid var(--line); list-style: none; }
+.search-page .search-source { font-size: 13px; color: var(--maio-muted); }

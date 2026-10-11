@@ -66,10 +66,11 @@ export function essentialsPath(locale: Locale): string {
 }
 
 export function switchPath(locale: Locale, pathname: string): string {
-  const bare = stripLocale(pathname.split("?")[0] ?? "/").replace(/^\//, "");
+  const [path, query] = (pathname || "/").split("?");
+  const bare = stripLocale(path || "/").replace(/^\//, "");
   const slugs = Object.values(essentialsSlug);
-  if (slugs.includes(bare)) return essentialsPath(locale);
-  return localize(locale, pathname);
+  const next = slugs.includes(bare) ? essentialsPath(locale) : localize(locale, path || "/");
+  return query ? `${next}?${query}` : next;
 }
 
 export function localize(locale: Locale, pathname: string): string {

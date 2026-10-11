@@ -14,7 +14,8 @@ export function LangSwitch({ locale, path }: { locale: Locale; path: string }) {
   const menu = useRef<HTMLDetailsElement>(null);
   const [extra, setExtra] = useState("");
   useEffect(() => {
-    setExtra(window.location.search + window.location.hash);
+    const search = path.includes("?") ? "" : window.location.search;
+    setExtra(search + window.location.hash);
   }, [path]);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
