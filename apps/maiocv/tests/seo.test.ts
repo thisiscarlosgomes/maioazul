@@ -2,23 +2,22 @@ import { strict as assert } from "node:assert";
 import { test } from "node:test";
 import { htmlLang, languageAlternates, pageMetadata, publicRoutes, sitemapEntries } from "../lib/seo.ts";
 
-test("each public route declares Portuguese hreflang and x-default", () => {
+test("each public page has Portuguese, English, and French alternates", () => {
   assert.equal(htmlLang, "pt");
-  assert.deepEqual(publicRoutes.map((route) => route.path), ["/", "/mcp", "/chat"]);
-  for (const route of publicRoutes) {
-    const languages = languageAlternates(route.path, route.lang);
-    assert.equal(languages["pt-PT"], `https://www.maio.cv${route.path === "/" ? "/" : route.path}`);
-    assert.equal(languages["x-default"], languages["pt-PT"]);
-    assert.equal("en-GB" in languages, false);
-    assert.equal("fr-FR" in languages, false);
-    const meta = pageMetadata("title", "summary", route.path, route.lang);
-    assert.deepEqual(meta.alternates?.languages, languages);
-  }
-  const entries = sitemapEntries();
-  assert.deepEqual(entries.map((entry) => entry.url), [
-    "https://www.maio.cv/",
-    "https://www.maio.cv/mcp",
-    "https://www.maio.cv/chat",
+  assert.deepEqual(publicRoutes.map((route) => route.path), [
+    "/pt", "/pt/mcp", "/pt/chat",
+    "/en", "/en/mcp", "/en/chat",
+    "/fr", "/fr/mcp", "/fr/chat",
   ]);
-  assert.equal(entries[2]?.alternates?.languages?.["pt-PT"], "https://www.maio.cv/chat");
+  const languages = languageAlternates("/chat");
+  assert.equal(languages["pt-PT"], "https://www.maio.cv/pt/chat");
+  assert.equal(languages["en-GB"], "https://www.maio.cv/en/chat");
+  assert.equal(languages["fr-FR"], "https://www.maio.cv/fr/chat");
+  assert.equal(languages["x-default"], "https://www.maio.cv/pt/chat");
+  const meta = pageMetadata("title", "summary", "/en/chat", "en");
+  assert.equal(meta.openGraph && "locale" in meta.openGraph ? meta.openGraph.locale : "", "en_GB");
+  const entries = sitemapEntries();
+  assert.equal(entries.length, 9);
+  assert.equal(entries[0]?.url, "https://www.maio.cv/pt");
+  assert.equal(entries[8]?.url, "https://www.maio.cv/fr/chat");
 });

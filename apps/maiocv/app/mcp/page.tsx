@@ -1,21 +1,29 @@
 import { Button, Section, SkipLink } from "maio-ui";
 import { HeadlineIcon } from "../../components/headline-icon";
 import { pageMetadata } from "../../lib/seo";
-import { Header, Footer } from "../../components/site-shell";
+import { Header, Footer, Untranslated } from "../../components/site-shell";
 import { Reveal } from "../../components/motion";
 import { McpDemo } from "../../components/mcp-demo";
 import { t } from "../../lib/i18n";
-export const metadata = pageMetadata(
-  "Maio no ChatGPT — IA para explorar Cabo Verde | MaioCV",
-  "Pergunte sobre praias, turismo e economia do Maio, Cabo Verde. Conheça as ferramentas de IA e a ligação MCP aos dados da ilha, com respostas curtas e fontes.",
-  "/mcp",
-);
-export default function McpPage() {
+import { localize } from "../../lib/locale";
+import { currentLocale } from "../../lib/request-locale";
+export async function generateMetadata() {
+  const locale = await currentLocale();
+  return pageMetadata(
+    t("meta.title.about", undefined, locale),
+    t("meta.description.about", undefined, locale),
+    localize(locale, "/mcp"),
+    locale,
+  );
+}
+export default async function McpPage() {
+  const locale = await currentLocale();
   return (
     <>
-      <SkipLink href="#conteudo">{t("skip.content")}</SkipLink>
+      <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
       <Header active="mcp" />
-      <main id="conteudo">
+      <main id="conteudo" lang={locale === "pt" ? undefined : "pt"}>
+        <Untranslated />
         <Section className="mcp-hero wrap">
           <Reveal>
             <h1 className="context-headline">
@@ -146,7 +154,7 @@ export default function McpPage() {
                 ],
                 [
                   "Como começo?",
-                  t("faq.start", { cta: t("cta.ask") }),
+                  t("faq.start", { cta: t("cta.ask", undefined, locale) }, locale),
                 ],
                 [
                   "A informação está sempre atualizada?",
@@ -170,7 +178,7 @@ export default function McpPage() {
               O que quer saber <br />
               sobre o Maio?
             </h2>
-            <Button href="/chat">Conversar sobre o Maio</Button>
+            <Button href={localize(locale, "/chat")}>Conversar sobre o Maio</Button>
           </Reveal>
         </Section>
       </main>
