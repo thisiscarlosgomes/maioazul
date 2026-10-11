@@ -52,6 +52,15 @@ export const essentialsSlug: Record<Locale, string> = {
   fr: "essentiels",
 };
 
+export const routeAlias: Record<string, "essentials" | "search"> = {
+  visitar: "essentials",
+  visit: "essentials",
+  visiter: "essentials",
+  pesquisar: "search",
+  pesquisa: "search",
+  recherche: "search",
+};
+
 export function essentialsPath(locale: Locale): string {
   return `/${locale}/${essentialsSlug[locale]}`;
 }
