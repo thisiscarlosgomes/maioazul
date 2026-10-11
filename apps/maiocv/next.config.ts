@@ -14,6 +14,7 @@ const config: NextConfig = {
     ];
   },
   images: { unoptimized: true },
+  transpilePackages: ["maio-ui"],
   turbopack: {
     root: existsSync(path.join(repoRoot, "package.json")) ? repoRoot : appRoot,
   },

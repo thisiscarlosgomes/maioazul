@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { Button } from "maio-ui";
 import { CHATGPT_URL } from "../lib/content";
 import { publicChatAnswer } from "../lib/chat-answer";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -324,12 +324,10 @@ export function McpDemo() {
         </AnimatePresence>
       </div>
       <div className="button-row demo-chat-actions">
-        <a className="button button-light" href={CHATGPT_URL}>
+        <Button href={CHATGPT_URL} variant="light">
           Abrir no ChatGPT
-        </a>
-        <Link className="button" href="/chat">
-          Conversar aqui
-        </Link>
+        </Button>
+        <Button href="/chat">Conversar aqui</Button>
       </div>
     </div>
   );

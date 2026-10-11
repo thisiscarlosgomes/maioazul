@@ -9,6 +9,8 @@
     "vercel:prepare": "node scripts/prepare-vercel.mjs"
   },
   "dependencies": {
+    "maio-tokens": "file:../../packages/maio-tokens",
+    "maio-ui": "file:../../packages/maio-ui",
     "@openuidev/react-lang": "^0.3.1",
     "framer-motion": "^12.34.3",
     "next": "16.1.1",

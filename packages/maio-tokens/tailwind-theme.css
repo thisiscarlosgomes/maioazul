@@ -1,0 +1,17 @@
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-maio-ink: var(--maio-ink);
+  --color-maio-muted: var(--maio-muted);
+  --color-maio-paper: var(--maio-paper);
+  --color-maio-line: var(--maio-line);
+  --color-maio-blue: var(--maio-blue);
+  --color-maio-lime: var(--maio-lime);
+  --color-maio-focus: var(--maio-focus);
+  --font-sans: var(--font-sans);
+  --radius-card: var(--radius-card);
+  --radius-pill: var(--radius-pill);
+}

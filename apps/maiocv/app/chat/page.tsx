@@ -1,3 +1,4 @@
+import { SkipLink } from "maio-ui";
 import { Chat } from "../../components/chat";
 import { Header, Footer } from "../../components/site-shell";
 import { t } from "../../lib/i18n";
@@ -12,9 +13,7 @@ export const metadata = pageMetadata(
 export default function ChatPage() {
   return (
     <>
-      <a className="skip-link" href="#conteudo">
-        {t("skip.content")}
-      </a>
+      <SkipLink href="#conteudo">{t("skip.content")}</SkipLink>
       <Header />
       <Chat />
       <Footer />

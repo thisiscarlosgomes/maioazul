@@ -1,0 +1,11 @@
+{
+  "name": "maio-tokens",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json",
+    "./tailwind-theme.css": "./tailwind-theme.css",
+    "./fonts.css": "./fonts.css"
+  }
+}

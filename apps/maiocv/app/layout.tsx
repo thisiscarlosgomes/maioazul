@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import "../../../packages/maio-ui/maio-ui.css";
 import { SITE_URL, description, htmlLang, pageMetadata, siteSchema } from "../lib/seo";
 const sans = localFont({
   src: [
-    { path: "../public/fonts/PPNeueMontreal-Regular.woff2", weight: "400", style: "normal" },
-    { path: "../public/fonts/PPNeueMontreal-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../../../packages/maio-tokens/fonts/PPNeueMontreal-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../../../packages/maio-tokens/fonts/PPNeueMontreal-Medium.woff2", weight: "500", style: "normal" },
   ],
-  variable: "--font-sans",
+  variable: "--font-pp",
   display: "swap",
 });
 export const metadata: Metadata = {

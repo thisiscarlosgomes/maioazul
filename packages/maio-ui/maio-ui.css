@@ -1,0 +1,218 @@
+.maio-skip-link {
+  position: fixed;
+  top: -100px;
+  left: 20px;
+  z-index: 100;
+  background: var(--lime);
+  padding: 16px;
+}
+.maio-skip-link:focus {
+  top: 12px;
+}
+
+.maio-header {
+  height: var(--header-h);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 56px;
+  padding: 0 max(48px, calc((100vw - 1184px) / 2));
+  background: #fbfbf8ed;
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid #17181708;
+}
+.maio-header nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  font-size: 14px;
+}
+.maio-header nav a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.maio-header nav a:hover,
+.maio-header nav [aria-current] {
+  color: var(--blue);
+}
+.maio-header > .maio-button {
+  margin-left: auto;
+}
+
+.maio-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: var(--ink);
+  color: white;
+  border: 1px solid transparent;
+  padding: 16px 23px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  line-height: 1.3;
+  transition: background var(--dur-fast);
+}
+.maio-button:hover {
+  background: var(--blue);
+}
+.maio-button-small {
+  padding: 12px 18px;
+  font-size: 13px;
+}
+.maio-button-light {
+  background: #eeefea;
+  color: var(--ink);
+}
+.maio-button-light:hover {
+  background: #e1e4da;
+}
+.maio-button-white {
+  background: white;
+  color: var(--ink);
+}
+.maio-button-white:hover {
+  background: var(--lime);
+}
+
+.maio-card {
+  display: block;
+  height: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: #fff;
+}
+
+.maio-eyebrow {
+  display: block;
+  margin: 0 0 20px;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  line-height: 1.5;
+}
+
+.maio-chip {
+  display: inline-flex;
+  gap: 7px;
+  font-size: var(--fs-label);
+  line-height: 1.5;
+  color: var(--maio-chip-fg);
+  background: var(--maio-chip-bg);
+  border-radius: var(--radius-chip);
+  padding: 6px 9px;
+}
+.maio-chip-estimate {
+  padding: 5px 8px;
+  border-radius: 20px;
+  background: var(--maio-estimate-bg);
+  color: var(--maio-estimate-fg);
+}
+
+.maio-footer {
+  background: #f5f6f3;
+  color: var(--ink);
+  padding: 90px 32px 40px;
+  text-align: center;
+  overflow: hidden;
+}
+.maio-footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.maio-footer-links a {
+  font-size: var(--page-title-size);
+  line-height: 1.12;
+  letter-spacing: var(--tracking-display);
+  font-weight: 400;
+}
+.maio-footer-links a:hover {
+  color: #65785a;
+}
+.maio-footer-wordmark {
+  font-size: clamp(80px, 23vw, 330px);
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  margin: 52px 0 40px;
+}
+.maio-footer-meta {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #687061;
+}
+.maio-footer-credit {
+  margin: 40px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+}
+.maio-footer-credit a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 1050px) {
+  .maio-header {
+    padding: 0 32px;
+    gap: 32px;
+  }
+  .maio-header nav {
+    gap: 20px;
+  }
+  .maio-footer {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (max-width: 700px) {
+  .maio-header {
+    padding: 0 22px;
+    gap: 20px;
+    justify-content: space-between;
+  }
+  .maio-header nav {
+    gap: 17px;
+    font-size: 16px;
+  }
+  .maio-header [data-compact="hide"],
+  .maio-header > .maio-button {
+    display: none;
+  }
+  .maio-button {
+    font-size: 12px;
+    padding: 14px 18px;
+    gap: 12px;
+  }
+  .maio-eyebrow {
+    letter-spacing: 1.2px;
+    margin-bottom: 16px;
+  }
+  .maio-footer {
+    padding: 64px 20px 30px;
+  }
+  .maio-footer-wordmark {
+    font-size: 23vw;
+    margin: 36px 0;
+  }
+  .maio-footer-meta {
+    margin-top: 38px;
+    margin-bottom: 25px;
+    flex-direction: column;
+    align-items: center;
+    font-size: 16px;
+    line-height: 1.5;
+    gap: 12px;
+  }
+}
