@@ -46,6 +46,23 @@ export function stripLocale(pathname: string): string {
   return rest === "" ? "/" : rest;
 }
 
+export const essentialsSlug: Record<Locale, string> = {
+  pt: "essenciais",
+  en: "essentials",
+  fr: "essentiels",
+};
+
+export function essentialsPath(locale: Locale): string {
+  return `/${locale}/${essentialsSlug[locale]}`;
+}
+
+export function switchPath(locale: Locale, pathname: string): string {
+  const bare = stripLocale(pathname.split("?")[0] ?? "/").replace(/^\//, "");
+  const slugs = Object.values(essentialsSlug);
+  if (slugs.includes(bare)) return essentialsPath(locale);
+  return localize(locale, pathname);
+}
+
 export function localize(locale: Locale, pathname: string): string {
   const bare = stripLocale(pathname.split("?")[0] ?? "/");
   if (bare === "/") return `/${locale}`;

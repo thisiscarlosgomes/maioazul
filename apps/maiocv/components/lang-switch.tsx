@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { t } from "../lib/i18n";
-import { LOCALES, localize, type Locale } from "../lib/locale";
+import { LOCALES, switchPath, type Locale } from "../lib/locale";
 
 const ownName: Record<Locale, "lang.pt" | "lang.en" | "lang.fr"> = {
   pt: "lang.pt",
@@ -18,7 +18,7 @@ export function LangSwitch({ locale, path }: { locale: Locale; path: string }) {
 
   const links = LOCALES.map((code) => ({
     code,
-    href: `${localize(code, path)}${extra}`,
+    href: `${switchPath(code, path)}${extra}`,
     label: t(ownName[code], undefined, code),
   }));
 

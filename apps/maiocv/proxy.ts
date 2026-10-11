@@ -28,7 +28,9 @@ export function proxy(request: NextRequest) {
   } else {
     destination.pathname = localize("pt", pathname);
   }
-  return NextResponse.redirect(destination, 308);
+  const response = NextResponse.redirect(destination, 307);
+  response.headers.set("Vary", "Accept-Language, Cookie");
+  return response;
 }
 
 export const config = {
