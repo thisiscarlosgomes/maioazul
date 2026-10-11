@@ -25,7 +25,7 @@ const markDbUnavailable = () => {
   dbUnavailableUntil = Date.now() + DB_BACKOFF_MS;
 };
 
-async function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+async function withTimeout<T>(promise: PromiseLike<T>, ms: number): Promise<T> {
   return Promise.race([
     promise,
     new Promise<never>((_, reject) =>
