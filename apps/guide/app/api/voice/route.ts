@@ -16,12 +16,9 @@ const getCachePath = async (key: string) => {
 
 export async function POST(req: Request) {
   try {
-    const apiKey = process.env.ELEVENLABS_API_KEY;
+    const apiKey = process.env.ELEVENLABS_API_KEY?.trim();
     if (!apiKey) {
-      return NextResponse.json(
-        { error: "Missing ELEVENLABS_API_KEY" },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Voice is not configured" }, { status: 403 });
     }
 
     const body = await req.json().catch(() => ({}));

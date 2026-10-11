@@ -338,11 +338,8 @@ async function requestFinalAnswer(
 }
 
 export async function POST(request: Request) {
-  if (!process.env.OPENAI_API_KEY) {
-    return NextResponse.json(
-      { error: "Missing OPENAI_API_KEY" },
-      { status: 500 },
-    );
+  if (!process.env.OPENAI_API_KEY?.trim()) {
+    return NextResponse.json({ error: "Chat is not configured" }, { status: 403 });
   }
 
   try {

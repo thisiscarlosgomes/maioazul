@@ -302,7 +302,10 @@ async function initializeRateLimitCollection() {
 
 async function getRateLimitCollection() {
   if (!rateLimitCollectionPromise) {
-    rateLimitCollectionPromise = initializeRateLimitCollection();
+    rateLimitCollectionPromise = initializeRateLimitCollection().catch((error: unknown) => {
+      rateLimitCollectionPromise = null;
+      throw error;
+    });
   }
 
   return rateLimitCollectionPromise;
@@ -1058,16 +1061,24 @@ async function trackChatUsage(params: {
 }
 
 async function consumeChatQueryQuota(request: Request) {
-  const collection = await getRateLimitCollection();
+  let collection: Awaited<ReturnType<typeof getRateLimitCollection>>;
+  try {
+    collection = await getRateLimitCollection();
+  } catch (error) {
+    console.error("[chat-quota] rate limit lookup failed", error);
+    return { allowed: false as const, remaining: 0, resetAt: null };
+  }
   if (!collection) {
-    return { allowed: true as const, remaining: null };
+    return { allowed: false as const, remaining: 0, resetAt: null };
   }
 
   const now = new Date();
   const cutoff = new Date(now.getTime() - CHAT_QUERY_WINDOW_MS);
   const key = getClientRateLimitKey(request);
 
-  const result = await collection.findOneAndUpdate(
+  let result: Awaited<ReturnType<typeof collection.findOneAndUpdate>>;
+  try {
+    result = await collection.findOneAndUpdate(
     { _id: key },
     [
       {
@@ -1125,17 +1136,18 @@ async function consumeChatQueryQuota(request: Request) {
     remaining,
     resetAt,
   };
+  } catch (error) {
+    console.error("[chat-quota] rate limit lookup failed", error);
+    return { allowed: false as const, remaining: 0, resetAt: null };
+  }
 }
 
 export async function POST(request: Request) {
   const apiKey = process.env.OPENAI_API_KEY;
   let requestContext: ChatContext | null = null;
 
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: "Missing OPENAI_API_KEY" },
-      { status: 500 },
-    );
+  if (!apiKey?.trim()) {
+    return NextResponse.json({ error: "Chat is not configured" }, { status: 403 });
   }
 
   try {

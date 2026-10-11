@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { generateBlogDraftsFromInstruction, generateMetricBlogDrafts } from "@/lib/blog/generate";
 import { isAdminAuthenticatedRequest } from "@/lib/admin-auth";
@@ -11,10 +12,13 @@ function parseNumber(value: string | null, fallback: number) {
 }
 
 function isAuthorized(request: Request) {
-  const secret = process.env.BLOG_CRON_SECRET;
-  if (!secret) return true;
-  const header = request.headers.get("x-blog-secret");
-  return header === secret;
+  const secret = process.env.BLOG_CRON_SECRET?.trim() ?? "";
+  if (!secret) return false;
+  const header = request.headers.get("x-blog-secret") ?? "";
+  const secretBytes = Buffer.from(secret);
+  const headerBytes = Buffer.from(header);
+  if (secretBytes.length !== headerBytes.length) return false;
+  return timingSafeEqual(secretBytes, headerBytes);
 }
 
 export async function POST(request: Request) {
