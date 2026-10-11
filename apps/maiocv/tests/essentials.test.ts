@@ -19,6 +19,12 @@ test("a ferry label shows the kind, the retrieved time, and the caveats", () => 
   assert.deepEqual(source.caveats, ["Only the published day is listed."]);
   assert.match(visibleCaveat("Only the explicitly selected source day is parsed. Date-picker options are not confirmed sailing dates.", "fr"), /Seul le jour/);
   assert.doesNotMatch(visibleCaveat("Only the explicitly selected source day is parsed. Date-picker options are not confirmed sailing dates.", "pt"), /Only the explicitly/);
+  assert.doesNotMatch(visibleCaveat("updated_at is null because operator publication time is unknown; retrievedAt is fetch time.", "pt"), /updated_at|retrievedAt/);
+  assert.doesNotMatch(visibleCaveat("updated_at is null because operator publication time is unknown; retrievedAt is fetch time.", "fr"), /updated_at|retrievedAt/);
+  assert.doesNotMatch(visibleCaveat("Unverified local cache files are not used. updated_at is null: publication time is unknown.", "fr"), /updated_at|retrievedAt/);
+  assert.equal(visibleCaveat("Only the published day is listed.", "pt"), "A nota da fonte não pôde ser mostrada. Confirme o horário com o operador.");
+  assert.equal(visibleCaveat("Only the published day is listed.", "fr"), "La note de la source n'a pas pu être affichée. Confirmez l'horaire auprès de l'opérateur.");
+  assert.doesNotMatch(visibleCaveat("Only the published day is listed.", "en"), /Only the published day/);
   assert.notEqual(flightRouteLabel("rai_mmo", "en"), flightRouteLabel("mmo_rai", "en"));
   assert.equal(verifiedDate("2026-10-11", "en"), "11 October 2026");
 });

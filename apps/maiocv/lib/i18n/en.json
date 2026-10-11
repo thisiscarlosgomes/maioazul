@@ -204,6 +204,7 @@
   "ess.caveat.flight.third": "Third-party published timetable, not live operations or airline confirmation.",
   "ess.caveat.flight.rows": "Only explicit weekday rows whose published validity includes today are returned. Expired, future-only, and undated rows are excluded. No current records does not mean no flights.",
   "ess.caveat.flight.cache": "Unverified local cache files are not used. updated_at is null: the publication time is unknown.",
+  "ess.caveat.generic": "The source note could not be shown. Confirm the timetable with the operator.",
   "mcp.h1.one": "One",
   "mcp.h1.question": "question.",
   "mcp.h1.island": "An island",

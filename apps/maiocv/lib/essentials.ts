@@ -50,8 +50,7 @@ const caveatKeys: Record<string, MessageKey> = {
 };
 
 export function visibleCaveat(text: string, locale: Locale): string {
-  const key = caveatKeys[text];
-  return key ? t(key, undefined, locale) : text;
+  return t(caveatKeys[text] ?? "ess.caveat.generic", undefined, locale);
 }
 
 const verifiedIntl: Record<Locale, string> = { pt: "pt-PT", en: "en-GB", fr: "fr-FR" };
