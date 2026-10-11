@@ -125,8 +125,6 @@
   "ess.pay.suggest": "Sugerir um local",
   "chat.noSource": "Sem fonte",
   "chat.example": "Resposta de exemplo",
-  "chat.human": "Falar com uma pessoa",
-  "chat.emergency": "Em caso de emergência ligue:",
   "search.placeholder": "Pesquisar no Maio: praias, trilhos, lugares…",
   "search.results": "{n} resultados para «{q}»",
   "search.none": "Nada encontrado para «{q}». Tente outra palavra.",
