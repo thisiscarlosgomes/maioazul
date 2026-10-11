@@ -1,9 +1,18 @@
 export type Citation = { name: string; href?: string; kind?: string };
 
-export function citationsFrom(payload: unknown): Citation[] {
-  if (!payload || typeof payload !== "object") return [];
+export function declaredCitations(payload: unknown): Citation[] | null {
+  if (!payload || typeof payload !== "object") return null;
+  if (!Object.prototype.hasOwnProperty.call(payload, "citations")) return null;
   const raw = (payload as { citations?: unknown }).citations;
-  if (!Array.isArray(raw)) return [];
+  if (!Array.isArray(raw)) return null;
+  return citationsFromList(raw);
+}
+
+export function citationsFrom(payload: unknown): Citation[] {
+  return declaredCitations(payload) ?? [];
+}
+
+function citationsFromList(raw: unknown[]): Citation[] {
   return raw.flatMap((item) => {
     if (!item || typeof item !== "object") return [];
     const record = item as { name?: unknown; href?: unknown; kind?: unknown };
@@ -17,5 +26,6 @@ export function citationsFrom(payload: unknown): Citation[] {
 }
 
 export function isUncited(payload: unknown): boolean {
-  return citationsFrom(payload).length === 0;
+  const declared = declaredCitations(payload);
+  return declared !== null && declared.length === 0;
 }

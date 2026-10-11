@@ -7,7 +7,7 @@ import { BUSINESS_DATA_URL, businessMetricProgram } from "../lib/business-visual
 import { PLACE_COLLECTIONS, placeDataUrl, placeVisualProgram } from "../lib/place-visual";
 import { publicChatAnswer, publicChatGreeting } from "../lib/chat-answer";
 import { isPopulationTotalQuestion, populationAnswer, POPULATION_DATA_URL } from "../lib/population-answer";
-import { citationsFrom, type Citation } from "../lib/chat-citations";
+import { declaredCitations, type Citation } from "../lib/chat-citations";
 import { ContactSlot } from "./contact-slot";
 import { t, type MessageKey } from "../lib/i18n";
 import type { Locale } from "../lib/locale";
@@ -158,13 +158,13 @@ export function Chat({ locale = "pt", contactUrl = "https://instagram.com/maio__
         }
       }
       if (active.current === controller) {
-        const citations = citationsFrom(data);
+        const declared = declaredCitations(data);
         setMessages([...conversation, {
           role: "assistant",
           content: publicAnswer,
           visual,
-          citations,
-          uncited: citations.length === 0,
+          citations: declared ?? undefined,
+          uncited: declared !== null && declared.length === 0,
           example: data.prepared === true,
         }]);
       }
