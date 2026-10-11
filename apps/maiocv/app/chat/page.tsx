@@ -21,7 +21,7 @@ export default async function ChatPage() {
   return (
     <>
       <SkipLink href="#conteudo">{t("skip.content", undefined, locale)}</SkipLink>
-      <Header />
+      <Header active="chat" />
       <Chat locale={locale} />
       <Footer />
     </>
