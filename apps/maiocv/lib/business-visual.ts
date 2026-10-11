@@ -1,3 +1,6 @@
+import type { Locale } from "./locale";
+import { t } from "./i18n.ts";
+
 type BusinessRecord = {
   year?: number;
   indicator?: string;
@@ -9,7 +12,7 @@ type BusinessRecord = {
 export const BUSINESS_DATA_URL =
   "https://api.maio.cv/api/v1/datasets/business-demography/records?limit=100&offset=0";
 
-export function businessMetricProgram(payload: unknown): string | null {
+export function businessMetricProgram(payload: unknown, locale: Locale = "pt"): string | null {
   if (!payload || typeof payload !== "object") return null;
   const data = payload as { records?: unknown; numberMatched?: unknown };
   if (!Array.isArray(data.records) || data.numberMatched !== data.records.length) return null;
@@ -30,11 +33,11 @@ export function businessMetricProgram(payload: unknown): string | null {
   if (!latest) return null;
 
   const fields = [
-    "Empresas ativas no Maio",
+    t("openui.business.active", undefined, locale),
     String(Math.round(latest.value!)),
     String(latest.year),
-    "Inquérito Anual às Empresas · INE Cabo Verde",
-    "Estimativa de inquérito; valor arredondado.",
+    t("openui.business.source", undefined, locale),
+    t("openui.business.caveat", undefined, locale),
   ];
   return `root = BusinessMetric(${fields.map(value => JSON.stringify(value)).join(", ")})`;
 }

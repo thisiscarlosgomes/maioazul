@@ -128,7 +128,7 @@ export function McpDemo({ locale = "pt" }: { locale?: Locale }) {
       }
       if (typeof data.message !== "string" || !data.message.trim())
         throw new Error(copy("chat.error.empty"));
-      const publicAnswer = publicChatAnswer(data.message, question.trim());
+      const publicAnswer = publicChatAnswer(data.message, question.trim(), locale);
       if (!publicAnswer) throw new Error(copy("chat.error.empty"));
       if (pending.current === controller) {
         setReply(publicAnswer.replace(/\*\*/g, ""));
