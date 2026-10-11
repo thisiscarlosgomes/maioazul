@@ -5,7 +5,7 @@ import type { Locale } from "../lib/locale";
 export function PortalPreview({ locale = "pt" }: { locale?: Locale }) {
   const copy = (key: MessageKey) => t(key, undefined, locale);
   return (
-    <div className="portal-preview">
+    <div className="portal-preview" aria-hidden="true">
       <div className="preview-toolbar">
         <strong>
           maio<span>{copy("preview.portal.data")}</span>
@@ -29,7 +29,7 @@ export function PortalPreview({ locale = "pt" }: { locale?: Locale }) {
 }
 export function ApiPreview({ locale: _locale = "pt" }: { locale?: Locale }) {
   return (
-    <div className="api-preview">
+    <div className="api-preview" aria-hidden="true">
       <div className="preview-toolbar">
         <span>
           <i className="status-dot" /> Maio Open Data
@@ -70,7 +70,7 @@ export function VisitPreview({ locale = "pt" }: { locale?: Locale }) {
 export function McpPreview({ locale = "pt" }: { locale?: Locale }) {
   const copy = (key: MessageKey) => t(key, undefined, locale);
   return (
-    <div className="mcp-preview">
+    <div className="mcp-preview" aria-hidden="true">
       <div className="mini-chat-top">
         <strong>Maio × ChatGPT</strong>
         <span className="tiny-badge">MCP</span>
