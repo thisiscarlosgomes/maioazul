@@ -2417,7 +2417,7 @@ html[data-bandwidth="low"] .maio-slideshow {
 .lite-banner {
   margin: 0;
   padding: 12px 24px;
-  background: #f2f5ec;
+  background: var(--maio-surface-data);
   font-size: 14px;
 }
 @media (max-width: 700px) {
