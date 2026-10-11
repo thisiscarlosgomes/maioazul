@@ -1,0 +1,100 @@
+:root {
+  --maio-ink: #171817;
+  --maio-muted: #71736f;
+  --maio-paper: #fbfbf8;
+  --maio-line: #e6e7e1;
+  --maio-blue: #243fb8;
+  --maio-lime: #dff58a;
+  --maio-focus: #4969f2;
+  --maio-focus-on-blue: #dff58a;
+  --maio-surface-data: #f2f5ec;
+  --maio-border-data: #dce2d3;
+  --maio-text-data: #52614b;
+  --maio-chip-bg: #f1f5eb;
+  --maio-chip-fg: #637554;
+  --maio-estimate-bg: #e8eddf;
+  --maio-estimate-fg: #606f4d;
+  --maio-error: #9d4c36;
+
+  --ink: var(--maio-ink);
+  --muted: var(--maio-muted);
+  --paper: var(--maio-paper);
+  --line: var(--maio-line);
+  --blue: var(--maio-blue);
+  --lime: var(--maio-lime);
+  --background: var(--maio-paper);
+  --foreground: var(--maio-ink);
+  --primary: var(--maio-blue);
+  --muted-foreground: var(--maio-muted);
+  --border: var(--maio-line);
+
+  --font-sans: "PP Neue Montreal", "sans Fallback", system-ui, Arial, sans-serif;
+  --fs-display: clamp(48px, 6.8vw, 92px);
+  --fs-title: clamp(36px, 9.2vw, 64px);
+  --fs-lead: 19px;
+  --fs-body: 16px;
+  --fs-small: 14px;
+  --fs-label: 12px;
+  --tracking-display: -0.025em;
+  --tracking-body: 0.01em;
+  --tracking-label: 0.08em;
+  --page-title-size: var(--fs-title);
+
+  --container: 1280px;
+  --gutter: 22px;
+  --header-h: 78px;
+
+  --radius-chip: 5px;
+  --radius-card: 18px;
+  --radius-input: 40px;
+  --radius-pill: 100px;
+  --radius: var(--radius-card);
+
+  --elev-1: 0 5px 30px #17213c12;
+  --elev-2: 0 12px 35px #17181708;
+  --elev-3: 0 25px 50px #08155633;
+
+  --dur-fast: 0.2s;
+  --dur-base: 0.4s;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-88: 88px;
+  --space-120: 120px;
+
+  color-scheme: light;
+}
+
+@media (min-width: 701px) {
+  :root {
+    --fs-title: clamp(44px, 5.2vw, 72px);
+    --gutter: 32px;
+    --header-h: 92px;
+  }
+}
+
+@media (min-width: 1051px) {
+  :root {
+    --gutter: 48px;
+  }
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+[data-bandwidth="low"] {
+  --elev-1: none;
+  --elev-2: none;
+  --elev-3: none;
+  --dur-fast: 0s;
+  --font-sans: ui-sans-serif, system-ui, Arial, sans-serif;
+}

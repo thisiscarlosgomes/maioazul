@@ -1,14 +1,4 @@
-:root {
-  --ink: #171817;
-  --muted: #71736f;
-  --paper: #fbfbf8;
-  --background: var(--paper);
-  --line: #e6e7e1;
-  --blue: #243fb8;
-  --lime: #dff58a;
-  --maio-focus: #4969f2;
-  --maio-focus-on-blue: #dff58a;
-}
+@import "../../../packages/maio-tokens/tokens.css";
 * {
   box-sizing: border-box;
 }
@@ -20,7 +10,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-sans), Arial, sans-serif;
+  font-family: var(--font-pp, var(--font-sans)), Arial, sans-serif;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
 }
@@ -61,10 +51,10 @@ figure {
   color: var(--ink);
 }
 .wrap {
-  max-width: 1280px;
+  max-width: var(--container);
   margin: 0 auto;
-  padding-left: 48px;
-  padding-right: 48px;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
 }
 .skip-link {
   position: fixed;
@@ -1093,9 +1083,9 @@ h2 {
   gap: 7px;
   font-size: 9px;
   line-height: 1.5;
-  color: #637554;
-  background: #f1f5eb;
-  border-radius: 5px;
+  color: var(--maio-chip-fg);
+  background: var(--maio-chip-bg);
+  border-radius: var(--radius-chip);
   padding: 6px 9px;
 }
 .follow-up {
@@ -1209,8 +1199,8 @@ h2 {
   font-size: 8px;
   padding: 5px 8px;
   border-radius: 20px;
-  background: #e8eddf;
-  color: #606f4d;
+  background: var(--maio-estimate-bg);
+  color: var(--maio-estimate-fg);
 }
 .economy-result dl {
   margin: 17px 0 0;
@@ -1410,10 +1400,6 @@ h2 {
     padding: 0 32px;
     gap: 32px;
   }
-  .wrap {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
   .site-header nav {
     gap: 20px;
   }
@@ -1480,10 +1466,6 @@ h2 {
   }
 }
 @media (max-width: 700px) {
-  .wrap {
-    padding-left: 22px;
-    padding-right: 22px;
-  }
   .site-header {
     height: 78px;
     padding: 0 22px;
@@ -2508,10 +2490,6 @@ h1, h2, h3, h4 { letter-spacing: -0.025em; }
   }
 }
 
-/* One responsive display size across page titles and footer navigation. */
-:root {
-  --page-title-size: clamp(44px, 5.2vw, 72px);
-}
 .context-headline,
 h2,
 .mission-statement,
@@ -2525,12 +2503,6 @@ h2,
   line-height: 1.12;
   letter-spacing: -0.025em;
 }
-@media (max-width: 700px) {
-  :root {
-    --page-title-size: clamp(36px, 9.2vw, 64px);
-  }
-}
-
 .chat-page { max-width: 900px; margin: 0 auto; padding: 0 24px; min-height: calc(100dvh - 100px); display: flex; flex-direction: column; }
 .chat-toolbar { display: flex; justify-content: space-between; padding: 20px 0; font-size: 15px; color: #626b5c; }
 .chat-toolbar button { background: none; border: 0; font: inherit; cursor: pointer; }
