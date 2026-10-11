@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { SITE_URL, description, pageMetadata, siteSchema } from "../lib/seo";
+import { SITE_URL, description, htmlLang, pageMetadata, siteSchema } from "../lib/seo";
 const sans = localFont({
   src: [
     { path: "../public/fonts/PPNeueMontreal-Regular.woff2", weight: "400", style: "normal" },
@@ -19,7 +19,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt" className={sans.variable}>
+    <html lang={htmlLang} className={sans.variable}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema).replace(/</g, "\\u003c") }} />
         {children}
