@@ -1,9 +1,0 @@
-{
-  "name": "MaioCV",
-  "short_name": "MaioCV",
-  "start_url": "/pt",
-  "display": "standalone",
-  "theme_color": "#243fb8",
-  "background_color": "#fbfbf8",
-  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
-}
