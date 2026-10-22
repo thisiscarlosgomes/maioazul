@@ -32,6 +32,8 @@ The checked-in `data/snapshot.json` is the deployable data artifact. `sync:api` 
 
 ## API V1.1 (compatible /api/v1)
 
+The four Guide editorial imports live in `data/guide/`. When they change in the standalone `visitmaio` repository, copy the corresponding files from its `public/data/` directory into `data/guide/`, run `npm run sync:api`, and review the generated snapshot before deployment. The API does not require a sibling Guide checkout.
+
 All URLs below are relative to the API origin. Public GET/HEAD requests require no key. OPTIONS supports cross-origin clients. Mutations return 405 with CORS headers. Successful responses carry a content ETag and `X-Data-Revision`; conditional GET supports 304. Errors return `{ "error": { "status": 400, "message": "…" } }` and are not cached.
 
 | Endpoint                         | Purpose                                                          |

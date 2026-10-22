@@ -18,7 +18,7 @@ Set the project's root directory to `apps/maiocv`. `vercel.json` installs with `
 
 Initiative URLs live in `app/page.tsx`: API at https://api.maio.cv, Portal de Dados at https://portal.maio.cv, and VisitMaio at https://visitmaio.com. These are the initiative destinations specified for MaioCV.
 
-Images are reused from `apps/guide/public/places/pontapreta.jpg` and `vila2.jpg`; the font is reused from the repository's `public/fonts`. No external assets are fetched at runtime.
+Images are copied into `apps/maiocv/public/slideshow/`; the font is reused from the repository's `public/fonts`. No external assets are fetched at runtime.
 
 ## Vercel production deployments
 

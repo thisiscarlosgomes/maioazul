@@ -1,9 +1,0 @@
-.vercel
-public/*.mov
-public/*.mp4
-.next
-node_modules
-.env.local
-.DS_Store
-*.tsbuildinfo
-.env*

@@ -46,7 +46,6 @@ if (!CLOUD_NAME || !API_KEY || !API_SECRET) {
 
 const coverCandidates = [
   path.join(root, "public", "guidecover.jpg"),
-  path.join(root, "apps", "guide", "public", "guidecover.jpg"),
 ];
 
 const sign = (params) => {
@@ -106,7 +105,7 @@ const main = async () => {
     }
   }
   if (!coverPath) {
-    console.error(`Missing file: guidecover.jpg (checked public and apps/guide/public)`);
+    console.error(`Missing file: public/guidecover.jpg`);
     process.exit(1);
   }
 

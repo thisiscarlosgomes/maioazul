@@ -319,7 +319,9 @@ places.forEach((p) =>
 );
 // Guide is the preferred editorial edition for shared curated place IDs.
 // Keep root-only places and both source IDs; never match distinct places by name.
-const guidePlacesFile = "apps/guide/public/data/maio_places_with_coords.json";
+// Versioned editorial import from the standalone Maio Guide repository.
+// Keep this snapshot explicit so API builds do not depend on a sibling checkout.
+const guidePlacesFile = "apps/maio-api/data/guide/maio_places_with_coords.json";
 const guidePlaces = await read(guidePlacesFile);
 const guidePlacesSource = {
   ...placeSource,
@@ -367,7 +369,7 @@ for (const plan of sportsPlans) {
   feature.properties.sourceIds = [sportsSource.id, ...location.properties.sourceIds];
 }
 
-const surveyFile = "apps/guide/public/data/maio_offroad_trail_2026.geojson";
+const surveyFile = "apps/maio-api/data/guide/maio_offroad_trail_2026.geojson";
 const survey = await read(surveyFile);
 const surveySource = {
   id: "guide-offroad",
@@ -384,7 +386,7 @@ sources.push(surveySource);
 for (const f of survey.features)
   add(f, surveySource, ["trails", "tourism"], true);
 
-const guideSettlementsFile = "apps/guide/public/data/settlements.geojson";
+const guideSettlementsFile = "apps/maio-api/data/guide/settlements.geojson";
 const guideSettlements = await read(guideSettlementsFile);
 const guideSettlementsSource = {
   ...sources.find((s) => s.id === "settlements"),
@@ -405,7 +407,7 @@ for (const f of guideSettlements.features)
     true,
   );
 // Explicit allowlist: public editorial fields only, never operational Guide databases.
-const guideFile = "apps/guide/public/data/experience_places_by_slug.json",
+const guideFile = "apps/maio-api/data/guide/experience_places_by_slug.json",
   guide = await read(guideFile);
 const guideSource = {
   id: "maio-guide",

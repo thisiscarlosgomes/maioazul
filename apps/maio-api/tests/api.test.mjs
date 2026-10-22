@@ -213,7 +213,7 @@ test("Guide corrections retain shared IDs, dual provenance and surveyed trail ge
   const guide = JSON.parse(
     await readFile(
       new URL(
-        "../../guide/public/data/maio_places_with_coords.json",
+        "../data/guide/maio_places_with_coords.json",
         import.meta.url,
       ),
       "utf8",
