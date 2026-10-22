@@ -1,11 +1,11 @@
 import * as z from 'zod/v4';
 const id = z.string().regex(/^[a-z0-9][a-z0-9-]*$/).max(160);
-const paging = { limit: z.number().int().min(1).max(100).default(25), offset: z.number().int().min(0).default(0) };
+const paging = { limit: z.number().int().min(1).max(100).nullish().default(25), offset: z.number().int().min(0).nullish().default(0) };
 export const openDataSchemas = {
   get_open_data_catalog: z.object({}).strict(),
-  get_open_data_collection: z.object({ collectionId: id, q: z.string().max(200).optional(), bbox: z.string().max(120).optional(), ...paging }).strict(),
+  get_open_data_collection: z.object({ collectionId: id, q: z.string().max(200).nullish(), bbox: z.string().max(120).nullish(), ...paging }).strict(),
   get_open_data_feature: z.object({ featureId: id }).strict(),
-  get_open_data_dataset: z.object({ datasetId: id, view: z.enum(['metadata','records']).default('records'), year: z.number().int().min(1).max(9999).optional(), indicator: z.string().max(200).optional(), geographicScope: z.string().max(200).optional(), ...paging }).strict(),
+  get_open_data_dataset: z.object({ datasetId: id, view: z.enum(['metadata','records']).nullish().default('records'), year: z.number().int().min(1).max(9999).nullish(), indicator: z.string().max(200).nullish(), geographicScope: z.string().max(200).nullish(), ...paging }).strict(),
   get_open_data_source: z.object({ sourceId: id }).strict(),
 };
 const descriptions = {

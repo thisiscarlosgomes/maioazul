@@ -30,6 +30,7 @@ test('Open API bridge uses fixed origin, bounded filters and preserves original 
  await executeOpenDataTool('get_open_data_collection',{collectionId:'beaches',q:undefined,bbox:undefined,limit:100,offset:0},mock);
  assert.equal(requested,'https://api.maio.cv/api/v1/collections/beaches/items?limit=100&offset=0');
  assert.throws(()=>openDataSchemas.get_open_data_feature.parse({featureId:'../secret'}));
+ assert.deepEqual(openDataSchemas.get_open_data_collection.parse({collectionId:'beaches',q:null,bbox:null,limit:null,offset:null}),{collectionId:'beaches',q:null,bbox:null,limit:null,offset:null});
  assert.throws(()=>openDataSchemas.get_open_data_collection.parse({collectionId:'beaches',limit:501}));
  await assert.rejects(executeOpenDataTool('get_open_data_source',{sourceId:'missing'},(async()=>new Response('',{status:404})) as typeof fetch),/404/);
 });
