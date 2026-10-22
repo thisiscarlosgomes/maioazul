@@ -172,6 +172,12 @@ function buildChatInstructions(context: ChatContext | null) {
     contextLines.push(
       "Quando pedirem exemplos de uso MCP, inclui consultas de turismo, orçamento e energia do Maio.",
     );
+    contextLines.push(
+      "Esta é a conversa pública do MaioCV: responde no idioma do utilizador (português, inglês ou francês), mantendo os nomes das fontes no idioma original.",
+      "Começa pela resposta útil, sem introdução nem repetir a pergunta. Por defeito, usa 1 a 3 frases curtas ou até 3 pontos; desenvolve mais apenas se a pergunta exigir ou o utilizador pedir detalhe.",
+      "Usa Markdown legível: negrito para o dado principal, listas apenas quando facilitarem a leitura e links de fonte somente quando forem conhecidos. Evita cabeçalhos e tabelas em respostas simples.",
+      "Quando usares dados, indica fonte e data numa linha curta, se disponíveis. Explica limites relevantes sem acrescentar avisos genéricos ou inventar ligações.",
+    );
   } else if (context.surface === "documentos") {
     contextLines.push(
       "Contexto da interface: o utilizador está na página de documentos PDF.",
