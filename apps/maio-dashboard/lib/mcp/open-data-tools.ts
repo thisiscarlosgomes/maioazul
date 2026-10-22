@@ -30,7 +30,11 @@ export const openDataDefinitions = Object.fromEntries(Object.entries(openDataSch
 }])) as unknown as Record<keyof typeof openDataSchemas, {title:string;description:string;parameters:Record<string,unknown>}>;
 
 export async function executeOpenDataTool(name: keyof typeof openDataSchemas, raw: unknown, fetcher: typeof fetch = fetch) {
-  const args = openDataSchemas[name].parse(raw ?? {}) as Record<string, string|number>;
+  // Strict tool schemas send optional fields as null; omit them so Zod defaults apply.
+  const input = raw && typeof raw === 'object' && !Array.isArray(raw)
+    ? Object.fromEntries(Object.entries(raw).filter(([, value]) => value !== null))
+    : raw ?? {};
+  const args = openDataSchemas[name].parse(input) as Record<string, string|number>;
   let path = '/catalog';
   if (name === 'get_open_data_collection') path = `/collections/${args.collectionId}/items`;
   if (name === 'get_open_data_feature') path = `/features/${args.featureId}`;

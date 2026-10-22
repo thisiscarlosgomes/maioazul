@@ -25,6 +25,8 @@ test('Open API bridge uses fixed origin, bounded filters and preserves original 
  const mock=(async(url:URL|RequestInfo)=>{requested=String(url);return Response.json(payload)}) as typeof fetch;
  assert.deepEqual(await executeOpenDataTool('get_open_data_dataset',{datasetId:'business-demography',year:2024},mock),payload);
  assert.equal(requested,'https://api.maio.cv/api/v1/datasets/business-demography/records?year=2024&limit=25&offset=0');
+ await executeOpenDataTool('get_open_data_collection',{collectionId:'beaches',q:null,bbox:null,limit:100,offset:0},mock);
+ assert.equal(requested,'https://api.maio.cv/api/v1/collections/beaches/items?limit=100&offset=0');
  assert.throws(()=>openDataSchemas.get_open_data_feature.parse({featureId:'../secret'}));
  assert.throws(()=>openDataSchemas.get_open_data_collection.parse({collectionId:'beaches',limit:501}));
  await assert.rejects(executeOpenDataTool('get_open_data_source',{sourceId:'missing'},(async()=>new Response('',{status:404})) as typeof fetch),/404/);
