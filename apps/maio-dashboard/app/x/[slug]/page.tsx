@@ -3,29 +3,31 @@ import type { Metadata } from "next";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const title = params.slug.replace(/-/g, " ");
+  const { slug } = await params;
+  const title = slug.replace(/-/g, " ");
   const label = title.charAt(0).toUpperCase() + title.slice(1);
 
   return {
     title: label,
     description: `${label} on MaioAzul: local experience details, context, and availability information for Maio, Cabo Verde.`,
-    alternates: { canonical: `/x/${params.slug}` },
+    alternates: { canonical: `/x/${slug}` },
     openGraph: {
       title: `${label} · MaioAzul`,
       description: `${label} on MaioAzul: local experience details and availability information for Maio.`,
-      url: `/x/${params.slug}`,
+      url: `/x/${slug}`,
     },
   };
 }
 
-export default function Experience({
+export default async function Experience({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const title = params.slug.replace(/-/g, " ");
+  const { slug } = await params;
+  const title = slug.replace(/-/g, " ");
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-20 space-y-12">

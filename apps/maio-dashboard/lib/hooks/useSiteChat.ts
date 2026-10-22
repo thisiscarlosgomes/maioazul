@@ -30,7 +30,6 @@ type UseSiteChatOptions = {
 const DEFAULT_WELCOME_MESSAGE =
   "Pergunte sobre os dados de turismo de 2026, orçamento municipal, quadro de compensação ou Código de Postura do Maio.";
 const STORAGE_KEY = "maioazul-site-chat-v2";
-const CHAT_QUERY_LIMIT = 5;
 
 function buildWelcomeMessage(message: string): SiteChatMessage {
   return {
@@ -39,20 +38,6 @@ function buildWelcomeMessage(message: string): SiteChatMessage {
     content: message,
     createdAt: new Date().toISOString(),
   };
-}
-
-function formatQuotaReset(resetAt: string | null | undefined) {
-  if (!resetAt) return "mais tarde";
-
-  const date = new Date(resetAt);
-  if (Number.isNaN(date.getTime())) return "mais tarde";
-
-  return new Intl.DateTimeFormat("pt-PT", {
-    day: "2-digit",
-    month: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
 }
 
 export function useSiteChat(options: UseSiteChatOptions = {}) {
@@ -64,7 +49,6 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [remainingQuestions, setRemainingQuestions] = useState(CHAT_QUERY_LIMIT);
   const [hasRestoredFromStorage, setHasRestoredFromStorage] = useState(false);
 
   useEffect(() => {
@@ -115,8 +99,6 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
   async function submitMessage(text: string) {
     const trimmed = text.trim();
     if (!trimmed || loading) return;
-    const previousRemaining = remainingQuestions;
-    const optimisticRemaining = Math.max(0, previousRemaining - 1);
 
     const userMessage: SiteChatMessage = {
       id: `user-${Date.now()}`,
@@ -130,7 +112,6 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
     setInput("");
     setLoading(true);
     setError(null);
-    setRemainingQuestions(optimisticRemaining);
 
     try {
       const res = await fetch("/api/chat", {
@@ -144,21 +125,6 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
 
       const payload = await res.json().catch(() => ({}));
       if (!res.ok) {
-        if (res.status === 429) {
-          const limit =
-            typeof payload?.limit === "number" ? payload.limit : CHAT_QUERY_LIMIT;
-          setRemainingQuestions(
-            typeof payload?.remaining === "number" ? payload.remaining : 0,
-          );
-          const resetLabel = formatQuotaReset(
-            typeof payload?.resetAt === "string" ? payload.resetAt : null,
-          );
-
-          throw new Error(
-            `Atingiste o limite de ${limit} mensagens por 24 horas. Tenta novamente mais tarde.`,
-          );
-        }
-
         throw new Error(
           typeof payload?.error === "string"
             ? payload.error
@@ -178,11 +144,7 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
       };
 
       setMessages((current) => [...current, assistantMessage]);
-      if (typeof payload?.remaining === "number") {
-        setRemainingQuestions(payload.remaining);
-      }
     } catch (submissionError) {
-      setRemainingQuestions(previousRemaining);
       setError(
         submissionError instanceof Error
           ? submissionError.message
@@ -200,7 +162,6 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
     setInput("");
     setLoading(false);
     setError(null);
-    setRemainingQuestions(CHAT_QUERY_LIMIT);
 
     try {
       window.localStorage.removeItem(storageKey);
@@ -215,8 +176,6 @@ export function useSiteChat(options: UseSiteChatOptions = {}) {
     setInput,
     loading,
     error,
-    remainingQuestions,
-    maxQuestions: CHAT_QUERY_LIMIT,
     submitMessage,
     resetChat,
   };

@@ -55,8 +55,6 @@ export default function SiteChatPage() {
     setInput,
     loading,
     error,
-    remainingQuestions,
-    maxQuestions,
     submitMessage,
     resetChat,
   } = useSiteChat({
@@ -238,7 +236,7 @@ export default function SiteChatPage() {
               </div>
             </div>
             <div className="mt-1 text-[11px] text-muted-foreground">
-              enter para enviar · {remainingQuestions}/{maxQuestions} perguntas restantes
+              enter para enviar
             </div>
             {error ? <p className="mt-3 text-sm text-[#b42318]">{error}</p> : null}
           </form>

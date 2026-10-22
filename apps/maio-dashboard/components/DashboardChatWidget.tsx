@@ -74,8 +74,6 @@ export default function DashboardChatWidget({
     setInput,
     loading,
     error,
-    remainingQuestions,
-    maxQuestions,
     submitMessage,
     resetChat,
   } = useSiteChat({
@@ -329,7 +327,7 @@ export default function DashboardChatWidget({
                   />
                   <div className="flex items-center justify-between gap-4">
                     <p className="text-[11px] text-[#111111]/44">
-                      enter para enviar · {remainingQuestions}/{maxQuestions} perguntas restantes
+                      enter para enviar
                     </p>
                     <motion.button
                       className="flex h-9 w-9 items-center justify-center rounded-full bg-[#111111] text-white transition disabled:cursor-not-allowed disabled:opacity-45"

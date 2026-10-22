@@ -14,15 +14,9 @@ export const runtime = "nodejs";
 
 const DEFAULT_MODEL = process.env.OPENAI_MODEL ?? "gpt-5.4";
 const MAX_MESSAGES = 12;
-const MAX_TOOL_ROUNDS = 6;
-const CHAT_QUERY_LIMIT = 5;
-const CHAT_QUERY_WINDOW_MS = 24 * 60 * 60 * 1000;
-const CHAT_RATE_LIMIT_COLLECTION = "chat_rate_limits";
+const MAX_TOOL_ROUNDS = 3;
 const CHAT_USAGE_STATS_COLLECTION = "chat_usage_stats";
 const CHAT_USERS_COLLECTION = "chat_users";
-let rateLimitCollectionPromise:
-  | Promise<Awaited<ReturnType<typeof initializeRateLimitCollection>>>
-  | null = null;
 let usageStatsCollectionPromise:
   | Promise<Awaited<ReturnType<typeof initializeUsageStatsCollection>>>
   | null = null;
@@ -46,15 +40,6 @@ type ToolEvent = {
   ok: boolean;
 };
 
-type ChatRateLimitDoc = {
-  _id: string;
-  timestamps: Date[];
-  updatedAt: Date;
-  createdAt: Date;
-  allowed?: boolean;
-  count?: number;
-};
-
 type ChatUsageStatsDoc = {
   _id: string;
   kind: "global" | "daily";
@@ -73,7 +58,7 @@ type ChatUserDoc = {
   requests_total?: number;
 };
 
-type ChatUsageKind = "success" | "rate_limited" | "error";
+type ChatUsageKind = "success" | "error";
 
 const SYSTEM_PROMPT = `
 Você é o assistente do site Maioazul.
@@ -280,35 +265,6 @@ function getClientRateLimitKey(request: Request): string {
     "anonymous";
 
   return createHash("sha256").update(rawKey).digest("hex");
-}
-
-async function initializeRateLimitCollection() {
-  if (!process.env.MONGODB_URI) {
-    return null;
-  }
-
-  const { default: clientPromise } = await import("@/lib/mongodb");
-  const client = await clientPromise;
-  const db = client.db(process.env.MONGODB_DB || "maioazul");
-  const collection = db.collection<ChatRateLimitDoc>(CHAT_RATE_LIMIT_COLLECTION);
-
-  await collection.createIndex(
-    { updatedAt: 1 },
-    { expireAfterSeconds: 2 * 24 * 60 * 60 },
-  );
-
-  return collection;
-}
-
-async function getRateLimitCollection() {
-  if (!rateLimitCollectionPromise) {
-    rateLimitCollectionPromise = initializeRateLimitCollection().catch((error: unknown) => {
-      rateLimitCollectionPromise = null;
-      throw error;
-    });
-  }
-
-  return rateLimitCollectionPromise;
 }
 
 async function initializeUsageStatsCollection() {
@@ -992,7 +948,7 @@ async function trackChatUser(request: Request, context: ChatContext | null) {
   );
 }
 
-async function trackChatUsage(params: {
+async function writeChatUsage(params: {
   kind: ChatUsageKind;
   context: ChatContext | null;
   toolCallCount?: number;
@@ -1004,7 +960,7 @@ async function trackChatUsage(params: {
   const surface = getSurfaceKey(params.context);
   const dateKey = getUtcDateKey(now);
   const isSuccess = params.kind === "success";
-  const isRateLimited = params.kind === "rate_limited";
+  const isRateLimited = false;
   const isError = params.kind === "error";
   const toolCalls = params.toolCallCount ?? 0;
 
@@ -1060,85 +1016,15 @@ async function trackChatUsage(params: {
   ]);
 }
 
-async function consumeChatQueryQuota(request: Request) {
-  let collection: Awaited<ReturnType<typeof getRateLimitCollection>>;
+async function trackChatUsage(params: {
+  kind: ChatUsageKind;
+  context: ChatContext | null;
+  toolCallCount?: number;
+}) {
   try {
-    collection = await getRateLimitCollection();
+    await writeChatUsage(params);
   } catch (error) {
-    console.error("[chat-quota] rate limit lookup failed", error);
-    return { allowed: false as const, remaining: 0, resetAt: null };
-  }
-  if (!collection) {
-    return { allowed: false as const, remaining: 0, resetAt: null };
-  }
-
-  const now = new Date();
-  const cutoff = new Date(now.getTime() - CHAT_QUERY_WINDOW_MS);
-  const key = getClientRateLimitKey(request);
-
-  let result: Awaited<ReturnType<typeof collection.findOneAndUpdate>>;
-  try {
-    result = await collection.findOneAndUpdate(
-    { _id: key },
-    [
-      {
-        $set: {
-          timestamps: {
-            $filter: {
-              input: { $ifNull: ["$timestamps", []] },
-              as: "timestamp",
-              cond: { $gte: ["$$timestamp", cutoff] },
-            },
-          },
-        },
-      },
-      {
-        $set: {
-          allowed: { $lt: [{ $size: "$timestamps" }, CHAT_QUERY_LIMIT] },
-        },
-      },
-      {
-        $set: {
-          timestamps: {
-            $cond: [
-              "$allowed",
-              { $concatArrays: ["$timestamps", [now]] },
-              "$timestamps",
-            ],
-          },
-          updatedAt: now,
-          createdAt: { $ifNull: ["$createdAt", now] },
-        },
-      },
-      {
-        $set: {
-          count: { $size: "$timestamps" },
-        },
-      },
-    ],
-    {
-      upsert: true,
-      returnDocument: "after",
-    },
-  );
-
-  const doc = result as ChatRateLimitDoc | null;
-  const currentCount = doc?.count ?? 0;
-  const remaining = Math.max(0, CHAT_QUERY_LIMIT - currentCount);
-  const oldestTimestamp = doc?.timestamps?.[0];
-  const resetAt =
-    currentCount >= CHAT_QUERY_LIMIT && oldestTimestamp
-      ? new Date(new Date(oldestTimestamp).getTime() + CHAT_QUERY_WINDOW_MS).toISOString()
-      : null;
-
-  return {
-    allowed: Boolean(doc?.allowed),
-    remaining,
-    resetAt,
-  };
-  } catch (error) {
-    console.error("[chat-quota] rate limit lookup failed", error);
-    return { allowed: false as const, remaining: 0, resetAt: null };
+    console.error("[Chat Usage Tracking]", error);
   }
 }
 
@@ -1169,25 +1055,6 @@ export async function POST(request: Request) {
       console.error("[Chat User Tracking]", error);
     }
 
-    const quota = await consumeChatQueryQuota(request);
-    if (!quota.allowed) {
-      await trackChatUsage({
-        kind: "rate_limited",
-        context,
-      });
-
-      return NextResponse.json(
-        {
-          error: "Daily chat limit reached. You can send up to 5 messages every 24 hours.",
-          limit: CHAT_QUERY_LIMIT,
-          windowHours: 24,
-          remaining: quota.remaining,
-          resetAt: quota.resetAt,
-        },
-        { status: 429 },
-      );
-    }
-
     const directSalaryAnswer = await tryResolveCompensationAnswer({
       request,
       messages,
@@ -1209,7 +1076,7 @@ export async function POST(request: Request) {
         message: directDocumentsAnswer.message,
         toolEvents: directDocumentsAnswer.toolEvents,
         model: "direct-documents-resolver",
-        remaining: quota.remaining,
+        remaining: null,
       });
     }
 
@@ -1224,11 +1091,11 @@ export async function POST(request: Request) {
         message: directSalaryAnswer.message,
         toolEvents: directSalaryAnswer.toolEvents,
         model: "direct-budget-resolver",
-        remaining: quota.remaining,
+        remaining: null,
       });
     }
 
-    const client = new OpenAI({ apiKey });
+    const client = new OpenAI({ apiKey, maxRetries: 1, timeout: 60000 });
     const tools = getOpenAIFunctionTools();
     const toolEvents: ToolEvent[] = [];
 
@@ -1315,6 +1182,7 @@ export async function POST(request: Request) {
         input: outputs,
         tools,
         parallel_tool_calls: true,
+        ...(round === MAX_TOOL_ROUNDS - 1 ? { tool_choice: "none" as const } : {}),
       });
     }
 
@@ -1328,7 +1196,7 @@ export async function POST(request: Request) {
       message: extractOutputText(response),
       toolEvents,
       model: DEFAULT_MODEL,
-      remaining: quota.remaining,
+      remaining: null,
     });
   } catch (error) {
     console.error("Chat API error", error);
