@@ -1,6 +1,6 @@
 import { strict as assert } from "node:assert";
 import { test } from "node:test";
-import { nameOf, sourceName, toHit } from "../lib/search.ts";
+import { nameOf, searchFeatures, sourceName, toHit } from "../lib/search.ts";
 
 test("names fall back from display name, object, and title", () => {
   assert.equal(nameOf({ properties: { displayName: "Bitxe Rotcha", name: "Other" } }, "en").name, "Bitxe Rotcha");
@@ -23,4 +23,9 @@ test("a feature without geometry stays in the list and is marked unmapped", () =
   assert.equal(sourceName("settlements", "fr"), "Localités");
   assert.equal(sourceName("not-a-real-source", "en"), "Maio open data");
   assert.equal(toHit({ properties: { nameStatus: "missing", name: "Hidden" } }, "en"), null);
+});
+
+test("a non-OK search response fails instead of looking empty", async () => {
+  const fetchImpl = (async () => new Response(JSON.stringify({ features: [] }), { status: 500 })) as typeof fetch;
+  await assert.rejects(() => searchFeatures(fetchImpl, "praia", "en"));
 });
