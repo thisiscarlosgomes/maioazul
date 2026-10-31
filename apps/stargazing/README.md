@@ -32,7 +32,7 @@ Phone location and orientation require a secure origin. Use a deployed HTTPS URL
 
 ## Data and calculations
 
-The catalogue and line geometry live exclusively in the Maio API, using its pinned d3-celestial import, commit `7e720a3de062059d4c5400a379146a601d9010e0`. Original attribution and BSD-3-Clause license remain in `apps/maio-api/data/astronomy/LICENSE`; provenance/checksums remain in the API catalogue. Upstream: https://github.com/ofrohn/d3-celestial. Two Serpens patterns are grouped into one identity.
+The catalogue and line geometry live exclusively in the Maio API, using its pinned d3-celestial import, commit `7e720a3de062059d4c5400a379146a601d9010e0`. Original attribution and BSD-3-Clause license remain in `../maio-api/data/astronomy/LICENSE`; provenance/checksums remain in the API catalogue. Upstream: https://github.com/ofrohn/d3-celestial. Two Serpens patterns are grouped into one identity.
 
 Astronomy Engine 2.1.19 rotates J2000 positions to the observer horizon with precession, nutation and Earth rotation. Positions are calculated by the Maio API and fetched over HTTP; the browser only projects the returned horizon coordinates and handles device orientation. No duplicate catalogue or astronomy engine is bundled with this app. The rendered stars are pattern vertices, with schematic sizes, not a magnitude-complete star catalogue. Lines are conventional patterns, not IAU region boundaries. Proper motion, atmospheric refraction, terrain, clouds and extinction are not modeled. Above-horizon status means at least one pattern vertex is above 0°; list altitude is the highest pattern vertex. Daylight/twilight context comes from solar altitude. No prediction of naked-eye visibility is made.
 

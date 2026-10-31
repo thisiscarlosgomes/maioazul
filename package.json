@@ -35,11 +35,11 @@
     "generate:metric-blogs": "node scripts/generate-metric-blog-posts.mjs",
     "generate:metric-blogs:dry": "node scripts/generate-metric-blog-posts.mjs --dry-run=true",
     "offline:snapshot": "node scripts/build-offline-snapshot.mjs",
-    "dev:api": "npm --workspace apps/maio-api run dev",
-    "build:api": "npm --workspace apps/maio-api run build",
-    "start:api": "npm --workspace apps/maio-api run start",
-    "test:api": "npm --workspace apps/maio-api run test",
-    "sync:api": "npm --workspace apps/maio-api run data:sync"
+    "dev:api": "npm --prefix ../maio-api run dev",
+    "build:api": "npm --prefix ../maio-api run build",
+    "start:api": "npm --prefix ../maio-api run start",
+    "test:api": "npm --prefix ../maio-api run test",
+    "sync:api": "npm --prefix ../maio-api run data:sync"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.27.1",
