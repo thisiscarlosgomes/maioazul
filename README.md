@@ -35,6 +35,16 @@ Notes:
 - `ADMIN_SESSION_SECRET` is optional but strongly recommended.
 - If omitted, the app falls back to `ADMIN_PASSWORD` for session signing.
 
+## Live flights
+
+The data portal shows ADS-B positions around Ilha do Maio and Cabo Verde. The server reads the key from the environment and sends it as `x-api-key`. Leave the variable empty when you do not have a key: the page stays up and does not call adsb.lol.
+
+```bash
+ADSB_LOL_API_KEY=
+```
+
+Set the same name in Vercel for production and preview. Do not commit the value.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

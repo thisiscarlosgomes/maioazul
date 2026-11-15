@@ -60,6 +60,17 @@ import {
 } from "@/lib/dashboard/selectors";
 import type { ReceitasApiResponse, ReceitasYear } from "@/lib/dashboard/types";
 import { fetchJsonOfflineFirst } from "@/lib/offline";
+import dynamic from "next/dynamic";
+
+const LiveFlights = dynamic(() => import("@/components/dashboard/LiveFlights"), {
+  ssr: false,
+  loading: () => (
+    <section className="space-y-2" aria-hidden>
+      <h2 className="font-semibold">Voos agora</h2>
+      <div className="h-80 rounded-lg border border-border bg-muted" />
+    </section>
+  ),
+});
 
 
 /* =========================
@@ -1994,6 +2005,7 @@ export default function TourismPage() {
           </div>
         </div>
 
+        <LiveFlights />
 
         {/* =========================
             YEAR = 2024 · BASELINE
