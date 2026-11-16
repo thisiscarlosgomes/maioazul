@@ -117,6 +117,38 @@ export const toolSchemas = {
   get_maio_weather: z.object({}).strict(),
   get_maio_marine: z.object({}).strict(),
   get_maio_wind: z.object({}).strict(),
+  get_maio_accommodation: z
+    .object({
+      name: z
+        .string()
+        .trim()
+        .max(120)
+        .nullish()
+        .transform((value) => (value ? value : undefined)),
+      area: z
+        .string()
+        .trim()
+        .max(120)
+        .nullish()
+        .transform((value) => (value ? value : undefined)),
+    })
+    .strict(),
+  get_maio_experiences: z
+    .object({
+      kind: z
+        .string()
+        .trim()
+        .max(80)
+        .nullish()
+        .transform((value) => (value ? value : undefined)),
+      name: z
+        .string()
+        .trim()
+        .max(120)
+        .nullish()
+        .transform((value) => (value ? value : undefined)),
+    })
+    .strict(),
   get_payment_system_data: z
     .object({
       section: z
@@ -469,6 +501,57 @@ export const nativeToolDefinitions = {
       type: "object",
       properties: {},
       required: [],
+      additionalProperties: false,
+    },
+  },
+  get_maio_accommodation: {
+    title: "Get Maio Accommodation",
+    description:
+      "Lists hotels, guesthouses, apartments and other stays in Maio from https://api.maio.cv/api/v1/accommodation. Use for where to stay, hotels, alojamento, and onde ficar. name and area are optional text filters (for example a stay name, or a locality such as Morro, Calheta, or Porto Inglês); pass null for both to list the directory. Broad words such as hotel or onde ficar can match the whole directory. Returns name, area/locality, coordinates when mapped, and contact, website, or source link when the directory has them. The directory is incomplete and is not a live inventory: prices and availability are not live, and some stays have no coordinates. Never invent stays, addresses, contacts, prices, or availability beyond this result. If it is unavailable or empty, say so.",
+    parameters: {
+      type: "object",
+      properties: {
+        name: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 120,
+          description:
+            "Optional stay name or lodging word. Null lists the directory, or leaves filtering to area.",
+        },
+        area: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 120,
+          description:
+            "Optional locality or area, such as Morro, Calheta, or Porto Inglês. Null skips the area filter.",
+        },
+      },
+      required: ["name", "area"],
+      additionalProperties: false,
+    },
+  },
+  get_maio_experiences: {
+    title: "Get Maio Experiences",
+    description:
+      "Lists activities and experiences in Maio from https://api.maio.cv/api/v1/experiences. Use for surf lessons, jet ski, fishing, quad, boat trips, tours, passeios, and excursões. kind and name are optional text filters; kind examples: surf, jet ski, fishing, quad, tour, passeio. Pass null for both to list the directory. Returns name, kind, operator/contact, and indicative price when the directory has them. Prices and schedules are indicative, not live availability: tell the user to confirm with the operator. Never invent operators, contacts, prices, or activities that are not in the result. If it is unavailable or has no match, say the directory does not list that activity.",
+    parameters: {
+      type: "object",
+      properties: {
+        kind: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 80,
+          description:
+            "Optional activity kind, such as surf, jet ski, fishing, quad, tour, or passeio. Null skips the kind filter.",
+        },
+        name: {
+          type: ["string", "null"],
+          minLength: 1,
+          maxLength: 120,
+          description: "Optional operator or experience name. Null skips the name filter.",
+        },
+      },
+      required: ["kind", "name"],
       additionalProperties: false,
     },
   },
@@ -1417,6 +1500,267 @@ async function getMaioMarine(request: Request, rawArgs: unknown) {
 async function getMaioWind(request: Request, rawArgs: unknown) {
   toolSchemas.get_maio_wind.parse(normalizeNulls(rawArgs ?? {}));
   return fetchJson(request, "/api/maio/wind");
+}
+
+export const MAIO_DIRECTORY_TIMEOUT_MS = 4_000;
+export const MAIO_DIRECTORY_CACHE_TTL_MS = 60_000;
+
+const ACCOMMODATION_CAVEAT =
+  "Incomplete accommodation directory, not a verified current inventory. Prices and availability are not live. Some stays have no coordinates. Preserve source attribution and follow source links.";
+const EXPERIENCE_CAVEAT =
+  "Staff-maintained experience directory. Prices and schedules are indicative, not live availability. Confirm details with the operator.";
+const GENERIC_EXPERIENCE_KINDS = new Set(["other", "activity", "tourism"]);
+
+type DirectoryCacheEntry = { expiresAt: number; payload: DirectoryCollection };
+const directoryCache = new Map<string, DirectoryCacheEntry>();
+
+type DirectoryFeature = {
+  geometry?: { type?: string; coordinates?: unknown } | null;
+  properties?: {
+    name?: unknown;
+    publicationStatus?: unknown;
+    attributes?: Record<string, unknown>;
+  };
+};
+
+type DirectoryCollection = {
+  revision?: unknown;
+  numberMatched?: unknown;
+  features?: DirectoryFeature[];
+  caveats?: unknown;
+  attribution?: unknown;
+  links?: { next?: unknown };
+};
+
+export function clearMaioDirectoryCache() {
+  directoryCache.clear();
+}
+
+function cleanText(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function isDirectoryCollection(value: unknown): value is DirectoryCollection {
+  if (!value || typeof value !== "object") return false;
+  return Array.isArray((value as { features?: unknown }).features);
+}
+
+function readCaveat(payload: DirectoryCollection, fallback: string): string {
+  if (!Array.isArray(payload.caveats)) return fallback;
+  const lines = payload.caveats.filter(
+    (item): item is string => typeof item === "string" && item.trim().length > 0,
+  );
+  return lines.length > 0 ? lines.join(" ") : fallback;
+}
+
+function readCoordinates(geometry: DirectoryFeature["geometry"]) {
+  if (!geometry || geometry.type !== "Point" || !Array.isArray(geometry.coordinates)) return null;
+  const [longitude, latitude] = geometry.coordinates;
+  if (typeof longitude !== "number" || typeof latitude !== "number") return null;
+  if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) return null;
+  return { longitude, latitude };
+}
+
+function directoryTextMatches(needle: string, parts: Array<unknown>): boolean {
+  const target = normalizeSearchText(needle);
+  if (!target) return true;
+  return parts.some((part) => {
+    const text = cleanText(part);
+    return text ? normalizeSearchText(text).includes(target) : false;
+  });
+}
+
+function experienceKind(attributes: Record<string, unknown>): string | null {
+  const category = cleanText(attributes.category);
+  const experience = cleanText(attributes.experience);
+  if (category && !GENERIC_EXPERIENCE_KINDS.has(category)) return category;
+  if (experience && !GENERIC_EXPERIENCE_KINDS.has(experience)) return experience;
+  return null;
+}
+
+function indicativePrice(attributes: Record<string, unknown>) {
+  const amount = attributes.price;
+  if (typeof amount !== "number" || !Number.isFinite(amount)) return null;
+  return {
+    amount,
+    currency: cleanText(attributes.currency),
+    basis: cleanText(attributes.priceBasis),
+  };
+}
+
+async function fetchPublicDirectory(
+  path: string,
+  query: Query,
+): Promise<{ ok: true; url: string; payload: DirectoryCollection } | { ok: false; url: string; error: string }> {
+  const url = new URL(path, "https://api.maio.cv");
+  for (const [key, value] of Object.entries(query)) {
+    if (value === undefined || value === null || value === "") continue;
+    url.searchParams.set(key, String(value));
+  }
+  const cacheKey = url.toString();
+  const cached = directoryCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return { ok: true, url: cacheKey, payload: cached.payload };
+  }
+
+  try {
+    const response = await fetch(cacheKey, {
+      method: "GET",
+      headers: { Accept: "application/geo+json, application/json" },
+      signal: AbortSignal.timeout(MAIO_DIRECTORY_TIMEOUT_MS),
+      redirect: "error",
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      return { ok: false, url: cacheKey, error: `Maio API returned HTTP ${response.status}` };
+    }
+    const payload: unknown = await response.json();
+    if (!isDirectoryCollection(payload)) {
+      return { ok: false, url: cacheKey, error: "Maio API returned an unexpected directory payload." };
+    }
+    directoryCache.set(cacheKey, { expiresAt: Date.now() + MAIO_DIRECTORY_CACHE_TTL_MS, payload });
+    return { ok: true, url: cacheKey, payload };
+  } catch (error) {
+    const timedOut =
+      error instanceof Error && (error.name === "TimeoutError" || error.name === "AbortError");
+    return {
+      ok: false,
+      url: cacheKey,
+      error: timedOut ? "Maio API request timed out." : "Maio API request failed.",
+    };
+  }
+}
+
+function directoryFeatures(payload: DirectoryCollection, predicate: (feature: DirectoryFeature) => boolean) {
+  return (payload.features ?? []).filter((feature) => {
+    if (feature.properties?.publicationStatus === "withdrawn") return false;
+    return predicate(feature);
+  });
+}
+
+async function getMaioAccommodation(_request: Request, rawArgs: unknown) {
+  const { name, area } = toolSchemas.get_maio_accommodation.parse(normalizeNulls(rawArgs ?? {}));
+  const filters = { name: name ?? null, area: area ?? null };
+  const unavailable = (error: string, source: string) => ({
+    available: false,
+    source,
+    filters,
+    matched: 0,
+    truncated: false,
+    caveat: ACCOMMODATION_CAVEAT,
+    stays: [],
+    error: `${error} Do not invent stays.`,
+  });
+
+  const result = await fetchPublicDirectory("/api/v1/accommodation", {
+    q: name && area ? area : name || area,
+    limit: 100,
+  });
+  if (!result.ok) return unavailable(result.error, result.url);
+
+  const stays = directoryFeatures(result.payload, (feature) => {
+    const attributes = feature.properties?.attributes ?? {};
+    if (!name || !area) return true;
+    return directoryTextMatches(name, [
+      attributes.name,
+      feature.properties?.name,
+      attributes.tourism,
+      attributes.location,
+      attributes.address,
+    ]);
+  })
+    .map((feature) => {
+      const attributes = feature.properties?.attributes ?? {};
+      const stayName = cleanText(attributes.name) ?? cleanText(feature.properties?.name);
+      if (!stayName) return null;
+      const sourceUrl = cleanText(attributes.source_url);
+      const bookingUrl = cleanText(attributes.booking_url);
+      return {
+        name: stayName,
+        area: cleanText(attributes.location),
+        locality: cleanText(attributes.address),
+        coordinates: readCoordinates(feature.geometry),
+        contact: {
+          phone: cleanText(attributes.phone),
+          email: cleanText(attributes.email),
+        },
+        website: cleanText(attributes.website),
+        source_url: sourceUrl ?? bookingUrl,
+        booking_url: bookingUrl && bookingUrl !== sourceUrl ? bookingUrl : null,
+      };
+    })
+    .filter((stay) => stay !== null);
+
+  return {
+    available: true,
+    source: result.url,
+    revision: cleanText(result.payload.revision),
+    attribution: cleanText(result.payload.attribution),
+    filters,
+    matched: stays.length,
+    truncated: Boolean(cleanText(result.payload.links?.next)),
+    caveat: readCaveat(result.payload, ACCOMMODATION_CAVEAT),
+    stays,
+  };
+}
+
+async function getMaioExperiences(_request: Request, rawArgs: unknown) {
+  const { kind, name } = toolSchemas.get_maio_experiences.parse(normalizeNulls(rawArgs ?? {}));
+  const filters = { kind: kind ?? null, name: name ?? null };
+  const unavailable = (error: string, source: string) => ({
+    available: false,
+    source,
+    filters,
+    matched: 0,
+    truncated: false,
+    caveat: EXPERIENCE_CAVEAT,
+    experiences: [],
+    error: `${error} Do not invent experiences.`,
+  });
+
+  const result = await fetchPublicDirectory("/api/v1/experiences", {
+    q: kind && name ? kind : kind || name,
+    limit: 100,
+  });
+  if (!result.ok) return unavailable(result.error, result.url);
+
+  const experiences = directoryFeatures(result.payload, (feature) => {
+    const attributes = feature.properties?.attributes ?? {};
+    if (!kind || !name) return true;
+    return directoryTextMatches(name, [attributes.name, feature.properties?.name, attributes.operator]);
+  })
+    .map((feature) => {
+      const attributes = feature.properties?.attributes ?? {};
+      const experienceName = cleanText(attributes.name) ?? cleanText(feature.properties?.name);
+      if (!experienceName) return null;
+      return {
+        name: experienceName,
+        kind: experienceKind(attributes),
+        operator: cleanText(attributes.operator),
+        contact: {
+          phone: cleanText(attributes.phone),
+          email: cleanText(attributes.email),
+          website: cleanText(attributes.website),
+          booking_url: cleanText(attributes.booking_url) ?? cleanText(attributes.source_url),
+        },
+        indicative_price: indicativePrice(attributes),
+      };
+    })
+    .filter((experience) => experience !== null);
+
+  return {
+    available: true,
+    source: result.url,
+    revision: cleanText(result.payload.revision),
+    attribution: cleanText(result.payload.attribution),
+    filters,
+    matched: experiences.length,
+    truncated: Boolean(cleanText(result.payload.links?.next)),
+    caveat: readCaveat(result.payload, EXPERIENCE_CAVEAT),
+    experiences,
+  };
 }
 
 async function getPaymentSystemData(request: Request, rawArgs: unknown) {
@@ -2834,6 +3178,10 @@ export async function executeMaioTool(request: Request, name: MaioToolName, rawA
       return getMaioMarine(request, rawArgs);
     case "get_maio_wind":
       return getMaioWind(request, rawArgs);
+    case "get_maio_accommodation":
+      return getMaioAccommodation(request, rawArgs);
+    case "get_maio_experiences":
+      return getMaioExperiences(request, rawArgs);
     case "get_payment_system_data":
       return getPaymentSystemData(request, rawArgs);
     case "get_external_sector_finance_data":
