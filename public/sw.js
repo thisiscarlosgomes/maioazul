@@ -64,6 +64,11 @@ self.addEventListener("fetch", (event) => {
       event.respondWith(fetch(event.request, { cache: "no-store" }));
       return;
     }
+    // Live positions go stale quickly. Do not keep them in the offline cache.
+    if (url.pathname === "/api/maio/flights") {
+      event.respondWith(fetch(event.request));
+      return;
+    }
     if (url.pathname.startsWith("/data/")) {
       event.respondWith(cacheFirst(event.request));
       return;

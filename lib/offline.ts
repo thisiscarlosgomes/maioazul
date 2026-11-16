@@ -28,6 +28,7 @@ function cacheTtlForUrl(apiUrl: string) {
 
     if (path === "/api/places") return 24 * 60 * 60 * 1000;
     if (path.startsWith("/api/transparencia/turismo/2024/")) return 24 * 60 * 60 * 1000;
+    if (path === "/api/maio/flights") return 3 * 60 * 1000;
     if (
       path === "/api/maio/weather" ||
       path === "/api/maio/wind" ||
@@ -85,6 +86,10 @@ export function buildOfflineUrl(apiUrl: string) {
     }
 
     if (path === "/api/schedules/flights") {
+      return null;
+    }
+
+    if (path === "/api/maio/flights") {
       return null;
     }
 
